@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@100..900&amp;display=swap"
+    rel="stylesheet" />
+  <style>
+    @layer base {
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        overscroll-behavior: none;
+        background-color: #09090b;
+      }
+
+      main>:first-child {
+        margin-top: 0 !important;
+      }
+
+      main>:last-child {
+        margin-bottom: 0 !important;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script
+    id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-background": "#fbdbd7", "tertiary-fixed": "#cbe6ff", "tertiary": "#90cdff", "on-error": "#690005", "surface-bright": "#493432", "on-primary": "#690005", "primary-fixed": "#ffdad6", "on-tertiary-container": "#f3f8ff", "error-container": "#93000a", "surface": "#09090b", "on-primary-fixed-variant": "#93000b", "surface-tint": "#ffb4ab", "on-secondary-fixed": "#231b00", "surface-dim": "#1f0f0d", "tertiary-fixed-dim": "#90cdff", "surface-container-high": "#382523", "outline-variant": "#5c403c", "on-secondary-container": "#645000", "primary-container": "#dc2626", "inverse-on-surface": "#3f2c29", "on-tertiary-fixed": "#001e30", "on-error-container": "#ffdad6", "on-primary-fixed": "#410002", "inverse-surface": "#fbdbd7", "surface-container-lowest": "#190a08", "on-tertiary-fixed-variant": "#004b71", "on-secondary": "#3c2f00", "surface-container-highest": "#44302e", "surface-container-low": "#281715", "on-secondary-fixed-variant": "#574500", "surface-variant": "#44302e", "secondary-fixed": "#ffe083", "primary-fixed-dim": "#ffb4ab", "on-surface": "#ffffff", "on-primary-container": "#fff6f5", "on-surface-variant": "#e6bdb8", "on-tertiary": "#003450", "background": "#09090b", "outline": "#ac8884", "secondary": "#ffe083", "secondary-fixed-dim": "#eec200", "secondary-container": "#eec200", "inverse-primary": "#bf0715", "tertiary-container": "#0078b2", "primary": "#ffb4ab", "error": "#ffb4ab" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "safe-margin": "clamp(1rem, 5vw, 4rem)", "nav-padding": "12px", "grid-gutter": "24px", "section-gap": "48px", "hero-padding": "80px" }, "fontFamily": { "caption": ["Be Vietnam Pro"], "body-lg": ["Be Vietnam Pro"], "label-bold": ["Be Vietnam Pro"], "display-hero": ["Be Vietnam Pro"], "headline-md": ["Be Vietnam Pro"], "headline-lg": ["Be Vietnam Pro"], "display-hero-mobile": ["Be Vietnam Pro"], "body-md": ["Be Vietnam Pro"] }, "fontSize": { "caption": ["12px", { "lineHeight": "1.4", "fontWeight": "500" }], "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }], "label-bold": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600" }], "display-hero": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }], "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }], "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }], "display-hero-mobile": ["36px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "800" }], "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }] } } } }</script>
+</head>
+
+<body class="bg-zinc-950 font-body-md text-body-md text-white">
+  <header class="fixed top-0 w-full z-50 bg-zinc-950/60 backdrop-blur-xl transition-all duration-300">
+    <div class="h-20 w-full px-safe-margin flex items-center justify-between">
+      <div class="flex items-center gap-nav-padding"><span
+          class="text-headline-lg font-headline-lg text-primary-container tracking-tighter uppercase mr-nav-padding">ETFLIX</span>
+        <nav class="flex items-center gap-grid-gutter" data-active-classes="text-on-surface font-label-bold"><a
+            aria-current="page" class="transition-colors text-on-surface font-label-bold" data-path="home"
+            href="#">홈</a><a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md"
+            data-path="my-list" href="#">나의 찜 목록</a></nav>
+      </div>
+      <div class="flex items-center gap-nav-padding"><span
+          class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-on-surface">search</span><span
+          class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-on-surface">notifications</span>
+        <div class="flex items-center gap-3 ml-2 border-l border-outline-variant pl-nav-padding">
+          <div class="hidden md:flex flex-col items-end"><span
+              class="text-caption font-caption text-on-surface-variant uppercase tracking-widest leading-none">Premium
+              Tier</span><span class="text-label-bold font-label-bold text-on-surface">User Name</span></div><img
+            alt="Profile" class="w-8 h-8 rounded-lg object-cover ring-1 ring-outline-variant"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyIgch509AZ_aw1ebDE7jOeoh52ZmpUF2n9IFhoCG51qZMdtk4sBQ9Mf1PRIu8HjAGrGdJ94Zv5_sW9eeyPMEXGrPcrTPb1hvirMooFXNPDOmKcnaM09wsHzBNDsdKC-_6ySKwYbqhtA_9ZQYvyrFYDC8VJmuvkLQX61nbRiQIGJZpac5S2uEUFV5p5BqjB4KxQsrlIH9U4eVww-bMSg8CeiF5vrSvCuM8_Y0HmrW_nPV95KcaFseG" />
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="w-full pt-20">
+    <div class="flex flex-col w-full">
+      <div class="relative w-full h-[85vh] -mt-20 overflow-hidden group">
+        <div
+          class="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] group-hover:scale-105 blur-sm"
+          style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCyIgch509AZ_aw1ebDE7jOeoh52ZmpUF2n9IFhoCG51qZMdtk4sBQ9Mf1PRIu8HjAGrGdJ94Zv5_sW9eeyPMEXGrPcrTPb1hvirMooFXNPDOmKcnaM09wsHzBNDsdKC-_6ySKwYbqhtA_9ZQYvyrFYDC8VJmuvkLQX61nbRiQIGJZpac5S2uEUFV5p5BqjB4KxQsrlIH9U4eVww-bMSg8CeiF5vrSvCuM8_Y0HmrW_nPV95KcaFseG')">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-zinc-950/30 mix-blend-multiply">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/80 to-transparent"></div>
+        <div
+          class="relative w-full h-full px-safe-margin max-w-7xl mx-auto flex flex-col justify-end pb-24 md:pb-32 pt-32">
+          <div class="max-w-2xl transform transition-all duration-700 translate-y-0 opacity-100">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="px-2 py-1 bg-primary/20 text-primary text-caption font-label-bold rounded">ETFLIX
+                ORIGINAL</span>
+              <span
+                class="flex items-center gap-1 text-on-surface-variant text-caption font-label-bold uppercase tracking-widest"><span
+                  class="material-symbols-outlined text-[16px]">hd</span>4K HDR</span>
+              <span
+                class="flex items-center gap-1 text-on-surface-variant text-caption font-label-bold uppercase tracking-widest"><span
+                  class="material-symbols-outlined text-[16px]">volume_up</span>5.1</span>
+            </div>
+            <h1
+              class="text-display-hero-mobile md:text-display-hero font-display-hero text-on-surface mb-4 leading-tight shadow-sm drop-shadow-lg">
+              THE FALLEN AGENT
+            </h1>
+            <p class="text-body-lg font-body-lg text-on-surface-variant mb-8 max-w-xl line-clamp-3 md:line-clamp-none">
+              지금 바로 ETFLIX에서 감상하세요. 과거의 그림자에서 벗어나려는 요원, 그를 쫓는 거대한 조직의 음모. 진실을 향한 멈출 수 없는 추격전이 시작된다.
+            </p>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <button
+                class="flex items-center justify-center gap-2 px-8 py-3 lg:px-10 lg:py-4 bg-white text-zinc-950 font-label-bold rounded-lg hover:bg-zinc-200 transition-colors w-full sm:w-auto shadow-xl hover:scale-105 active:scale-95">
+                <span class="material-symbols-outlined fill-1">play_arrow</span>
+                지금 재생
+              </button>
+              <button
+                class="flex items-center justify-center gap-2 px-8 py-3 lg:px-10 lg:py-4 bg-zinc-800/60 backdrop-blur-md text-white font-label-bold rounded-lg hover:bg-zinc-700 transition-colors w-full sm:w-auto hover:scale-105 active:scale-95">
+                <span class="material-symbols-outlined">info</span>
+                상세 정보
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-zinc-950 to-transparent"></div>
+      </div>
+      <div class="px-safe-margin max-w-7xl mx-auto w-full py-section-gap">
+        <div class="flex items-center justify-between mb-grid-gutter">
+          <h2 class="text-headline-md font-headline-md text-white flex items-center gap-2">
+            <span class="w-1.5 h-6 bg-primary rounded-full block"></span>
+            지금 뜨는 영화
+          </h2>
+          <div class="flex gap-2">
+            <button
+              class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center hover:bg-zinc-700 transition-colors text-white"
+              id="prevBtn">
+              <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+            <button
+              class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center hover:bg-zinc-700 transition-colors text-white"
+              id="nextBtn">
+              <span class="material-symbols-outlined">chevron_right</span>
+            </button>
+          </div>
+        </div>
+        <div class="relative overflow-hidden group">
+          <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4" id="carousel"
+            style="scrollbar-width: none; -ms-overflow-style: none;">
+            <!-- Carousel Items -->
+            <div class="min-w-[160px] md:min-w-[200px] snap-start shrink-0 group/card cursor-pointer">
+              <div class="aspect-[2/3] rounded-lg bg-zinc-800 mb-2 overflow-hidden relative">
+                <img alt="영화 포스터 1"
+                  class="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-300"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeENLB1K-r_flb7-LsKqgIgN-_fxWsidRncHg_lMxMgddZOuwKnt1aTdkiqVMGWrJdRtiGd8INFqtikkigor1tpEt-x1WzJ-Itmhpf8qbBfbAlxR7iB1cbmTFPYX2iQN9MiqzPrBkm1XxPYupwXx-UP2586XsOkDwKuDlQ7htTHgCVbCNEs2Ly_mrGcLhLU61Nr2K0SOLmJ--MCZCzoSrBqwiCfIDMcNafYj3Bxib0Z-dxghepWIts" />
+                <div
+                  class="absolute inset-0 bg-black/40 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-white text-4xl">play_circle</span>
+                </div>
+              </div>
+              <h3 class="text-body-md font-label-bold text-white truncate">영화 제목 1</h3>
+            </div>
+            <div class="min-w-[160px] md:min-w-[200px] snap-start shrink-0 group/card cursor-pointer">
+              <div class="aspect-[2/3] rounded-lg bg-zinc-800 mb-2 overflow-hidden relative">
+                <img alt="영화 포스터 2"
+                  class="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-300"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYtsttS1lqPOARv1O1EpmusY4AFQRW-uH1qSG58a0o4Y_UrFgnDozSNmbCXFMdXHvOC7_AaBzkwtTRE0FC6MgekkLSGOrkmR9-XUpPL_m33OzvIAxZYUC7NUfmF3Kf41Bep2VkLKuqwo2WMIWjpP1dysUN6Sr_UuSf2rr3LCCq3SIePdoPaauKWOnong9eX7SXGcERRR5oALwH_fLiVZcx_Z1ef0XWIerB_dPpBEku0FBK4gD8U2qT" />
+                <div
+                  class="absolute inset-0 bg-black/40 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-white text-4xl">play_circle</span>
+                </div>
+              </div>
+              <h3 class="text-body-md font-label-bold text-white truncate">영화 제목 2</h3>
+            </div>
+            <div class="min-w-[160px] md:min-w-[200px] snap-start shrink-0 group/card cursor-pointer">
+              <div class="aspect-[2/3] rounded-lg bg-zinc-800 mb-2 overflow-hidden relative">
+                <img alt="영화 포스터 3"
+                  class="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-300"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAuj9-ZoSZQpY_QyANgvhHNzX6sPicc9kIQA2BC50gBhruDpYoF2OUw6XuqZXA0uOXDODPxiKUdE0z4Bh9J5YbtzlREKRElIp7uolxOCE3P2hinKDreVlM0YqTUAZv3OZTnw3qlUdOiYrZ5e3u7ff5xCWtsImnQezMx8Tz_f4ScCyAmsfVLtkYLjHlu8oFxhgR-WJ5jnUgxz2DaA95pV7au4m8gMmDn1q9ZlsG-kQ0fJbVPhpcKlfC" />
+                <div
+                  class="absolute inset-0 bg-black/40 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-white text-4xl">play_circle</span>
+                </div>
+              </div>
+              <h3 class="text-body-md font-label-bold text-white truncate">영화 제목 3</h3>
+            </div>
+            <div class="min-w-[160px] md:min-w-[200px] snap-start shrink-0 group/card cursor-pointer">
+              <div class="aspect-[2/3] rounded-lg bg-zinc-800 mb-2 overflow-hidden relative">
+                <img alt="영화 포스터 4"
+                  class="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-300"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuB91nI6Zbi9A--3k5wvI17xObrkLA7_3M48w9Gc5BhwFsSgVBgs0Pk_zQD1gzjPFSYb7XySjSKisCv-DvFd7zkBL9XfAD3Sw_E1eogdAq9fNBOJzfRsoIqsNwQkzdU3KlBy9l3zg-t9LKvYKoa8dxh9sEFhzvFCVZPHzAPfpzmynFc7zqnDCuMtnZuwHGGiG8nqRRcLRk4tZBq4V_Z6IHDuNoYsSmFsDzWCJMLUVaYsNRYIP6bYBrBK" />
+                <div
+                  class="absolute inset-0 bg-black/40 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-white text-4xl">play_circle</span>
+                </div>
+              </div>
+              <h3 class="text-body-md font-label-bold text-white truncate">영화 제목 4</h3>
+            </div>
+            <div class="min-w-[160px] md:min-w-[200px] snap-start shrink-0 group/card cursor-pointer">
+              <div class="aspect-[2/3] rounded-lg bg-zinc-800 mb-2 overflow-hidden relative">
+                <img alt="영화 포스터 5"
+                  class="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-300"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdoYzU-_YGJMUOxDn1Ez5qkZ_B6kXzdp-u6y9-Nl0oMvW8vnZkNL2v_2hjsjzZMlDuGbEGrrGaObUXgeuNs5ae4D4k_ZGVHFOAF1NZEnX6JUW8pJCppBVJySfaoxyT3ON0IR39DVnm8v4UWNLfE1TWw7hgdhrBvNHTxzvWZpNLnBeNRJF4dO0qEFzcyVAPMt91d7fS0HX3GvK8S35VQAZvTwAxpqsWOah_S22JMfOAGPFc8B20bqbQ" />
+                <div
+                  class="absolute inset-0 bg-black/40 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-white text-4xl">play_circle</span>
+                </div>
+              </div>
+              <h3 class="text-body-md font-label-bold text-white truncate">영화 제목 5</h3>
+            </div>
+            <div class="min-w-[160px] md:min-w-[200px] snap-start shrink-0 group/card cursor-pointer">
+              <div class="aspect-[2/3] rounded-lg bg-zinc-800 mb-2 overflow-hidden relative">
+                <img alt="영화 포스터 6"
+                  class="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-300"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVKewTCQJqeHTVN7mh4EIsLEgvH-h7cFOemcRDUkva9qJaZD48Hty2hGj8gp_nMDfUs45T6f3SoTTjJ4fTX9GAGBms6MryBDlWEjTafzUhjLz9pvRr2jNBZtSYEPV9ZshrBuXHA6afWAd6Zxc2S5couqz83GrUYlI2zOreg6ARLkfHyhIBpjUUeCuXVRYNyqzwBcJ5_PXS5i3xH46DLy0-Lts9bzqXtDDBR5a9Y71xjcwmZULS1Xkd" />
+                <div
+                  class="absolute inset-0 bg-black/40 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-white text-4xl">play_circle</span>
+                </div>
+              </div>
+              <h3 class="text-body-md font-label-bold text-white truncate">영화 제목 6</h3>
+            </div>
+            <div class="min-w-[160px] md:min-w-[200px] snap-start shrink-0 group/card cursor-pointer">
+              <div class="aspect-[2/3] rounded-lg bg-zinc-800 mb-2 overflow-hidden relative">
+                <img alt="영화 포스터 7"
+                  class="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-300"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4jtPdXraM6vWVw-287wjNC0GOLGbK3WE3K1Eg49lZ7Ogot7DqNdDH1M4-bDxtntK3-kcdJeyESPAuj7kFOPFfyUxDr1g9Cg4zqdBQYMb6LG3CgsKyNJelPlDh4IcYZeLLRl8uO4ZYrixlx34ZUp7sSEWhm_IVBkOq7DtPLWpW96o6Tcl0L2c08JC1nzMR42gguWQqaFKlz5qbu0MjdtqMiXeI38N2XRyJ1wW4Ak04dMmraOWvN4kg" />
+                <div
+                  class="absolute inset-0 bg-black/40 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-white text-4xl">play_circle</span>
+                </div>
+              </div>
+              <h3 class="text-body-md font-label-bold text-white truncate">영화 제목 7</h3>
+            </div>
+          </div>
+          <style>
+            #carousel::-webkit-scrollbar {
+              display: none;
+            }
+          </style>
+        </div>
+      </div>
+      <div class="px-safe-margin max-w-7xl mx-auto w-full py-section-gap pb-24">
+        <h2 class="text-headline-md font-headline-md text-white mb-6 flex items-center gap-2">
+          <span class="w-1.5 h-6 bg-primary rounded-full block"></span>
+          장르별 영화
+        </h2>
+        <div class="flex flex-wrap gap-3 mb-8" id="genre-filters">
+          <button class="genre-btn px-6 py-2 rounded-full font-label-bold transition-colors bg-red-600 text-white"
+            data-genre="all">전체</button>
+          <button
+            class="genre-btn px-6 py-2 rounded-full font-label-bold transition-colors bg-zinc-800 hover:bg-zinc-700 text-white"
+            data-genre="action">액션</button>
+          <button
+            class="genre-btn px-6 py-2 rounded-full font-label-bold transition-colors bg-zinc-800 hover:bg-zinc-700 text-white"
+            data-genre="comedy">코미디</button>
+          <button
+            class="genre-btn px-6 py-2 rounded-full font-label-bold transition-colors bg-zinc-800 hover:bg-zinc-700 text-white"
+            data-genre="romance">로맨스</button>
+          <button
+            class="genre-btn px-6 py-2 rounded-full font-label-bold transition-colors bg-zinc-800 hover:bg-zinc-700 text-white"
+            data-genre="thriller">스릴러</button>
+          <button
+            class="genre-btn px-6 py-2 rounded-full font-label-bold transition-colors bg-zinc-800 hover:bg-zinc-700 text-white"
+            data-genre="sf">SF</button>
+          <button
+            class="genre-btn px-6 py-2 rounded-full font-label-bold transition-colors bg-zinc-800 hover:bg-zinc-700 text-white"
+            data-genre="animation">애니메이션</button>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-6">
+          <!-- Grid Items -->
+          <div class="group cursor-pointer">
+            <div class="aspect-[2/3] rounded-lg bg-zinc-800 mb-2 overflow-hidden relative">
+              <img alt="포스터" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYApVbwPSGNdJi2PSzlTcgxTd9qK-pIm36NYpdziWb2L0xfBa-rnuMt4RZ-tBiBiduJCpbPHRflW37gypOSSjerdI3NjbvqmsyIcz5yvKQy_h-TkiqJ5qNsdrKHwvgiWMfpzH604Ud5NSBiWTucpqFuPSc9GIpCSolIZAVR6sEt8pcdqO9CylCqmI_6nEX5K7eAcvGgt6NclwbMnptcwZ1kxzdx39TV6m_EDWM3vGcP7c1QCp2paKj" />
+              <div
+                class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <span class="material-symbols-outlined text-white text-4xl">play_circle</span>
+              </div>
+            </div>
+            <h3 class="text-body-md font-label-bold text-white truncate group-hover:text-primary transition-colors">장르
+              영화 1</h3>
+          </div>
+          <div class="group cursor-pointer">
+            <div class="aspect-[2/3] rounded-lg bg-zinc-800 mb-2 overflow-hidden relative">
+              <img alt="포스터" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDK24LPhRr75VRzFHd3X9OADjJBC1R2F0yVHFwCobyZqmHY0dULSeI5m3RE5rmP6DzgS3l1PdO0hARDW0Bdy2Yn9FokqfgumHSUiZJOvIHGdH34OH2ZzROV1FLQEyCWiHNLKWy9ByfuzAVcuKenRRtpSiK6dtRv5QLpE9DsQHCTe9mZ47vEb0arol2AZSIEVvGWFuGMrXVF-XbYsDq6u5oLSRYrefEuCtOI-sL3R0VcshVRNkXuqN7x" />
+              <div
+                class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <span class="material-symbols-outlined text-white text-4xl">play_circle</span>
+              </div>
+            </div>
+            <h3 class="text-body-md font-label-bold text-white truncate group-hover:text-primary transition-colors">장르
+              영화 2</h3>
+          </div>
+          <div class="group cursor-pointer">
+            <div class="aspect-[2/3] rounded-lg bg-zinc-800 mb-2 overflow-hidden relative">
+              <img alt="포스터" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA62etVp3a_PCj3bJ8lIrrUCUMFnWvht_jfSGyESfMuffKPAIdsQSUcYj4EZy5arCNV-CdPZfqc8HtCu70hPu_PsI1gFW0m_3JgWbIkv7SXTJe1tRbs0UknLDmHupcyYFac8x00z2LnIKRxsvcVv9HRalY2RQcCidqJcLnCHeyy89JDGqpfLEoHNV_mPE3AmHX2f0F9YghD3Ltwed8Hbyy8SF0aaN1-sb8sAx1RmI5pcoFQpNhP98RV" />
+              <div
+                class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <span class="material-symbols-outlined text-white text-4xl">play_circle</span>
+              </div>
+            </div>
+            <h3 class="text-body-md font-label-bold text-white truncate group-hover:text-primary transition-colors">장르
+              영화 3</h3>
+          </div>
+          <div class="group cursor-pointer">
+            <div class="aspect-[2/3] rounded-lg bg-zinc-800 mb-2 overflow-hidden relative">
+              <img alt="포스터" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmOcGxJ9P9InLLD8-J55j7uyszHsuJBKqQHg9Eao-4UyNX_EopMca6PTeustc69Wj35T6MKcX_e58D0H5dTQQSW3qraJ9G4UJJIsPqgFKg_wkXmjhuGU0xRJwDAHmBnCI1iLB9LVTfxklSCkLNh4F-rkT6J4drynnY3TJp6L7NwtEBt-iBFmm0pab_8RioIn8_-fJGfm-bCbSZXgI6GTCSk_T7SI7R1L_q_Byr0zocx7KTVElWjEmp" />
+              <div
+                class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <span class="material-symbols-outlined text-white text-4xl">play_circle</span>
+              </div>
+            </div>
+            <h3 class="text-body-md font-label-bold text-white truncate group-hover:text-primary transition-colors">장르
+              영화 4</h3>
+          </div>
+          <div class="group cursor-pointer">
+            <div class="aspect-[2/3] rounded-lg bg-zinc-800 mb-2 overflow-hidden relative">
+              <img alt="포스터" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu1k_XDQJpBBps0uUlOKnCdwn8E6G8hWRP2m3yOftH7Jeotb_KMwc77aRF1EhNubJSSJV9kd6LoAqBQAE2lXW7U2w5Sn2jO8hpe9rdpqWth-Wsn4zApbksL8ZclhCKoJ8U6ZneBPgyWMX0Tr6rybfhcdsuqLUY4Ic6sFUUEg0Qk9-CrpBJcsu4KkWv9Cfn9ckMvVKu5VXlE1UZlJYwKbd5KqHhUHRMIpHstmQ8tL4cc4vrbM4crA-g" />
+              <div
+                class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <span class="material-symbols-outlined text-white text-4xl">play_circle</span>
+              </div>
+            </div>
+            <h3 class="text-body-md font-label-bold text-white truncate group-hover:text-primary transition-colors">장르
+              영화 5</h3>
+          </div>
+          <div class="group cursor-pointer">
+            <div class="aspect-[2/3] rounded-lg bg-zinc-800 mb-2 overflow-hidden relative">
+              <img alt="포스터" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH3lTShyzBEsiHv5OK2h-x-IiEKJv8CxAzU0x3sWl65gk0qTbbbL7R6lVh3FjAom9s6DFNB9b3uDLaDVp6vGobXcMGzG8_W_cjDTPnZiv7h_QTnNaUBhI9h0vwXQVyYJGfIUhuj4cf-3cQ8cDe2_cCh_sz_ctJibAVYC18DoU_Ctji4QKKHb874hERxzt32A24t79W_OpFY06ScClLcuexLU1y4qGx5ba5cs_lI3pv7N_o49lgmvHp" />
+              <div
+                class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <span class="material-symbols-outlined text-white text-4xl">play_circle</span>
+              </div>
+            </div>
+            <h3 class="text-body-md font-label-bold text-white truncate group-hover:text-primary transition-colors">장르
+              영화 6</h3>
+          </div>
+        </div>
+      </div>
+      <script>
+        // Carousel Functionality
+        const carousel = document.getElementById('carousel');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        prevBtn.addEventListener('click', () => {
+          carousel.scrollBy({ left: -300, behavior: 'smooth' });
+        });
+
+        nextBtn.addEventListener('click', () => {
+          carousel.scrollBy({ left: 300, behavior: 'smooth' });
+        });
+
+        // Carousel Mouse Drag functionality
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        carousel.addEventListener('mousedown', (e) => {
+          isDown = true;
+          startX = e.pageX - carousel.offsetLeft;
+          scrollLeft = carousel.scrollLeft;
+        });
+        carousel.addEventListener('mouseleave', () => {
+          isDown = false;
+        });
+        carousel.addEventListener('mouseup', () => {
+          isDown = false;
+        });
+        carousel.addEventListener('mousemove', (e) => {
+          if (!isDown) return;
+          e.preventDefault();
+          const x = e.pageX - carousel.offsetLeft;
+          const walk = (x - startX) * 2; // scroll-fast
+          carousel.scrollLeft = scrollLeft - walk;
+        });
+
+
+        // Genre Filter Toggle
+        const genreBtns = document.querySelectorAll('.genre-btn');
+        genreBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            // Remove active styles from all
+            genreBtns.forEach(b => {
+              b.classList.remove('bg-red-600');
+              b.classList.add('bg-zinc-800');
+            });
+            // Add active styles to clicked
+            btn.classList.remove('bg-zinc-800');
+            btn.classList.add('bg-red-600');
+          });
+        });
+      </script>
+    </div>
+  </main>
+  <footer class="w-full bg-zinc-950 py-section-gap border-t border-zinc-800">
+    <div
+      class="px-safe-margin max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-grid-gutter">
+      <div class="flex flex-col items-center md:items-start"><span
+          class="text-headline-md font-headline-md text-primary-container tracking-tighter uppercase mb-2">ETFLIX</span>
+        <p class="text-caption font-caption text-zinc-400">© 2024 ETFLIX. All rights reserved. 대한민국 제휴 콘텐츠 스트리밍 서비스.</p>
+      </div>
+      <nav class="flex gap-nav-padding"><a class="text-caption font-caption text-zinc-400 hover:text-white"
+          href="#">이용약관</a><a class="text-caption font-caption text-zinc-400 hover:text-white" href="#">개인정보처리방침</a><a
+          class="text-caption font-caption text-zinc-400 hover:text-white" href="#">고객센터</a></nav>
+    </div>
+  </footer>
+</body>
+
+</html>
