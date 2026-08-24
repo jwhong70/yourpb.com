@@ -82,7 +82,6 @@ function DoughnutChartWidget({ title, data }: DoughnutChartWidgetProps) {
   const cx = 100;
   const cy = 100;
   const rOuter = 85;
-  const rInner = 55;
 
   // 데이터의 총합 (100% 보장되지만 안전장치로 계산)
   const total = data.reduce((acc, curr) => acc + curr.value, 0) || 100;
@@ -109,17 +108,14 @@ function DoughnutChartWidget({ title, data }: DoughnutChartWidgetProps) {
     };
   });
 
-  // 호(Arc) 패스 계산 헬퍼 함수
-  const getDoughnutPath = (
-    startX: number,
-    startY: number,
+  // 호(Arc) 패스 계산 헬퍼 함수 (파이 차트용)
+  const getPiePath = (
     startAngle: number,
     endAngle: number,
     isHovered: boolean
   ) => {
     // 호버 시 살짝 확장 효과
     const outerR = isHovered ? rOuter + 4 : rOuter;
-    const innerR = isHovered ? rInner - 2 : rInner;
 
     const rad = (degree: number) => ((degree - 90) * Math.PI) / 180;
     const sRad = rad(startAngle);
@@ -134,21 +130,10 @@ function DoughnutChartWidget({ title, data }: DoughnutChartWidgetProps) {
     const x2 = (cx + outerR * Math.cos(eRad)).toFixed(4);
     const y2 = (cy + outerR * Math.sin(eRad)).toFixed(4);
 
-    const x3 = (cx + innerR * Math.cos(eRad)).toFixed(4);
-    const y3 = (cy + innerR * Math.sin(eRad)).toFixed(4);
-    const x4 = (cx + innerR * Math.cos(sRad)).toFixed(4);
-    const y4 = (cy + innerR * Math.sin(sRad)).toFixed(4);
-
     const largeArcFlag = diff > 180 ? 1 : 0;
 
-    return `M ${x1} ${y1} A ${outerR} ${outerR} 0 ${largeArcFlag} 1 ${x2} ${y2} L ${x3} ${y3} A ${innerR} ${innerR} 0 ${largeArcFlag} 0 ${x4} ${y4} Z`;
+    return `M ${x1} ${y1} A ${outerR} ${outerR} 0 ${largeArcFlag} 1 ${x2} ${y2} L ${cx} ${cy} Z`;
   };
-
-  // 중앙에 표시할 정보 선택
-  const activeSegment = hoveredIdx !== null ? segments[hoveredIdx] : null;
-  // 기본으로 가장 비중이 큰 항목을 중앙에 보여줌
-  const defaultSegment = segments.length > 0 ? segments[0] : null;
-  const displaySegment = activeSegment || defaultSegment;
 
   return (
     <div className="flex flex-col items-center p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-xl transition-all hover:border-white/20">
@@ -162,7 +147,7 @@ function DoughnutChartWidget({ title, data }: DoughnutChartWidgetProps) {
         </div>
       ) : (
         <>
-          {/* SVG Doughnut Chart */}
+          {/* SVG Pie Chart */}
           <div className="relative w-50 h-50 mb-6">
             <svg viewBox="0 0 200 200" className="w-full h-full overflow-visible">
               <g className="cursor-pointer">
@@ -171,7 +156,7 @@ function DoughnutChartWidget({ title, data }: DoughnutChartWidgetProps) {
                   return (
                     <path
                       key={idx}
-                      d={getDoughnutPath(cx, cy, seg.startAngle, seg.endAngle, isHovered)}
+                      d={getPiePath(seg.startAngle, seg.endAngle, isHovered)}
                       fill={seg.fill}
                       onMouseEnter={() => setHoveredIdx(idx)}
                       onMouseLeave={() => setHoveredIdx(null)}
@@ -184,37 +169,6 @@ function DoughnutChartWidget({ title, data }: DoughnutChartWidgetProps) {
                   );
                 })}
               </g>
-
-              {/* 중앙 정보 텍스트 */}
-              {displaySegment && (
-                <g className="pointer-events-none select-none">
-                  <text
-                    x={cx}
-                    y={cy - 8}
-                    textAnchor="middle"
-                    className="text-[11px] font-bold text-white/50"
-                  >
-                    {hoveredIdx !== null ? '선택 항목' : '최대 비중'}
-                  </text>
-                  <text
-                    x={cx}
-                    y={cy + 12}
-                    textAnchor="middle"
-                    className="text-base font-extrabold text-white truncate max-w-20"
-                    style={{ fontSize: displaySegment.name.length > 5 ? '13px' : '15px' }}
-                  >
-                    {displaySegment.name}
-                  </text>
-                  <text
-                    x={cx}
-                    y={cy + 28}
-                    textAnchor="middle"
-                    className="text-xs font-bold text-yellow-accent"
-                  >
-                    {displaySegment.value.toFixed(1)}%
-                  </text>
-                </g>
-              )}
             </svg>
           </div>
 
@@ -236,11 +190,11 @@ function DoughnutChartWidget({ title, data }: DoughnutChartWidgetProps) {
                       className="w-3 h-3 rounded-full shrink-0"
                       style={{ backgroundColor: seg.fill }}
                     />
-                    <span className="text-sm font-semibold text-white/80 truncate max-w-30">
+                    <span className="text-sm font-semibold text-[#000000] truncate max-w-30">
                       {seg.name}
                     </span>
                   </div>
-                  <span className="text-sm font-bold text-white">
+                  <span className="text-sm font-bold text-[#000000]">
                     {seg.value.toFixed(1)}%
                   </span>
                 </div>

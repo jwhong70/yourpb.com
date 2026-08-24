@@ -39,8 +39,8 @@ export default function StockPerformanceChart({
 
   // 3. SVG 크기 설정
   const width = 500;
-  const height = 260;
-  const paddingY = 30;
+  const height = 320;
+  const paddingY = 25;
   const paddingX = 40;
 
   // 0% 기준선 Y 좌표
@@ -53,16 +53,16 @@ export default function StockPerformanceChart({
   };
 
   return (
-    <div className="flex flex-col p-6 rounded-2xl bg-white/5 border border-yellow-accent backdrop-blur-md shadow-xl">
-      <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+    <div className="flex flex-col h-full p-6 rounded-2xl bg-white/5 border border-yellow-accent backdrop-blur-md shadow-xl">
+      <div className="flex items-center justify-between border-b border-black/10 pb-4 mb-6">
         <div>
-          <h4 className="text-lg font-bold text-white tracking-tight">기간별 수익률 성과</h4>
-          <p className="text-xs text-white/40 mt-1">최근 데이터 기준 주요 기간별 주가 수익률 현황입니다.</p>
+          <h4 className="text-lg font-bold text-[#000000] tracking-tight">기간별 수익률 성과</h4>
+          <p className="text-xs text-[#000000]/60 mt-1">최근 데이터 기준 주요 기간별 주가 수익률 현황입니다.</p>
         </div>
       </div>
 
       {values.length === 0 ? (
-        <div className="flex items-center justify-center h-50 text-white/40 text-sm">
+        <div className="flex items-center justify-center h-50 text-[#000000]/50 text-sm">
           수익률 데이터가 존재하지 않습니다.
         </div>
       ) : (
@@ -70,7 +70,7 @@ export default function StockPerformanceChart({
           {/* SVG Canvas */}
           <svg
             viewBox={`0 0 ${width} ${height}`}
-            className="w-full h-auto overflow-visible max-w-lg"
+            className="w-full h-auto overflow-visible"
           >
             {/* 그라데이션 정의 */}
             <defs>
@@ -97,7 +97,7 @@ export default function StockPerformanceChart({
                     y1={y}
                     x2={width - paddingX}
                     y2={y}
-                    stroke={isZero ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.08)'}
+                    stroke={isZero ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.1)'}
                     strokeWidth={isZero ? 1.5 : 1}
                     strokeDasharray={isZero ? 'none' : '4 4'}
                   />
@@ -105,7 +105,7 @@ export default function StockPerformanceChart({
                     <text
                       x={paddingX - 10}
                       y={y + 3}
-                      fill="rgba(255,255,255,0.3)"
+                      fill="rgba(0, 0, 0, 0.6)"
                       textAnchor="end"
                       className="text-[9px] font-bold font-mono"
                     >
@@ -121,7 +121,7 @@ export default function StockPerformanceChart({
             <text
               x={paddingX - 10}
               y={zeroY + 3}
-              fill="rgba(255,255,255,0.5)"
+              fill="rgba(0, 0, 0, 0.7)"
               textAnchor="end"
               className="text-[9px] font-black font-mono"
             >
@@ -138,7 +138,7 @@ export default function StockPerformanceChart({
               const barY = isPositive ? getY(val) : zeroY;
 
               const colWidth = (width - paddingX * 2) / items.length;
-              const barWidth = Math.min(32, colWidth * 0.5);
+              const barWidth = 48; // 막대 너비를 48px로 넓게 확장
               const barX = paddingX + idx * colWidth + (colWidth - barWidth) / 2;
 
               const isHovered = hoveredIdx === idx;
@@ -151,7 +151,7 @@ export default function StockPerformanceChart({
                     y={paddingY}
                     width={colWidth - 8}
                     height={height - paddingY * 2}
-                    fill={isHovered ? 'rgba(255, 255, 255, 0.03)' : 'transparent'}
+                    fill={isHovered ? 'rgba(0, 0, 0, 0.03)' : 'transparent'}
                     rx={12}
                     className="transition-colors duration-200"
                   />
@@ -162,7 +162,7 @@ export default function StockPerformanceChart({
                     y={barY}
                     width={barWidth}
                     height={barHeight}
-                    fill={isPositive ? 'url(#stock-coral-grad)' : 'url(#stock-sky-grad)'}
+                    fill={isPositive ? '#FFD735' : '#3AAD67'}
                     rx={4}
                     initial={{ scaleY: 0, originY: isPositive ? 1 : 0 }}
                     animate={{ scaleY: 1 }}
@@ -170,7 +170,7 @@ export default function StockPerformanceChart({
                     style={{
                       opacity: hoveredIdx !== null && !isHovered ? 0.6 : 1,
                       filter: isHovered
-                        ? `drop-shadow(0 0 6px ${isPositive ? '#F96D69' : '#003CDC'})`
+                        ? `drop-shadow(0 0 6px ${isPositive ? '#FFD735' : '#3AAD67'})`
                         : 'none',
                     }}
                   />
@@ -180,7 +180,7 @@ export default function StockPerformanceChart({
                     x={barX + barWidth / 2}
                     y={isPositive ? barY - 8 : barY + barHeight + 15}
                     textAnchor="middle"
-                    fill={isHovered ? '#FFFFFF' : isPositive ? '#FF9F9B' : '#5BC2E7'}
+                    fill={isHovered ? (isPositive ? '#FFD735' : '#3AAD67') : '#000000'}
                     className="text-[10px] font-extrabold font-mono"
                     style={{
                       opacity: hoveredIdx !== null && !isHovered ? 0.5 : 1,
@@ -196,7 +196,7 @@ export default function StockPerformanceChart({
                     x={barX + barWidth / 2}
                     y={height - 8}
                     textAnchor="middle"
-                    fill={isHovered ? '#FFFFFF' : 'rgba(255,255,255,0.4)'}
+                    fill={isHovered ? '#000000' : 'rgba(0, 0, 0, 0.5)'}
                     className="text-[10px] font-semibold"
                     style={{ transition: 'fill 0.2s' }}
                   >

@@ -31,11 +31,9 @@ export default async function StockDetailPage({ params }: PageProps) {
   const isLoggedIn = !!user;
   const isPremium = user?.membership_status === 'premium';
 
-  // 3. DB 데이터 병렬 조회 (stock_list, stock_prices)
-  const [stockListRes, pricesRes] = await Promise.all([
-    supabase.from('stock_list').select('*').eq('ticker', ticker).single(),
-    supabase.from('stock_prices').select('date, open, high, low, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w').eq('ticker', ticker).order('date', { ascending: false }).limit(120),
-  ]);
+  // 3. DB 데이터 조회
+  // - stock_list는 존재 여부 검사(404 판정)를 위해 로그인 상태에 관계없이 항시 조회
+  const stockListRes = await supabase.from('stock_list').select('*').eq('ticker', ticker).single();
 
   // stock_list 정보가 없다면 유효하지 않은 티커이므로 404 처리
   if (stockListRes.error || !stockListRes.data) {
@@ -43,19 +41,68 @@ export default async function StockDetailPage({ params }: PageProps) {
   }
 
   const stock = stockListRes.data;
-  const prices = pricesRes.data || [];
 
-  // 4. 성과 최근 지표 가공 (stock_prices의 최신 행)
-  const latestPrice = prices.length > 0 ? prices[0] : null;
-  const closePrice = latestPrice ? Number(latestPrice.close) : null;
-  const yield_1w = latestPrice ? Number(latestPrice.yield_1w) : null;
-  const yield_5w = latestPrice ? Number(latestPrice.yield_5w) : null;
-  const yield_20w = latestPrice ? Number(latestPrice.yield_20w) : null;
-  const yield_60w = latestPrice ? Number(latestPrice.yield_60w) : null;
-  const yield_120w = latestPrice ? Number(latestPrice.yield_120w) : null;
+  let prices: any[] = [];
+  let latestPrice: any = null;
+  let closePrice: number | null = null;
+  let yield_1w: number | null = null;
+  let yield_5w: number | null = null;
+  let yield_20w: number | null = null;
+  let yield_60w: number | null = null;
+  let yield_120w: number | null = null;
 
-  // 5. Storage Public URL 획득 (report-stock: pdf 리포트 포맷)
-  const reportUrl = supabase.storage.from('upload').getPublicUrl(`report-stock/${ticker}.pdf`).data.publicUrl;
+  if (isPremium) {
+    // 4. 프리미엄 회원의 경우 실제 DB 주가 데이터 및 수익률 조회
+    const pricesRes = await supabase
+      .from('stock_prices')
+      .select('date, open, high, low, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
+      .eq('ticker', ticker)
+      .order('date', { ascending: false })
+      .limit(120);
+
+    prices = pricesRes.data || [];
+    latestPrice = prices.length > 0 ? prices[0] : null;
+    closePrice = latestPrice ? Number(latestPrice.close) : null;
+    yield_1w = latestPrice ? Number(latestPrice.yield_1w) : null;
+    yield_5w = latestPrice ? Number(latestPrice.yield_5w) : null;
+    yield_20w = latestPrice ? Number(latestPrice.yield_20w) : null;
+    yield_60w = latestPrice ? Number(latestPrice.yield_60w) : null;
+    yield_120w = latestPrice ? Number(latestPrice.yield_120w) : null;
+  } else {
+    // 4. 일반 회원의 경우 120주 가상 Mock 주가 데이터 생성 및 Mock 수익률 지정 (서버 단에서 실제 중요 정보 가림)
+    prices = Array.from({ length: 120 }).map((_, idx) => {
+      const d = new Date();
+      d.setDate(d.getDate() - idx * 7);
+      const dateStr = d.toISOString().split('T')[0];
+      
+      // 완만하게 파동 치며 변동하는 Mock 주가 캔들 형태 생성
+      const base = 100 + Math.sin(idx * 0.15) * 8;
+      return {
+        date: dateStr,
+        open: base,
+        high: base + 2.5,
+        low: base - 2.5,
+        close: base + 1.1,
+        yield_1w: 1.2,
+        yield_5w: 3.5,
+        yield_20w: 12.4,
+        yield_60w: 24.8,
+        yield_120w: 52.1,
+      };
+    });
+
+    closePrice = 101.1;
+    yield_1w = 1.2;
+    yield_5w = 3.5;
+    yield_20w = 12.4;
+    yield_60w = 24.8;
+    yield_120w = 52.1;
+  }
+
+  // 5. Storage Public URL 획득 (유료회원에게만 제공하고 일반 회원은 공백 처리하여 URL 접근 차단)
+  const reportUrl = isPremium
+    ? supabase.storage.from('upload').getPublicUrl(`report-stock/${ticker}.pdf`).data.publicUrl
+    : '';
 
   // 포맷 헬퍼 함수
   const formatPrice = (val: number | null | undefined) => {
@@ -66,7 +113,7 @@ export default async function StockDetailPage({ params }: PageProps) {
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
       {/* 상단 네비게이션 및 타이틀 */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
@@ -137,20 +184,20 @@ export default async function StockDetailPage({ params }: PageProps) {
                   </div>
                   <div className="p-2.5 rounded-xl bg-white border border-yellow-accent/40">
                     <span className="text-[9px] text-gray-400 block mb-0.5">대분류 (Sector)</span>
-                    <span className="text-xs font-bold text-yellow-accent truncate block">
-                      {stock.sector2 || '-'}
+                    <span className="text-xs font-bold text-[#dc2626] truncate block">
+                      {isPremium ? (stock.sector2 || '-') : '••••'}
                     </span>
                   </div>
                   <div className="p-2.5 rounded-xl bg-white border border-yellow-accent/40">
                     <span className="text-[9px] text-gray-400 block mb-0.5">중분류 (Industry)</span>
                     <span className="text-xs font-bold text-gray-900 truncate block">
-                      {stock.industry2 || '-'}
+                      {isPremium ? (stock.industry2 || '-') : '••••'}
                     </span>
                   </div>
                   <div className="p-2.5 rounded-xl bg-white border border-yellow-accent/40">
                     <span className="text-[9px] text-gray-400 block mb-0.5">부문 (Divisions)</span>
                     <span className="text-xs font-bold text-gray-900 truncate block whitespace-pre-line">
-                      {stock.divisions || '정보 없음'}
+                      {isPremium ? (stock.divisions || '정보 없음') : '••••'}
                     </span>
                   </div>
                 </div>
@@ -165,7 +212,9 @@ export default async function StockDetailPage({ params }: PageProps) {
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2.5">기업 소개 및 투자 가이드</h3>
                 <p className="text-gray-700 text-xs sm:text-sm leading-relaxed whitespace-pre-line font-sans">
-                  {stock.description || '이 종목에 대한 상세 리서치 요약 정보가 아직 등록되지 않았습니다.'}
+                  {isPremium 
+                    ? (stock.description || '이 종목에 대한 상세 리서치 요약 정보가 아직 등록되지 않았습니다.') 
+                    : '구독 회원에게만 공개되는 기업 개요 정보입니다. 프리미엄 멤버십을 통해 전체 기업 정보와 리포트 분석 자료를 확인해보세요.'}
                 </p>
               </div>
             </div>
@@ -173,18 +222,14 @@ export default async function StockDetailPage({ params }: PageProps) {
 
           {/* 차트 영역 (반응형 2단 - 480px 분기) */}
           <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-8">
-            <div className="w-full">
-              <StockCandleChart prices={prices} />
-            </div>
-            <div className="w-full">
-              <StockPerformanceChart 
-                yield_1w={yield_1w}
-                yield_5w={yield_5w}
-                yield_20w={yield_20w}
-                yield_60w={yield_60w}
-                yield_120w={yield_120w}
-              />
-            </div>
+            <StockCandleChart prices={prices} />
+            <StockPerformanceChart 
+              yield_1w={yield_1w}
+              yield_5w={yield_5w}
+              yield_20w={yield_20w}
+              yield_60w={yield_60w}
+              yield_120w={yield_120w}
+            />
           </div>
 
           {/* 리서치 보고서 PDF 다운로드 버튼 */}

@@ -55,15 +55,15 @@ export default function EtfPerformanceChart({
 
   return (
     <div className="flex flex-col p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-xl">
-      <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+      <div className="flex items-center justify-between border-b border-black/10 pb-4 mb-6">
         <div>
-          <h4 className="text-lg font-bold text-white tracking-tight">수익률 성과 지표</h4>
-          <p className="text-xs text-white/40 mt-1">최근 데이터 기준 주요 기간별 운용 수익률 현황입니다.</p>
+          <h4 className="text-lg font-bold text-[#000000] tracking-tight">수익률 성과 지표</h4>
+          <p className="text-xs text-[#000000]/60 mt-1">최근 데이터 기준 주요 기간별 운용 수익률 현황입니다.</p>
         </div>
       </div>
 
       {values.length === 0 ? (
-        <div className="flex items-center justify-center h-50 text-white/40 text-sm">
+        <div className="flex items-center justify-center h-50 text-[#000000]/50 text-sm">
           수익률 데이터가 존재하지 않습니다.
         </div>
       ) : (
@@ -98,7 +98,7 @@ export default function EtfPerformanceChart({
                     y1={y}
                     x2={width - paddingX}
                     y2={y}
-                    stroke={isZero ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)'}
+                    stroke={isZero ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.1)'}
                     strokeWidth={isZero ? 1.5 : 1}
                     strokeDasharray={isZero ? 'none' : '4 4'}
                   />
@@ -106,7 +106,7 @@ export default function EtfPerformanceChart({
                     x={paddingX - 10}
                     y={y + 4}
                     textAnchor="end"
-                    fill="rgba(255, 255, 255, 0.4)"
+                    fill="rgba(0, 0, 0, 0.6)"
                     className="text-[9px] font-bold"
                   >
                     {lineVal.toFixed(0)}%
@@ -162,7 +162,7 @@ export default function EtfPerformanceChart({
                     x={x}
                     y={isPositive ? barY - 8 : barY + barHeight + 14}
                     textAnchor="middle"
-                    fill={isHovered ? hoverColor : '#ffffff'}
+                    fill={isHovered ? hoverColor : '#000000'}
                     className="text-[10px] font-extrabold transition-colors duration-200"
                   >
                     {val >= 0 ? '+' : ''}
@@ -174,7 +174,7 @@ export default function EtfPerformanceChart({
                     x={x}
                     y={height - 8}
                     textAnchor="middle"
-                    fill="rgba(255, 255, 255, 0.6)"
+                    fill="rgba(0, 0, 0, 0.7)"
                     className="text-[10px] font-bold"
                   >
                     {item.label.split(' ')[0]}
@@ -186,14 +186,12 @@ export default function EtfPerformanceChart({
 
           {/* 호버 상세 툴팁 오버레이 */}
           {hoveredIdx !== null && items[hoveredIdx].value !== null && (
-            <div className="absolute top-20 bg-navy/95 border border-white/25 rounded-2xl py-2.5 px-4 shadow-xl text-center backdrop-blur-md max-w-xs animate-in fade-in zoom-in duration-200">
-              <span className="text-[10px] font-semibold text-white/50 block mb-0.5">
+            <div className="absolute top-20 bg-white/95 border border-black/15 rounded-2xl py-2.5 px-4 shadow-xl text-center backdrop-blur-md max-w-xs animate-in fade-in zoom-in duration-200">
+              <span className="text-[10px] font-semibold text-black/50 block mb-0.5">
                 {items[hoveredIdx].label}
               </span>
               <span
-                className={`text-lg font-black ${
-                  (items[hoveredIdx].value ?? 0) >= 0 ? 'text-red-400' : 'text-sky-400'
-                }`}
+                className="text-lg font-black text-black"
               >
                 {(items[hoveredIdx].value ?? 0) >= 0 ? '+' : ''}
                 {(items[hoveredIdx].value ?? 0).toFixed(1)}%

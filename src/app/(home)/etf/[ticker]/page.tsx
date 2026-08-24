@@ -153,7 +153,7 @@ export default async function EtfDetailPage({ params }: PageProps) {
                 <div className="space-y-2">
                   <div className="p-2.5 rounded-xl bg-white border border-red-accent/12">
                     <span className="text-[9px] text-[#000000]/45 block mb-0.5">대분류</span>
-                    <span className="text-xs font-bold text-yellow-accent truncate block">
+                    <span className="text-xs font-bold text-[#dc2626] truncate block">
                       {etfList.category || '-'}
                     </span>
                   </div>

@@ -98,30 +98,30 @@ export default function EtfCandleChart({ prices }: EtfCandleChartProps) {
   return (
     <div className="flex flex-col p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-xl">
       {/* 최상단: 현재 정보 및 툴팁 */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-black/10 pb-4 mb-6">
         <div>
-          <h3 className="text-lg font-bold text-white tracking-tight">주가 추이</h3>
-          <p className="text-xs text-white/40 mt-1">마우스를 올리거나 스크롤하여 상세 가격을 확인하실 수 있습니다.</p>
+          <h3 className="text-lg font-bold text-[#000000] tracking-tight">주가 추이</h3>
+          <p className="text-xs text-[#000000]/60 mt-1">마우스를 올리거나 스크롤하여 상세 가격을 확인하실 수 있습니다.</p>
         </div>
 
         {/* 실시간 툴팁 */}
         <div className="h-10 flex items-center">
           {hoveredItem ? (
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-white/80 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
-              <span className="font-bold text-yellow-accent shrink-0">{hoveredItem.date}</span>
-              <span className="shrink-0">시: <strong className="text-white">{hoveredItem.open.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></span>
-              <span className="shrink-0">고: <strong className="text-red-400">{hoveredItem.high.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></span>
-              <span className="shrink-0">저: <strong className="text-sky-400">{hoveredItem.low.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></span>
-              <span className="shrink-0">종: <strong className="text-white">{hoveredItem.close.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></span>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#000000] bg-black/5 px-3 py-1.5 rounded-xl border border-black/10">
+              <span className="font-bold text-[#000000] shrink-0">{hoveredItem.date}</span>
+              <span className="shrink-0">시: <strong className="text-[#000000]">{hoveredItem.open.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></span>
+              <span className="shrink-0">고: <strong className="text-[#000000]">{hoveredItem.high.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></span>
+              <span className="shrink-0">저: <strong className="text-[#000000]">{hoveredItem.low.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></span>
+              <span className="shrink-0">종: <strong className="text-[#000000]">{hoveredItem.close.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></span>
             </div>
           ) : (
-            <div className="text-xs text-white/30 italic">차트 위에 마우스를 올리면 가격 상세가 노출됩니다.</div>
+            <div className="text-xs text-[#000000]/40 italic">차트 위에 마우스를 올리면 가격 상세가 노출됩니다.</div>
           )}
         </div>
       </div>
 
       {chartData.length === 0 ? (
-        <div className="flex items-center justify-center h-80 text-white/40 text-sm">
+        <div className="flex items-center justify-center h-80 text-[#000000]/50 text-sm">
           가격 데이터가 존재하지 않습니다.
         </div>
       ) : (
@@ -147,14 +147,14 @@ export default function EtfCandleChart({ prices }: EtfCandleChartProps) {
                     y1={y}
                     x2={chartWidth - paddingRight}
                     y2={y}
-                    stroke="rgba(255, 255, 255, 0.1)"
+                    stroke="rgba(0, 0, 0, 0.1)"
                     strokeWidth={1}
                     strokeDasharray="4 4"
                   />
                   <text
                     x={chartWidth - paddingRight + 6}
                     y={y + 4}
-                    fill="rgba(255, 255, 255, 0.4)"
+                    fill="rgba(0, 0, 0, 0.6)"
                     className="text-[10px] font-semibold"
                   >
                     {price.toLocaleString(undefined, { maximumFractionDigits: 0 })}
@@ -171,7 +171,7 @@ export default function EtfCandleChart({ prices }: EtfCandleChartProps) {
               const bodyHeight = Math.max(1, bodyBottom - bodyTop);
 
               const x = getX(idx);
-              const color = isBullish ? '#FFFFFF' : '#dc2626'; // 상승: 흰색, 하락: #dc2626
+              const color = isBullish ? '#000000' : '#dc2626'; // 상승: 검정(#000000), 하락: #dc2626
               
               const isHovered = hoveredIdx === idx;
 
@@ -209,7 +209,7 @@ export default function EtfCandleChart({ prices }: EtfCandleChartProps) {
                       x={x}
                       y={chartHeight - 4}
                       textAnchor="middle"
-                      fill="rgba(255, 255, 255, 0.3)"
+                      fill="rgba(0, 0, 0, 0.5)"
                       className="text-[9px] font-medium pointer-events-none select-none"
                     >
                       {d.date.slice(2, 7)}
