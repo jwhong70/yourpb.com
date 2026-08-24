@@ -18,24 +18,10 @@ interface HeaderProps {
 export default function Header({ initialUser }: HeaderProps) {
   const pathname = usePathname();
   const [user, setUser] = useState(initialUser);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // UI 데모를 위한 Mocking용 유저 상태 토글
   const [isDemoMode, setIsDemoMode] = useState(false);
-
-  // 스크롤 감지
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // 이메일이나 유저 세션이 바뀔 때 업데이트
   useEffect(() => {
@@ -45,37 +31,33 @@ export default function Header({ initialUser }: HeaderProps) {
   }, [initialUser, isDemoMode]);
 
   const handleLogout = async () => {
-    if (isDemoMode) {
-      setUser(null);
-      setIsDemoMode(false);
-      return;
-    }
+    document.cookie = "demo_user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = "demo_membership_status=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     await signOut();
   };
 
   // 데모 로그인/비로그인 전환 기능
   const toggleDemoUser = () => {
-    setIsDemoMode(true);
     if (!user) {
-      setUser({
-        id: 'demo-user-id',
-        email: 'demo@yourpb.com',
-        name: '홍길동 PB',
-        membership_status: 'premium',
-      });
+      // 1. 비로그인 -> 데모 Premium
+      document.cookie = "demo_user=true; path=/";
+      document.cookie = "demo_membership_status=premium; path=/";
+      window.location.reload();
     } else if (user.membership_status === 'premium') {
-      setUser({
-        ...user,
-        membership_status: 'free',
-      });
+      // 2. 데모 Premium -> 데모 Free
+      document.cookie = "demo_user=true; path=/";
+      document.cookie = "demo_membership_status=free; path=/";
+      window.location.reload();
     } else {
-      setUser(null);
-      setIsDemoMode(false);
+      // 3. 데모 Free -> 로그아웃
+      document.cookie = "demo_user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie = "demo_membership_status=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      window.location.reload();
     }
   };
 
   const navLinks = [
-    { name: '홈', href: '/' },
+    { name: 'HOME', href: '/' },
     { name: 'ETF', href: '/etf' },
     { name: '매크로', href: '/macro' },
     { name: '주식', href: '/stock' },
@@ -85,17 +67,14 @@ export default function Header({ initialUser }: HeaderProps) {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled
-        ? 'bg-navy/80 backdrop-blur-xl border-b border-white/10 shadow-lg py-3'
-        : 'bg-transparent border-b border-transparent py-5'
-        }`}
+      className="fixed top-0 left-0 w-full z-50 bg-background border-b border-white/5 py-3.5 transition-all duration-300"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
           {/* 로고 영역 */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center">
-              <span className="text-xl font-extrabold tracking-widest font-sans select-none text-3d-premium animate-logo-glow">
+              <span className="text-3xl font-extrabold tracking-widest font-sans select-none text-3d-premium animate-logo-glow">
                 YOURPB.COM
               </span>
             </Link>
@@ -110,15 +89,11 @@ export default function Header({ initialUser }: HeaderProps) {
                   <Link
                     key={link.name}
                     href={link.href}
-                    className={`text-base font-bold transition-colors duration-200 ${isHome
-                        ? 'text-yellow-accent hover:text-yellow-accent/90'
-                        : isEtf
-                          ? 'hover:opacity-90'
-                          : isActive
-                            ? 'text-sky-primary'
-                            : 'text-white/80 hover:text-white'
-                      }`}
-                    style={isEtf ? { color: '#F96D69' } : undefined}
+                    className={`text-base font-bold transition-colors duration-200 ${
+                      isActive
+                        ? 'text-yellow-accent'
+                        : 'text-white hover:text-white/80'
+                    }`}
                   >
                     {link.name}
                   </Link>
@@ -209,15 +184,11 @@ export default function Header({ initialUser }: HeaderProps) {
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block px-4 py-3 rounded-xl text-lg font-bold transition-colors ${isHome
-                      ? 'text-yellow-accent hover:bg-white/5'
-                      : isEtf
-                        ? 'hover:bg-white/5 hover:opacity-90'
-                        : isActive
-                          ? 'bg-sky-primary/20 text-sky-primary'
-                          : 'text-white/80 hover:bg-white/5 hover:text-white'
-                    }`}
-                  style={isEtf ? { color: '#F96D69' } : undefined}
+                  className={`block px-4 py-3 rounded-xl text-lg font-bold transition-colors ${
+                    isActive
+                      ? 'bg-yellow-accent/10 text-yellow-accent'
+                      : 'text-white hover:bg-white/5 hover:text-white/80'
+                  }`}
                 >
                   {link.name}
                 </Link>

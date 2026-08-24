@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase-server';
 import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 
 export interface SignUpParams {
   name: string;
@@ -68,6 +69,11 @@ export async function signIn(params: SignInParams) {
     return { error: error.message };
   }
 
+  // 로그인 성공 시 기존 데모 쿠키 초기화
+  const cookieStore = await cookies();
+  cookieStore.set('demo_user', '', { expires: new Date(0), path: '/' });
+  cookieStore.set('demo_membership_status', '', { expires: new Date(0), path: '/' });
+
   redirect('/');
 }
 
@@ -78,6 +84,12 @@ export async function signIn(params: SignInParams) {
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();
+
+  // 로그아웃 시 기존 데모 쿠키 초기화
+  const cookieStore = await cookies();
+  cookieStore.set('demo_user', '', { expires: new Date(0), path: '/' });
+  cookieStore.set('demo_membership_status', '', { expires: new Date(0), path: '/' });
+
   redirect('/');
 }
 
@@ -88,36 +100,50 @@ export async function signOut() {
  */
 export async function getSessionUser() {
   const supabase = await createClient();
-
   const { data: { user }, error: authError } = await supabase.auth.getUser();
 
-  if (authError || !user) {
-    return null;
+  // 1. 실제 로그인 세션이 존재하는 경우 데모 쿠키와 관계없이 실제 세션을 최우선 보장
+  if (user && !authError) {
+    const { data: profile, error: dbError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', user.id)
+      .single();
+
+    if (dbError || !profile) {
+      // 트리거 미동작 등 일시적인 문제 발생 시 Auth 메타데이터를 기반으로 기본 객체 반환
+      return {
+        id: user.id,
+        email: user.email,
+        name: user.user_metadata?.name || '',
+        membership_status: 'free',
+        subscription_end_date: null,
+      };
+    }
+
+    return {
+      id: profile.id,
+      email: profile.email,
+      name: profile.name,
+      membership_status: profile.membership_status,
+      subscription_end_date: profile.subscription_end_date,
+    };
   }
 
-  // users 테이블에서 멤버십 상태 및 프로필 정보 조회
-  const { data: profile, error: dbError } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', user.id)
-    .single();
+  // 2. 비로그인 상태일 때만 데모 쿠키 검사
+  const cookieStore = await cookies();
+  const isDemo = cookieStore.get('demo_user')?.value === 'true';
+  const demoStatus = cookieStore.get('demo_membership_status')?.value;
 
-  if (dbError || !profile) {
-    // 트리거 미동작 등 일시적인 문제 발생 시 Auth 메타데이터를 기반으로 기본 객체 반환
+  if (isDemo) {
     return {
-      id: user.id,
-      email: user.email,
-      name: user.user_metadata?.name || '',
-      membership_status: 'free',
+      id: 'demo-user-id',
+      email: 'demo@yourpb.com',
+      name: '홍길동 PB',
+      membership_status: demoStatus || 'premium',
       subscription_end_date: null,
     };
   }
 
-  return {
-    id: profile.id,
-    email: profile.email,
-    name: profile.name,
-    membership_status: profile.membership_status,
-    subscription_end_date: profile.subscription_end_date,
-  };
+  return null;
 }
