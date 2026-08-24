@@ -126,8 +126,8 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
   const getYieldStyle = (val: number | null) => {
     if (val === null || val === undefined) return { colorClass: 'text-gray-400', text: '-' };
     const formatted = `${val > 0 ? '+' : ''}${val.toFixed(1)}%`;
-    if (val > 0) return { colorClass: 'text-[#000000] font-bold', text: formatted };
-    if (val < 0) return { colorClass: 'text-[#dc2626] font-bold', text: formatted };
+    if (val > 0) return { colorClass: 'text-[#007C1F] font-bold', text: formatted };
+    if (val < 0) return { colorClass: 'text-[#D60016] font-bold', text: formatted };
     return { colorClass: 'text-gray-900', text: formatted };
   };
 
@@ -152,7 +152,7 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
     <div className="space-y-8">
       {/* 관심만 vs 유니버스 전체 토글 */}
       <div className="flex justify-start">
-        <div className="inline-flex rounded-2xl bg-white border border-yellow-accent p-1 shadow-xs select-none">
+        <div className="inline-flex rounded-none bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-1 shadow-xs select-none">
           <button
             type="button"
             onClick={() => {
@@ -160,9 +160,9 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
               setSelectedSector('all');
               setSelectedIndustry('all');
             }}
-            className={`px-5 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+            className={`px-5 py-2 text-xs font-bold rounded-none transition-all cursor-pointer ${
               interestFilter === 'y'
-                ? 'bg-yellow-accent text-gray-900 shadow-xs'
+                ? 'bg-[#000000] text-white shadow-xs'
                 : 'text-gray-500 hover:text-gray-950'
             }`}
           >
@@ -175,9 +175,9 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
               setSelectedSector('all');
               setSelectedIndustry('all');
             }}
-            className={`px-5 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+            className={`px-5 py-2 text-xs font-bold rounded-none transition-all cursor-pointer ${
               interestFilter === 'all'
-                ? 'bg-yellow-accent text-gray-900 shadow-xs'
+                ? 'bg-[#000000] text-white shadow-xs'
                 : 'text-gray-500 hover:text-gray-950'
             }`}
           >
@@ -187,7 +187,7 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
       </div>
 
       {/* 1. 필터 셀렉트 박스 영역 */}
-      <div className="bg-red-accent/3 p-6 rounded-3xl border border-yellow-accent backdrop-blur-md shadow-sm">
+      <div className="bg-[#F1F1F1] p-6 rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white backdrop-blur-md shadow-sm">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* 대분류 드롭다운 */}
           <div className="flex flex-col space-y-2">
@@ -199,7 +199,7 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
                 id="sector-select"
                 value={selectedSector}
                 onChange={handleSectorChange}
-                className="w-full appearance-none bg-white text-gray-800 border border-yellow-accent rounded-2xl py-3.5 px-4 pr-10 text-sm font-semibold focus:outline-hidden focus:ring-2 focus:ring-yellow-accent/50 cursor-pointer transition-all shadow-xs"
+                className="w-full appearance-none bg-white text-gray-800 border border-[#000000] rounded-none py-3.5 px-4 pr-10 text-sm font-semibold focus:outline-hidden focus:ring-1 focus:ring-black cursor-pointer transition-all shadow-xs"
               >
                 <option value="all">전체 대분류</option>
                 {sectors.map((sector) => (
@@ -222,7 +222,7 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
                 id="industry-select"
                 value={selectedIndustry}
                 onChange={(e) => setSelectedIndustry(e.target.value)}
-                className="w-full appearance-none bg-white text-gray-800 border border-yellow-accent rounded-2xl py-3.5 px-4 pr-10 text-sm font-semibold focus:outline-hidden focus:ring-2 focus:ring-yellow-accent/50 cursor-pointer transition-all shadow-xs"
+                className="w-full appearance-none bg-white text-gray-800 border border-[#000000] rounded-none py-3.5 px-4 pr-10 text-sm font-semibold focus:outline-hidden focus:ring-1 focus:ring-black cursor-pointer transition-all shadow-xs"
               >
                 <option value="all">전체 중분류</option>
                 {industries.map((industry) => (
@@ -252,61 +252,61 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
         </div>
 
         {sortedStocks.length > 0 ? (
-          <div className="overflow-x-auto rounded-3xl border border-yellow-accent bg-white shadow-lg shadow-gray-100/50">
+          <div className="overflow-x-auto rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white bg-[#F1F1F1] shadow-lg">
             <table className="w-full text-left border-collapse text-sm">
               <thead>
-                <tr className="border-b border-yellow-accent bg-yellow-accent/10 text-gray-700 font-bold text-xs uppercase tracking-wider select-none">
+                <tr className="bg-[#000000] text-white font-bold text-xs uppercase tracking-wider select-none divide-x divide-white">
                   <th
                     onClick={() => handleSort('ticker')}
-                    className="py-4.5 px-5 sm:px-8 cursor-pointer hover:bg-yellow-accent/20 transition-colors"
+                    className="py-4.5 px-5 sm:px-8 cursor-pointer hover:bg-gray-900 transition-colors"
                   >
                     티커 {renderSortIcon('ticker')}
                   </th>
                   <th
                     onClick={() => handleSort('name')}
-                    className="py-4.5 px-4 cursor-pointer hover:bg-yellow-accent/20 transition-colors"
+                    className="py-4.5 px-4 cursor-pointer hover:bg-gray-900 transition-colors"
                   >
                     종목명 {renderSortIcon('name')}
                   </th>
                   <th
                     onClick={() => handleSort('close')}
-                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-yellow-accent/20 transition-colors"
+                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
                   >
                     현재가 {renderSortIcon('close')}
                   </th>
                   <th
                     onClick={() => handleSort('yield_1w')}
-                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-yellow-accent/20 transition-colors"
+                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
                   >
                     1주 {renderSortIcon('yield_1w')}
                   </th>
                   <th
                     onClick={() => handleSort('yield_5w')}
-                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-yellow-accent/20 transition-colors"
+                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
                   >
                     5주 {renderSortIcon('yield_5w')}
                   </th>
                   <th
                     onClick={() => handleSort('yield_20w')}
-                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-yellow-accent/20 transition-colors"
+                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
                   >
                     20주 {renderSortIcon('yield_20w')}
                   </th>
                   <th
                     onClick={() => handleSort('yield_60w')}
-                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-yellow-accent/20 transition-colors"
+                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
                   >
                     60주 {renderSortIcon('yield_60w')}
                   </th>
                   <th
                     onClick={() => handleSort('yield_120w')}
-                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-yellow-accent/20 transition-colors"
+                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
                   >
                     120주 {renderSortIcon('yield_120w')}
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-yellow-accent/40 text-xs sm:text-sm text-gray-800">
+              <tbody className="divide-y divide-[#000000] text-xs sm:text-sm text-gray-800">
                 {sortedStocks.map((stock) => {
                   const y1 = getYieldStyle(stock.yield_1w);
                   const y5 = getYieldStyle(stock.yield_5w);
@@ -318,7 +318,7 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
                     <tr
                       key={stock.ticker}
                       onClick={() => handleRowClick(stock.ticker)}
-                      className="hover:bg-yellow-accent/5 transition-colors cursor-pointer group"
+                      className="hover:bg-black/5 transition-colors cursor-pointer group divide-x divide-white"
                     >
                       <td className="py-4.5 px-5 sm:px-8 font-mono font-bold text-[#000000] group-hover:text-gray-700 transition-colors">
                         {stock.ticker}
@@ -356,7 +356,7 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
             </table>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 bg-red-accent/2 border border-red-accent/15 rounded-3xl text-center">
+          <div className="flex flex-col items-center justify-center py-20 bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none text-center">
             <span className="text-sm text-gray-400 font-semibold">
               필터에 해당하는 주식 종목이 존재하지 않습니다.
             </span>

@@ -131,17 +131,17 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value' }: Base
   const guideLines = minVal >= 0 ? [absMax * 0.75, absMax * 0.35, 0] : [absMax * 0.7, 0, -absMax * 0.7];
 
   return (
-    <div className="flex flex-col p-4 rounded-xl bg-foreground/3 border border-foreground/5 backdrop-blur-sm">
+    <div className="flex flex-col p-4 rounded-none bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-sm">
       {/* 차트 헤더 툴팁 */}
       <div className="flex justify-between items-center mb-4 h-6 px-1">
-        <span className="text-[10px] text-foreground/40">세로막대형 추이</span>
+        <span className="text-[10px] text-[#000000]/60">세로막대형 추이</span>
         <AnimatePresence>
           {hoveredItem && (
             <motion.div
               initial={{ opacity: 0, y: 2 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="text-xs text-foreground/90 bg-foreground/5 px-2 py-0.5 rounded border border-foreground/10 flex gap-3 font-mono"
+              className="text-xs text-[#000000]/90 bg-black/5 px-2 py-0.5 rounded-none border border-black/10 flex gap-3 font-mono"
             >
               <span className="text-yellow-accent font-bold">{formatLabel(hoveredItem)}</span>
               <span>수치: <strong style={{ color: theme.secondary }}>{hoveredItem.displayVal.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 2 })}</strong></span>
@@ -189,8 +189,7 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value' }: Base
             const barY = isPositive ? y : zeroY;
 
             const isHovered = hoveredIdx === idx;
-            // 플러스인 경우 primary, 마이너스인 경우 테마2/레드 계열로 매핑
-            const fill = isPositive ? theme.primary : '#dc2626';
+            const fill = isPositive ? '#007C1F' : '#D60016';
 
             return (
               <g key={idx}>
@@ -214,8 +213,8 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value' }: Base
                     x={x}
                     y={height - 8}
                     textAnchor="middle"
-                    fill="rgba(255,255,255,0.3)"
-                    className="text-[9px] font-medium font-mono select-none"
+                    fill="rgba(0,0,0,0.7)"
+                    className="text-[10px] font-bold font-mono select-none"
                   >
                     {formatLabel(d)}
                   </text>
@@ -323,17 +322,17 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value' }: Bas
   const guideLines = [maxVal - (maxVal - minVal) * 0.15, minVal + (maxVal - minVal) * 0.5, minVal + (maxVal - minVal) * 0.15];
 
   return (
-    <div className="flex flex-col p-4 rounded-xl bg-foreground/3 border border-foreground/5 backdrop-blur-sm">
+    <div className="flex flex-col p-4 rounded-none bg-[#F1F1F1] border-t-[#000000] border-b-[#000000] border-l-white border-r-white border shadow-sm">
       {/* 차트 헤더 툴팁 */}
       <div className="flex justify-between items-center mb-4 h-6 px-1">
-        <span className="text-[10px] text-foreground/40">선형 시계열 추이</span>
+        <span className="text-[10px] text-[#000000]/60">선형 시계열 추이</span>
         <AnimatePresence>
           {hoveredItem && (
             <motion.div
               initial={{ opacity: 0, y: 2 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="text-xs text-foreground/90 bg-foreground/5 px-2 py-0.5 rounded border border-foreground/10 flex gap-3 font-mono"
+              className="text-xs text-[#000000]/90 bg-black/5 px-2 py-0.5 rounded-none border border-black/10 flex gap-3 font-mono"
             >
               <span className="text-yellow-accent font-bold">{formatLabel(hoveredItem)}</span>
               <span>수치: <strong style={{ color: theme.secondary }}>{hoveredItem.displayVal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></span>
@@ -363,8 +362,8 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value' }: Bas
                   y={y + 3}
                   textAnchor="end"
                   fill="currentColor"
-                  opacity={0.5}
-                  className="text-[9px] font-semibold font-mono"
+                  opacity={0.7}
+                  className="text-[10px] font-bold font-mono"
                 >
                   {val.toLocaleString(undefined, { maximumFractionDigits: 1 })}
                 </text>
@@ -373,13 +372,13 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value' }: Bas
           })}
 
           {/* 선 밑 영역 채우기 */}
-          <path d={areaD} fill={theme.area} className="pointer-events-none" />
+          <path d={areaD} fill="rgba(0,0,0,0.08)" className="pointer-events-none" />
 
           {/* 선 그리기 */}
           <path
             d={pathD}
             fill="none"
-            stroke={theme.secondary}
+            stroke="#000000"
             strokeWidth={2.5}
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -393,7 +392,7 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value' }: Bas
               y1={paddingTop}
               x2={getX(hoveredIdx)}
               y2={height - paddingBottom}
-              stroke="rgba(255, 255, 255, 0.25)"
+              stroke="rgba(0, 0, 0, 0.25)"
               strokeWidth={1}
               strokeDasharray="3 3"
               className="pointer-events-none"
@@ -406,10 +405,10 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value' }: Bas
               cx={getX(hoveredIdx)}
               cy={getY(hoveredItem.displayVal)}
               r={5}
-              fill={theme.secondary}
-              stroke="#020204"
+              fill="#000000"
+              stroke="#FFFFFF"
               strokeWidth={2}
-              style={{ filter: `drop-shadow(0 0 4px ${theme.secondary})` }}
+              style={{ filter: 'drop-shadow(0 0 4px rgba(0,0,0,0.3))' }}
               className="pointer-events-none"
             />
           )}
@@ -426,8 +425,8 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value' }: Bas
                     x={x}
                     y={height - 8}
                     textAnchor="middle"
-                    fill="rgba(255,255,255,0.3)"
-                    className="text-[9px] font-medium font-mono select-none"
+                    fill="rgba(0,0,0,0.7)"
+                    className="text-[10px] font-bold font-mono select-none"
                   >
                     {formatLabel(d)}
                   </text>
@@ -528,22 +527,22 @@ export function MacroCandleChart({ data, themeIndex = 0 }: BaseChartProps) {
   const guideLines = [maxVal - (maxVal - minVal) * 0.15, minVal + (maxVal - minVal) * 0.5, minVal + (maxVal - minVal) * 0.15];
 
   return (
-    <div className="flex flex-col p-4 rounded-xl bg-foreground/3 border border-foreground/5 backdrop-blur-sm">
+    <div className="flex flex-col p-4 rounded-none bg-[#F1F1F1] border-t-[#000000] border-b-[#000000] border-l-white border-r-white border shadow-sm">
       {/* 차트 헤더 툴팁 */}
       <div className="flex justify-between items-center mb-4 h-6 px-1">
-        <span className="text-[10px] text-foreground/40">주식/선물 캔들차트 추이</span>
+        <span className="text-[10px] text-[#000000]/60">주식/선물 캔들차트 추이</span>
         <AnimatePresence>
           {hoveredItem && (
             <motion.div
               initial={{ opacity: 0, y: 2 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="text-[11px] text-foreground/95 bg-foreground/5 px-2 py-0.5 rounded border border-foreground/10 flex flex-wrap gap-x-2 gap-y-0.5 font-mono"
+              className="text-[11px] text-[#000000]/95 bg-black/5 px-2 py-0.5 rounded-none border border-black/10 flex flex-wrap gap-x-2 gap-y-0.5 font-mono"
             >
               <span className="text-yellow-accent font-bold shrink-0">{hoveredItem.date}</span>
-              <span className="shrink-0">시: <strong>{hoveredItem.open.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></span>
-              <span className="shrink-0">고: <strong className="text-coral">{hoveredItem.high.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></span>
-              <span className="shrink-0">저: <strong className="text-sky-primary">{hoveredItem.low.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></span>
+              <span>시: <strong>{hoveredItem.open.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></span>
+              <span className="shrink-0">고: <strong className="text-[#D60016]">{hoveredItem.high.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></span>
+              <span className="shrink-0">저: <strong className="text-[#007C1F]">{hoveredItem.low.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></span>
               <span className="shrink-0">종: <strong>{hoveredItem.close.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></span>
             </motion.div>
           )}
@@ -571,8 +570,8 @@ export function MacroCandleChart({ data, themeIndex = 0 }: BaseChartProps) {
                   y={y + 3}
                   textAnchor="end"
                   fill="currentColor"
-                  opacity={0.5}
-                  className="text-[9px] font-semibold font-mono"
+                  opacity={0.7}
+                  className="text-[10px] font-bold font-mono"
                 >
                   {val.toLocaleString(undefined, { maximumFractionDigits: 0 })}
                 </text>
@@ -588,8 +587,7 @@ export function MacroCandleChart({ data, themeIndex = 0 }: BaseChartProps) {
             const bodyHeight = Math.max(1, bodyBottom - bodyTop);
 
             const x = getX(idx);
-            // 상승: 초록(#3AAD67), 하락: dc2626(레드)
-            const color = isBullish ? '#3AAD67' : '#dc2626';
+            const color = isBullish ? '#007C1F' : '#D60016';
 
             const isHovered = hoveredIdx === idx;
 
@@ -626,7 +624,7 @@ export function MacroCandleChart({ data, themeIndex = 0 }: BaseChartProps) {
                     x={x}
                     y={height - 8}
                     textAnchor="middle"
-                    fill="rgba(255,255,255,0.3)"
+                    fill="rgba(0,0,0,0.5)"
                     className="text-[9px] font-medium font-mono select-none"
                   >
                     {d.date.slice(2, 7)}

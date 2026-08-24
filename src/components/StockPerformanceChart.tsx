@@ -53,7 +53,7 @@ export default function StockPerformanceChart({
   };
 
   return (
-    <div className="flex flex-col h-full p-6 rounded-2xl bg-white/5 border border-yellow-accent backdrop-blur-md shadow-xl">
+    <div className="flex flex-col h-full p-6 rounded-none bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl">
       <div className="flex items-center justify-between border-b border-black/10 pb-4 mb-6">
         <div>
           <h4 className="text-lg font-bold text-[#000000] tracking-tight">기간별 수익률 성과</h4>
@@ -162,15 +162,15 @@ export default function StockPerformanceChart({
                     y={barY}
                     width={barWidth}
                     height={barHeight}
-                    fill={isPositive ? '#FFD735' : '#3AAD67'}
-                    rx={4}
+                    fill={isPositive ? '#007C1F' : '#D60016'}
+                    rx={0}
                     initial={{ scaleY: 0, originY: isPositive ? 1 : 0 }}
                     animate={{ scaleY: 1 }}
                     transition={{ type: 'spring', stiffness: 80, delay: idx * 0.05 }}
                     style={{
                       opacity: hoveredIdx !== null && !isHovered ? 0.6 : 1,
                       filter: isHovered
-                        ? `drop-shadow(0 0 6px ${isPositive ? '#FFD735' : '#3AAD67'})`
+                        ? `drop-shadow(0 0 6px ${isPositive ? '#007C1F' : '#D60016'})`
                         : 'none',
                     }}
                   />
@@ -180,7 +180,7 @@ export default function StockPerformanceChart({
                     x={barX + barWidth / 2}
                     y={isPositive ? barY - 8 : barY + barHeight + 15}
                     textAnchor="middle"
-                    fill={isHovered ? (isPositive ? '#FFD735' : '#3AAD67') : '#000000'}
+                    fill={isHovered ? (isPositive ? '#007C1F' : '#D60016') : '#000000'}
                     className="text-[10px] font-extrabold font-mono"
                     style={{
                       opacity: hoveredIdx !== null && !isHovered ? 0.5 : 1,

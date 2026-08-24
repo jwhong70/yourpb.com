@@ -1,9 +1,13 @@
 import React from 'react';
 import { createClient } from '@/lib/supabase-server';
-import EtfSearchClient from '../../../components/EtfSearchClient';
+import EtfSearchClient from '@/components/EtfSearchClient';
+import { getSessionUser } from '@/app/actions/auth';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 export default async function EtfPage() {
   const supabase = await createClient();
+  const user = await getSessionUser();
 
   // 1. etf_list 조회
   const { data: etfs, error: etfError } = await supabase
@@ -65,15 +69,21 @@ export default async function EtfPage() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 mt-10">
-      <section className="space-y-6">
-        <div className="flex items-center">
-          <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl select-none">
-            ETF 정보 조회
-          </h2>
+    <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
+      <Header initialUser={user} />
+      <main className="grow pt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 mt-10">
+          <section className="space-y-6">
+            <div className="flex items-center">
+              <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl select-none">
+                ETF 정보 조회
+              </h2>
+            </div>
+            <EtfSearchClient initialEtfs={mergedEtfs} />
+          </section>
         </div>
-        <EtfSearchClient initialEtfs={mergedEtfs} />
-      </section>
+      </main>
+      <Footer />
     </div>
   );
 }

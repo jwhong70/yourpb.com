@@ -89,7 +89,7 @@ export default function Filter({
   return (
     <div className="space-y-8">
       {/* 필터 컨트롤 영역 */}
-      <div className="bg-red-accent/3 p-6 rounded-3xl border border-red-accent/25 space-y-6">
+      <div className="bg-[#F1F1F1] p-6 rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white space-y-6">
         
         {/* 1단계: 레버리지 토글 */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -97,20 +97,20 @@ export default function Filter({
           <div className="flex gap-2">
             <button
               onClick={() => { setLeverageFilter('exclude'); setSelectedCategory('all'); setSelectedReport('all'); }}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer border ${
+              className={`px-4 py-1.5 rounded-none text-xs font-bold transition-all cursor-pointer border ${
                 leverageFilter === 'exclude'
-                  ? 'bg-red-accent text-black border-red-500/20 shadow-md'
-                  : 'bg-white text-gray-800 border-red-accent/20 hover:bg-red-accent/5 hover:border-red-accent/35 shadow-sm'
+                  ? 'bg-[#000000] text-white border-[#000000] shadow-md'
+                  : 'bg-white text-gray-800 border-black/20 hover:bg-black/5 shadow-sm'
               }`}
             >
               레버리지 제외 (1X)
             </button>
             <button
               onClick={() => { setLeverageFilter('include'); setSelectedCategory('all'); setSelectedReport('all'); }}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer border ${
+              className={`px-4 py-1.5 rounded-none text-xs font-bold transition-all cursor-pointer border ${
                 leverageFilter === 'include'
-                  ? 'bg-red-accent text-black border-red-500/20 shadow-md'
-                  : 'bg-white text-gray-800 border-red-accent/20 hover:bg-red-accent/5 hover:border-red-accent/35 shadow-sm'
+                  ? 'bg-[#000000] text-white border-[#000000] shadow-md'
+                  : 'bg-white text-gray-800 border-black/20 hover:bg-black/5 shadow-sm'
               }`}
             >
               레버리지 포함 (Leveraged/Inverse)
@@ -119,15 +119,15 @@ export default function Filter({
         </div>
 
         {/* 2단계: 대분류 */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 border-t border-gray-200/60 pt-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 border-t border-[#000000] pt-4">
           <span className="text-xs text-[#000000] font-bold uppercase tracking-wider w-20">대분류</span>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => handleCategoryClick('all')}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer border ${
+              className={`px-4 py-1.5 rounded-none text-xs font-bold transition-all cursor-pointer border ${
                 selectedCategory === 'all'
-                  ? 'bg-red-accent text-black border-red-500/20 shadow-md'
-                  : 'bg-white text-gray-800 border-red-accent/20 hover:bg-red-accent/5 hover:border-red-accent/35 shadow-sm'
+                  ? 'bg-[#000000] text-white border-[#000000] shadow-md'
+                  : 'bg-white text-gray-800 border-black/20 hover:bg-black/5 shadow-sm'
               }`}
             >
               전체
@@ -136,10 +136,10 @@ export default function Filter({
               <button
                 key={category}
                 onClick={() => handleCategoryClick(category)}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer border ${
+                className={`px-4 py-1.5 rounded-none text-xs font-bold transition-all cursor-pointer border ${
                   selectedCategory === category
-                    ? 'bg-red-accent text-black border-red-500/20 shadow-md'
-                    : 'bg-white text-gray-800 border-red-accent/20 hover:bg-red-accent/5 hover:border-red-accent/35 shadow-sm'
+                    ? 'bg-[#000000] text-white border-[#000000] shadow-md'
+                    : 'bg-white text-gray-800 border-black/20 hover:bg-black/5 shadow-sm'
                 }`}
               >
                 {category}
@@ -149,15 +149,15 @@ export default function Filter({
         </div>
 
         {/* 3단계: 중분류 */}
-        <div className="flex flex-col sm:flex-row sm:items-start gap-3 border-t border-gray-200/60 pt-4">
+        <div className="flex flex-col sm:flex-row sm:items-start gap-3 border-t border-[#000000] pt-4">
           <span className="text-xs text-[#000000] font-bold uppercase tracking-wider w-20 mt-1.5">중분류</span>
           <div className="flex flex-wrap gap-2 max-w-5xl">
             <button
               onClick={() => setSelectedReport('all')}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer border ${
+              className={`px-4 py-1.5 rounded-none text-xs font-bold transition-all cursor-pointer border ${
                 selectedReport === 'all'
-                  ? 'bg-red-accent text-black border-red-500/20 shadow-md'
-                  : 'bg-white text-gray-800 border-red-accent/20 hover:bg-red-accent/5 hover:border-red-accent/35 shadow-sm'
+                  ? 'bg-[#000000] text-white border-[#000000] shadow-md'
+                  : 'bg-white text-gray-800 border-black/20 hover:bg-black/5 shadow-sm'
               }`}
             >
               전체
@@ -166,10 +166,10 @@ export default function Filter({
               <button
                 key={report}
                 onClick={() => setSelectedReport(report)}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer border ${
+                className={`px-4 py-1.5 rounded-none text-xs font-bold transition-all cursor-pointer border ${
                   selectedReport === report
-                    ? 'bg-red-accent text-black border-red-500/20 shadow-md'
-                    : 'bg-white text-gray-800 border-red-accent/20 hover:bg-red-accent/5 hover:border-red-accent/35 shadow-sm'
+                    ? 'bg-[#000000] text-white border-[#000000] shadow-md'
+                    : 'bg-white text-gray-800 border-black/20 hover:bg-black/5 shadow-sm'
                 }`}
               >
                 {report}
@@ -203,7 +203,7 @@ export default function Filter({
                     key={etf.ticker}
                     whileHover={{ scale: 1.05 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                    className="group flex flex-col bg-white border border-red-accent/18 rounded-2xl overflow-hidden hover:border-red-accent/45 hover:shadow-xl transition-all"
+                    className="group flex flex-col bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none hover:shadow-xl transition-all"
                   >
                     <Link href={`/etf/${etf.ticker}`} className="block relative aspect-2/3 w-full overflow-hidden bg-navy/60">
                       {/* poster 상단 테두리 위에 이름 표시 */}
@@ -243,17 +243,17 @@ export default function Filter({
                     </Link>
 
                     {/* 하단 정보 영역 */}
-                    <div className="p-3 flex flex-col justify-between grow gap-2 bg-white">
+                    <div className="p-3 flex flex-col justify-between grow gap-2 bg-[#F1F1F1]">
                       <Link href={`/etf/${etf.ticker}`} className="block group-hover:text-sky-primary transition-colors">
-                        <span className="text-[10px] font-bold text-yellow-accent tracking-wide block mb-0.5">
+                        <span className="text-[10px] font-bold text-[#000000] tracking-wide block mb-0.5">
                           {etf.ticker}
                         </span>
-                        <h3 className="text-xs font-semibold text-gray-900 line-clamp-2 leading-snug">
+                        <h3 className="text-xs font-semibold text-[#000000] line-clamp-2 leading-snug">
                           {etf.name}
                         </h3>
                       </Link>
 
-                      <div className="flex items-center justify-between border-t border-gray-100 pt-2 mt-auto">
+                      <div className="flex items-center justify-between border-t border-[#000000] pt-2 mt-auto">
                         <span className="text-[10px] text-gray-500 font-medium">
                           {etf.category}
                         </span>
@@ -269,7 +269,7 @@ export default function Filter({
               })}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-20 bg-red-accent/2 border border-red-accent/15 rounded-3xl text-center">
+            <div className="flex flex-col items-center justify-center py-20 bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none text-center">
               <span className="text-sm text-gray-400 font-semibold">
                 해당하는 관심 ETF 상품이 존재하지 않습니다.
               </span>

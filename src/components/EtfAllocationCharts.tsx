@@ -136,8 +136,8 @@ function DoughnutChartWidget({ title, data }: DoughnutChartWidgetProps) {
   };
 
   return (
-    <div className="flex flex-col items-center p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-xl transition-all hover:border-white/20">
-      <h3 className="text-lg font-bold text-white mb-6 select-none tracking-tight">
+    <div className="flex flex-col items-center p-6 rounded-none bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl transition-all">
+      <h3 className="text-lg font-bold text-[#000000] mb-6 select-none tracking-tight">
         {title}
       </h3>
 
@@ -181,8 +181,8 @@ function DoughnutChartWidget({ title, data }: DoughnutChartWidgetProps) {
                   key={idx}
                   onMouseEnter={() => setHoveredIdx(idx)}
                   onMouseLeave={() => setHoveredIdx(null)}
-                  className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer ${
-                    isHovered ? 'bg-white/10' : 'hover:bg-white/5'
+                  className={`flex items-center justify-between px-2.5 py-1.5 rounded-none transition-colors cursor-pointer ${
+                    isHovered ? 'bg-black/10' : 'hover:bg-black/5'
                   }`}
                 >
                   <div className="flex items-center gap-2">

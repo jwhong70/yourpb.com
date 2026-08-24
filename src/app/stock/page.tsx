@@ -2,6 +2,8 @@ import React from 'react';
 import { createClient } from '@/lib/supabase-server';
 import { getSessionUser } from '@/app/actions/auth';
 import Filter from '@/app/components/Filter';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 export const metadata = {
   title: '주식 정보 조회 - YOURPB',
@@ -73,15 +75,21 @@ export default async function StockPage() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 mt-10">
-      <section className="space-y-6">
-        <div className="flex items-center">
-          <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl select-none">
-            주식 정보 조회
-          </h2>
+    <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
+      <Header initialUser={user} />
+      <main className="grow pt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 mt-10">
+          <section className="space-y-6">
+            <div className="flex items-center">
+              <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl select-none">
+                주식 정보 조회
+              </h2>
+            </div>
+            <Filter initialStocks={mergedStocks} isPremium={isPremium} />
+          </section>
         </div>
-        <Filter initialStocks={mergedStocks} isPremium={isPremium} />
-      </section>
+      </main>
+      <Footer />
     </div>
   );
 }

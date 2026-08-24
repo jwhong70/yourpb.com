@@ -1,13 +1,17 @@
 import React from 'react';
 import { Mail, Instagram, Briefcase, GraduationCap, Award, User } from 'lucide-react';
 import Link from 'next/link';
+import { getSessionUser } from '@/app/actions/auth';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 export const metadata = {
   title: '당신의 PB, 홍선생 프로필 | YOURPB',
   description: '20년 이상의 금융 포트폴리오 자산관리 전문가, 홍선생의 상세 약력과 전문성을 소개합니다.',
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const user = await getSessionUser();
   const careerHistory = [
     {
       period: '2024.03 ~ 현재',
@@ -62,7 +66,10 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20 space-y-16">
+    <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
+      <Header initialUser={user} />
+      <main className="grow pt-20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16 mt-10">
       
       {/* 1. 프로필 요약 (첫번째 블록) */}
       <section className="bg-white border border-gray-100 rounded-3xl p-8 sm:p-10 shadow-sm relative overflow-hidden">
@@ -193,7 +200,7 @@ export default function AboutPage() {
       </section>
 
       {/* 4. CONTACT US (세번째 블록 - 이메일, 인스타 링크 연동) */}
-      <section className="bg-navy/5 border border-navy/10 rounded-3xl p-8 sm:p-10 space-y-8">
+      <section className="bg-[#F1F1F1] border border-gray-200 rounded-3xl p-8 sm:p-10 space-y-8">
         <div className="text-center space-y-2">
           <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">
             CONTACT US
@@ -241,6 +248,9 @@ export default function AboutPage() {
         </div>
       </section>
 
+        </div>
+      </main>
+      <Footer />
     </div>
   );
 }

@@ -63,7 +63,7 @@ export default async function Home() {
         </div>
 
         {/* 데스크톱: 가로 2열 / 모바일: 상하 1열 */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-red-accent/3 p-6 sm:p-10 rounded-3xl border border-red-accent/25 shadow-2xl">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#F1F1F1] p-6 sm:p-10 rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-2xl">
 
           {/* 원형 그래프 영역 */}
           <div className="lg:col-span-5 flex flex-col items-center justify-center p-4">
@@ -104,6 +104,9 @@ export default async function Home() {
                   });
                 })()}
 
+                {/* 파이 그래프 바깥쪽 테두리선 */}
+                <circle cx="180" cy="180" r="160" stroke="#000000" strokeWidth="2" fill="none" />
+
                 {/* 파이 조각 내부의 자산유형 + 비중 텍스트 렌더링 (가로쓰기 유지) */}
                 {(() => {
                   let accumulatedPercent = 0;
@@ -141,42 +144,41 @@ export default async function Home() {
           </div>
 
           {/* 비중 테이블 영역 */}
-          <div className="lg:col-span-7 overflow-hidden rounded-2xl border border-yellow-accent bg-white shadow-sm">
+          <div className="lg:col-span-7 overflow-hidden rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white bg-[#F1F1F1] shadow-sm">
             <table className="w-full text-left border-collapse text-sm">
               <thead>
-                <tr className="border-b border-yellow-accent/50 bg-yellow-accent/10 text-gray-900 font-semibold text-sm sm:text-base">
-                  <th className="py-3.5 px-4 sm:px-6">자산유형</th>
-                  <th className="py-3.5 px-4 text-center">비중</th>
-                  <th className="py-3.5 px-4">티커</th>
-                  <th className="py-3.5 px-4 hidden sm:table-cell">자산 세부 설명</th>
+                <tr className="bg-[#000000] text-white font-bold text-sm sm:text-base divide-x divide-white">
+                  <th className="py-3.5 px-4 sm:px-6 text-white">자산유형</th>
+                  <th className="py-3.5 px-4 text-center text-white">비중</th>
+                  <th className="py-3.5 px-4 text-white">티커</th>
+                  <th className="py-3.5 px-4 hidden sm:table-cell text-white">자산 세부 설명</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-yellow-accent/20 text-xs sm:text-sm">
+              <tbody className="divide-y divide-[#000000] text-xs sm:text-sm text-[#000000]">
                 {portfolioData.map((row) => {
                   const isZero = row.pct === 0;
                   return (
                     <tr
                       key={row.type}
-                      className={`transition-colors hover:bg-yellow-accent/5 border-b border-yellow-accent/10 ${isZero ? 'opacity-30' : ''
-                        }`}
+                      className={`transition-colors hover:bg-black/5 ${isZero ? 'opacity-30' : ''}`}
                     >
-                      <td className="py-4 px-4 sm:px-6 font-bold text-gray-900 flex items-center gap-2">
+                      <td className="py-4 px-4 sm:px-6 font-bold text-[#000000] flex items-center gap-2 border-r border-r-white">
                         <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: row.color }} />
                         <span>{row.type}</span>
                       </td>
-                      <td className="py-4 px-4 text-center text-[#000000] font-extrabold font-mono">
+                      <td className="py-4 px-4 text-center text-[#000000] font-extrabold font-mono border-r border-r-white">
                         {row.pct}%
                       </td>
-                      <td className="py-4 px-4 font-semibold text-gray-800 hidden sm:table-cell">
+                      <td className="py-4 px-4 font-semibold text-[#000000] border-r border-r-white">
                         {row.ticker ? (
-                          <Link href={`/etf/${row.ticker}`} className="hover:underline text-sky-600 hover:text-sky-700">
+                          <Link href={`/etf/${row.ticker}`} className="hover:underline text-[#000000] underline">
                             {row.ticker}
                           </Link>
                         ) : (
-                          <span className="text-gray-300">-</span>
+                          <span className="text-[#000000]/30">-</span>
                         )}
                       </td>
-                      <td className="py-4 px-4 text-gray-600 truncate max-w-50 hidden sm:table-cell">
+                      <td className="py-4 px-4 text-[#000000] truncate max-w-50 hidden sm:table-cell">
                         {row.name}
                       </td>
                     </tr>

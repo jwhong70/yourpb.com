@@ -54,7 +54,7 @@ export default function EtfPerformanceChart({
   };
 
   return (
-    <div className="flex flex-col p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-xl">
+    <div className="flex flex-col p-6 rounded-none bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl">
       <div className="flex items-center justify-between border-b border-black/10 pb-4 mb-6">
         <div>
           <h4 className="text-lg font-bold text-[#000000] tracking-tight">수익률 성과 지표</h4>
@@ -131,8 +131,8 @@ export default function EtfPerformanceChart({
               const barY = val >= 0 ? targetY : zeroY;
 
               const isPositive = val >= 0;
-              const fill = isPositive ? '#FFD735' : '#3AAD67';
-              const hoverColor = isPositive ? '#FFD735' : '#3AAD67';
+              const fill = isPositive ? '#007C1F' : '#D60016';
+              const hoverColor = isPositive ? '#007C1F' : '#D60016';
 
               const isHovered = hoveredIdx === idx;
 
@@ -145,7 +145,7 @@ export default function EtfPerformanceChart({
                     width={barWidth}
                     height={barHeight || 1} // 높이가 0이 되는 것 방지
                     fill={fill}
-                    rx={4}
+                    rx={0}
                     onMouseEnter={() => setHoveredIdx(idx)}
                     onMouseLeave={() => setHoveredIdx(null)}
                     className="transition-all duration-300 ease-out"
@@ -186,7 +186,7 @@ export default function EtfPerformanceChart({
 
           {/* 호버 상세 툴팁 오버레이 */}
           {hoveredIdx !== null && items[hoveredIdx].value !== null && (
-            <div className="absolute top-20 bg-white/95 border border-black/15 rounded-2xl py-2.5 px-4 shadow-xl text-center backdrop-blur-md max-w-xs animate-in fade-in zoom-in duration-200">
+            <div className="absolute top-20 bg-white/95 border border-black/15 rounded-none py-2.5 px-4 shadow-xl text-center backdrop-blur-md max-w-xs animate-in fade-in zoom-in duration-200">
               <span className="text-[10px] font-semibold text-black/50 block mb-0.5">
                 {items[hoveredIdx].label}
               </span>

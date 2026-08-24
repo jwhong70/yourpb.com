@@ -121,8 +121,8 @@ export default function Header({ initialUser }: HeaderProps) {
                     {user.name}
                   </span>
                   {user.membership_status === 'premium' ? (
-                    <span className="flex items-center gap-1 text-xs font-bold text-white bg-gold border border-gold/40 px-3 py-1 rounded-full animate-badge-glow select-none">
-                      <Award className="w-4 h-4 text-white" />
+                    <span className="flex items-center gap-1 text-xs font-bold text-black bg-yellow-accent border border-yellow-accent/40 px-3 py-1 rounded-full animate-badge-glow select-none">
+                      <Award className="w-4 h-4 text-black" />
                       Premium
                     </span>
                   ) : (
@@ -204,8 +204,8 @@ export default function Header({ initialUser }: HeaderProps) {
                       {user.name}
                     </span>
                     {user.membership_status === 'premium' ? (
-                      <span className="flex items-center gap-1 text-sm font-bold text-white bg-gold border border-gold/40 px-3 py-1 rounded-full animate-badge-glow">
-                        <Award className="w-3.5 h-3.5 text-white" />
+                      <span className="flex items-center gap-1 text-sm font-bold text-black bg-yellow-accent border border-yellow-accent/40 px-3 py-1 rounded-full animate-badge-glow">
+                        <Award className="w-3.5 h-3.5 text-black" />
                         Premium
                       </span>
                     ) : (

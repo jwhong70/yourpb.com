@@ -105,7 +105,7 @@ export default function StockCandleChart({ prices }: StockCandleChartProps) {
   }, [maxPrice, minPrice]);
 
   return (
-    <div className="flex flex-col h-full p-6 rounded-2xl bg-white/5 border border-yellow-accent backdrop-blur-md shadow-xl">
+    <div className="flex flex-col h-full p-6 rounded-none bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl">
       {/* 최상단: 현재 정보 및 툴팁 */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-black/10 pb-4 mb-6">
         <div>
@@ -116,7 +116,7 @@ export default function StockCandleChart({ prices }: StockCandleChartProps) {
         {/* 실시간 툴팁 */}
         <div className="h-10 flex items-center">
           {hoveredItem ? (
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#000000] bg-black/5 px-3 py-1.5 rounded-xl border border-black/10">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#000000] bg-black/5 px-3 py-1.5 rounded-none border border-black/10">
               <span className="font-bold text-[#000000] shrink-0">{hoveredItem.date}</span>
               <span className="shrink-0">시: <strong className="text-[#000000]">{formatPrice(hoveredItem.open)}</strong></span>
               <span className="shrink-0">고: <strong className="text-[#000000]">{formatPrice(hoveredItem.high)}</strong></span>
@@ -180,7 +180,7 @@ export default function StockCandleChart({ prices }: StockCandleChartProps) {
               const bodyHeight = Math.max(1, bodyBottom - bodyTop);
 
               const x = getX(idx);
-              const color = isBullish ? '#000000' : '#dc2626'; // 상승: 검정(#000000), 하락: #dc2626
+              const color = isBullish ? '#007C1F' : '#D60016'; // 상승: #007C1F, 하락: #D60016
               
               const isHovered = hoveredIdx === idx;
 

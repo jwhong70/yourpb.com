@@ -10,6 +10,8 @@ import {
 
 import { createClient } from '@/lib/supabase-server';
 import { getSessionUser } from '@/app/actions/auth';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 import PremiumPaywall from '@/components/PremiumPaywall';
 import StockCandleChart from '@/components/StockCandleChart';
@@ -113,42 +115,45 @@ export default async function StockDetailPage({ params }: PageProps) {
   };
 
   return (
-    <div className="min-h-screen pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
-      {/* 상단 네비게이션 및 타이틀 */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <Link
-            href="/stock"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-red-accent hover:bg-red-700 active:scale-95 text-white font-bold rounded-xl shadow-md transition-all cursor-pointer group text-base"
-          >
-            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            <span>목록으로 돌아가기</span>
-          </Link>
+    <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
+      <Header initialUser={user} />
+      <main className="grow pt-20">
+        <div className="pt-8 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8 mt-10">
+          {/* 상단 네비게이션 및 타이틀 */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Link
+                href="/stock"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#000000] hover:bg-gray-900 active:scale-95 text-white font-bold rounded-none shadow-md transition-all cursor-pointer group text-base"
+              >
+                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                <span>목록으로 돌아가기</span>
+              </Link>
 
-          {isPremium && (
-            <span className="flex items-center gap-1.5 text-xs font-bold text-white bg-gold border border-gold/40 px-3 py-1 rounded-full shadow-lg shadow-gold/20 select-none">
-              <Award className="w-4 h-4 text-white" />
-              Premium Access
-            </span>
-          )}
-        </div>
+              {isPremium && (
+                <span className="flex items-center gap-1.5 text-xs font-bold text-black bg-yellow-accent border border-yellow-accent/40 px-3 py-1 rounded-full shadow-lg select-none">
+                  <Award className="w-4 h-4 text-black" />
+                  Premium Access
+                </span>
+              )}
+            </div>
 
-        {/* 종목명과 티커 박스 */}
-        <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="px-2.5 py-1 text-xs font-extrabold bg-yellow-accent/20 text-yellow-accent rounded-md uppercase tracking-wider">
-              {stock.listed === 'us' ? 'US Stock' : 'KR Stock'}
-            </span>
-            <span className="px-2.5 py-1 text-xs font-bold bg-gray-100 text-gray-700 rounded-md">
-              현재가: {closePrice !== null ? formatPrice(closePrice) : '-'}
-            </span>
+            {/* 종목명과 티커 박스 */}
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="px-2.5 py-1 text-xs font-extrabold bg-[#000000] text-white rounded-none uppercase tracking-wider">
+                  {stock.listed === 'us' ? 'US Stock' : 'KR Stock'}
+                </span>
+                <span className="px-2.5 py-1 text-xs font-bold bg-[#F1F1F1] text-gray-700 border border-black rounded-none">
+                  현재가: {closePrice !== null ? formatPrice(closePrice) : '-'}
+                </span>
+              </div>
+              <h1 className="text-2xl sm:text-4xl font-black text-gray-900 tracking-tight flex items-baseline gap-2">
+                <span>{stock.name}</span>
+                <span className="text-lg sm:text-2xl font-bold uppercase text-gray-500">({ticker})</span>
+              </h1>
+            </div>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-black text-gray-900 tracking-tight flex items-baseline gap-2">
-            <span>{stock.name}</span>
-            <span className="text-lg sm:text-2xl font-bold uppercase text-gray-500">({ticker})</span>
-          </h1>
-        </div>
-      </div>
 
       {/* 3. PREMIUM CONTENT AREA */}
       <div className="relative">
@@ -169,32 +174,32 @@ export default async function StockDetailPage({ params }: PageProps) {
           <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-8">
             
             {/* 1단: 주식 기초 정보 */}
-            <section className="p-5 rounded-2xl bg-yellow-accent/5 border border-yellow-accent shadow-md flex flex-col justify-between relative overflow-hidden">
+            <section className="p-5 rounded-none bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md flex flex-col justify-between relative overflow-hidden">
               <div className="absolute -right-20 -top-20 w-60 h-60 rounded-full bg-navy/20 blur-[60px] pointer-events-none" />
               <div>
                 <div className="text-gray-500 text-[10px] uppercase tracking-wider mb-2.5">
                   <span>주식 기초 정보 (Basic Info)</span>
                 </div>
                 <div className="space-y-2">
-                  <div className="p-2.5 rounded-xl bg-white border border-yellow-accent/40">
+                  <div className="p-2.5 rounded-none bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white">
                     <span className="text-[9px] text-gray-400 block mb-0.5">회사명(티커)</span>
                     <span className="text-xs font-bold text-gray-900 truncate block">
                       {stock.name} ({stock.ticker})
                     </span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-white border border-yellow-accent/40">
+                  <div className="p-2.5 rounded-none bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white">
                     <span className="text-[9px] text-gray-400 block mb-0.5">대분류 (Sector)</span>
-                    <span className="text-xs font-bold text-[#dc2626] truncate block">
+                    <span className="text-xs font-bold text-[#000000] truncate block">
                       {isPremium ? (stock.sector2 || '-') : '••••'}
                     </span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-white border border-yellow-accent/40">
+                  <div className="p-2.5 rounded-none bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white">
                     <span className="text-[9px] text-gray-400 block mb-0.5">중분류 (Industry)</span>
                     <span className="text-xs font-bold text-gray-900 truncate block">
                       {isPremium ? (stock.industry2 || '-') : '••••'}
                     </span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-white border border-yellow-accent/40">
+                  <div className="p-2.5 rounded-none bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white">
                     <span className="text-[9px] text-gray-400 block mb-0.5">부문 (Divisions)</span>
                     <span className="text-xs font-bold text-gray-900 truncate block whitespace-pre-line">
                       {isPremium ? (stock.divisions || '정보 없음') : '••••'}
@@ -205,7 +210,7 @@ export default async function StockDetailPage({ params }: PageProps) {
             </section>
 
             {/* 2단: 개요 (Description) */}
-            <div className="p-5 rounded-2xl bg-yellow-accent/5 border border-yellow-accent shadow-md flex flex-col justify-between">
+            <div className="p-5 rounded-none bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md flex flex-col justify-between">
               <div>
                 <div className="text-gray-500 text-[10px] uppercase tracking-wider mb-2.5">
                   <span>기업 개요 (Overview)</span>
@@ -239,7 +244,7 @@ export default async function StockDetailPage({ params }: PageProps) {
                 href={reportUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full max-w-md flex items-center justify-center gap-2.5 px-6 py-4.5 bg-red-accent hover:opacity-90 active:scale-95 text-black font-black rounded-2xl shadow-lg transition-all cursor-pointer text-base"
+                className="w-full max-w-md flex items-center justify-center gap-2.5 px-6 py-4.5 bg-[#000000] hover:bg-gray-900 active:scale-95 text-white font-black rounded-none shadow-lg transition-all cursor-pointer text-base"
               >
                 <Download className="w-5 h-5" />
                 <span>기업 분석 리서치 보고서 PDF 다운로드</span>
@@ -247,7 +252,7 @@ export default async function StockDetailPage({ params }: PageProps) {
             ) : (
               <button
                 disabled
-                className="w-full max-w-md flex items-center justify-center gap-2.5 px-6 py-4.5 bg-gray-100 text-gray-400 font-extrabold rounded-2xl cursor-not-allowed text-base border border-gray-200"
+                className="w-full max-w-md flex items-center justify-center gap-2.5 px-6 py-4.5 bg-gray-100 text-gray-400 font-extrabold rounded-none cursor-not-allowed text-base border border-gray-200"
               >
                 <Download className="w-5 h-5" />
                 <span>보고서 다운로드 (구독 회원 전용)</span>
@@ -256,6 +261,9 @@ export default async function StockDetailPage({ params }: PageProps) {
           </div>
         </div>
       </div>
+    </div>
+      </main>
+      <Footer />
     </div>
   );
 }

@@ -36,29 +36,29 @@ function TrafficLight({ value, label }: { value: number | null; label: string })
   if (value === null) {
     return (
       <div className="flex flex-col items-center gap-1">
-        <div className="w-4 h-4 rounded-full bg-white/10 border border-white/15" />
-        <span className="text-[8px] text-white/30 font-bold tracking-tighter">{label}</span>
+        <div className="w-4 h-4 rounded-full bg-black/10 border border-black/15" />
+        <span className="text-[8px] text-[#000000]/30 font-bold tracking-tighter">{label}</span>
       </div>
     );
   }
 
   const isPositive = value === 1;
   const colorBg = isPositive 
-    ? 'bg-gradient-to-br from-[#53D78B] to-[#1E6B39]' 
-    : 'bg-gradient-to-br from-[#FF7A75] to-[#991B1B]';
+    ? 'bg-[#007C1F]' 
+    : 'bg-[#D60016]';
   const shadowGlow = isPositive 
-    ? 'shadow-[0_0_12px_rgba(83,215,139,0.7),inset_0_1px_1px_rgba(255,255,255,0.4)]' 
-    : 'shadow-[0_0_12px_rgba(255,122,117,0.7),inset_0_1px_1px_rgba(255,255,255,0.4)]';
+    ? 'shadow-[0_0_10px_rgba(0,124,31,0.5)]' 
+    : 'shadow-[0_0_10px_rgba(214,0,22,0.5)]';
 
   return (
     <div className="flex flex-col items-center gap-1">
       <div 
-        className={`relative w-4.5 h-4.5 rounded-full ${colorBg} ${shadowGlow} border border-white/15 transition-all duration-500 animate-pulse`} 
+        className={`relative w-4.5 h-4.5 rounded-full ${colorBg} ${shadowGlow} border border-white/10 transition-all duration-500`} 
       >
         {/* 3D 반사광 하이라이트 점 */}
         <div className="absolute top-0.5 left-0.5 w-1.25 h-0.75 rounded-full bg-white/70 filter blur-[0.2px]" />
       </div>
-      <span className={`text-[8px] font-bold tracking-tighter ${isPositive ? 'text-green-accent' : 'text-red-accent'}`}>
+      <span className="text-[8px] font-bold tracking-tighter" style={{ color: isPositive ? '#007C1F' : '#D60016' }}>
         {label}
       </span>
     </div>
@@ -80,30 +80,30 @@ function SignalBadge({ signal }: { signal?: SignalState | null }) {
       .join(' ');
 
     const ratingLower = rating.toLowerCase();
-    let textColor = 'text-white/80';
-    let borderColor = 'border-white/10';
-    let bgColor = 'bg-white/5';
+    let textColor = 'text-[#000000]/80';
+    let borderColor = 'border-[#000000]/10';
+    let bgColor = 'bg-transparent';
 
     if (ratingLower.includes('greed')) {
-      textColor = 'text-green-accent';
-      borderColor = 'border-[#53D78B]/20';
-      bgColor = 'bg-[#53D78B]/5';
+      textColor = 'text-[#007C1F]';
+      borderColor = 'border-[#007C1F]/20';
+      bgColor = 'bg-transparent';
     } else if (ratingLower.includes('fear')) {
-      textColor = 'text-red-accent';
-      borderColor = 'border-[#FF7A75]/20';
-      bgColor = 'bg-[#FF7A75]/5';
+      textColor = 'text-[#D60016]';
+      borderColor = 'border-[#D60016]/20';
+      bgColor = 'bg-transparent';
     } else if (ratingLower.includes('neutral')) {
       textColor = 'text-yellow-accent';
-      borderColor = 'border-white/10';
-      bgColor = 'bg-white/5';
+      borderColor = 'border-[#000000]/10';
+      bgColor = 'bg-transparent';
     }
 
     return (
-      <div className={`flex items-center gap-1.5 border py-0.5 md:py-1 px-2 md:px-3 rounded-lg md:rounded-xl backdrop-blur-md shrink-0 ${borderColor} ${bgColor}`}>
+      <div className={`flex items-center gap-1.5 py-0.5 md:py-1 px-2 md:px-3 rounded-none backdrop-blur-md shrink-0 ${bgColor}`}>
         <span className={`text-[10px] md:text-xs font-bold tracking-tight ${textColor}`}>
           {formattedRating}
         </span>
-        <span className="text-[10px] md:text-xs text-white/50 font-bold font-mono">
+        <span className="text-[10px] md:text-xs text-[#000000]/50 font-bold font-mono">
           ({score})
         </span>
       </div>
@@ -111,7 +111,7 @@ function SignalBadge({ signal }: { signal?: SignalState | null }) {
   }
 
   return (
-    <div className="flex items-center gap-2 md:gap-3.5 bg-black/40 border border-white/5 py-0.5 md:py-1 px-1.5 md:px-2.5 rounded-lg md:rounded-xl backdrop-blur-md shrink-0">
+    <div className="flex items-center gap-2 md:gap-3.5 bg-transparent py-0.5 md:py-1 px-1.5 md:px-2.5 rounded-none backdrop-blur-md shrink-0">
       <TrafficLight value={signal.prev} label="MOM" />
       <TrafficLight value={signal.yoy} label="YOY" />
     </div>
@@ -360,22 +360,16 @@ export default function MacroClientPage({ data }: ClientPageProps) {
             <button
               key={cat.id}
               onClick={() => handleMainClick(cat.id)}
-              className={`flex flex-col justify-between p-3.5 md:p-5 rounded-xl md:rounded-2xl border text-left transition-all duration-300 relative overflow-hidden group ${
+              className={`flex flex-col justify-between p-3.5 md:p-5 rounded-none border border-[#000000] text-left transition-all duration-300 relative overflow-hidden group ${
                 isSelected
-                  ? 'bg-red-accent/15 border-red-accent/45 shadow-[0_4px_24px_rgba(51,255,0,0.18)] scale-[1.02]'
-                  : 'bg-gray-50 border-red-accent/20 hover:bg-red-accent/5 hover:border-red-accent/30 hover:scale-[1.01]'
+                  ? 'bg-[#000000] text-white shadow-2xl scale-[1.02]'
+                  : 'bg-[#F1F1F1] text-[#000000] hover:bg-black/5 hover:scale-[1.01]'
               }`}
             >
-              {/* 은은한 배경 글로우 효과 */}
-              <div 
-                className="absolute -right-16 -top-16 w-36 h-36 rounded-full opacity-10 group-hover:opacity-20 transition-all duration-500 blur-2xl"
-                style={{
-                  backgroundColor: cat.signal?.yoy === 1 ? 'var(--color-green-accent)' : 'var(--color-red-accent)'
-                }}
-              />
-
               <div className="flex justify-between items-start gap-2 w-full">
-                <span className="text-[10px] md:text-xs text-gray-500 font-bold uppercase tracking-widest font-mono">
+                <span className={`text-[10px] md:text-xs font-bold uppercase tracking-widest font-mono ${
+                  isSelected ? 'text-white/60' : 'text-[#000000]/60'
+                }`}>
                   Category 0{cat.id}
                 </span>
                 {/* 대분류 신호등 표시 */}
@@ -383,12 +377,14 @@ export default function MacroClientPage({ data }: ClientPageProps) {
               </div>
 
               <div className="mt-6 md:mt-8 flex items-center justify-between gap-1 w-full">
-                <h3 className="text-sm md:text-lg font-bold text-gray-900 tracking-tight">
+                <h3 className={`text-sm md:text-lg font-bold tracking-tight ${
+                  isSelected ? 'text-white' : 'text-[#000000]'
+                }`}>
                   {cat.title}
                 </h3>
                 <ChevronDown 
-                  className={`w-4 h-4 md:w-5 md:h-5 text-gray-400 transition-transform duration-300 shrink-0 ${
-                    isSelected ? 'transform rotate-180 text-gray-800' : ''
+                  className={`w-4 h-4 md:w-5 md:h-5 transition-transform duration-300 shrink-0 ${
+                    isSelected ? 'transform rotate-180 text-white' : 'text-[#000000]/60'
                   }`} 
                 />
               </div>
@@ -406,21 +402,21 @@ export default function MacroClientPage({ data }: ClientPageProps) {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden bg-red-accent/2 border border-red-accent/18 rounded-3xl p-6 backdrop-blur-md"
+            className="overflow-hidden bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none p-6 shadow-md"
           >
             <div className="flex flex-col gap-4">
               {/* 중분류 목록 출력 */}
               {getSubCategories(activeMain).map((sub) => {
                 const isSubSelected = activeSub === sub.id;
                 return (
-                  <div key={sub.id} className="flex flex-col border border-red-accent/12 rounded-2xl overflow-hidden bg-white shadow-sm">
+                  <div key={sub.id} className="flex flex-col border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none overflow-hidden bg-[#F1F1F1]">
                     <button
                       onClick={() => setActiveSub(isSubSelected ? null : sub.id)}
                       className={`flex justify-between items-center p-4 text-left transition-colors duration-200 ${
-                        isSubSelected ? 'bg-red-accent/8' : 'hover:bg-red-accent/3'
+                        isSubSelected ? 'bg-black/10' : 'hover:bg-black/5'
                       }`}
                     >
-                      <h4 className="text-sm font-bold text-gray-800 tracking-tight flex items-center gap-2">
+                      <h4 className="text-sm font-bold text-[#000000] tracking-tight flex items-center gap-2">
                         {sub.title}
                       </h4>
                       <div className="flex items-center gap-4">
@@ -442,7 +438,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                           animate={{ opacity: 1, height: 'auto' }}
                           exit={{ opacity: 0, height: 0 }}
                           transition={{ duration: 0.25 }}
-                          className="overflow-hidden border-t border-red-accent/12 bg-red-accent/1"
+                          className="overflow-hidden border-t border-[#000000] bg-black/5"
                         >
                           <div className="p-4 flex flex-col gap-3">
                             {getItemsForSub(sub.id).map((item, itemIdx) => {
@@ -456,16 +452,16 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                               return (
                                 <div 
                                   key={chartKey} 
-                                  className="flex flex-col border border-red-accent/12 rounded-xl overflow-hidden transition-all duration-200 bg-white"
+                                  className="flex flex-col border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none overflow-hidden transition-all duration-200 bg-[#F1F1F1]"
                                 >
                                   {/* 소분류 헤더 */}
                                   <button
                                     onClick={() => toggleChart(chartKey)}
                                     className={`flex justify-between items-center px-4 py-3 text-left transition-colors duration-150 ${
-                                      isChartOpen ? 'bg-red-accent/8' : 'hover:bg-red-accent/3'
+                                      isChartOpen ? 'bg-black/10' : 'hover:bg-black/5'
                                     }`}
                                   >
-                                    <span className="text-xs font-semibold text-gray-700 tracking-tight">
+                                    <span className="text-xs font-semibold text-[#000000] tracking-tight">
                                       {item.title}
                                     </span>
                                     <div className="flex items-center gap-4">
@@ -486,11 +482,11 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                         initial={{ opacity: 0, height: 0 }}
                                         animate={{ opacity: 1, height: 'auto' }}
                                         exit={{ opacity: 0, height: 0 }}
-                                        className="overflow-hidden bg-white border-t border-red-accent/12"
+                                        className="overflow-hidden bg-[#F1F1F1] border-t border-[#000000]"
                                       >
                                         <div className="p-4">
                                           {!hasData ? (
-                                            <div className="flex items-center justify-center h-48 rounded-xl bg-red-accent/2 border border-red-accent/10 text-gray-400 text-xs italic">
+                                            <div className="flex items-center justify-center h-48 rounded-none bg-black/5 border border-black/10 text-gray-400 text-xs italic">
                                               데이터 수집 중입니다. (Null)
                                             </div>
                                           ) : (
