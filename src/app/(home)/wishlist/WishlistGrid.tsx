@@ -3,27 +3,23 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { HeartOff, LogIn } from 'lucide-react';
 import WishlistButton from '@/app/components/WishlistButton';
 
-interface ModelETF {
+interface ETF {
   ticker: string;
   name: string;
   category: string;
-  leverage?: string | null;
+  report: string;
+  leverage: string | null;
 }
 
-interface ModelCarouselProps {
-  etfs: ModelETF[];
-  initialWishlistTickers?: string[];
-  isLoggedIn?: boolean;
+interface WishlistGridProps {
+  wishlist: ETF[];
+  isLoggedIn: boolean;
 }
 
-export default function ModelCarousel({
-  etfs,
-  initialWishlistTickers = [],
-  isLoggedIn = false,
-}: ModelCarouselProps) {
-  // 이미지 로드 에러 트래킹 상태
+export default function WishlistGrid({ wishlist, isLoggedIn }: WishlistGridProps) {
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
   const handleImageError = (ticker: string) => {
@@ -43,23 +39,57 @@ export default function ModelCarousel({
     }
   };
 
+  if (!isLoggedIn) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 bg-gray-50 border border-gray-100 rounded-3xl text-center space-y-6 max-w-2xl mx-auto shadow-sm">
+        <div className="w-16 h-16 bg-red-accent/10 rounded-full flex items-center justify-center text-red-accent">
+          <LogIn className="w-8 h-8" />
+        </div>
+        <div className="space-y-2">
+          <h3 className="text-xl font-bold text-gray-900">로그인이 필요한 서비스입니다</h3>
+          <p className="text-sm text-gray-500">찜 목록을 확인하고 관리하려면 로그인해 주세요.</p>
+        </div>
+        <Link
+          href="/login"
+          className="flex items-center gap-2 px-6 py-2.5 bg-red-accent hover:opacity-90 active:scale-95 text-black text-sm font-black rounded-xl shadow-md transition-all"
+        >
+          <span>로그인하러 가기</span>
+        </Link>
+      </div>
+    );
+  }
+
+  if (wishlist.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 bg-gray-50 border border-gray-100 rounded-3xl text-center space-y-4 max-w-2xl mx-auto shadow-sm">
+        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center text-gray-400">
+          <HeartOff className="w-7 h-7" />
+        </div>
+        <div className="space-y-1">
+          <h3 className="text-lg font-bold text-gray-900">찜한 ETF가 없습니다</h3>
+          <p className="text-sm text-gray-500">관심 있는 ETF를 찾아 하트를 눌러보세요!</p>
+        </div>
+        <Link
+          href="/"
+          className="text-xs font-bold text-sky-600 hover:text-sky-700 hover:underline"
+        >
+          ETF 목록 둘러보기 &rarr;
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
-      {/* 타이틀 영역 */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <h2 className="text-xl font-bold tracking-tight text-[#000000] sm:text-2xl select-none">
-            구성 ETF
-          </h2>
-        </div>
+      <div className="flex items-center justify-between px-2">
+        <span className="text-xs text-gray-500 font-semibold">
+          내가 찜한 ETF: <strong className="text-gray-900 text-sm">{wishlist.length}</strong>개 항목
+        </span>
       </div>
 
-      {/* 그리드 영역: 모바일 2열, 태블릿 3열, 데스크탑 5열 (관심 ETF 스타일과 일체감 있는 배치) */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
-        {etfs.map((etf) => {
-          const isWished = initialWishlistTickers.includes(etf.ticker);
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+        {wishlist.map((etf) => {
           const isError = imageErrors[etf.ticker];
-          // 관심 ETF와 동일한 poster-etf 스토리지 URL 사용
           const storageUrl = `https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/poster-etf/${etf.ticker.toUpperCase()}.png`;
 
           return (
@@ -70,9 +100,9 @@ export default function ModelCarousel({
               className="group flex flex-col bg-white border border-red-accent/18 rounded-2xl overflow-hidden hover:border-red-accent/45 hover:shadow-xl transition-all"
             >
               <Link href={`/etf/${etf.ticker}`} className="block relative aspect-2/3 w-full overflow-hidden bg-navy/60">
-                {/* poster 상단 테두리 위에 이름(Ticker) 표시 */}
+                {/* poster 상단 테두리 위에 이름 표시 */}
                 <div className="absolute top-0 left-0 right-0 z-10 px-3 py-1.5 bg-linear-to-b from-black/80 to-transparent">
-                  <span className="text-[10px] font-bold text-silver truncate block uppercase tracking-wider">
+                  <span className="text-[10px] font-bold text-silver truncate block">
                     {etf.ticker}
                   </span>
                 </div>
@@ -88,7 +118,7 @@ export default function ModelCarousel({
                 ) : (
                   /* Fallback 글래스모피즘 플레이스홀더 */
                   <div className={`w-full h-full bg-linear-to-br ${getGradientClass(etf.category)} flex flex-col items-center justify-center p-4 text-center border-b`}>
-                    <span className="text-xl font-extrabold tracking-wider text-white/20 select-none uppercase mb-2">
+                    <span className="text-2xl font-extrabold tracking-wider text-white/20 select-none uppercase mb-2">
                       {etf.category}
                     </span>
                     <span className="text-sm font-bold text-white tracking-wide truncate max-w-full">
@@ -123,7 +153,7 @@ export default function ModelCarousel({
                   </span>
                   <WishlistButton
                     ticker={etf.ticker}
-                    initialIsWished={isWished}
+                    initialIsWished={true} // 이 그리드는 모두 찜한 ETF들만 보여줌
                     isLoggedIn={isLoggedIn}
                   />
                 </div>

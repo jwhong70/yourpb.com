@@ -137,7 +137,7 @@ export async function getSessionUser() {
 
   if (isDemo) {
     return {
-      id: 'demo-user-id',
+      id: '00000000-0000-0000-0000-000000000000',
       email: 'demo@yourpb.com',
       name: '홍길동 PB',
       membership_status: demoStatus || 'premium',

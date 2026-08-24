@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
+import WishlistButton from '@/app/components/WishlistButton';
 
 interface ETF {
   ticker: string;
@@ -15,46 +15,24 @@ interface ETF {
 
 interface FilterProps {
   initialEtfs: ETF[];
+  initialWishlistTickers?: string[];
+  isLoggedIn?: boolean;
   children?: (filteredEtfs: ETF[]) => React.ReactNode;
 }
 
-export default function Filter({ initialEtfs, children }: FilterProps) {
+export default function Filter({ 
+  initialEtfs, 
+  initialWishlistTickers = [], 
+  isLoggedIn = false, 
+  children 
+}: FilterProps) {
   // 필터 상태 변수
   const [leverageFilter, setLeverageFilter] = useState<'exclude' | 'include'>('exclude');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedReport, setSelectedReport] = useState<string>('all');
   
-  // 찜 목록 상태 (로컬 스토리지 연동)
-  const [wishlist, setWishlist] = useState<string[]>([]);
-  
   // 이미지 로드 에러 트래킹을 위한 상태
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
-
-  // 컴포넌트 마운트 시 로컬 스토리지에서 찜 목록 로드
-  useEffect(() => {
-    const saved = localStorage.getItem('yourpb_wishlist');
-    if (saved) {
-      try {
-        setWishlist(JSON.parse(saved));
-      } catch (e) {
-        console.error('Failed to parse wishlist', e);
-      }
-    }
-  }, []);
-
-  // 찜 토글 함수
-  const toggleWishlist = (ticker: string, e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    let updated: string[];
-    if (wishlist.includes(ticker)) {
-      updated = wishlist.filter(t => t !== ticker);
-    } else {
-      updated = [...wishlist, ticker];
-    }
-    setWishlist(updated);
-    localStorage.setItem('yourpb_wishlist', JSON.stringify(updated));
-  };
 
   // 1차 필터링: 레버리지 필터 적용
   const etfsAfterLeverage = initialEtfs.filter(etf => {
@@ -216,7 +194,7 @@ export default function Filter({ initialEtfs, children }: FilterProps) {
           {filteredEtfs.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
               {filteredEtfs.map((etf) => {
-                const isWished = wishlist.includes(etf.ticker);
+                const isWished = initialWishlistTickers.includes(etf.ticker);
                 const isError = imageErrors[etf.ticker];
                 const storageUrl = `https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/poster-etf/${etf.ticker.toUpperCase()}.png`;
 
@@ -279,17 +257,11 @@ export default function Filter({ initialEtfs, children }: FilterProps) {
                         <span className="text-[10px] text-gray-500 font-medium">
                           {etf.category}
                         </span>
-                        <button
-                          onClick={(e) => toggleWishlist(etf.ticker, e)}
-                          className="p-1 text-gray-400 hover:text-red-accent hover:scale-110 active:scale-95 transition-all cursor-pointer"
-                          title={isWished ? '찜 해제' : '찜하기'}
-                        >
-                          <Heart
-                            className={`w-4 h-4 transition-colors ${
-                              isWished ? 'fill-red-accent text-red-accent' : 'text-gray-400'
-                            }`}
-                          />
-                        </button>
+                        <WishlistButton
+                          ticker={etf.ticker}
+                          initialIsWished={isWished}
+                          isLoggedIn={isLoggedIn}
+                        />
                       </div>
                     </div>
                   </motion.div>

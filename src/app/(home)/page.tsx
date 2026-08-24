@@ -3,9 +3,15 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase-server';
 import Filter from '@/components/Filter';
 import ModelCarousel from '@/components/ModelCarousel';
+import { getSessionUser } from '@/app/actions/auth';
+import { getWishlist } from '@/app/actions/wishlist';
 
 export default async function Home() {
   const supabase = await createClient();
+  const user = await getSessionUser();
+  const wishlist = await getWishlist();
+  const wishlistTickers = wishlist.map(etf => etf.ticker);
+
   const { data: etfs } = await supabase
     .from('etf_list')
     .select('ticker, name, category, report, leverage')
@@ -42,6 +48,7 @@ export default async function Home() {
       ticker: etf.ticker,
       name: etf.name || '',
       category: etf.category || '',
+      leverage: etf.leverage || null,
     })) || [];
 
   return (
@@ -184,7 +191,11 @@ export default async function Home() {
 
       {/* 2. 구성 ETF 캐러셀 섹션 */}
       <section>
-        <ModelCarousel etfs={modelPortfolioEtfs} />
+        <ModelCarousel 
+          etfs={modelPortfolioEtfs} 
+          initialWishlistTickers={wishlistTickers}
+          isLoggedIn={!!user}
+        />
       </section>
 
       {/* 3. 관심 ETF 그리드 섹션 */}
@@ -196,7 +207,11 @@ export default async function Home() {
         </div>
 
         {/* 3단계 필터 및 목록 컴포넌트 마운트 */}
-        <Filter initialEtfs={etfs || []} />
+        <Filter 
+          initialEtfs={etfs || []} 
+          initialWishlistTickers={wishlistTickers} 
+          isLoggedIn={!!user} 
+        />
       </section>
 
     </div>
