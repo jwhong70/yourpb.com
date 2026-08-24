@@ -119,7 +119,7 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value' }: Base
 
   if (chartData.length === 0) {
     return (
-      <div className="flex items-center justify-center h-48 rounded-xl bg-white/5 border border-white/10 text-white/30 text-xs italic">
+      <div className="flex items-center justify-center h-48 rounded-xl bg-foreground/3 border border-foreground/5 text-foreground/30 text-xs italic">
         시계열 데이터가 존재하지 않습니다.
       </div>
     );
@@ -131,17 +131,17 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value' }: Base
   const guideLines = minVal >= 0 ? [absMax * 0.75, absMax * 0.35, 0] : [absMax * 0.7, 0, -absMax * 0.7];
 
   return (
-    <div className="flex flex-col p-4 rounded-xl bg-white/3 border border-white/5 backdrop-blur-sm">
+    <div className="flex flex-col p-4 rounded-xl bg-foreground/3 border border-foreground/5 backdrop-blur-sm">
       {/* 차트 헤더 툴팁 */}
       <div className="flex justify-between items-center mb-4 h-6 px-1">
-        <span className="text-[10px] text-white/40">세로막대형 추이</span>
+        <span className="text-[10px] text-foreground/40">세로막대형 추이</span>
         <AnimatePresence>
           {hoveredItem && (
             <motion.div
               initial={{ opacity: 0, y: 2 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="text-xs text-white/90 bg-white/10 px-2 py-0.5 rounded border border-white/10 flex gap-3 font-mono"
+              className="text-xs text-foreground/90 bg-foreground/5 px-2 py-0.5 rounded border border-foreground/10 flex gap-3 font-mono"
             >
               <span className="text-yellow-accent font-bold">{formatLabel(hoveredItem)}</span>
               <span>수치: <strong style={{ color: theme.secondary }}>{hoveredItem.displayVal.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 2 })}</strong></span>
@@ -156,20 +156,22 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value' }: Base
           {guideLines.map((val, idx) => {
             const y = getY(val);
             return (
-              <g key={idx} className="opacity-30">
+              <g key={idx} className="opacity-60">
                 <line
                   x1={paddingLeft}
                   y1={y}
                   x2={width - paddingRight}
                   y2={y}
-                  stroke="rgba(255, 255, 255, 0.08)"
+                  stroke="currentColor"
+                  strokeOpacity={0.12}
                   strokeDasharray="4 4"
                 />
                 <text
                   x={paddingLeft - 8}
                   y={y + 3}
                   textAnchor="end"
-                  fill="rgba(255,255,255,0.4)"
+                  fill="currentColor"
+                  opacity={0.5}
                   className="text-[9px] font-semibold font-mono"
                 >
                   {val.toFixed(1)}
@@ -311,7 +313,7 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value' }: Bas
 
   if (chartData.length === 0) {
     return (
-      <div className="flex items-center justify-center h-48 rounded-xl bg-white/5 border border-white/10 text-white/30 text-xs italic">
+      <div className="flex items-center justify-center h-48 rounded-xl bg-foreground/3 border border-foreground/5 text-foreground/30 text-xs italic">
         시계열 데이터가 존재하지 않습니다.
       </div>
     );
@@ -321,17 +323,17 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value' }: Bas
   const guideLines = [maxVal - (maxVal - minVal) * 0.15, minVal + (maxVal - minVal) * 0.5, minVal + (maxVal - minVal) * 0.15];
 
   return (
-    <div className="flex flex-col p-4 rounded-xl bg-white/3 border border-white/5 backdrop-blur-sm">
+    <div className="flex flex-col p-4 rounded-xl bg-foreground/3 border border-foreground/5 backdrop-blur-sm">
       {/* 차트 헤더 툴팁 */}
       <div className="flex justify-between items-center mb-4 h-6 px-1">
-        <span className="text-[10px] text-white/40">선형 시계열 추이</span>
+        <span className="text-[10px] text-foreground/40">선형 시계열 추이</span>
         <AnimatePresence>
           {hoveredItem && (
             <motion.div
               initial={{ opacity: 0, y: 2 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="text-xs text-white/90 bg-white/10 px-2 py-0.5 rounded border border-white/10 flex gap-3 font-mono"
+              className="text-xs text-foreground/90 bg-foreground/5 px-2 py-0.5 rounded border border-foreground/10 flex gap-3 font-mono"
             >
               <span className="text-yellow-accent font-bold">{formatLabel(hoveredItem)}</span>
               <span>수치: <strong style={{ color: theme.secondary }}>{hoveredItem.displayVal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></span>
@@ -346,20 +348,22 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value' }: Bas
           {guideLines.map((val, idx) => {
             const y = getY(val);
             return (
-              <g key={idx} className="opacity-30">
+              <g key={idx} className="opacity-60">
                 <line
                   x1={paddingLeft}
                   y1={y}
                   x2={width - paddingRight}
                   y2={y}
-                  stroke="rgba(255, 255, 255, 0.08)"
+                  stroke="currentColor"
+                  strokeOpacity={0.12}
                   strokeDasharray="4 4"
                 />
                 <text
                   x={paddingLeft - 8}
                   y={y + 3}
                   textAnchor="end"
-                  fill="rgba(255,255,255,0.4)"
+                  fill="currentColor"
+                  opacity={0.5}
                   className="text-[9px] font-semibold font-mono"
                 >
                   {val.toLocaleString(undefined, { maximumFractionDigits: 1 })}
@@ -514,7 +518,7 @@ export function MacroCandleChart({ data, themeIndex = 0 }: BaseChartProps) {
 
   if (chartData.length === 0) {
     return (
-      <div className="flex items-center justify-center h-48 rounded-xl bg-white/5 border border-white/10 text-white/30 text-xs italic">
+      <div className="flex items-center justify-center h-48 rounded-xl bg-foreground/3 border border-foreground/5 text-foreground/30 text-xs italic">
         시계열 캔들 데이터가 존재하지 않습니다.
       </div>
     );
@@ -524,17 +528,17 @@ export function MacroCandleChart({ data, themeIndex = 0 }: BaseChartProps) {
   const guideLines = [maxVal - (maxVal - minVal) * 0.15, minVal + (maxVal - minVal) * 0.5, minVal + (maxVal - minVal) * 0.15];
 
   return (
-    <div className="flex flex-col p-4 rounded-xl bg-white/3 border border-white/5 backdrop-blur-sm">
+    <div className="flex flex-col p-4 rounded-xl bg-foreground/3 border border-foreground/5 backdrop-blur-sm">
       {/* 차트 헤더 툴팁 */}
       <div className="flex justify-between items-center mb-4 h-6 px-1">
-        <span className="text-[10px] text-white/40">주식/선물 캔들차트 추이</span>
+        <span className="text-[10px] text-foreground/40">주식/선물 캔들차트 추이</span>
         <AnimatePresence>
           {hoveredItem && (
             <motion.div
               initial={{ opacity: 0, y: 2 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="text-[11px] text-white/95 bg-white/10 px-2 py-0.5 rounded border border-white/10 flex flex-wrap gap-x-2 gap-y-0.5 font-mono"
+              className="text-[11px] text-foreground/95 bg-foreground/5 px-2 py-0.5 rounded border border-foreground/10 flex flex-wrap gap-x-2 gap-y-0.5 font-mono"
             >
               <span className="text-yellow-accent font-bold shrink-0">{hoveredItem.date}</span>
               <span className="shrink-0">시: <strong>{hoveredItem.open.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></span>
@@ -552,20 +556,22 @@ export function MacroCandleChart({ data, themeIndex = 0 }: BaseChartProps) {
           {guideLines.map((val, idx) => {
             const y = getY(val);
             return (
-              <g key={idx} className="opacity-30">
+              <g key={idx} className="opacity-60">
                 <line
                   x1={paddingLeft}
                   y1={y}
                   x2={width - paddingRight}
                   y2={y}
-                  stroke="rgba(255, 255, 255, 0.08)"
+                  stroke="currentColor"
+                  strokeOpacity={0.12}
                   strokeDasharray="4 4"
                 />
                 <text
                   x={paddingLeft - 8}
                   y={y + 3}
                   textAnchor="end"
-                  fill="rgba(255,255,255,0.4)"
+                  fill="currentColor"
+                  opacity={0.5}
                   className="text-[9px] font-semibold font-mono"
                 >
                   {val.toLocaleString(undefined, { maximumFractionDigits: 0 })}
@@ -582,8 +588,8 @@ export function MacroCandleChart({ data, themeIndex = 0 }: BaseChartProps) {
             const bodyHeight = Math.max(1, bodyBottom - bodyTop);
 
             const x = getX(idx);
-            // 상승: 화이트(Premium), 하락: dc2626(레드)
-            const color = isBullish ? '#FFFFFF' : '#dc2626';
+            // 상승: 초록(#3AAD67), 하락: dc2626(레드)
+            const color = isBullish ? '#3AAD67' : '#dc2626';
 
             const isHovered = hoveredIdx === idx;
 

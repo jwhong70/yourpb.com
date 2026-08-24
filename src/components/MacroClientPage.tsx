@@ -362,20 +362,20 @@ export default function MacroClientPage({ data }: ClientPageProps) {
               onClick={() => handleMainClick(cat.id)}
               className={`flex flex-col justify-between p-3.5 md:p-5 rounded-xl md:rounded-2xl border text-left transition-all duration-300 relative overflow-hidden group ${
                 isSelected
-                  ? 'bg-white/18 border-white/30 shadow-[0_0_20px_rgba(255,255,255,0.08)] scale-[1.02]'
-                  : 'bg-white/8 border-white/15 hover:bg-white/12 hover:border-white/25 hover:scale-[1.01]'
+                  ? 'bg-red-accent/15 border-red-accent/45 shadow-[0_4px_24px_rgba(51,255,0,0.18)] scale-[1.02]'
+                  : 'bg-gray-50 border-red-accent/20 hover:bg-red-accent/5 hover:border-red-accent/30 hover:scale-[1.01]'
               }`}
             >
               {/* 은은한 배경 글로우 효과 */}
               <div 
                 className="absolute -right-16 -top-16 w-36 h-36 rounded-full opacity-10 group-hover:opacity-20 transition-all duration-500 blur-2xl"
                 style={{
-                  backgroundColor: cat.signal.yoy === 1 ? 'var(--color-green-accent)' : 'var(--color-red-accent)'
+                  backgroundColor: cat.signal?.yoy === 1 ? 'var(--color-green-accent)' : 'var(--color-red-accent)'
                 }}
               />
 
               <div className="flex justify-between items-start gap-2 w-full">
-                <span className="text-[10px] md:text-xs text-white/40 font-bold uppercase tracking-widest font-mono">
+                <span className="text-[10px] md:text-xs text-gray-500 font-bold uppercase tracking-widest font-mono">
                   Category 0{cat.id}
                 </span>
                 {/* 대분류 신호등 표시 */}
@@ -383,12 +383,12 @@ export default function MacroClientPage({ data }: ClientPageProps) {
               </div>
 
               <div className="mt-6 md:mt-8 flex items-center justify-between gap-1 w-full">
-                <h3 className="text-sm md:text-lg font-bold text-white tracking-tight">
+                <h3 className="text-sm md:text-lg font-bold text-gray-900 tracking-tight">
                   {cat.title}
                 </h3>
                 <ChevronDown 
-                  className={`w-4 h-4 md:w-5 md:h-5 text-white/50 transition-transform duration-300 shrink-0 ${
-                    isSelected ? 'transform rotate-180 text-white' : ''
+                  className={`w-4 h-4 md:w-5 md:h-5 text-gray-400 transition-transform duration-300 shrink-0 ${
+                    isSelected ? 'transform rotate-180 text-gray-800' : ''
                   }`} 
                 />
               </div>
@@ -406,29 +406,29 @@ export default function MacroClientPage({ data }: ClientPageProps) {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden bg-white/2 border border-white/5 rounded-3xl p-6 backdrop-blur-md"
+            className="overflow-hidden bg-red-accent/2 border border-red-accent/18 rounded-3xl p-6 backdrop-blur-md"
           >
             <div className="flex flex-col gap-4">
               {/* 중분류 목록 출력 */}
               {getSubCategories(activeMain).map((sub) => {
                 const isSubSelected = activeSub === sub.id;
                 return (
-                  <div key={sub.id} className="flex flex-col border border-white/5 rounded-2xl overflow-hidden bg-black/20">
+                  <div key={sub.id} className="flex flex-col border border-red-accent/12 rounded-2xl overflow-hidden bg-white shadow-sm">
                     <button
                       onClick={() => setActiveSub(isSubSelected ? null : sub.id)}
                       className={`flex justify-between items-center p-4 text-left transition-colors duration-200 ${
-                        isSubSelected ? 'bg-white/5' : 'hover:bg-white/3'
+                        isSubSelected ? 'bg-red-accent/8' : 'hover:bg-red-accent/3'
                       }`}
                     >
-                      <h4 className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
+                      <h4 className="text-sm font-bold text-gray-800 tracking-tight flex items-center gap-2">
                         {sub.title}
                       </h4>
                       <div className="flex items-center gap-4">
                         {/* 중분류 신호등 표시 */}
                         <SignalBadge signal={sub.signal} />
                         <ChevronDown 
-                          className={`w-4 h-4 text-white/40 transition-transform duration-200 ${
-                            isSubSelected ? 'transform rotate-180 text-white' : ''
+                          className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${
+                            isSubSelected ? 'transform rotate-180 text-gray-800' : ''
                           }`} 
                         />
                       </div>
@@ -442,7 +442,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                           animate={{ opacity: 1, height: 'auto' }}
                           exit={{ opacity: 0, height: 0 }}
                           transition={{ duration: 0.25 }}
-                          className="overflow-hidden border-t border-white/5 bg-black/45"
+                          className="overflow-hidden border-t border-red-accent/12 bg-red-accent/1"
                         >
                           <div className="p-4 flex flex-col gap-3">
                             {getItemsForSub(sub.id).map((item, itemIdx) => {
@@ -456,24 +456,24 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                               return (
                                 <div 
                                   key={chartKey} 
-                                  className="flex flex-col border border-white/3 rounded-xl overflow-hidden transition-all duration-200 bg-white/1"
+                                  className="flex flex-col border border-red-accent/12 rounded-xl overflow-hidden transition-all duration-200 bg-white"
                                 >
                                   {/* 소분류 헤더 */}
                                   <button
                                     onClick={() => toggleChart(chartKey)}
                                     className={`flex justify-between items-center px-4 py-3 text-left transition-colors duration-150 ${
-                                      isChartOpen ? 'bg-white/5' : 'hover:bg-white/2'
+                                      isChartOpen ? 'bg-red-accent/8' : 'hover:bg-red-accent/3'
                                     }`}
                                   >
-                                    <span className="text-xs font-semibold text-white/70 tracking-tight">
+                                    <span className="text-xs font-semibold text-gray-700 tracking-tight">
                                       {item.title}
                                     </span>
                                     <div className="flex items-center gap-4">
                                       {/* 소분류 신호등 표시 */}
                                       <SignalBadge signal={itemSignal} />
                                       <ChevronDown 
-                                        className={`w-3.5 h-3.5 text-white/30 transition-transform duration-200 ${
-                                          isChartOpen ? 'transform rotate-180 text-white' : ''
+                                        className={`w-3.5 h-3.5 text-gray-400 transition-transform duration-200 ${
+                                          isChartOpen ? 'transform rotate-180 text-gray-800' : ''
                                         }`} 
                                       />
                                     </div>
@@ -486,11 +486,11 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                         initial={{ opacity: 0, height: 0 }}
                                         animate={{ opacity: 1, height: 'auto' }}
                                         exit={{ opacity: 0, height: 0 }}
-                                        className="overflow-hidden bg-black/40 border-t border-white/3"
+                                        className="overflow-hidden bg-white border-t border-red-accent/12"
                                       >
                                         <div className="p-4">
                                           {!hasData ? (
-                                            <div className="flex items-center justify-center h-48 rounded-xl bg-white/5 border border-white/10 text-white/30 text-xs italic">
+                                            <div className="flex items-center justify-center h-48 rounded-xl bg-red-accent/2 border border-red-accent/10 text-gray-400 text-xs italic">
                                               데이터 수집 중입니다. (Null)
                                             </div>
                                           ) : (

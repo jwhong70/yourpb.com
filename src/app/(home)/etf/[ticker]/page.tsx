@@ -88,7 +88,7 @@ export default async function EtfDetailPage({ params }: PageProps) {
   const formatPercent = (val: any) => formatNum(val, '%');
 
   return (
-    <div className="min-h-screen pt-24 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
       {/* 상단 네비게이션 및 타이틀 */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
@@ -114,11 +114,11 @@ export default async function EtfDetailPage({ params }: PageProps) {
             <span className="px-2.5 py-1 text-xs font-extrabold bg-yellow-accent/20 text-yellow-accent rounded-md uppercase tracking-wider">
               {etfList.category || 'ETF'}
             </span>
-            <span className="px-2.5 py-1 text-xs font-bold bg-white/10 text-white/70 rounded-md">
+            <span className="px-2.5 py-1 text-xs font-bold bg-gray-100 text-gray-700 rounded-md">
               레버리지: {etfList.leverage || '1X'}
             </span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight flex items-baseline gap-2">
+          <h1 className="text-2xl sm:text-4xl font-black text-gray-900 tracking-tight flex items-baseline gap-2">
             <span>{etfList.name}</span>
             <span className="text-lg sm:text-2xl font-bold uppercase">({ticker})</span>
           </h1>
@@ -144,90 +144,90 @@ export default async function EtfDetailPage({ params }: PageProps) {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
             {/* 1단: ETF 분류 체계 박스 (기존 BASIC INFO 영역) */}
-            <section className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-xl flex flex-col justify-between relative overflow-hidden">
+            <section className="p-4 sm:p-5 rounded-2xl bg-red-accent/3 border border-red-accent/20 shadow-md flex flex-col justify-between relative overflow-hidden">
               <div className="absolute -right-20 -top-20 w-60 h-60 rounded-full bg-navy/20 blur-[60px] pointer-events-none" />
               <div>
-                <div className="text-white/50 text-[10px] uppercase tracking-wider mb-2.5">
+                <div className="text-[#000000]/60 text-[10px] uppercase tracking-wider mb-2.5">
                   <span>ETF 분류 체계</span>
                 </div>
                 <div className="space-y-2">
-                  <div className="p-2.5 rounded-xl bg-white/5 border border-white/5">
-                    <span className="text-[9px] text-white/40 block mb-0.5">대분류</span>
+                  <div className="p-2.5 rounded-xl bg-white border border-red-accent/12">
+                    <span className="text-[9px] text-[#000000]/45 block mb-0.5">대분류</span>
                     <span className="text-xs font-bold text-yellow-accent truncate block">
                       {etfList.category || '-'}
                     </span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-white/5 border border-white/5">
-                    <span className="text-[9px] text-white/40 block mb-0.5">중분류</span>
-                    <span className="text-xs font-bold text-white truncate block">
+                  <div className="p-2.5 rounded-xl bg-white border border-red-accent/12">
+                    <span className="text-[9px] text-[#000000]/45 block mb-0.5">중분류</span>
+                    <span className="text-xs font-bold text-gray-900 truncate block">
                       {etfList.report || '-'}
                     </span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-white/5 border border-white/5">
-                    <span className="text-[9px] text-white/40 block mb-0.5">세분류</span>
-                    <span className="text-xs font-bold text-white truncate block">
+                  <div className="p-2.5 rounded-xl bg-white border border-red-accent/12">
+                    <span className="text-[9px] text-[#000000]/45 block mb-0.5">세분류</span>
+                    <span className="text-xs font-bold text-gray-900 truncate block">
                       {etfList.focus2 || '-'}
                     </span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-white/5 border border-white/5">
-                    <span className="text-[9px] text-white/40 block mb-0.5">세세분류</span>
-                    <span className="text-xs font-bold text-white truncate block">
+                  <div className="p-2.5 rounded-xl bg-white border border-red-accent/12">
+                    <span className="text-[9px] text-[#000000]/45 block mb-0.5">세세분류</span>
+                    <span className="text-xs font-bold text-gray-900 truncate block">
                       {etfList.focus3 || '-'}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-3 p-2 rounded-xl bg-white/5 border border-white/5 flex flex-col justify-between gap-0.5">
-                <span className="text-[8px] text-white/40">벤치마크 지수 (Index Tracked)</span>
-                <span className="text-[11px] font-bold text-white truncate">
+              <div className="mt-3 p-2 rounded-xl bg-white border border-red-accent/12 flex flex-col justify-between gap-0.5">
+                <span className="text-[8px] text-[#000000]/45">벤치마크 지수 (Index Tracked)</span>
+                <span className="text-[11px] font-bold text-gray-900 truncate">
                   {etfList.index_tracked || '해당사항 없음'}
                 </span>
               </div>
             </section>
 
             {/* 2단: 개요 (Description) */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-xl flex flex-col justify-between">
+            <div className="p-4 sm:p-5 rounded-2xl bg-red-accent/3 border border-red-accent/20 shadow-md flex flex-col justify-between">
               <div>
-                <div className="text-white/50 text-[10px] uppercase tracking-wider mb-2.5">
+                <div className="text-[#000000]/60 text-[10px] uppercase tracking-wider mb-2.5">
                   <span>ETF 개요 및 투자 포인트</span>
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2.5">펀드 분석 요약</h3>
-                <p className="text-white/70 text-xs sm:text-sm leading-relaxed whitespace-pre-line font-sans">
+                <h3 className="text-lg font-bold text-gray-900 mb-2.5">펀드 분석 요약</h3>
+                <p className="text-gray-700 text-xs sm:text-sm leading-relaxed whitespace-pre-line font-sans">
                   {etfList.description || '이 펀드에 대한 상세 리서치 요약 정보가 아직 등록되지 않았습니다.'}
                 </p>
               </div>
             </div>
 
             {/* 3단: Premium Info 수치 */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-xl space-y-4">
-              <div className="text-white/50 text-[10px] uppercase tracking-wider mb-2">
+            <div className="p-4 sm:p-5 rounded-2xl bg-red-accent/3 border border-red-accent/20 shadow-md space-y-4">
+              <div className="text-[#000000]/60 text-[10px] uppercase tracking-wider mb-2">
                 <span>펀드 핵심 평가지표 (Premium)</span>
               </div>
-              <h3 className="text-lg font-bold text-white">가치 평가 & 분배 지표</h3>
+              <h3 className="text-lg font-bold text-gray-900">가치 평가 & 분배 지표</h3>
               
               <div className="space-y-2.5 pt-1.5">
-                <div className="flex items-center justify-between border-b border-white/5 pb-1.5">
-                  <span className="text-xs text-white/60">PER (주가수익비율)</span>
-                  <span className="text-sm font-extrabold text-white">
+                <div className="flex items-center justify-between border-b border-red-accent/10 pb-1.5">
+                  <span className="text-xs text-gray-600">PER (주가수익비율)</span>
+                  <span className="text-sm font-extrabold text-gray-900">
                     {isPremium ? formatNum(etfInfo?.pe_ratio) : '**.*'}
                   </span>
                 </div>
-                <div className="flex items-center justify-between border-b border-white/5 pb-1.5">
-                  <span className="text-xs text-white/60">PBR (주가순자산비율)</span>
-                  <span className="text-sm font-extrabold text-white">
+                <div className="flex items-center justify-between border-b border-red-accent/10 pb-1.5">
+                  <span className="text-xs text-gray-600">PBR (주가순자산비율)</span>
+                  <span className="text-sm font-extrabold text-gray-900">
                     {isPremium ? formatNum(etfInfo?.pb_ratio) : '**.*'}
                   </span>
                 </div>
-                <div className="flex items-center justify-between border-b border-white/5 pb-1.5">
-                  <span className="text-xs text-white/60">분배율 (Distribution Yield)</span>
-                  <span className="text-sm font-extrabold text-white">
+                <div className="flex items-center justify-between border-b border-red-accent/10 pb-1.5">
+                  <span className="text-xs text-gray-600">분배율 (Distribution Yield)</span>
+                  <span className="text-sm font-extrabold text-gray-900">
                     {isPremium ? formatPercent(etfInfo?.distribution_yield) : '**.*%'}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-white/60">만기수익률 (YTM)</span>
-                  <span className="text-sm font-extrabold text-white">
+                  <span className="text-xs text-gray-600">만기수익률 (YTM)</span>
+                  <span className="text-sm font-extrabold text-gray-900">
                     {isPremium ? formatPercent(etfInfo?.yield_to_maturity) : '**.*%'}
                   </span>
                 </div>
@@ -242,7 +242,7 @@ export default async function EtfDetailPage({ params }: PageProps) {
                 href={reportUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full max-w-md flex items-center justify-center gap-2.5 px-6 py-4.5 bg-red-accent hover:bg-red-700 active:scale-95 text-white font-extrabold rounded-2xl shadow-lg shadow-red-950/40 transition-all cursor-pointer text-base"
+                className="w-full max-w-md flex items-center justify-center gap-2.5 px-6 py-4.5 bg-red-accent hover:opacity-90 active:scale-95 text-black font-black rounded-2xl shadow-lg transition-all cursor-pointer text-base"
               >
                 <Download className="w-5 h-5" />
                 <span>보고서 PDF 파일 다운로드</span>
@@ -250,7 +250,7 @@ export default async function EtfDetailPage({ params }: PageProps) {
             ) : (
               <button
                 disabled
-                className="w-full max-w-md flex items-center justify-center gap-2.5 px-6 py-4.5 bg-white/10 text-white/30 font-extrabold rounded-2xl cursor-not-allowed text-base border border-white/5"
+                className="w-full max-w-md flex items-center justify-center gap-2.5 px-6 py-4.5 bg-gray-100 text-gray-400 font-extrabold rounded-2xl cursor-not-allowed text-base border border-gray-200"
               >
                 <Download className="w-5 h-5" />
                 <span>보고서 다운로드 (구독 회원 전용)</span>
@@ -276,39 +276,39 @@ export default async function EtfDetailPage({ params }: PageProps) {
               </div>
 
               {/* 3열: 보유 비중 상위 10종목 (Table) */}
-              <div className="p-6 sm:p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md shadow-xl space-y-4 flex flex-col justify-between">
+              <div className="p-6 sm:p-8 rounded-3xl bg-red-accent/3 border border-red-accent/20 shadow-md space-y-4 flex flex-col justify-between">
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                  <div className="flex items-center justify-between border-b border-red-accent/12 pb-3">
                     <div>
-                      <h3 className="text-lg font-bold text-white tracking-tight">보유 비중 상위 10종목</h3>
+                      <h3 className="text-lg font-bold text-gray-900 tracking-tight">보유 비중 상위 10종목</h3>
                     </div>
                   </div>
 
                   {holdings.length === 0 ? (
-                    <div className="flex items-center justify-center h-30 text-white/40 text-sm">
+                    <div className="flex items-center justify-center h-30 text-gray-400 text-sm">
                       보유종목 편입 정보가 없습니다.
                     </div>
                   ) : (
                     <div className="overflow-x-auto max-h-75 scrollbar-thin">
                       <table className="w-full text-left border-collapse">
                         <thead>
-                          <tr className="border-b border-white/10 text-white/40 text-[10px] font-semibold uppercase">
+                          <tr className="border-b border-red-accent/12 text-[#000000]/45 text-[10px] font-semibold uppercase">
                             <th className="py-2 px-2">순위</th>
                             <th className="py-2 px-2">티커</th>
                             <th className="py-2 px-2">종목명</th>
                             <th className="py-2 px-2 text-right">비중</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-white/5 text-xs font-medium text-white/80">
+                        <tbody className="divide-y divide-red-accent/10 text-xs font-medium text-gray-700">
                           {(isPremium ? holdings : holdings.slice(0, 10).map((h, i) => ({ ...h, holding_symbol: '••••', holding_name: 'Premium Lock' }))).map((h, idx) => (
                             <tr 
                               key={idx}
-                              className="hover:bg-white/5 transition-colors"
+                              className="hover:bg-red-accent/3 transition-colors"
                              >
-                              <td className="py-2.5 px-2 font-bold text-white/40">{idx + 1}</td>
-                              <td className="py-2.5 px-2 text-white uppercase">{h.holding_symbol}</td>
+                              <td className="py-2.5 px-2 font-bold text-gray-400">{idx + 1}</td>
+                              <td className="py-2.5 px-2 text-gray-900 uppercase font-semibold">{h.holding_symbol}</td>
                               <td className="py-2.5 px-2 truncate max-w-20 sm:max-w-30">{h.holding_name || '-'}</td>
-                              <td className="py-2.5 px-2 text-right font-extrabold text-white">
+                              <td className="py-2.5 px-2 text-right font-extrabold text-gray-900">
                                 {isPremium ? formatPercent(h.allocation_pct) : '•.••%'}
                               </td>
                             </tr>
@@ -319,7 +319,7 @@ export default async function EtfDetailPage({ params }: PageProps) {
                   )}
                 </div>
                 
-                <div className="pt-2 text-[10px] text-white/40 text-center">
+                <div className="pt-2 text-[10px] text-gray-400 text-center">
                   기준: 순자산 대비 편입 비중
                 </div>
               </div>

@@ -67,14 +67,14 @@ export default function Header({ initialUser }: HeaderProps) {
 
   return (
     <header
-      className="fixed top-0 left-0 w-full z-50 bg-background border-b border-white/5 py-3.5 transition-all duration-300"
+      className="fixed top-0 left-0 w-full z-50 bg-[#000000] bg-linear-to-b from-white/12 via-[#000000] to-[#000000]/95 border-b border-white/15 py-3.5 transition-all duration-300 shadow-[inset_0_1.5px_0_rgba(255,255,255,0.25),0_4px_16px_rgba(0,0,0,0.15)] backdrop-blur-md"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
           {/* 로고 영역 */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center">
-              <span className="text-3xl font-extrabold tracking-widest font-sans select-none text-3d-premium animate-logo-glow">
+              <span className="text-3xl font-extrabold tracking-widest font-sans select-none text-red-accent animate-logo-glow">
                 YOURPB.COM
               </span>
             </Link>
@@ -142,7 +142,7 @@ export default function Header({ initialUser }: HeaderProps) {
             ) : (
               <Link
                 href="/login"
-                className="flex items-center gap-2 px-6 py-2 bg-red-accent hover:bg-coral active:scale-95 text-white text-base font-extrabold rounded-xl shadow-md shadow-red-950/40 transition-all cursor-pointer"
+                className="flex items-center gap-2 px-6 py-2 bg-red-accent hover:opacity-90 active:scale-95 text-black text-base font-black rounded-xl shadow-md shadow-red-950/10 transition-all cursor-pointer"
               >
                 <LogIn className="w-4 h-4" />
                 <span>로그인</span>
@@ -173,7 +173,7 @@ export default function Header({ initialUser }: HeaderProps) {
 
       {/* 모바일 메뉴 드롭다운 */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-navy/95 backdrop-blur-2xl border-b border-white/10 transition-all duration-300">
+        <div className="lg:hidden bg-[#000000]/95 backdrop-blur-2xl border-b border-white/10 transition-all duration-300">
           <div className="px-4 pt-3 pb-8 space-y-4">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
@@ -229,7 +229,7 @@ export default function Header({ initialUser }: HeaderProps) {
                 <Link
                   href="/login"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full flex items-center justify-center gap-2.5 px-5 py-3 bg-red-accent hover:bg-coral text-white rounded-xl text-base font-extrabold shadow-md transition-colors cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2.5 px-5 py-3 bg-red-accent hover:opacity-90 text-black rounded-xl text-base font-black shadow-md transition-colors cursor-pointer"
                 >
                   <LogIn className="w-4 h-4" />
                   <span>로그인</span>

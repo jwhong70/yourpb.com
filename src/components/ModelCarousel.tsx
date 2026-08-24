@@ -20,7 +20,7 @@ export default function ModelCarousel({ etfs }: ModelCarouselProps) {
       {/* 타이틀 영역 */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h2 className="text-xl font-bold tracking-tight text-white sm:text-2xl select-none text-3d-premium">
+          <h2 className="text-xl font-bold tracking-tight text-[#000000] sm:text-2xl select-none">
             구성 ETF
           </h2>
         </div>
@@ -38,7 +38,7 @@ export default function ModelCarousel({ etfs }: ModelCarouselProps) {
               className="group cursor-pointer flex flex-col"
             >
               <Link href={`/etf/${etf.ticker}`} className="block">
-                <div className="relative aspect-2/3 rounded-2xl overflow-hidden border border-white/5 bg-navy/60 group-hover:border-white/20 transition-all shadow-lg group-hover:shadow-sky-primary/5">
+                <div className="relative aspect-2/3 rounded-2xl overflow-hidden border border-red-accent/18 bg-white group-hover:border-red-accent/40 transition-all shadow-lg">
                   
                   {/* poster 상단 테두리 위에 이름(Ticker) 표시 */}
                   <div className="absolute top-0 left-0 right-0 z-10 px-3.5 py-2 bg-linear-to-b from-black/85 to-transparent">
@@ -64,10 +64,10 @@ export default function ModelCarousel({ etfs }: ModelCarouselProps) {
 
                 {/* 하단 상세 정보 */}
                 <div className="mt-3.5 px-1">
-                  <span className="text-xs font-extrabold text-yellow-accent select-none uppercase tracking-wide">
+                  <span className="text-xs font-extrabold text-[#000000] select-none uppercase tracking-wide">
                     {etf.category} ETF
                   </span>
-                  <h3 className="text-base font-extrabold text-white truncate group-hover:text-sky-primary transition-colors mt-0.5">
+                  <h3 className="text-base font-extrabold text-[#000000] truncate group-hover:text-sky-primary transition-colors mt-0.5">
                     {etf.name}
                   </h3>
                 </div>

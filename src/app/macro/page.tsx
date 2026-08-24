@@ -1132,13 +1132,13 @@ export default async function MacroPage() {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
       <Header initialUser={user} />
-      <main className="grow pt-20">
+      <main className="grow pt-34">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="mb-10 text-center sm:text-left">
-            <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+            <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl select-none">
               Global Macro 모니터링
             </h1>
-            <p className="mt-3 text-lg text-white/50 max-w-3xl">
+            <p className="mt-3 text-lg text-[#000000]/60 max-w-3xl">
               글로벌 경제사이클, 경기조절자(금리/물가/유동성), 리스크 온/오프 상태 및 마켓사이클 신호를 실시간 모니터링합니다.
             </p>
           </div>

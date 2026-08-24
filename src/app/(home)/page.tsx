@@ -45,18 +45,18 @@ export default async function Home() {
     })) || [];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-8 space-y-16">
 
       {/* 1. 당신의 피비 포트폴리오 섹션 */}
       <section className="space-y-6">
         <div className="flex items-center">
-          <h2 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl select-none text-3d-premium">
+          <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl select-none">
             당신의 피비 포트폴리오
           </h2>
         </div>
 
         {/* 데스크톱: 가로 2열 / 모바일: 상하 1열 */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#1b2e54]/30 backdrop-blur-md p-6 sm:p-10 rounded-3xl border border-white/5 shadow-2xl">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-red-accent/3 p-6 sm:p-10 rounded-3xl border border-red-accent/25 shadow-2xl">
 
           {/* 원형 그래프 영역 */}
           <div className="lg:col-span-5 flex flex-col items-center justify-center p-4">
@@ -134,42 +134,42 @@ export default async function Home() {
           </div>
 
           {/* 비중 테이블 영역 */}
-          <div className="lg:col-span-7 overflow-hidden rounded-2xl border border-white/5 bg-navy/40">
+          <div className="lg:col-span-7 overflow-hidden rounded-2xl border border-yellow-accent bg-white shadow-sm">
             <table className="w-full text-left border-collapse text-sm">
               <thead>
-                <tr className="border-b border-white/10 bg-white/5 text-white font-semibold text-sm sm:text-base">
+                <tr className="border-b border-yellow-accent/50 bg-yellow-accent/10 text-gray-900 font-semibold text-sm sm:text-base">
                   <th className="py-3.5 px-4 sm:px-6">자산유형</th>
                   <th className="py-3.5 px-4 text-center">비중</th>
                   <th className="py-3.5 px-4">티커</th>
-                  <th className="py-3.5 px-4 hidden sm:table-cell">ETF 명</th>
+                  <th className="py-3.5 px-4 hidden sm:table-cell">자산 세부 설명</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5 text-sm sm:text-base">
+              <tbody className="divide-y divide-yellow-accent/20 text-xs sm:text-sm">
                 {portfolioData.map((row) => {
                   const isZero = row.pct === 0;
                   return (
                     <tr
                       key={row.type}
-                      className={`transition-colors hover:bg-white/5 ${isZero ? 'opacity-30' : 'text-white'
+                      className={`transition-colors hover:bg-yellow-accent/5 border-b border-yellow-accent/10 ${isZero ? 'opacity-30' : ''
                         }`}
                     >
-                      <td className="py-4 px-4 sm:px-6 font-bold flex items-center gap-2">
+                      <td className="py-4 px-4 sm:px-6 font-bold text-gray-900 flex items-center gap-2">
                         <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: row.color }} />
                         <span>{row.type}</span>
                       </td>
-                      <td className="py-4 px-4 text-center font-extrabold text-white text-base sm:text-lg">
+                      <td className="py-4 px-4 text-center text-[#000000] font-extrabold font-mono">
                         {row.pct}%
                       </td>
-                      <td className="py-4 px-4 font-mono font-semibold text-white">
+                      <td className="py-4 px-4 font-semibold text-gray-800 hidden sm:table-cell">
                         {row.ticker ? (
-                          <Link href={`/etf/${row.ticker}`} className="hover:underline text-white/90 hover:text-white">
+                          <Link href={`/etf/${row.ticker}`} className="hover:underline text-sky-600 hover:text-sky-700">
                             {row.ticker}
                           </Link>
                         ) : (
-                          <span className="text-white/30">-</span>
+                          <span className="text-gray-300">-</span>
                         )}
                       </td>
-                      <td className="py-4 px-4 text-white/70 truncate max-w-50 hidden sm:table-cell">
+                      <td className="py-4 px-4 text-gray-600 truncate max-w-50 hidden sm:table-cell">
                         {row.name}
                       </td>
                     </tr>
@@ -190,7 +190,7 @@ export default async function Home() {
       {/* 3. 관심 ETF 그리드 섹션 */}
       <section className="space-y-6">
         <div className="flex items-center">
-          <h2 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl select-none text-3d-premium">
+          <h2 className="text-2xl font-extrabold tracking-tight text-[#000000] sm:text-3xl select-none">
             관심 ETF
           </h2>
         </div>

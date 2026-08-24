@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #020204;
+  --background: #ffffff;
   --foreground: #ffffff;
 }
 
@@ -19,7 +19,7 @@
   --color-gold: #987956;
   --color-silver: #8E8C8A;
   
-  --color-red-accent: #dc2626;
+  --color-red-accent: #33FF00;
   --color-coral: #F96D69;
   --color-pink-light: #FF9F9B;
   --color-pink-accent: #FFABC2;
@@ -56,8 +56,7 @@
 }
 
 body {
-  background: linear-gradient(135deg, #020204 0%, #101c34 50%, #203764 100%);
-  background-attachment: fixed;
+  background: #ffffff;
   color: var(--foreground);
   font-family: var(--font-sans);
 }
