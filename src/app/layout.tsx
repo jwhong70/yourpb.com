@@ -11,8 +11,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="ko"
       className="h-full antialiased"
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
+      <body className="min-h-full flex flex-col bg-background text-foreground font-sans" suppressHydrationWarning>
         {children}
       </body>
     </html>

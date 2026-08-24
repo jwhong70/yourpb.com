@@ -15,9 +15,10 @@ interface ETF {
 
 interface FilterProps {
   initialEtfs: ETF[];
+  children?: (filteredEtfs: ETF[]) => React.ReactNode;
 }
 
-export default function Filter({ initialEtfs }: FilterProps) {
+export default function Filter({ initialEtfs, children }: FilterProps) {
   // 필터 상태 변수
   const [leverageFilter, setLeverageFilter] = useState<'exclude' | 'include'>('exclude');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -201,105 +202,109 @@ export default function Filter({ initialEtfs }: FilterProps) {
 
       </div>
 
-      {/* 필터링 결과 그리드 */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between px-2">
-          <span className="text-xs text-white/60 font-semibold">
-            조회 결과: <strong className="text-white text-sm">{filteredEtfs.length}</strong>개 항목
-          </span>
-        </div>
-
-        {filteredEtfs.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
-            {filteredEtfs.map((etf) => {
-              const isWished = wishlist.includes(etf.ticker);
-              const isError = imageErrors[etf.ticker];
-              const storageUrl = `https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/poster-etf/${etf.ticker.toUpperCase()}.png`;
-
-              return (
-                <motion.div
-                  key={etf.ticker}
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className="group flex flex-col bg-[#1b2e54]/40 border border-white/5 rounded-2xl overflow-hidden hover:border-white/15 hover:shadow-xl transition-all"
-                >
-                  <Link href={`/etf/${etf.ticker}`} className="block relative aspect-2/3 w-full overflow-hidden bg-navy/60">
-                    {/* poster 상단 테두리 위에 이름 표시 */}
-                    <div className="absolute top-0 left-0 right-0 z-10 px-3 py-1.5 bg-linear-to-b from-black/80 to-transparent">
-                      <span className="text-[10px] font-bold text-silver truncate block">
-                        {etf.ticker}
-                      </span>
-                    </div>
-
-                    {!isError ? (
-                      <img
-                        src={storageUrl}
-                        alt={`${etf.ticker} Poster`}
-                        onError={() => handleImageError(etf.ticker)}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        loading="lazy"
-                      />
-                    ) : (
-                      /* Fallback 글래스모피즘 플레이스홀더 */
-                      <div className={`w-full h-full bg-linear-to-br ${getGradientClass(etf.category)} flex flex-col items-center justify-center p-4 text-center border-b`}>
-                        <span className="text-2xl font-extrabold tracking-wider text-white/20 select-none uppercase mb-2">
-                          {etf.category}
-                        </span>
-                        <span className="text-sm font-bold text-white tracking-wide truncate max-w-full">
-                          {etf.ticker}
-                        </span>
-                        <span className="text-[10px] text-white/50 truncate max-w-full mt-1">
-                          {etf.name}
-                        </span>
-                        {etf.leverage && (
-                          <span className="text-[9px] font-bold text-white bg-red-accent/80 border border-red-500/20 px-1.5 py-0.5 rounded mt-2">
-                            {etf.leverage}
-                          </span>
-                        )}
-                      </div>
-                    )}
-                  </Link>
-
-                  {/* 하단 정보 영역 */}
-                  <div className="p-3 flex flex-col justify-between grow gap-2">
-                    <Link href={`/etf/${etf.ticker}`} className="block group-hover:text-sky-primary transition-colors">
-                      <span className="text-[10px] font-bold text-yellow-accent tracking-wide block mb-0.5">
-                        {etf.ticker}
-                      </span>
-                      <h3 className="text-xs font-semibold text-white/90 line-clamp-2 leading-snug">
-                        {etf.name}
-                      </h3>
-                    </Link>
-
-                    <div className="flex items-center justify-between border-t border-white/5 pt-2 mt-auto">
-                      <span className="text-[10px] text-white/40 font-medium">
-                        {etf.category}
-                      </span>
-                      <button
-                        onClick={(e) => toggleWishlist(etf.ticker, e)}
-                        className="p-1 text-white/50 hover:text-red-accent hover:scale-110 active:scale-95 transition-all cursor-pointer"
-                        title={isWished ? '찜 해제' : '찜하기'}
-                      >
-                        <Heart
-                          className={`w-4 h-4 transition-colors ${
-                            isWished ? 'fill-red-accent text-red-accent' : 'text-white/50'
-                          }`}
-                        />
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-20 bg-[#1b2e54]/20 border border-white/5 rounded-3xl text-center">
-            <span className="text-sm text-white/40 font-semibold">
-              해당하는 관심 ETF 상품이 존재하지 않습니다.
+      {children ? (
+        children(filteredEtfs)
+      ) : (
+        /* 필터링 결과 그리드 */
+        <div className="space-y-4">
+          <div className="flex items-center justify-between px-2">
+            <span className="text-xs text-white/60 font-semibold">
+              조회 결과: <strong className="text-white text-sm">{filteredEtfs.length}</strong>개 항목
             </span>
           </div>
-        )}
-      </div>
+
+          {filteredEtfs.length > 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+              {filteredEtfs.map((etf) => {
+                const isWished = wishlist.includes(etf.ticker);
+                const isError = imageErrors[etf.ticker];
+                const storageUrl = `https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/poster-etf/${etf.ticker.toUpperCase()}.png`;
+
+                return (
+                  <motion.div
+                    key={etf.ticker}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    className="group flex flex-col bg-[#1b2e54]/40 border border-white/5 rounded-2xl overflow-hidden hover:border-white/15 hover:shadow-xl transition-all"
+                  >
+                    <Link href={`/etf/${etf.ticker}`} className="block relative aspect-2/3 w-full overflow-hidden bg-navy/60">
+                      {/* poster 상단 테두리 위에 이름 표시 */}
+                      <div className="absolute top-0 left-0 right-0 z-10 px-3 py-1.5 bg-linear-to-b from-black/80 to-transparent">
+                        <span className="text-[10px] font-bold text-silver truncate block">
+                          {etf.ticker}
+                        </span>
+                      </div>
+
+                      {!isError ? (
+                        <img
+                          src={storageUrl}
+                          alt={`${etf.ticker} Poster`}
+                          onError={() => handleImageError(etf.ticker)}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                        />
+                      ) : (
+                        /* Fallback 글래스모피즘 플레이스홀더 */
+                        <div className={`w-full h-full bg-linear-to-br ${getGradientClass(etf.category)} flex flex-col items-center justify-center p-4 text-center border-b`}>
+                          <span className="text-2xl font-extrabold tracking-wider text-white/20 select-none uppercase mb-2">
+                            {etf.category}
+                          </span>
+                          <span className="text-sm font-bold text-white tracking-wide truncate max-w-full">
+                            {etf.ticker}
+                          </span>
+                          <span className="text-[10px] text-white/50 truncate max-w-full mt-1">
+                            {etf.name}
+                          </span>
+                          {etf.leverage && (
+                            <span className="text-[9px] font-bold text-white bg-red-accent/80 border border-red-500/20 px-1.5 py-0.5 rounded mt-2">
+                              {etf.leverage}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </Link>
+
+                    {/* 하단 정보 영역 */}
+                    <div className="p-3 flex flex-col justify-between grow gap-2">
+                      <Link href={`/etf/${etf.ticker}`} className="block group-hover:text-sky-primary transition-colors">
+                        <span className="text-[10px] font-bold text-yellow-accent tracking-wide block mb-0.5">
+                          {etf.ticker}
+                        </span>
+                        <h3 className="text-xs font-semibold text-white/90 line-clamp-2 leading-snug">
+                          {etf.name}
+                        </h3>
+                      </Link>
+
+                      <div className="flex items-center justify-between border-t border-white/5 pt-2 mt-auto">
+                        <span className="text-[10px] text-white/40 font-medium">
+                          {etf.category}
+                        </span>
+                        <button
+                          onClick={(e) => toggleWishlist(etf.ticker, e)}
+                          className="p-1 text-white/50 hover:text-red-accent hover:scale-110 active:scale-95 transition-all cursor-pointer"
+                          title={isWished ? '찜 해제' : '찜하기'}
+                        >
+                          <Heart
+                            className={`w-4 h-4 transition-colors ${
+                              isWished ? 'fill-red-accent text-red-accent' : 'text-white/50'
+                            }`}
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-20 bg-[#1b2e54]/20 border border-white/5 rounded-3xl text-center">
+              <span className="text-sm text-white/40 font-semibold">
+                해당하는 관심 ETF 상품이 존재하지 않습니다.
+              </span>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

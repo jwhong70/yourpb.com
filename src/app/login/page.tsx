@@ -59,7 +59,7 @@ export default function LoginPage() {
 
       {/* 시네마틱 빛 효과 */}
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-red-600/10 rounded-full blur-3xl z-0" />
-      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-[#203764]/20 rounded-full blur-3xl z-0" />
+      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-navy/20 rounded-full blur-3xl z-0" />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -68,11 +68,11 @@ export default function LoginPage() {
         className="w-full max-w-md z-10"
       >
         {/* 글래스모피즘 카드 */}
-        <div className="bg-[#203764]/40 backdrop-blur-xl border border-[#203764]/30 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+        <div className="bg-navy/40 backdrop-blur-xl border border-navy/30 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
 
           {/* 카드 상단 데코레이션: 빨간 원 안에 필름 아이콘 */}
           <div className="flex flex-col items-center mb-8">
-            <div className="w-16 h-16 bg-[#dc2626] rounded-full flex items-center justify-center shadow-lg shadow-red-900/50 mb-3 border border-red-500/20">
+            <div className="w-16 h-16 bg-red-accent rounded-full flex items-center justify-center shadow-lg shadow-red-900/50 mb-3 border border-red-500/20">
               <Film className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-white tracking-wider">YOURPB</h1>
@@ -88,7 +88,7 @@ export default function LoginPage() {
                 setSuccessMessage(null);
               }}
               className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${activeTab === 'login'
-                  ? 'bg-[#dc2626] text-white shadow-md'
+                  ? 'bg-red-accent text-white shadow-md'
                   : 'text-slate-400 hover:text-white'
                 }`}
             >
@@ -101,7 +101,7 @@ export default function LoginPage() {
                 setSuccessMessage(null);
               }}
               className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${activeTab === 'signup'
-                  ? 'bg-[#dc2626] text-white shadow-md'
+                  ? 'bg-red-accent text-white shadow-md'
                   : 'text-slate-400 hover:text-white'
                 }`}
             >

@@ -76,7 +76,6 @@ export default function Header({ initialUser }: HeaderProps) {
 
   const navLinks = [
     { name: '홈', href: '/' },
-    { name: '포트폴리오', href: '/portfolio' },
     { name: 'ETF', href: '/etf' },
     { name: '매크로', href: '/macro' },
     { name: '주식', href: '/stock' },
@@ -87,8 +86,8 @@ export default function Header({ initialUser }: HeaderProps) {
   return (
     <header
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled
-          ? 'bg-navy/80 backdrop-blur-xl border-b border-white/10 shadow-lg py-3'
-          : 'bg-transparent border-b border-transparent py-5'
+        ? 'bg-navy/80 backdrop-blur-xl border-b border-white/10 shadow-lg py-3'
+        : 'bg-transparent border-b border-transparent py-5'
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -106,17 +105,20 @@ export default function Header({ initialUser }: HeaderProps) {
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 const isHome = link.name === '홈';
+                const isEtf = link.name === 'ETF';
                 return (
                   <Link
                     key={link.name}
                     href={link.href}
-                    className={`text-base font-bold transition-colors duration-200 ${
-                      isHome
+                    className={`text-base font-bold transition-colors duration-200 ${isHome
                         ? 'text-yellow-accent hover:text-yellow-accent/90'
-                        : isActive
-                          ? 'text-sky-primary'
-                          : 'text-white/80 hover:text-white'
-                    }`}
+                        : isEtf
+                          ? 'hover:opacity-90'
+                          : isActive
+                            ? 'text-sky-primary'
+                            : 'text-white/80 hover:text-white'
+                      }`}
+                    style={isEtf ? { color: '#F96D69' } : undefined}
                   >
                     {link.name}
                   </Link>
@@ -201,18 +203,21 @@ export default function Header({ initialUser }: HeaderProps) {
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               const isHome = link.name === '홈';
+              const isEtf = link.name === 'ETF';
               return (
                 <Link
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block px-4 py-3 rounded-xl text-lg font-bold transition-colors ${
-                    isHome
+                  className={`block px-4 py-3 rounded-xl text-lg font-bold transition-colors ${isHome
                       ? 'text-yellow-accent hover:bg-white/5'
-                      : isActive
-                        ? 'bg-sky-primary/20 text-sky-primary'
-                        : 'text-white/80 hover:bg-white/5 hover:text-white'
-                  }`}
+                      : isEtf
+                        ? 'hover:bg-white/5 hover:opacity-90'
+                        : isActive
+                          ? 'bg-sky-primary/20 text-sky-primary'
+                          : 'text-white/80 hover:bg-white/5 hover:text-white'
+                    }`}
+                  style={isEtf ? { color: '#F96D69' } : undefined}
                 >
                   {link.name}
                 </Link>
