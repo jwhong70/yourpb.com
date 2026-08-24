@@ -131,31 +131,31 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
                           onClick={() => handleSort('yield_1w')}
                           className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
                         >
-                          1주 수익률 {renderSortIcon('yield_1w')}
+                          1주 {renderSortIcon('yield_1w')}
                         </th>
                         <th
                           onClick={() => handleSort('yield_5w')}
                           className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
                         >
-                          5주 수익률 {renderSortIcon('yield_5w')}
+                          5주 {renderSortIcon('yield_5w')}
                         </th>
                         <th
                           onClick={() => handleSort('yield_20w')}
                           className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
                         >
-                          20주 수익률 {renderSortIcon('yield_20w')}
+                          20주 {renderSortIcon('yield_20w')}
                         </th>
                         <th
                           onClick={() => handleSort('yield_60w')}
                           className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
                         >
-                          60주 수익률 {renderSortIcon('yield_60w')}
+                          60주 {renderSortIcon('yield_60w')}
                         </th>
                         <th
                           onClick={() => handleSort('yield_120w')}
                           className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
                         >
-                          120주 수익률 {renderSortIcon('yield_120w')}
+                          120주 {renderSortIcon('yield_120w')}
                         </th>
                       </tr>
                     </thead>

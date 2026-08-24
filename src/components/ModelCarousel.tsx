@@ -48,7 +48,7 @@ export default function ModelCarousel({
       {/* 타이틀 영역 */}
       <div className="flex items-center justify-between border-b border-[#000000] pb-3">
         <div className="flex items-center gap-2">
-          <h2 className="text-xl font-bold tracking-tight text-[#000000] sm:text-2xl select-none">
+          <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl select-none">
             구성 ETF
           </h2>
         </div>

@@ -132,7 +132,7 @@ export default async function Home() {
                         fontWeight="bold"
                         textAnchor="middle"
                         dominantBaseline="central"
-                        className="pointer-events-none select-none fill-black font-sans"
+                        className="pointer-events-none select-none fill-black font-serif"
                       >
                         {item.type} {item.pct}%
                       </text>
@@ -145,7 +145,7 @@ export default async function Home() {
 
           {/* 비중 테이블 영역 */}
           <div className="lg:col-span-7 overflow-hidden rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white bg-[#F1F1F1] shadow-sm">
-            <table className="w-full text-left border-collapse text-sm">
+            <table className="w-full text-left border-collapse text-sm font-serif">
               <thead>
                 <tr className="bg-[#000000] text-white font-bold text-sm sm:text-base divide-x divide-white">
                   <th className="py-3.5 px-4 sm:px-6 text-white">자산유형</th>
@@ -171,7 +171,7 @@ export default async function Home() {
                       </td>
                       <td className="py-4 px-4 font-semibold text-[#000000] border-r border-r-white">
                         {row.ticker ? (
-                          <Link href={`/etf/${row.ticker}`} className="hover:underline text-[#000000] underline">
+                          <Link href={`/etf/${row.ticker}`} className="hover:underline text-[#000000]">
                             {row.ticker}
                           </Link>
                         ) : (
@@ -193,8 +193,8 @@ export default async function Home() {
 
       {/* 2. 구성 ETF 캐러셀 섹션 */}
       <section>
-        <ModelCarousel 
-          etfs={modelPortfolioEtfs} 
+        <ModelCarousel
+          etfs={modelPortfolioEtfs}
           initialWishlistTickers={wishlistTickers}
           isLoggedIn={!!user}
         />
@@ -203,16 +203,16 @@ export default async function Home() {
       {/* 3. 관심 ETF 그리드 섹션 */}
       <section className="space-y-6">
         <div className="flex items-center">
-          <h2 className="text-2xl font-extrabold tracking-tight text-[#000000] sm:text-3xl select-none">
+          <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl select-none">
             관심 ETF
           </h2>
         </div>
 
         {/* 3단계 필터 및 목록 컴포넌트 마운트 */}
-        <Filter 
-          initialEtfs={etfs || []} 
-          initialWishlistTickers={wishlistTickers} 
-          isLoggedIn={!!user} 
+        <Filter
+          initialEtfs={etfs || []}
+          initialWishlistTickers={wishlistTickers}
+          isLoggedIn={!!user}
         />
       </section>
 

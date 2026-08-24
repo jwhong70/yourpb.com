@@ -148,7 +148,7 @@ export default async function MacroPage() {
 
   // 1.1.2. 미국 GDP
   const us_gdp_imf = sortData(weoGroups['usa_ngdp_rpch_a'] || []);
-  
+
   const us_gdp_q = sortData(fredQGroups['gdpc1'] || []);
   const us_gdp_q_val = getLastValid(us_gdp_q, ['yoy_pct']);
   const us_gdp_q_sig = us_gdp_q_val ? (us_gdp_q_val.yoy_pct >= 0 ? 1 : -1) : null;
@@ -191,9 +191,9 @@ export default async function MacroPage() {
   const gdpnow_val = getLastValid(gdpnow, ['yield_4w', 'yield_52w']);
   const gdpnow_sig = gdpnow_val
     ? {
-        prev: gdpnow_val.yield_4w >= 0 ? 1 : -1,
-        yoy: gdpnow_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: gdpnow_val.yield_4w >= 0 ? 1 : -1,
+      yoy: gdpnow_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 1.1.3. 한국 GDP
@@ -220,9 +220,9 @@ export default async function MacroPage() {
   const ic4wsa_val = getLastValid(ic4wsa, ['yield_4w', 'yield_52w']);
   const ic4wsa_sig = ic4wsa_val
     ? {
-        prev: ic4wsa_val.yield_4w <= 0 ? 1 : -1,
-        yoy: ic4wsa_val.yield_52w <= 0 ? 1 : -1,
-      }
+      prev: ic4wsa_val.yield_4w <= 0 ? 1 : -1,
+      yoy: ic4wsa_val.yield_52w <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 1.2.2. 구인건수(JOLTS)
@@ -230,9 +230,9 @@ export default async function MacroPage() {
   const jtsjol_val = getLastValid(jtsjol, ['mom_pct', 'yoy_pct']);
   const jtsjol_sig = jtsjol_val
     ? {
-        prev: jtsjol_val.mom_pct >= 0 ? 1 : -1,
-        yoy: jtsjol_val.yoy_pct >= 0 ? 1 : -1,
-      }
+      prev: jtsjol_val.mom_pct >= 0 ? 1 : -1,
+      yoy: jtsjol_val.yoy_pct >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 1.2.3. 비농업 부문 고용자수
@@ -240,9 +240,9 @@ export default async function MacroPage() {
   const payems_val = getLastValid(payems, ['mom_pct', 'yoy_pct']);
   const payems_sig = payems_val
     ? {
-        prev: payems_val.mom_pct >= 0 ? 1 : -1,
-        yoy: payems_val.yoy_pct >= 0 ? 1 : -1,
-      }
+      prev: payems_val.mom_pct >= 0 ? 1 : -1,
+      yoy: payems_val.yoy_pct >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 1.2.4. 실업률
@@ -250,9 +250,9 @@ export default async function MacroPage() {
   const unrate_val = getLastValid(unrate, ['mom_pct', 'yoy_pct']);
   const unrate_sig = unrate_val
     ? {
-        prev: unrate_val.mom_pct <= 0 ? 1 : -1,
-        yoy: unrate_val.yoy_pct <= 0 ? 1 : -1,
-      }
+      prev: unrate_val.mom_pct <= 0 ? 1 : -1,
+      yoy: unrate_val.yoy_pct <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 1.2.5. 총 소비자신용
@@ -260,9 +260,9 @@ export default async function MacroPage() {
   const totalsl_val = getLastValid(totalsl, ['mom_pct', 'yoy_pct']);
   const totalsl_sig = totalsl_val
     ? {
-        prev: totalsl_val.mom_pct >= 0 ? 1 : -1,
-        yoy: totalsl_val.yoy_pct >= 0 ? 1 : -1,
-      }
+      prev: totalsl_val.mom_pct >= 0 ? 1 : -1,
+      yoy: totalsl_val.yoy_pct >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 1.2.6. 소매판매
@@ -270,9 +270,9 @@ export default async function MacroPage() {
   const rsafs_val = getLastValid(rsafs, ['mom_pct', 'yoy_pct']);
   const rsafs_sig = rsafs_val
     ? {
-        prev: rsafs_val.mom_pct >= 0 ? 1 : -1,
-        yoy: rsafs_val.yoy_pct >= 0 ? 1 : -1,
-      }
+      prev: rsafs_val.mom_pct >= 0 ? 1 : -1,
+      yoy: rsafs_val.yoy_pct >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 1.2.7. 개인 소비지출
@@ -280,9 +280,9 @@ export default async function MacroPage() {
   const pce_val = getLastValid(pce, ['mom_pct', 'yoy_pct']);
   const pce_sig = pce_val
     ? {
-        prev: pce_val.mom_pct >= 0 ? 1 : -1,
-        yoy: pce_val.yoy_pct >= 0 ? 1 : -1,
-      }
+      prev: pce_val.mom_pct >= 0 ? 1 : -1,
+      yoy: pce_val.yoy_pct >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // ------------------ 1.3. 생산 ------------------
@@ -291,9 +291,9 @@ export default async function MacroPage() {
   const indpro_val = getLastValid(indpro, ['mom_pct', 'yoy_pct']);
   const indpro_sig = indpro_val
     ? {
-        prev: indpro_val.mom_pct >= 0 ? 1 : -1,
-        yoy: indpro_val.yoy_pct >= 0 ? 1 : -1,
-      }
+      prev: indpro_val.mom_pct >= 0 ? 1 : -1,
+      yoy: indpro_val.yoy_pct >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 1.3.2. 전체 산업가동률
@@ -301,9 +301,9 @@ export default async function MacroPage() {
   const tcu_val = getLastValid(tcu, ['mom_pct', 'yoy_pct']);
   const tcu_sig = tcu_val
     ? {
-        prev: tcu_val.mom_pct >= 0 ? 1 : -1,
-        yoy: tcu_val.yoy_pct >= 0 ? 1 : -1,
-      }
+      prev: tcu_val.mom_pct >= 0 ? 1 : -1,
+      yoy: tcu_val.yoy_pct >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 1.3.3. 내구재 신규주문
@@ -311,9 +311,9 @@ export default async function MacroPage() {
   const dgorder_val = getLastValid(dgorder, ['mom_pct', 'yoy_pct']);
   const dgorder_sig = dgorder_val
     ? {
-        prev: dgorder_val.mom_pct >= 0 ? 1 : -1,
-        yoy: dgorder_val.yoy_pct >= 0 ? 1 : -1,
-      }
+      prev: dgorder_val.mom_pct >= 0 ? 1 : -1,
+      yoy: dgorder_val.yoy_pct >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // ------------------ 2.1. 금리 ------------------
@@ -322,9 +322,9 @@ export default async function MacroPage() {
   const dfedtaru_val = getLastValid(dfedtaru, ['yield_4w', 'yield_52w']);
   const dfedtaru_sig = dfedtaru_val
     ? {
-        prev: dfedtaru_val.yield_4w <= 0 ? 1 : -1,
-        yoy: dfedtaru_val.yield_52w <= 0 ? 1 : -1,
-      }
+      prev: dfedtaru_val.yield_4w <= 0 ? 1 : -1,
+      yoy: dfedtaru_val.yield_52w <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 2.1.2. 미국 3개월 단기 국채수익률
@@ -332,9 +332,9 @@ export default async function MacroPage() {
   const irx_val = getLastValid(irx, ['yield_4w', 'yield_52w']);
   const irx_sig = irx_val
     ? {
-        prev: irx_val.yield_4w <= 0 ? 1 : -1,
-        yoy: irx_val.yield_52w <= 0 ? 1 : -1,
-      }
+      prev: irx_val.yield_4w <= 0 ? 1 : -1,
+      yoy: irx_val.yield_52w <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 2.1.3. 미국 10년물 국채수익률
@@ -342,9 +342,9 @@ export default async function MacroPage() {
   const tnx_val = getLastValid(tnx, ['yield_4w', 'yield_52w']);
   const tnx_sig = tnx_val
     ? {
-        prev: tnx_val.yield_4w <= 0 ? 1 : -1,
-        yoy: tnx_val.yield_52w <= 0 ? 1 : -1,
-      }
+      prev: tnx_val.yield_4w <= 0 ? 1 : -1,
+      yoy: tnx_val.yield_52w <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 2.1.4. 미국 30년물 국채수익률
@@ -352,9 +352,9 @@ export default async function MacroPage() {
   const tyx_val = getLastValid(tyx, ['yield_4w', 'yield_52w']);
   const tyx_sig = tyx_val
     ? {
-        prev: tyx_val.yield_4w <= 0 ? 1 : -1,
-        yoy: tyx_val.yield_52w <= 0 ? 1 : -1,
-      }
+      prev: tyx_val.yield_4w <= 0 ? 1 : -1,
+      yoy: tyx_val.yield_52w <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 2.1.5. 미국 국채 10년물 - 2년물 금리차
@@ -369,9 +369,9 @@ export default async function MacroPage() {
   const treast_val = getLastValid(treast, ['yield_4w', 'yield_52w']);
   const treast_sig = treast_val
     ? {
-        prev: treast_val.yield_4w >= 0 ? 1 : -1,
-        yoy: treast_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: treast_val.yield_4w >= 0 ? 1 : -1,
+      yoy: treast_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 2.2.2. 연준 보유 MBS (동일 티커 wcurcir 적용)
@@ -379,9 +379,9 @@ export default async function MacroPage() {
   const mbs_val = getLastValid(mbs, ['yield_4w', 'yield_52w']);
   const mbs_sig = mbs_val
     ? {
-        prev: mbs_val.yield_4w >= 0 ? 1 : -1,
-        yoy: mbs_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: mbs_val.yield_4w >= 0 ? 1 : -1,
+      yoy: mbs_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 2.2.3. 화폐발행액(유통화폐)
@@ -389,9 +389,9 @@ export default async function MacroPage() {
   const wcurcir_val = getLastValid(wcurcir, ['yield_4w', 'yield_52w']);
   const wcurcir_sig = wcurcir_val
     ? {
-        prev: wcurcir_val.yield_4w >= 0 ? 1 : -1,
-        yoy: wcurcir_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: wcurcir_val.yield_4w >= 0 ? 1 : -1,
+      yoy: wcurcir_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 2.2.4. 역레포 거래총액
@@ -399,9 +399,9 @@ export default async function MacroPage() {
   const rrpontsyd_val = getLastValid(rrpontsyd, ['yield_4w', 'yield_52w']);
   const rrpontsyd_sig = rrpontsyd_val
     ? {
-        prev: rrpontsyd_val.yield_4w >= 0 ? 1 : -1,
-        yoy: rrpontsyd_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: rrpontsyd_val.yield_4w >= 0 ? 1 : -1,
+      yoy: rrpontsyd_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 2.2.5. 역레포 응찰금리
@@ -414,9 +414,9 @@ export default async function MacroPage() {
   const wtregen_val = getLastValid(wtregen, ['yield_4w', 'yield_52w']);
   const wtregen_sig = wtregen_val
     ? {
-        prev: wtregen_val.yield_4w >= 0 ? 1 : -1,
-        yoy: wtregen_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: wtregen_val.yield_4w >= 0 ? 1 : -1,
+      yoy: wtregen_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 2.2.8. 연준 예치 지급준비금
@@ -424,9 +424,9 @@ export default async function MacroPage() {
   const wrbwfrbl_val = getLastValid(wrbwfrbl, ['yield_4w', 'yield_52w']);
   const wrbwfrbl_sig = wrbwfrbl_val
     ? {
-        prev: wrbwfrbl_val.yield_4w >= 0 ? 1 : -1,
-        yoy: wrbwfrbl_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: wrbwfrbl_val.yield_4w >= 0 ? 1 : -1,
+      yoy: wrbwfrbl_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 2.2.9. 미국 연방정부 재정수지
@@ -434,9 +434,9 @@ export default async function MacroPage() {
   const mtsds_val = getLastValid(mtsds, ['mom_pct', 'yoy_pct']);
   const mtsds_sig = mtsds_val
     ? {
-        prev: mtsds_val.mom_pct <= 0 ? 1 : -1,
-        yoy: mtsds_val.yoy_pct <= 0 ? 1 : -1,
-      }
+      prev: mtsds_val.mom_pct <= 0 ? 1 : -1,
+      yoy: mtsds_val.yoy_pct <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // ------------------ 2.3. 물가 ------------------
@@ -445,9 +445,9 @@ export default async function MacroPage() {
   const cpiaucsl_val = getLastValid(cpiaucsl, ['mom_pct', 'yoy_pct']);
   const cpiaucsl_sig = cpiaucsl_val
     ? {
-        prev: cpiaucsl_val.mom_pct <= 0 ? 1 : -1,
-        yoy: cpiaucsl_val.yoy_pct <= 0 ? 1 : -1,
-      }
+      prev: cpiaucsl_val.mom_pct <= 0 ? 1 : -1,
+      yoy: cpiaucsl_val.yoy_pct <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 2.3.2. Core CPI
@@ -455,9 +455,9 @@ export default async function MacroPage() {
   const cpilfesl_val = getLastValid(cpilfesl, ['mom_pct', 'yoy_pct']);
   const cpilfesl_sig = cpilfesl_val
     ? {
-        prev: cpilfesl_val.mom_pct <= 0 ? 1 : -1,
-        yoy: cpilfesl_val.yoy_pct <= 0 ? 1 : -1,
-      }
+      prev: cpilfesl_val.mom_pct <= 0 ? 1 : -1,
+      yoy: cpilfesl_val.yoy_pct <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 2.3.3. PCE 물가지수
@@ -465,9 +465,9 @@ export default async function MacroPage() {
   const pcepi_val = getLastValid(pcepi, ['mom_pct', 'yoy_pct']);
   const pcepi_sig = pcepi_val
     ? {
-        prev: pcepi_val.mom_pct <= 0 ? 1 : -1,
-        yoy: pcepi_val.yoy_pct <= 0 ? 1 : -1,
-      }
+      prev: pcepi_val.mom_pct <= 0 ? 1 : -1,
+      yoy: pcepi_val.yoy_pct <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 2.3.4. Core PCE
@@ -475,9 +475,9 @@ export default async function MacroPage() {
   const pcepilfe_val = getLastValid(pcepilfe, ['mom_pct', 'yoy_pct']);
   const pcepilfe_sig = pcepilfe_val
     ? {
-        prev: pcepilfe_val.mom_pct <= 0 ? 1 : -1,
-        yoy: pcepilfe_val.yoy_pct <= 0 ? 1 : -1,
-      }
+      prev: pcepilfe_val.mom_pct <= 0 ? 1 : -1,
+      yoy: pcepilfe_val.yoy_pct <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 2.3.5. 최종 수요 PPI
@@ -485,9 +485,9 @@ export default async function MacroPage() {
   const ppifis_val = getLastValid(ppifis, ['mom_pct', 'yoy_pct']);
   const ppifis_sig = ppifis_val
     ? {
-        prev: ppifis_val.mom_pct <= 0 ? 1 : -1,
-        yoy: ppifis_val.yoy_pct <= 0 ? 1 : -1,
-      }
+      prev: ppifis_val.mom_pct <= 0 ? 1 : -1,
+      yoy: ppifis_val.yoy_pct <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 2.3.6. Core PPI
@@ -495,16 +495,16 @@ export default async function MacroPage() {
   const wpsfd_val = getLastValid(wpsfd, ['mom_pct', 'yoy_pct']);
   const wpsfd_sig = wpsfd_val
     ? {
-        prev: wpsfd_val.mom_pct <= 0 ? 1 : -1,
-        yoy: wpsfd_val.yoy_pct <= 0 ? 1 : -1,
-      }
+      prev: wpsfd_val.mom_pct <= 0 ? 1 : -1,
+      yoy: wpsfd_val.yoy_pct <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // ------------------ 3.1. 리스크 ------------------
   // 3.1.1. CNN 공포/탐욕지수 (fear_greed)
   const fgSorted = sortData(fearGreed);
   const fg_val = fgSorted.length > 0 ? fgSorted[fgSorted.length - 1] : null;
-  
+
   // 1년전 데이터 찾기
   let fg_1y_prev = null;
   if (fg_val) {
@@ -536,12 +536,12 @@ export default async function MacroPage() {
 
   const fg_sig = fg_val
     ? {
-        prev: null,
-        yoy: null,
-        rating: fg_val.rating || 'neutral',
-        score: fg_val.score !== undefined ? fg_val.score : 50,
-        isText: true,
-      }
+      prev: null,
+      yoy: null,
+      rating: fg_val.rating || 'neutral',
+      score: fg_val.score !== undefined ? fg_val.score : 50,
+      isText: true,
+    }
     : { prev: null, yoy: null, rating: 'neutral', score: 50, isText: true };
 
   // 3.1.2. CBOE 변동성 지수(VIX)
@@ -549,9 +549,9 @@ export default async function MacroPage() {
   const vix_val = getLastValid(vix, ['yield_4w', 'yield_52w']);
   const vix_sig = vix_val
     ? {
-        prev: vix_val.yield_4w <= 0 ? 1 : -1,
-        yoy: vix_val.yield_52w <= 0 ? 1 : -1,
-      }
+      prev: vix_val.yield_4w <= 0 ? 1 : -1,
+      yoy: vix_val.yield_52w <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // ------------------ 3.2. 통화 ------------------
@@ -560,9 +560,9 @@ export default async function MacroPage() {
   const dxy_val = getLastValid(dxy, ['yield_4w', 'yield_52w']);
   const dxy_sig = dxy_val
     ? {
-        prev: dxy_val.yield_4w >= 0 ? 1 : -1,
-        yoy: dxy_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: dxy_val.yield_4w >= 0 ? 1 : -1,
+      yoy: dxy_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 3.2.2. 미국 국채 10년물 - 3개월물 금리차 (동일 티커 t10y3m 적용)
@@ -573,9 +573,9 @@ export default async function MacroPage() {
   const eurusd_val = getLastValid(eurusd, ['yield_4w', 'yield_52w']);
   const eurusd_sig = eurusd_val
     ? {
-        prev: eurusd_val.yield_4w >= 0 ? 1 : -1,
-        yoy: eurusd_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: eurusd_val.yield_4w >= 0 ? 1 : -1,
+      yoy: eurusd_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 3.2.4. 달러/엔 환율
@@ -583,9 +583,9 @@ export default async function MacroPage() {
   const usdjpy_val = getLastValid(usdjpy, ['yield_4w', 'yield_52w']);
   const usdjpy_sig = usdjpy_val
     ? {
-        prev: usdjpy_val.yield_4w <= 0 ? 1 : -1,
-        yoy: usdjpy_val.yield_52w <= 0 ? 1 : -1,
-      }
+      prev: usdjpy_val.yield_4w <= 0 ? 1 : -1,
+      yoy: usdjpy_val.yield_52w <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 3.2.5. 달러/위안 환율
@@ -593,9 +593,9 @@ export default async function MacroPage() {
   const usdchn_val = getLastValid(usdchn, ['yield_4w', 'yield_52w']);
   const usdchn_sig = usdchn_val
     ? {
-        prev: usdchn_val.yield_4w <= 0 ? 1 : -1,
-        yoy: usdchn_val.yield_52w <= 0 ? 1 : -1,
-      }
+      prev: usdchn_val.yield_4w <= 0 ? 1 : -1,
+      yoy: usdchn_val.yield_52w <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 3.2.6. 달러/원 환율
@@ -603,9 +603,9 @@ export default async function MacroPage() {
   const usdkrw_val = getLastValid(usdkrw, ['yield_4w', 'yield_52w']);
   const usdkrw_sig = usdkrw_val
     ? {
-        prev: usdkrw_val.yield_4w <= 0 ? 1 : -1,
-        yoy: usdkrw_val.yield_52w <= 0 ? 1 : -1,
-      }
+      prev: usdkrw_val.yield_4w <= 0 ? 1 : -1,
+      yoy: usdkrw_val.yield_52w <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 3.2.7. 달러/대만달러 환율
@@ -613,9 +613,9 @@ export default async function MacroPage() {
   const usdtwd_val = getLastValid(usdtwd, ['yield_4w', 'yield_52w']);
   const usdtwd_sig = usdtwd_val
     ? {
-        prev: usdtwd_val.yield_4w <= 0 ? 1 : -1,
-        yoy: usdtwd_val.yield_52w <= 0 ? 1 : -1,
-      }
+      prev: usdtwd_val.yield_4w <= 0 ? 1 : -1,
+      yoy: usdtwd_val.yield_52w <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // ------------------ 3.3. 상품 ------------------
@@ -624,9 +624,9 @@ export default async function MacroPage() {
   const gold_fut_val = getLastValid(gold_fut, ['yield_4w', 'yield_52w']);
   const gold_fut_sig = gold_fut_val
     ? {
-        prev: gold_fut_val.yield_4w >= 0 ? 1 : -1,
-        yoy: gold_fut_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: gold_fut_val.yield_4w >= 0 ? 1 : -1,
+      yoy: gold_fut_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 3.3.2. WTI 원유 선물
@@ -634,9 +634,9 @@ export default async function MacroPage() {
   const wti_fut_val = getLastValid(wti_fut, ['yield_4w', 'yield_52w']);
   const wti_fut_sig = wti_fut_val
     ? {
-        prev: wti_fut_val.yield_4w >= 0 ? 1 : -1,
-        yoy: wti_fut_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: wti_fut_val.yield_4w >= 0 ? 1 : -1,
+      yoy: wti_fut_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 3.3.3. 구리 선물
@@ -644,9 +644,9 @@ export default async function MacroPage() {
   const copper_fut_val = getLastValid(copper_fut, ['yield_4w', 'yield_52w']);
   const copper_fut_sig = copper_fut_val
     ? {
-        prev: copper_fut_val.yield_4w >= 0 ? 1 : -1,
-        yoy: copper_fut_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: copper_fut_val.yield_4w >= 0 ? 1 : -1,
+      yoy: copper_fut_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 3.3.4. 밀 선물
@@ -654,9 +654,9 @@ export default async function MacroPage() {
   const wheat_fut_val = getLastValid(wheat_fut, ['yield_4w', 'yield_52w']);
   const wheat_fut_sig = wheat_fut_val
     ? {
-        prev: wheat_fut_val.yield_4w >= 0 ? 1 : -1,
-        yoy: wheat_fut_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: wheat_fut_val.yield_4w >= 0 ? 1 : -1,
+      yoy: wheat_fut_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 3.3.5. 옥수수 선물
@@ -664,9 +664,9 @@ export default async function MacroPage() {
   const corn_fut_val = getLastValid(corn_fut, ['yield_4w', 'yield_52w']);
   const corn_fut_sig = corn_fut_val
     ? {
-        prev: corn_fut_val.yield_4w >= 0 ? 1 : -1,
-        yoy: corn_fut_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: corn_fut_val.yield_4w >= 0 ? 1 : -1,
+      yoy: corn_fut_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // ------------------ 4.1. 주식사이클 ------------------
@@ -675,9 +675,9 @@ export default async function MacroPage() {
   const spx_val = getLastValid(spx, ['yield_4w', 'yield_52w']);
   const spx_sig = spx_val
     ? {
-        prev: spx_val.yield_4w >= 0 ? 1 : -1,
-        yoy: spx_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: spx_val.yield_4w >= 0 ? 1 : -1,
+      yoy: spx_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 4.1.2. 나스닥 종합 지수
@@ -685,9 +685,9 @@ export default async function MacroPage() {
   const ixic_val = getLastValid(ixic, ['yield_4w', 'yield_52w']);
   const ixic_sig = ixic_val
     ? {
-        prev: ixic_val.yield_4w >= 0 ? 1 : -1,
-        yoy: ixic_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: ixic_val.yield_4w >= 0 ? 1 : -1,
+      yoy: ixic_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 4.1.3. 러셀 2000 지수
@@ -695,9 +695,9 @@ export default async function MacroPage() {
   const rut_val = getLastValid(rut, ['yield_4w', 'yield_52w']);
   const rut_sig = rut_val
     ? {
-        prev: rut_val.yield_4w >= 0 ? 1 : -1,
-        yoy: rut_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: rut_val.yield_4w >= 0 ? 1 : -1,
+      yoy: rut_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 4.1.4. 유로 스톡스 50 지수
@@ -705,9 +705,9 @@ export default async function MacroPage() {
   const stoxx_val = getLastValid(stoxx, ['yield_4w', 'yield_52w']);
   const stoxx_sig = stoxx_val
     ? {
-        prev: stoxx_val.yield_4w >= 0 ? 1 : -1,
-        yoy: stoxx_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: stoxx_val.yield_4w >= 0 ? 1 : -1,
+      yoy: stoxx_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 4.1.5. 닛케이 225 지수
@@ -715,9 +715,9 @@ export default async function MacroPage() {
   const n225_val = getLastValid(n225, ['yield_4w', 'yield_52w']);
   const n225_sig = n225_val
     ? {
-        prev: n225_val.yield_4w >= 0 ? 1 : -1,
-        yoy: n225_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: n225_val.yield_4w >= 0 ? 1 : -1,
+      yoy: n225_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 4.1.6. 코스피 지수
@@ -725,9 +725,9 @@ export default async function MacroPage() {
   const kospi_val = getLastValid(kospi, ['yield_4w', 'yield_52w']);
   const kospi_sig = kospi_val
     ? {
-        prev: kospi_val.yield_4w >= 0 ? 1 : -1,
-        yoy: kospi_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: kospi_val.yield_4w >= 0 ? 1 : -1,
+      yoy: kospi_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 4.1.7. 상하이 종합 지수
@@ -735,9 +735,9 @@ export default async function MacroPage() {
   const ssec_val = getLastValid(ssec, ['yield_4w', 'yield_52w']);
   const ssec_sig = ssec_val
     ? {
-        prev: ssec_val.yield_4w >= 0 ? 1 : -1,
-        yoy: ssec_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: ssec_val.yield_4w >= 0 ? 1 : -1,
+      yoy: ssec_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 4.1.8. 항셍 지수
@@ -745,9 +745,9 @@ export default async function MacroPage() {
   const hsi_val = getLastValid(hsi, ['yield_4w', 'yield_52w']);
   const hsi_sig = hsi_val
     ? {
-        prev: hsi_val.yield_4w >= 0 ? 1 : -1,
-        yoy: hsi_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: hsi_val.yield_4w >= 0 ? 1 : -1,
+      yoy: hsi_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // ------------------ 4.2. 신용사이클 ------------------
@@ -756,9 +756,9 @@ export default async function MacroPage() {
   const baa10y_val = getLastValid(baa10y, ['yield_4w', 'yield_52w']);
   const baa10y_sig = baa10y_val
     ? {
-        prev: baa10y_val.yield_4w <= 0 ? 1 : -1,
-        yoy: baa10y_val.yield_52w <= 0 ? 1 : -1,
-      }
+      prev: baa10y_val.yield_4w <= 0 ? 1 : -1,
+      yoy: baa10y_val.yield_52w <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 4.2.2. ICE BofA 미국 하이일드 채권 실효수익률
@@ -766,9 +766,9 @@ export default async function MacroPage() {
   const hy_val = getLastValid(hy, ['yield_4w', 'yield_52w']);
   const hy_sig = hy_val
     ? {
-        prev: hy_val.yield_4w <= 0 ? 1 : -1,
-        yoy: hy_val.yield_52w <= 0 ? 1 : -1,
-      }
+      prev: hy_val.yield_4w <= 0 ? 1 : -1,
+      yoy: hy_val.yield_52w <= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 4.2.3. 기업어음(CP) 발행 잔액
@@ -776,9 +776,9 @@ export default async function MacroPage() {
   const cp_val = getLastValid(cp, ['yield_4w', 'yield_52w']);
   const cp_sig = cp_val
     ? {
-        prev: cp_val.yield_4w >= 0 ? 1 : -1,
-        yoy: cp_val.yield_52w >= 0 ? 1 : -1,
-      }
+      prev: cp_val.yield_4w >= 0 ? 1 : -1,
+      yoy: cp_val.yield_52w >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 4.2.4. 통화량(M2)
@@ -786,9 +786,9 @@ export default async function MacroPage() {
   const m2_val = getLastValid(m2, ['mom_pct', 'yoy_pct']);
   const m2_sig = m2_val
     ? {
-        prev: m2_val.mom_pct >= 0 ? 1 : -1,
-        yoy: m2_val.yoy_pct >= 0 ? 1 : -1,
-      }
+      prev: m2_val.mom_pct >= 0 ? 1 : -1,
+      yoy: m2_val.yoy_pct >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // ------------------ 4.3. 부동산사이클 ------------------
@@ -797,9 +797,9 @@ export default async function MacroPage() {
   const ttlcons_val = getLastValid(ttlcons, ['mom_pct', 'yoy_pct']);
   const ttlcons_sig = ttlcons_val
     ? {
-        prev: ttlcons_val.mom_pct >= 0 ? 1 : -1,
-        yoy: ttlcons_val.yoy_pct >= 0 ? 1 : -1,
-      }
+      prev: ttlcons_val.mom_pct >= 0 ? 1 : -1,
+      yoy: ttlcons_val.yoy_pct >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 4.3.2. 신규주택 건축허가건수
@@ -807,9 +807,9 @@ export default async function MacroPage() {
   const permit_val = getLastValid(permit, ['mom_pct', 'yoy_pct']);
   const permit_sig = permit_val
     ? {
-        prev: permit_val.mom_pct >= 0 ? 1 : -1,
-        yoy: permit_val.yoy_pct >= 0 ? 1 : -1,
-      }
+      prev: permit_val.mom_pct >= 0 ? 1 : -1,
+      yoy: permit_val.yoy_pct >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 4.3.3. 신규주택 착공건수
@@ -817,9 +817,9 @@ export default async function MacroPage() {
   const houst_val = getLastValid(houst, ['mom_pct', 'yoy_pct']);
   const houst_sig = houst_val
     ? {
-        prev: houst_val.mom_pct >= 0 ? 1 : -1,
-        yoy: houst_val.yoy_pct >= 0 ? 1 : -1,
-      }
+      prev: houst_val.mom_pct >= 0 ? 1 : -1,
+      yoy: houst_val.yoy_pct >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 4.3.4. 기존주택 매매건수
@@ -827,9 +827,9 @@ export default async function MacroPage() {
   const exhos_val = getLastValid(exhos, ['mom_pct', 'yoy_pct']);
   const exhos_sig = exhos_val
     ? {
-        prev: exhos_val.mom_pct >= 0 ? 1 : -1,
-        yoy: exhos_val.yoy_pct >= 0 ? 1 : -1,
-      }
+      prev: exhos_val.mom_pct >= 0 ? 1 : -1,
+      yoy: exhos_val.yoy_pct >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 4.3.5. 신규단독주택 판매건수
@@ -837,9 +837,9 @@ export default async function MacroPage() {
   const hsn1f_val = getLastValid(hsn1f, ['mom_pct', 'yoy_pct']);
   const hsn1f_sig = hsn1f_val
     ? {
-        prev: hsn1f_val.mom_pct >= 0 ? 1 : -1,
-        yoy: hsn1f_val.yoy_pct >= 0 ? 1 : -1,
-      }
+      prev: hsn1f_val.mom_pct >= 0 ? 1 : -1,
+      yoy: hsn1f_val.yoy_pct >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // 4.3.6. S&P 케이스-실러 주택가격지수
@@ -847,9 +847,9 @@ export default async function MacroPage() {
   const spcs_val = getLastValid(spcs, ['mom_pct', 'yoy_pct']);
   const spcs_sig = spcs_val
     ? {
-        prev: spcs_val.mom_pct >= 0 ? 1 : -1,
-        yoy: spcs_val.yoy_pct >= 0 ? 1 : -1,
-      }
+      prev: spcs_val.mom_pct >= 0 ? 1 : -1,
+      yoy: spcs_val.yoy_pct >= 0 ? 1 : -1,
+    }
     : { prev: null, yoy: null };
 
   // ----------------------------------------------------
@@ -1138,9 +1138,6 @@ export default async function MacroPage() {
             <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl select-none">
               Global Macro 모니터링
             </h1>
-            <p className="mt-3 text-lg text-[#000000]/60 max-w-3xl">
-              글로벌 경제사이클, 경기조절자(금리/물가/유동성), 리스크 온/오프 상태 및 마켓사이클 신호를 실시간 모니터링합니다.
-            </p>
           </div>
 
           <MacroClientPage data={dashboardData} />

@@ -32,12 +32,12 @@ interface ClientPageProps {
 }
 
 // 신호등 컴포넌트 (Premium Pulse Glow 효과 탑재)
-function TrafficLight({ value, label }: { value: number | null; label: string }) {
+function TrafficLight({ value, label, isParentSelected = false }: { value: number | null; label: string; isParentSelected?: boolean }) {
   if (value === null) {
     return (
       <div className="flex flex-col items-center gap-1">
         <div className="w-4 h-4 rounded-full bg-black/10 border border-black/15" />
-        <span className="text-[8px] text-[#000000]/30 font-bold tracking-tighter">{label}</span>
+        <span className={`text-[8px] font-bold tracking-tighter ${isParentSelected ? 'text-[#000000]/30' : 'text-white/30'}`}>{label}</span>
       </div>
     );
   }
@@ -66,7 +66,7 @@ function TrafficLight({ value, label }: { value: number | null; label: string })
 }
 
 // 2구 신호등 세트 컴포넌트
-function SignalBadge({ signal }: { signal?: SignalState | null }) {
+function SignalBadge({ signal, isParentSelected = false }: { signal?: SignalState | null; isParentSelected?: boolean }) {
   if (!signal) return null;
 
   if (signal.isText) {
@@ -80,8 +80,8 @@ function SignalBadge({ signal }: { signal?: SignalState | null }) {
       .join(' ');
 
     const ratingLower = rating.toLowerCase();
-    let textColor = 'text-[#000000]/80';
-    let borderColor = 'border-[#000000]/10';
+    let textColor = isParentSelected ? 'text-[#000000]/80' : 'text-white/80';
+    let borderColor = isParentSelected ? 'border-[#000000]/10' : 'border-white/10';
     let bgColor = 'bg-transparent';
 
     if (ratingLower.includes('greed')) {
@@ -94,7 +94,7 @@ function SignalBadge({ signal }: { signal?: SignalState | null }) {
       bgColor = 'bg-transparent';
     } else if (ratingLower.includes('neutral')) {
       textColor = 'text-yellow-accent';
-      borderColor = 'border-[#000000]/10';
+      borderColor = isParentSelected ? 'border-[#000000]/10' : 'border-white/10';
       bgColor = 'bg-transparent';
     }
 
@@ -103,7 +103,7 @@ function SignalBadge({ signal }: { signal?: SignalState | null }) {
         <span className={`text-[10px] md:text-xs font-bold tracking-tight ${textColor}`}>
           {formattedRating}
         </span>
-        <span className="text-[10px] md:text-xs text-[#000000]/50 font-bold font-mono">
+        <span className={`text-[10px] md:text-xs font-bold font-mono ${isParentSelected ? 'text-[#000000]/50' : 'text-white/50'}`}>
           ({score})
         </span>
       </div>
@@ -112,8 +112,8 @@ function SignalBadge({ signal }: { signal?: SignalState | null }) {
 
   return (
     <div className="flex items-center gap-2 md:gap-3.5 bg-transparent py-0.5 md:py-1 px-1.5 md:px-2.5 rounded-none backdrop-blur-md shrink-0">
-      <TrafficLight value={signal.prev} label="MOM" />
-      <TrafficLight value={signal.yoy} label="YOY" />
+      <TrafficLight value={signal.prev} label="MOM" isParentSelected={isParentSelected} />
+      <TrafficLight value={signal.yoy} label="YOY" isParentSelected={isParentSelected} />
     </div>
   );
 }
@@ -362,29 +362,29 @@ export default function MacroClientPage({ data }: ClientPageProps) {
               onClick={() => handleMainClick(cat.id)}
               className={`flex flex-col justify-between p-3.5 md:p-5 rounded-none border border-[#000000] text-left transition-all duration-300 relative overflow-hidden group ${
                 isSelected
-                  ? 'bg-[#000000] text-white shadow-2xl scale-[1.02]'
-                  : 'bg-[#F1F1F1] text-[#000000] hover:bg-black/5 hover:scale-[1.01]'
+                  ? 'bg-[#F1F1F1] text-[#000000] shadow-2xl scale-[1.02]'
+                  : 'bg-[#000000] text-white hover:bg-black/80 hover:scale-[1.01]'
               }`}
             >
               <div className="flex justify-between items-start gap-2 w-full">
                 <span className={`text-[10px] md:text-xs font-bold uppercase tracking-widest font-mono ${
-                  isSelected ? 'text-white/60' : 'text-[#000000]/60'
+                  isSelected ? 'text-[#000000]/60' : 'text-white/60'
                 }`}>
                   Category 0{cat.id}
                 </span>
                 {/* 대분류 신호등 표시 */}
-                <SignalBadge signal={cat.signal} />
+                <SignalBadge signal={cat.signal} isParentSelected={isSelected} />
               </div>
 
               <div className="mt-6 md:mt-8 flex items-center justify-between gap-1 w-full">
                 <h3 className={`text-sm md:text-lg font-bold tracking-tight ${
-                  isSelected ? 'text-white' : 'text-[#000000]'
+                  isSelected ? 'text-[#000000]' : 'text-white'
                 }`}>
                   {cat.title}
                 </h3>
                 <ChevronDown 
                   className={`w-4 h-4 md:w-5 md:h-5 transition-transform duration-300 shrink-0 ${
-                    isSelected ? 'transform rotate-180 text-white' : 'text-[#000000]/60'
+                    isSelected ? 'transform rotate-180 text-[#000000]' : 'text-white/60'
                   }`} 
                 />
               </div>
