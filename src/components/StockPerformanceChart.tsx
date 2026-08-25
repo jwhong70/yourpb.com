@@ -53,7 +53,7 @@ export default function StockPerformanceChart({
   };
 
   return (
-    <div className="flex flex-col h-full p-6 rounded-none bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl">
+    <div className="flex flex-col h-full p-6 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl">
       <div className="flex items-center justify-between border-b border-black/10 pb-4 mb-6">
         <div>
           <h4 className="text-lg font-bold text-[#000000] tracking-tight">기간별 수익률 성과</h4>

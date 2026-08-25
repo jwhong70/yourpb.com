@@ -105,10 +105,10 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
 
               {/* 검색 결과 표 */}
               {sortedList.length > 0 ? (
-                <div className="overflow-x-auto rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white bg-[#F1F1F1] shadow-xl">
-                  <table className="w-full text-left border-collapse text-sm">
+                <div className="overflow-x-auto rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white bg-inner-bg shadow-xl">
+                  <table className="w-full text-left border-collapse text-base">
                     <thead>
-                      <tr className="bg-[#000000] text-white font-bold text-xs sm:text-sm uppercase tracking-wider select-none divide-x divide-white">
+                      <tr className="bg-[#000000] text-white font-bold text-base uppercase tracking-wider select-none divide-x divide-white">
                         <th
                           onClick={() => handleSort('ticker')}
                           className="py-4.5 px-5 sm:px-8 cursor-pointer hover:bg-gray-900 transition-colors"
@@ -159,7 +159,7 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#000000] text-xs sm:text-sm text-[#000000]">
+                    <tbody className="divide-y divide-[#000000] text-base text-[#000000]">
                       {sortedList.map((etf) => (
                         <tr
                           key={etf.ticker}
@@ -196,8 +196,8 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
                   </table>
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center py-20 bg-[#1b2e54]/20 border border-white/5 rounded-3xl text-center">
-                  <span className="text-sm text-white/40 font-semibold">
+                <div className="flex flex-col items-center justify-center py-20 bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none text-center">
+                  <span className="text-sm text-gray-400 font-semibold">
                     해당하는 관심 ETF 상품이 존재하지 않습니다.
                   </span>
                 </div>

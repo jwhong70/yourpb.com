@@ -21,7 +21,7 @@ export default async function WishlistPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 mt-10">
           {/* 페이지 타이틀 헤더 */}
           <div className="border-b border-gray-100 pb-5">
-            <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl select-none">
+            <h1 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
               내 찜 목록
             </h1>
             <p className="mt-2 text-sm text-gray-500">
@@ -31,9 +31,9 @@ export default async function WishlistPage() {
 
           {/* 찜 그리드 영역 */}
           <section>
-            <WishlistGrid 
-              wishlist={wishlist} 
-              isLoggedIn={!!user} 
+            <WishlistGrid
+              wishlist={wishlist}
+              isLoggedIn={!!user}
             />
           </section>
         </div>

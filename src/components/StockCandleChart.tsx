@@ -105,7 +105,7 @@ export default function StockCandleChart({ prices }: StockCandleChartProps) {
   }, [maxPrice, minPrice]);
 
   return (
-    <div className="flex flex-col h-full p-6 rounded-none bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl">
+    <div className="flex flex-col h-full p-6 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl">
       {/* 최상단: 현재 정보 및 툴팁 */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-black/10 pb-4 mb-6">
         <div>

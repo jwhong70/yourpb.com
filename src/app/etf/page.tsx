@@ -75,7 +75,7 @@ export default async function EtfPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 mt-10">
           <section className="space-y-6">
             <div className="flex items-center">
-              <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl select-none">
+              <h2 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
                 ETF 정보 조회
               </h2>
             </div>

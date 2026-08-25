@@ -74,9 +74,11 @@ export default function Header({ initialUser }: HeaderProps) {
           {/* 로고 영역 */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center">
-              <span className="text-3xl font-extrabold tracking-widest font-sans select-none text-red-accent animate-logo-glow">
-                YOURPB.COM
-              </span>
+              <img
+                src="/logo-yourpb.png"
+                alt="YOURPB.COM"
+                className="h-8 w-auto object-contain select-none"
+              />
             </Link>
 
             {/* 데스크톱 네비게이션 */}
@@ -89,11 +91,10 @@ export default function Header({ initialUser }: HeaderProps) {
                   <Link
                     key={link.name}
                     href={link.href}
-                    className={`text-base font-bold transition-colors duration-200 ${
-                      isActive
-                        ? 'text-yellow-accent'
-                        : 'text-white hover:text-white/80'
-                    }`}
+                    className={`text-base font-bold transition-all duration-200 px-3 py-1.5 rounded-none ${isActive
+                      ? 'bg-white text-black'
+                      : 'text-white hover:text-white/80'
+                      }`}
                   >
                     {link.name}
                   </Link>
@@ -142,7 +143,7 @@ export default function Header({ initialUser }: HeaderProps) {
             ) : (
               <Link
                 href="/login"
-                className="flex items-center gap-2 px-6 py-2 bg-red-accent hover:opacity-90 active:scale-95 text-black text-base font-black rounded-xl shadow-md shadow-red-950/10 transition-all cursor-pointer"
+                className="flex items-center gap-2 px-6 py-2 bg-red-accent hover:opacity-90 active:scale-95 text-black text-xl font-black rounded-xl shadow-md shadow-red-950/10 transition-all cursor-pointer"
               >
                 <LogIn className="w-4 h-4" />
                 <span>로그인</span>
@@ -184,11 +185,10 @@ export default function Header({ initialUser }: HeaderProps) {
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block px-4 py-3 rounded-xl text-lg font-bold transition-colors ${
-                    isActive
-                      ? 'bg-yellow-accent/10 text-yellow-accent'
-                      : 'text-white hover:bg-white/5 hover:text-white/80'
-                  }`}
+                  className={`block px-4 py-3 rounded-none text-base font-bold transition-colors ${isActive
+                    ? 'bg-white text-black'
+                    : 'text-white hover:bg-white/5 hover:text-white/80'
+                    }`}
                 >
                   {link.name}
                 </Link>

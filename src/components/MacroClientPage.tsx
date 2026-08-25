@@ -362,7 +362,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
               onClick={() => handleMainClick(cat.id)}
               className={`flex flex-col justify-between p-3.5 md:p-5 rounded-none border border-[#000000] text-left transition-all duration-300 relative overflow-hidden group ${
                 isSelected
-                  ? 'bg-[#F1F1F1] text-[#000000] shadow-2xl scale-[1.02]'
+                  ? 'bg-box-bg text-[#000000] shadow-2xl scale-[1.02]'
                   : 'bg-[#000000] text-white hover:bg-black/80 hover:scale-[1.01]'
               }`}
             >
@@ -377,7 +377,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
               </div>
 
               <div className="mt-6 md:mt-8 flex items-center justify-between gap-1 w-full">
-                <h3 className={`text-sm md:text-lg font-bold tracking-tight ${
+                <h3 className={`text-xl font-bold tracking-tight md:text-2xl ${
                   isSelected ? 'text-[#000000]' : 'text-white'
                 }`}>
                   {cat.title}
@@ -402,21 +402,21 @@ export default function MacroClientPage({ data }: ClientPageProps) {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none p-6 shadow-md"
+            className="overflow-hidden bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none p-6 shadow-md"
           >
             <div className="flex flex-col gap-4">
-              {/* 중분류 목록 출력 */}
+               {/* 중분류 목록 출력 */}
               {getSubCategories(activeMain).map((sub) => {
                 const isSubSelected = activeSub === sub.id;
                 return (
-                  <div key={sub.id} className="flex flex-col border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none overflow-hidden bg-[#F1F1F1]">
+                  <div key={sub.id} className="flex flex-col border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none overflow-hidden bg-inner-bg">
                     <button
                       onClick={() => setActiveSub(isSubSelected ? null : sub.id)}
                       className={`flex justify-between items-center p-4 text-left transition-colors duration-200 ${
                         isSubSelected ? 'bg-black/10' : 'hover:bg-black/5'
                       }`}
                     >
-                      <h4 className="text-sm font-bold text-[#000000] tracking-tight flex items-center gap-2">
+                      <h4 className="text-xl font-extrabold text-[#000000] tracking-tight flex items-center gap-2 select-none">
                         {sub.title}
                       </h4>
                       <div className="flex items-center gap-4">
@@ -452,7 +452,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                               return (
                                 <div 
                                   key={chartKey} 
-                                  className="flex flex-col border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none overflow-hidden transition-all duration-200 bg-[#F1F1F1]"
+                                  className="flex flex-col border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none overflow-hidden transition-all duration-200 bg-inner-bg"
                                 >
                                   {/* 소분류 헤더 */}
                                   <button
@@ -461,7 +461,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                       isChartOpen ? 'bg-black/10' : 'hover:bg-black/5'
                                     }`}
                                   >
-                                    <span className="text-xs font-semibold text-[#000000] tracking-tight">
+                                    <span className="text-base font-semibold text-[#000000] tracking-tight">
                                       {item.title}
                                     </span>
                                     <div className="flex items-center gap-4">
@@ -482,11 +482,11 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                         initial={{ opacity: 0, height: 0 }}
                                         animate={{ opacity: 1, height: 'auto' }}
                                         exit={{ opacity: 0, height: 0 }}
-                                        className="overflow-hidden bg-[#F1F1F1] border-t border-[#000000]"
+                                        className="overflow-hidden bg-inner-bg border-t border-[#000000]"
                                       >
                                         <div className="p-4">
                                           {!hasData ? (
-                                            <div className="flex items-center justify-center h-48 rounded-none bg-black/5 border border-black/10 text-gray-400 text-xs italic">
+                                            <div className="flex items-center justify-center h-48 rounded-none bg-black/5 border border-black/10 text-gray-400 text-sm italic">
                                               데이터 수집 중입니다. (Null)
                                             </div>
                                           ) : (

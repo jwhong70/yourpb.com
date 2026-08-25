@@ -18,6 +18,38 @@ interface ModelCarouselProps {
   isLoggedIn?: boolean;
 }
 
+const containerVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: 16 
+  },
+  show: { 
+    opacity: 1, 
+    y: 0,
+    transition: { 
+      duration: 0.5, 
+      ease: [0.25, 1, 0.5, 1],
+    },
+  },
+  hover: {
+    scale: 1.05,
+    transition: { 
+      type: 'spring', 
+      stiffness: 300, 
+      damping: 20 
+    },
+  },
+};
+
 export default function ModelCarousel({
   etfs,
   initialWishlistTickers = [],
@@ -44,18 +76,24 @@ export default function ModelCarousel({
   };
 
   return (
-    <div className="bg-[#F1F1F1] p-6 rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white space-y-6">
+    <div className="space-y-6">
       {/* 타이틀 영역 */}
-      <div className="flex items-center justify-between border-b border-[#000000] pb-3">
+      <div className="flex items-center justify-between pb-3">
         <div className="flex items-center gap-2">
-          <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl select-none">
+          <h2 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
             구성 ETF
           </h2>
         </div>
       </div>
 
       {/* 그리드 영역: 모바일 2열, 태블릿 3열, 데스크탑 5열 (관심 ETF 스타일과 일체감 있는 배치) */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.25 }}
+        className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6"
+      >
         {etfs.map((etf) => {
           const isWished = initialWishlistTickers.includes(etf.ticker);
           const isError = imageErrors[etf.ticker];
@@ -65,14 +103,14 @@ export default function ModelCarousel({
           return (
             <motion.div
               key={etf.ticker}
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className="group flex flex-col bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none hover:border-[#000000] hover:shadow-xl transition-all"
+              variants={cardVariants}
+              whileHover="hover"
+              className="group flex flex-col bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none hover:shadow-xl transition-all"
             >
               <Link href={`/etf/${etf.ticker}`} className="block relative aspect-2/3 w-full overflow-hidden bg-navy/60">
                 {/* poster 상단 테두리 위에 이름(Ticker) 표시 */}
                 <div className="absolute top-0 left-0 right-0 z-10 px-3 py-1.5 bg-linear-to-b from-black/80 to-transparent">
-                  <span className="text-[10px] font-bold text-silver truncate block uppercase tracking-wider">
+                  <span className="text-xs font-bold text-silver truncate block uppercase tracking-wider">
                     {etf.ticker}
                   </span>
                 </div>
@@ -91,14 +129,14 @@ export default function ModelCarousel({
                     <span className="text-xl font-extrabold tracking-wider text-white/20 select-none uppercase mb-2">
                       {etf.category}
                     </span>
-                    <span className="text-sm font-bold text-white tracking-wide truncate max-w-full">
+                    <span className="text-base font-bold text-white tracking-wide truncate max-w-full">
                       {etf.ticker}
                     </span>
-                    <span className="text-[10px] text-white/50 truncate max-w-full mt-1">
+                    <span className="text-xs text-white/50 truncate max-w-full mt-1">
                       {etf.name}
                     </span>
                     {etf.leverage && (
-                      <span className="text-[9px] font-bold text-white bg-red-accent/80 border border-red-500/20 px-1.5 py-0.5 rounded mt-2">
+                      <span className="text-[10px] font-bold text-white bg-red-accent/80 border border-red-500/20 px-1.5 py-0.5 rounded mt-2">
                         {etf.leverage}
                       </span>
                     )}
@@ -107,18 +145,18 @@ export default function ModelCarousel({
               </Link>
 
               {/* 하단 정보 영역 */}
-              <div className="p-3 flex flex-col justify-between grow gap-2 bg-[#F1F1F1]">
+              <div className="p-3 flex flex-col justify-between grow gap-2 bg-transparent">
                 <Link href={`/etf/${etf.ticker}`} className="block group-hover:text-sky-primary transition-colors">
-                  <span className="text-[10px] font-bold text-[#000000] tracking-wide block mb-0.5">
+                  <span className="text-sm font-bold text-[#000000] tracking-wide block mb-0.5">
                     {etf.ticker}
                   </span>
-                  <h3 className="text-xs font-semibold text-[#000000] line-clamp-2 leading-snug">
+                  <h3 className="text-base font-semibold text-[#000000] line-clamp-2 leading-snug">
                     {etf.name}
                   </h3>
                 </Link>
 
                 <div className="flex items-center justify-between border-t border-[#000000] pt-2 mt-auto">
-                  <span className="text-[10px] text-gray-500 font-medium">
+                  <span className="text-sm text-gray-700 font-medium">
                     {etf.category}
                   </span>
                   <WishlistButton
@@ -131,7 +169,7 @@ export default function ModelCarousel({
             </motion.div>
           );
         })}
-      </div>
+      </motion.div>
     </div>
   );
 }

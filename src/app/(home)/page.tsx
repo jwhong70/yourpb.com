@@ -17,14 +17,14 @@ export default async function Home() {
     .select('ticker, name, category, report, leverage')
     .order('ticker');
 
-  // 포트폴리오 비중 정의 (새로운 팝 컬러 테마 반영)
+  // 포트폴리오 비중 정의 (지정 브랜드 색상 반영)
   const portfolioData = [
-    { type: '현금', pct: 10, ticker: '', name: '현금 자산(KRW)', color: '#00F5D4' },
-    { type: '채권', pct: 0, ticker: '', name: '미지정', color: '#00BBF9' },
-    { type: '시장', pct: 20, ticker: 'MAGS', name: 'Roundhill Magnificent Seven ETF', color: '#9B5DE5' },
-    { type: '섹터', pct: 50, ticker: 'XLE', name: 'Energy Select Sector SPDR Fund', color: '#F15BB5' },
-    { type: '테마', pct: 0, ticker: '', name: '미지정', color: '#FEE440' },
-    { type: '대체', pct: 20, ticker: 'UVXY', name: 'ProShares Ultra VIX Short-Term Futures ETF', color: '#FF9E00' },
+    { type: '현금', pct: 10, ticker: '', name: '현금 자산(KRW)', color: '#007C1F' },
+    { type: '채권', pct: 0, ticker: '', name: '미지정', color: '#00EE39' },
+    { type: '시장', pct: 20, ticker: 'MAGS', name: 'Roundhill Magnificent Seven ETF', color: '#FF97A1' },
+    { type: '섹터', pct: 50, ticker: 'XLE', name: 'Energy Select Sector SPDR Fund', color: '#FF3B4E' },
+    { type: '테마', pct: 0, ticker: '', name: '미지정', color: '#D60016' },
+    { type: '대체', pct: 20, ticker: 'UVXY', name: 'ProShares Ultra VIX Short-Term Futures ETF', color: '#000000' },
   ];
 
   // 그래프에 표시할 유효 비중 (0% 제외)
@@ -57,13 +57,13 @@ export default async function Home() {
       {/* 1. 당신의 피비 포트폴리오 섹션 */}
       <section className="space-y-6">
         <div className="flex items-center">
-          <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl select-none">
+          <h2 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
             당신의 피비 포트폴리오
           </h2>
         </div>
 
         {/* 데스크톱: 가로 2열 / 모바일: 상하 1열 */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#F1F1F1] p-6 sm:p-10 rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-2xl">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-6 sm:p-10 rounded-none shadow-none bg-transparent">
 
           {/* 원형 그래프 영역 */}
           <div className="lg:col-span-5 flex flex-col items-center justify-center p-4">
@@ -104,9 +104,6 @@ export default async function Home() {
                   });
                 })()}
 
-                {/* 파이 그래프 바깥쪽 테두리선 */}
-                <circle cx="180" cy="180" r="160" stroke="#000000" strokeWidth="2" fill="none" />
-
                 {/* 파이 조각 내부의 자산유형 + 비중 텍스트 렌더링 (가로쓰기 유지) */}
                 {(() => {
                   let accumulatedPercent = 0;
@@ -127,12 +124,12 @@ export default async function Home() {
                         key={`text-${item.type}`}
                         x={x}
                         y={y}
-                        fill="#000000"
+                        fill="#ffffff"
                         fontSize="14"
                         fontWeight="bold"
                         textAnchor="middle"
                         dominantBaseline="central"
-                        className="pointer-events-none select-none fill-black font-serif"
+                        className="pointer-events-none select-none fill-white font-serif"
                       >
                         {item.type} {item.pct}%
                       </text>
@@ -143,49 +140,44 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* 비중 테이블 영역 */}
-          <div className="lg:col-span-7 overflow-hidden rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white bg-[#F1F1F1] shadow-sm">
-            <table className="w-full text-left border-collapse text-sm font-serif">
-              <thead>
-                <tr className="bg-[#000000] text-white font-bold text-sm sm:text-base divide-x divide-white">
-                  <th className="py-3.5 px-4 sm:px-6 text-white">자산유형</th>
-                  <th className="py-3.5 px-4 text-center text-white">비중</th>
-                  <th className="py-3.5 px-4 text-white">티커</th>
-                  <th className="py-3.5 px-4 hidden sm:table-cell text-white">자산 세부 설명</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#000000] text-xs sm:text-sm text-[#000000]">
-                {portfolioData.map((row) => {
-                  const isZero = row.pct === 0;
-                  return (
-                    <tr
-                      key={row.type}
-                      className={`transition-colors hover:bg-black/5 ${isZero ? 'opacity-30' : ''}`}
-                    >
-                      <td className="py-4 px-4 sm:px-6 font-bold text-[#000000] flex items-center gap-2 border-r border-r-white">
-                        <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: row.color }} />
-                        <span>{row.type}</span>
-                      </td>
-                      <td className="py-4 px-4 text-center text-[#000000] font-extrabold font-mono border-r border-r-white">
-                        {row.pct}%
-                      </td>
-                      <td className="py-4 px-4 font-semibold text-[#000000] border-r border-r-white">
-                        {row.ticker ? (
-                          <Link href={`/etf/${row.ticker}`} className="hover:underline text-[#000000]">
-                            {row.ticker}
-                          </Link>
-                        ) : (
-                          <span className="text-[#000000]/30">-</span>
-                        )}
-                      </td>
-                      <td className="py-4 px-4 text-[#000000] truncate max-w-50 hidden sm:table-cell">
-                        {row.name}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+          {/* 비중 카드 스태킹 영역 */}
+          <div className="lg:col-span-7 flex flex-col gap-3 font-serif">
+            {portfolioData.map((row) => {
+              const isZero = row.pct === 0;
+              return (
+                <div
+                  key={row.type}
+                  className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white border border-[#000000] rounded-none transition-all duration-200 ${isZero ? 'opacity-30' : 'hover:bg-gray-50'}`}
+                >
+                  {/* 좌측: 컬러칩 + 자산 유형 + 자산 설명 */}
+                  <div className="flex items-center gap-3.5 text-base font-bold text-[#000000]">
+                    <span className="w-3.5 h-3.5 rounded-full shrink-0" style={{ backgroundColor: row.color }} />
+                    <span className="min-w-10">{row.type}</span>
+                    <span className="text-gray-300 font-normal hidden sm:inline">|</span>
+                    <span className="text-sm font-semibold text-[#000000] truncate max-w-45 sm:max-w-70">
+                      {row.name}
+                    </span>
+                  </div>
+
+                  {/* 우측: 티커 링크 + 비중 퍼센트 */}
+                  <div className="flex items-center justify-between sm:justify-end gap-6 mt-2 sm:mt-0 border-t border-[#000000]/10 pt-2 sm:pt-0 sm:border-0">
+                    {row.ticker ? (
+                      <Link
+                        href={`/etf/${row.ticker}`}
+                        className="px-2 py-0.5 border border-black text-[#000000] text-xs font-bold font-mono rounded-none"
+                      >
+                        {row.ticker}
+                      </Link>
+                    ) : (
+                      <span className="text-[10px] text-[#000000]/30 select-none uppercase tracking-wider">no ticker</span>
+                    )}
+                    <span className="text-lg font-extrabold font-mono text-[#000000] min-w-10 text-right">
+                      {row.pct}%
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
         </div>
@@ -203,7 +195,7 @@ export default async function Home() {
       {/* 3. 관심 ETF 그리드 섹션 */}
       <section className="space-y-6">
         <div className="flex items-center">
-          <h2 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl select-none">
+          <h2 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
             관심 ETF
           </h2>
         </div>

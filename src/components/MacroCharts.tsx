@@ -131,7 +131,7 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value' }: Base
   const guideLines = minVal >= 0 ? [absMax * 0.75, absMax * 0.35, 0] : [absMax * 0.7, 0, -absMax * 0.7];
 
   return (
-    <div className="flex flex-col p-4 rounded-none bg-[#F1F1F1] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-sm">
+    <div className="flex flex-col p-4 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-sm">
       {/* 차트 헤더 툴팁 */}
       <div className="flex justify-between items-center mb-4 h-6 px-1">
         <span className="text-[10px] text-[#000000]/60">세로막대형 추이</span>
@@ -322,7 +322,7 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value' }: Bas
   const guideLines = [maxVal - (maxVal - minVal) * 0.15, minVal + (maxVal - minVal) * 0.5, minVal + (maxVal - minVal) * 0.15];
 
   return (
-    <div className="flex flex-col p-4 rounded-none bg-[#F1F1F1] border-t-[#000000] border-b-[#000000] border-l-white border-r-white border shadow-sm">
+    <div className="flex flex-col p-4 rounded-none bg-box-bg border-t-[#000000] border-b-[#000000] border-l-white border-r-white border shadow-sm">
       {/* 차트 헤더 툴팁 */}
       <div className="flex justify-between items-center mb-4 h-6 px-1">
         <span className="text-[10px] text-[#000000]/60">선형 시계열 추이</span>
@@ -527,7 +527,7 @@ export function MacroCandleChart({ data, themeIndex = 0 }: BaseChartProps) {
   const guideLines = [maxVal - (maxVal - minVal) * 0.15, minVal + (maxVal - minVal) * 0.5, minVal + (maxVal - minVal) * 0.15];
 
   return (
-    <div className="flex flex-col p-4 rounded-none bg-[#F1F1F1] border-t-[#000000] border-b-[#000000] border-l-white border-r-white border shadow-sm">
+    <div className="flex flex-col p-4 rounded-none bg-box-bg border-t-[#000000] border-b-[#000000] border-l-white border-r-white border shadow-sm">
       {/* 차트 헤더 툴팁 */}
       <div className="flex justify-between items-center mb-4 h-6 px-1">
         <span className="text-[10px] text-[#000000]/60">주식/선물 캔들차트 추이</span>

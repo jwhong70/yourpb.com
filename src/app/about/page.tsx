@@ -72,7 +72,7 @@ export default async function AboutPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16 mt-10">
 
           {/* 1. 프로필 요약 (첫번째 블록) */}
-          <section className="bg-white border border-gray-100 rounded-3xl p-8 sm:p-10 shadow-sm relative overflow-hidden">
+          <section className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none p-8 sm:p-10 shadow-2xl relative overflow-hidden">
             {/* 미세한 팝 컬러 그라데이션 장식 배경 */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-sky-primary/10 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-red-accent/5 rounded-full blur-3xl pointer-events-none" />
@@ -81,7 +81,7 @@ export default async function AboutPage() {
             <div className="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
 
               {/* 프로필 이미지 */}
-              <div className="w-48 h-48 sm:w-56 sm:h-56 shrink-0 rounded-2xl overflow-hidden border border-gray-100 shadow-md bg-gray-50 relative group">
+              <div className="w-48 h-48 sm:w-56 sm:h-56 shrink-0 rounded-none overflow-hidden border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md bg-inner-bg relative group">
                 <img
                   src="/profile_animation.png"
                   alt="홍선생 프로필"
@@ -92,16 +92,16 @@ export default async function AboutPage() {
               {/* 이력서 요약 문구 및 메인 설명 */}
               <div className="flex-1 space-y-5 text-center md:text-left">
                 <div className="space-y-2">
-                  <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl select-none">
+                  <h1 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
                     홍선생
                   </h1>
                 </div>
 
-                <p className="text-lg font-bold text-gray-700 leading-relaxed max-w-2xl">
+                <p className="text-base font-bold text-gray-700 leading-relaxed max-w-2xl">
                   "20년 이상의 현업 금융 운용 지식과 퇴직연금 포트폴리오 관리 성과를 바탕으로, 자산배분 시장을 리딩하며 고객 맞춤형 최적의 ETF 포트폴리오를 제공합니다."
                 </p>
 
-                <p className="text-sm text-gray-500 leading-relaxed">
+                <p className="text-base text-gray-500 leading-relaxed">
                   하나증권 PB 및 자산운용사 펀드매니저 출신으로, 퇴직연금 및 특정금전신탁 분야에서 탁월한 자산관리 수익률(IRP 전업권 1위)을 달성한 금융 전문가입니다.
                 </p>
 
@@ -115,7 +115,7 @@ export default async function AboutPage() {
           <section className="space-y-8">
             <div className="flex items-center gap-2.5 border-b border-black pb-4">
               <Briefcase className="w-6 h-6 text-[#000000]" />
-              <h2 className="text-2xl font-extrabold text-[#000000] tracking-tight">
+              <h2 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
                 전문 경력 (Career History)
               </h2>
             </div>
@@ -130,16 +130,16 @@ export default async function AboutPage() {
                   </span>
 
                   {/* 경력 상세 카드 */}
-                  <div className="bg-white border border-gray-150 rounded-2xl p-6 hover:shadow-md hover:border-[#000000] transition-all space-y-2">
+                  <div className="bg-inner-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none p-6 hover:shadow-md hover:border-[#000000] transition-all space-y-2">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                      <h3 className="text-base font-extrabold text-[#000000] group-hover:text-[#000000] transition-colors">
+                      <h3 className="text-xl font-extrabold text-[#000000] group-hover:text-[#000000] transition-colors">
                         {item.title}
                       </h3>
-                      <span className="text-xs font-bold font-mono text-[#000000] shrink-0 bg-black/5 px-2.5 py-0.5 rounded-md self-start sm:self-center">
+                      <span className="text-sm font-bold font-mono text-[#000000] shrink-0 bg-black/5 px-2.5 py-0.5 rounded-none self-start sm:self-center">
                         {item.period}
                       </span>
                     </div>
-                    <p className="text-sm text-[#000000] leading-relaxed">
+                    <p className="text-base text-[#000000] leading-relaxed">
                       {item.description}
                     </p>
                   </div>
@@ -152,47 +152,47 @@ export default async function AboutPage() {
           <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
             {/* 학력 정보 */}
-            <div className="bg-white border border-gray-100 rounded-3xl p-6 space-y-4 shadow-xs">
-              <div className="flex items-center gap-2 pb-2 border-b border-gray-100">
+            <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none p-6 space-y-4 shadow-sm">
+              <div className="flex items-center gap-2 pb-2 border-b border-[#000000]">
                 <GraduationCap className="w-5 h-5 text-gray-700" />
-                <h3 className="text-lg font-bold text-gray-900">학력 사항</h3>
+                <h3 className="text-xl font-extrabold text-gray-900">학력 사항</h3>
               </div>
-              <ul className="space-y-3.5 text-sm">
+              <ul className="space-y-3.5 text-base">
                 <li className="flex justify-between items-start gap-4">
                   <div>
                     <strong className="text-gray-900 block">한국외국어대학교 일반대학원 석사</strong>
-                    <span className="text-xs text-gray-500">재무관리 전공, 회계학 부전공</span>
+                    <span className="text-sm text-gray-500">재무관리 전공, 회계학 부전공</span>
                   </div>
-                  <span className="text-xs font-bold text-gray-500 font-mono">2000.08</span>
+                  <span className="text-sm font-bold text-gray-500 font-mono">2000.08</span>
                 </li>
                 <li className="flex justify-between items-start gap-4">
                   <div>
                     <strong className="text-gray-900 block">한국외국어대학교 학사</strong>
-                    <span className="text-xs text-gray-500">일본어 전공, 경영학 부전공</span>
+                    <span className="text-sm text-gray-500">일본어 전공, 경영학 부전공</span>
                   </div>
-                  <span className="text-xs font-bold text-gray-500 font-mono">1994.02</span>
+                  <span className="text-sm font-bold text-gray-500 font-mono">1994.02</span>
                 </li>
               </ul>
             </div>
 
             {/* 자격증 정보 */}
-            <div className="bg-white border border-gray-100 rounded-3xl p-6 space-y-4 shadow-xs">
-              <div className="flex items-center gap-2 pb-2 border-b border-gray-100">
+            <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none p-6 space-y-4 shadow-sm">
+              <div className="flex items-center gap-2 pb-2 border-b border-[#000000]">
                 <Award className="w-5 h-5 text-gray-700" />
-                <h3 className="text-lg font-bold text-gray-900">금융 자격 취득</h3>
+                <h3 className="text-xl font-extrabold text-gray-900">금융 자격 취득</h3>
               </div>
-              <ul className="space-y-3.5 text-sm">
+              <ul className="space-y-3.5 text-base">
                 <li className="flex justify-between items-center gap-4">
                   <span className="text-gray-900 font-medium">자산운용전문인력 (국토교통부)</span>
-                  <span className="text-xs font-bold text-gray-500 font-mono">2017.12</span>
+                  <span className="text-sm font-bold text-gray-500 font-mono">2017.12</span>
                 </li>
                 <li className="flex justify-between items-center gap-4">
                   <span className="text-gray-900 font-medium">부동산운용전문인력 (자산운용협회)</span>
-                  <span className="text-xs font-bold text-gray-500 font-mono">2007.07</span>
+                  <span className="text-sm font-bold text-gray-500 font-mono">2007.07</span>
                 </li>
                 <li className="flex justify-between items-center gap-4">
                   <span className="text-gray-900 font-medium">일반운용전문인력 (투자신탁협회)</span>
-                  <span className="text-xs font-bold text-gray-500 font-mono">2002.06</span>
+                  <span className="text-sm font-bold text-gray-500 font-mono">2002.06</span>
                 </li>
               </ul>
             </div>
@@ -200,12 +200,12 @@ export default async function AboutPage() {
           </section>
 
           {/* 4. CONTACT US (세번째 블록 - 이메일, 인스타 링크 연동) */}
-          <section className="bg-[#F1F1F1] border border-gray-200 rounded-3xl p-8 sm:p-10 space-y-8">
+          <section className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none p-8 sm:p-10 space-y-8">
             <div className="text-center space-y-2">
-              <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">
+              <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight select-none">
                 CONTACT US
               </h2>
-              <p className="text-sm text-gray-500">
+              <p className="text-base text-gray-500">
                 자산배분 상담 및 퇴직연금 포트폴리오 진단 문의를 기다립니다.
               </p>
             </div>
@@ -216,16 +216,16 @@ export default async function AboutPage() {
               {/* 이메일 카드 */}
               <a
                 href="mailto:jwhong70@gmail.com"
-                className="flex flex-col items-center justify-center p-6 bg-white border border-gray-100 hover:border-black/30 rounded-2xl text-center transition-all hover:shadow-md group cursor-pointer"
+                className="flex flex-col items-center justify-center p-6 bg-inner-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white hover:border-black/50 rounded-none text-center transition-all hover:shadow-md group cursor-pointer"
               >
                 <div className="text-[#000000] mb-4 group-hover:scale-110 transition-transform">
                   <Mail className="w-8 h-8" />
                 </div>
-                <span className="text-xs text-gray-400 font-semibold tracking-wider uppercase mb-1">E-mail</span>
-                <strong className="text-sm text-gray-900 font-sans group-hover:text-[#000000] transition-colors">
+                <span className="text-sm text-gray-700 font-semibold tracking-wider uppercase mb-1">E-mail</span>
+                <strong className="text-base text-gray-900 font-sans group-hover:text-[#000000] transition-colors">
                   jwhong70@gmail.com
                 </strong>
-                <span className="text-[10px] text-gray-400 mt-2">클릭하여 메일 발송하기 &rarr;</span>
+                <span className="text-sm text-gray-500 mt-2">클릭하여 메일 발송하기 &rarr;</span>
               </a>
 
               {/* 인스타그램 카드 */}
@@ -233,16 +233,16 @@ export default async function AboutPage() {
                 href="https://www.instagram.com/yourpb_hong/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center p-6 bg-white border border-gray-100 hover:border-black/30 rounded-2xl text-center transition-all hover:shadow-md group cursor-pointer"
+                className="flex flex-col items-center justify-center p-6 bg-inner-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white hover:border-black/50 rounded-none text-center transition-all hover:shadow-md group cursor-pointer"
               >
                 <div className="text-[#000000] mb-4 group-hover:scale-110 transition-transform">
                   <Instagram className="w-8 h-8" />
                 </div>
-                <span className="text-xs text-gray-400 font-semibold tracking-wider uppercase mb-1">Instagram</span>
-                <strong className="text-sm text-gray-900 font-sans group-hover:text-[#000000] transition-colors">
+                <span className="text-sm text-gray-700 font-semibold tracking-wider uppercase mb-1">Instagram</span>
+                <strong className="text-base text-gray-900 font-sans group-hover:text-[#000000] transition-colors">
                   @yourpb_hong
                 </strong>
-                <span className="text-[10px] text-gray-400 mt-2">클릭하여 프로필 방문하기 &rarr;</span>
+                <span className="text-sm text-gray-500 mt-2">클릭하여 프로필 방문하기 &rarr;</span>
               </a>
 
             </div>
