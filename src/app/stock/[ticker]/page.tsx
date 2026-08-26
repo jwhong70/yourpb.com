@@ -127,7 +127,7 @@ export default async function StockDetailPage({ params }: PageProps) {
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#000000] hover:bg-gray-900 active:scale-95 text-white font-bold rounded-none shadow-md transition-all cursor-pointer group text-base"
               >
                 <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                <span>목록으로 돌아가기</span>
+                <span>목록으로 복귀</span>
               </Link>
 
               {isPremium && (

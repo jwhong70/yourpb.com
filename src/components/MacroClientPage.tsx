@@ -233,7 +233,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
         return [
           { title: '1.2.1. 신규 실업수당 청구건수(4주평균)', chartType: 'line', data: data.economic.consumption.ic4wsa.data, signal: data.economic.consumption.ic4wsa.signal, theme: 5 },
           { title: '1.2.2. 구인건수(JOLTS)', chartType: 'line', data: data.economic.consumption.jtsjol.data, signal: data.economic.consumption.jtsjol.signal, theme: 1 },
-          { title: '1.2.3. 비농업 부문 고용자수', chartType: 'bar', data: data.economic.consumption.payems.data, signal: data.economic.consumption.payems.signal, theme: 0 },
+          { title: '1.2.3. 비농업 부문 고용자수', chartType: 'bar', data: data.economic.consumption.payems.data, valKey: 'mom', signal: data.economic.consumption.payems.signal, theme: 0 },
           { title: '1.2.4. 실업률', chartType: 'line', data: data.economic.consumption.unrate.data, signal: data.economic.consumption.unrate.signal, theme: 5 },
           { title: '1.2.5. 총 소비자신용', chartType: 'bar', data: data.economic.consumption.totalsl.data, valKey: 'yoy_pct', signal: data.economic.consumption.totalsl.signal, theme: 2 },
           { title: '1.2.6. 소매판매', chartType: 'bar', data: data.economic.consumption.rsafs.data, valKey: 'yoy_pct', signal: data.economic.consumption.rsafs.signal, theme: 3 },
