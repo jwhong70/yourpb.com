@@ -301,9 +301,9 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
 
         {sortedStocks.length > 0 ? (
           <div className="overflow-x-auto rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white bg-box-bg shadow-lg">
-            <table className="w-full text-left border-collapse text-sm font-sans table-fixed">
+            <table className="w-full text-left border-collapse text-xs font-sans table-fixed">
               <thead>
-                <tr className="bg-[#000000] text-white font-bold text-sm uppercase tracking-wider select-none divide-x divide-white">
+                <tr className="bg-[#000000] text-white font-bold text-xs uppercase tracking-wider select-none divide-x divide-white">
                   <th
                     onClick={() => handleSort('name')}
                     className="py-3 px-3 sm:px-6 cursor-pointer hover:bg-gray-900 transition-colors"
@@ -318,7 +318,7 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#000000] text-sm text-gray-900 font-sans">
+              <tbody className="divide-y divide-[#000000] text-xs text-gray-900 font-sans">
                 {sortedStocks.map((stock) => {
                   const periodYield = stock[`yield_${selectedPeriod}` as keyof StockWithPrice] as number | null;
                   const yieldStyle = getYieldStyle(periodYield);

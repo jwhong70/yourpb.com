@@ -377,7 +377,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
               </div>
 
               <div className="mt-6 md:mt-8 flex items-center justify-between gap-1 w-full">
-                <h3 className={`text-xl font-bold tracking-tight md:text-2xl ${
+                <h3 className={`text-lg font-bold tracking-tight md:text-xl ${
                   isSelected ? 'text-[#000000]' : 'text-white'
                 }`}>
                   {cat.title}
@@ -416,7 +416,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                         isSubSelected ? 'bg-black/10' : 'hover:bg-black/5'
                       }`}
                     >
-                      <h4 className="text-xl font-extrabold text-[#000000] tracking-tight flex items-center gap-2 select-none">
+                      <h4 className="text-lg font-extrabold text-[#000000] tracking-tight flex items-center gap-2 select-none">
                         {sub.title}
                       </h4>
                       <div className="flex items-center gap-4">
@@ -461,7 +461,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                       isChartOpen ? 'bg-black/10' : 'hover:bg-black/5'
                                     }`}
                                   >
-                                    <span className="text-base font-extrabold text-[#000000] tracking-tight">
+                                    <span className="text-sm font-extrabold text-[#000000] tracking-tight">
                                       {item.title}
                                     </span>
                                     <div className="flex items-center gap-4">
