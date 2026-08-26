@@ -127,10 +127,10 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title 
   // 설정값
   const width = 800;
   const height = 280;
-  const paddingLeft = 45;
-  const paddingRight = 20;
-  const paddingTop = 25;
-  const paddingBottom = 30;
+  const paddingLeft = 32;
+  const paddingRight = 10;
+  const paddingTop = 6;
+  const paddingBottom = 22;
 
   const availableWidth = width - paddingLeft - paddingRight;
   const availableHeight = height - paddingTop - paddingBottom;
@@ -184,28 +184,21 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title 
   const guideLines = minVal >= 0 ? [absMax * 0.75, absMax * 0.35, 0] : [absMax * 0.7, 0, -absMax * 0.7];
 
   return (
-    <div className="flex flex-col p-4 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-sm">
-      {/* 차트 헤더 툴팁 */}
-      <div className="flex justify-between items-center mb-4 h-8 px-1">
-        <div className="flex items-center gap-2">
-          {/* PNG 다운로드 버튼은 외부 소분류 헤더로 이동됨 */}
-        </div>
+    <div className="flex flex-col p-1 sm:p-2 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-sm">
+      <div className="relative w-full overflow-hidden" style={{ cursor: 'crosshair' }}>
         <AnimatePresence>
           {hoveredItem && (
             <motion.div
-              initial={{ opacity: 0, y: 2 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              className="text-xs text-[#000000]/90 bg-black/5 px-2 py-0.5 rounded-none border border-black/10 flex gap-3 font-mono"
+              className="absolute top-1.5 right-1.5 z-10 text-[9px] sm:text-xs text-[#000000]/90 bg-white/95 border border-black/15 backdrop-blur-md px-2 py-0.5 flex gap-2 font-mono shadow-xs select-none pointer-events-none"
             >
               <span className="text-yellow-accent font-bold">{formatLabel(hoveredItem)}</span>
               <span>수치: <strong style={{ color: theme.secondary }}>{hoveredItem.displayVal.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 2 })}</strong></span>
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-
-      <div className="relative w-full overflow-hidden" style={{ cursor: 'crosshair' }}>
         <svg ref={svgRef} id={chartKey} viewBox={`0 0 ${width} ${height}`} width="100%" height="100%" className="w-full h-auto overflow-visible">
           {/* 뒷배경 격자선 */}
           {guideLines.map((val, idx) => {
@@ -319,10 +312,10 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value', title
 
   const width = 800;
   const height = 280;
-  const paddingLeft = 45;
-  const paddingRight = 20;
-  const paddingTop = 25;
-  const paddingBottom = 30;
+  const paddingLeft = 32;
+  const paddingRight = 10;
+  const paddingTop = 6;
+  const paddingBottom = 22;
 
   const availableWidth = width - paddingLeft - paddingRight;
   const availableHeight = height - paddingTop - paddingBottom;
@@ -379,28 +372,21 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value', title
   const guideLines = [maxVal - (maxVal - minVal) * 0.15, minVal + (maxVal - minVal) * 0.5, minVal + (maxVal - minVal) * 0.15];
 
   return (
-    <div className="flex flex-col p-4 rounded-none bg-box-bg border-t-[#000000] border-b-[#000000] border-l-white border-r-white border shadow-sm">
-      {/* 차트 헤더 툴팁 */}
-      <div className="flex justify-between items-center mb-4 h-8 px-1">
-        <div className="flex items-center gap-2">
-          {/* PNG 다운로드 버튼은 외부 소분류 헤더로 이동됨 */}
-        </div>
+    <div className="flex flex-col p-1 sm:p-2 rounded-none bg-box-bg border-t-[#000000] border-b-[#000000] border-l-white border-r-white border shadow-sm">
+      <div className="relative w-full overflow-hidden" style={{ cursor: 'crosshair' }}>
         <AnimatePresence>
           {hoveredItem && (
             <motion.div
-              initial={{ opacity: 0, y: 2 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              className="text-xs text-[#000000]/90 bg-black/5 px-2 py-0.5 rounded-none border border-black/10 flex gap-3 font-mono"
+              className="absolute top-1.5 right-1.5 z-10 text-[9px] sm:text-xs text-[#000000]/90 bg-white/95 border border-black/15 backdrop-blur-md px-2 py-0.5 flex gap-2 font-mono shadow-xs select-none pointer-events-none"
             >
               <span className="text-yellow-accent font-bold">{formatLabel(hoveredItem)}</span>
               <span>수치: <strong style={{ color: theme.secondary }}>{hoveredItem.displayVal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></span>
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-
-      <div className="relative w-full overflow-hidden" style={{ cursor: 'crosshair' }}>
         <svg ref={svgRef} id={chartKey} viewBox={`0 0 ${width} ${height}`} width="100%" height="100%" className="w-full h-auto overflow-visible">
           {/* 뒷배경 격자선 */}
           {guideLines.map((val, idx) => {
@@ -542,10 +528,10 @@ export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 
 
   const width = 800;
   const height = 280;
-  const paddingLeft = 45;
-  const paddingRight = 20;
-  const paddingTop = 25;
-  const paddingBottom = 30;
+  const paddingLeft = 32;
+  const paddingRight = 10;
+  const paddingTop = 6;
+  const paddingBottom = 22;
 
   const availableWidth = width - paddingLeft - paddingRight;
   const availableHeight = height - paddingTop - paddingBottom;
@@ -588,19 +574,15 @@ export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 
   const guideLines = [maxVal - (maxVal - minVal) * 0.15, minVal + (maxVal - minVal) * 0.5, minVal + (maxVal - minVal) * 0.15];
 
   return (
-    <div className="flex flex-col p-4 rounded-none bg-box-bg border-t-[#000000] border-b-[#000000] border-l-white border-r-white border shadow-sm">
-      {/* 차트 헤더 툴팁 */}
-      <div className="flex justify-between items-center mb-4 h-8 px-1">
-        <div className="flex items-center gap-2">
-          {/* PNG 다운로드 버튼은 외부 소분류 헤더로 이동됨 */}
-        </div>
+    <div className="flex flex-col p-1 sm:p-2 rounded-none bg-box-bg border-t-[#000000] border-b-[#000000] border-l-white border-r-white border shadow-sm">
+      <div className="relative w-full overflow-hidden" style={{ cursor: 'crosshair' }}>
         <AnimatePresence>
           {hoveredItem && (
             <motion.div
-              initial={{ opacity: 0, y: 2 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              className="text-[11px] text-[#000000]/95 bg-black/5 px-2 py-0.5 rounded-none border border-black/10 flex flex-wrap gap-x-2 gap-y-0.5 font-mono"
+              className="absolute top-1.5 right-1.5 z-10 text-[10px] sm:text-xs text-[#000000]/95 bg-white/95 border border-black/15 backdrop-blur-md px-2 py-1.5 flex flex-wrap gap-x-2 gap-y-0.5 font-mono shadow-xs select-none pointer-events-none"
             >
               <span className="text-yellow-accent font-bold shrink-0">{hoveredItem.date}</span>
               <span>시: <strong>{hoveredItem.open.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></span>
