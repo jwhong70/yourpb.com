@@ -220,11 +220,11 @@ function LoginContent() {
           {/* 소셜 로그인 구분선 및 버튼 */}
           <div className="mt-6 space-y-4">
             <div className="flex items-center gap-3 my-4">
-              <div className="h-[1px] flex-1 bg-white/15" />
+              <div className="h-px flex-1 bg-white/15" />
               <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
                 {activeTab === 'login' ? '또는 간편 로그인' : '또는 간편 회원가입'}
               </span>
-              <div className="h-[1px] flex-1 bg-white/15" />
+              <div className="h-px flex-1 bg-white/15" />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
