@@ -137,18 +137,18 @@ export default function Header({ initialUser }: HeaderProps) {
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-1.5 text-base font-black text-white/80 hover:text-white transition-colors cursor-pointer"
+                  className="flex items-center gap-1 text-sm font-black text-white/80 hover:text-white transition-colors cursor-pointer"
                 >
-                  <LogOut className="w-4.5 h-4.5" />
+                  <LogOut className="w-3.5 h-3.5" />
                   <span>로그아웃</span>
                 </button>
               </div>
             ) : (
               <Link
                 href="/login"
-                className="flex items-center gap-2 px-6 py-2 bg-[#D4AF37] hover:opacity-90 active:scale-95 text-black text-xl font-black rounded-xl shadow-md shadow-[#D4AF37]/20 transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-4.5 py-1.5 bg-[#D4AF37] hover:opacity-90 active:scale-95 text-black text-sm font-black rounded-xl shadow-xs transition-all cursor-pointer"
               >
-                <LogIn className="w-4 h-4" />
+                <LogIn className="w-3.5 h-3.5" />
                 <span>로그인</span>
               </Link>
             )}
@@ -221,9 +221,9 @@ export default function Header({ initialUser }: HeaderProps) {
                       setIsMobileMenuOpen(false);
                       handleLogout();
                     }}
-                    className="w-full flex items-center justify-center gap-2.5 px-5 py-3 border border-white/10 hover:bg-white/5 text-white rounded-xl text-base font-black transition-colors cursor-pointer"
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-white/10 hover:bg-white/5 text-white rounded-xl text-sm font-black transition-colors cursor-pointer"
                   >
-                    <LogOut className="w-4.5 h-4.5" />
+                    <LogOut className="w-4 h-4" />
                     <span>로그아웃</span>
                   </button>
                 </div>
@@ -231,9 +231,9 @@ export default function Header({ initialUser }: HeaderProps) {
                 <Link
                   href="/login"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full flex items-center justify-center gap-2.5 px-5 py-3 bg-[#D4AF37] hover:opacity-90 text-black rounded-xl text-base font-black shadow-md transition-colors cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#D4AF37] hover:opacity-90 text-black rounded-xl text-sm font-black shadow-md transition-colors cursor-pointer"
                 >
-                  <LogIn className="w-4 h-4" />
+                  <LogIn className="w-3.5 h-3.5" />
                   <span>로그인</span>
                 </Link>
               )}
