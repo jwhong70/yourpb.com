@@ -186,7 +186,6 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title 
       {/* 차트 헤더 툴팁 */}
       <div className="flex justify-between items-center mb-4 h-8 px-1">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-[#000000]">{title}</span>
           <button
             onClick={() => downloadSvgAsPng(svgRef.current, title)}
             title="그래프 다운로드 (PNG)"
@@ -390,7 +389,6 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value', title
       {/* 차트 헤더 툴팁 */}
       <div className="flex justify-between items-center mb-4 h-8 px-1">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-[#000000]">{title}</span>
           <button
             onClick={() => downloadSvgAsPng(svgRef.current, title)}
             title="그래프 다운로드 (PNG)"
@@ -608,7 +606,6 @@ export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 
       {/* 차트 헤더 툴팁 */}
       <div className="flex justify-between items-center mb-4 h-8 px-1">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-[#000000]">{title}</span>
           <button
             onClick={() => downloadSvgAsPng(svgRef.current, title)}
             title="그래프 다운로드 (PNG)"

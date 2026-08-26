@@ -416,7 +416,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                         isSubSelected ? 'bg-black/10' : 'hover:bg-black/5'
                       }`}
                     >
-                      <h4 className="text-lg font-extrabold text-[#000000] tracking-tight flex items-center gap-2 select-none">
+                      <h4 className="text-base font-extrabold text-[#000000] tracking-tight flex items-center gap-2 select-none">
                         {sub.title}
                       </h4>
                       <div className="flex items-center gap-4">
@@ -461,7 +461,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                       isChartOpen ? 'bg-black/10' : 'hover:bg-black/5'
                                     }`}
                                   >
-                                    <span className="text-sm font-extrabold text-[#000000] tracking-tight">
+                                    <span className="text-xs font-extrabold text-[#000000] tracking-tight">
                                       {item.title}
                                     </span>
                                     <div className="flex items-center gap-4">
