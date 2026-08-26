@@ -156,25 +156,25 @@ export default async function EtfDetailPage({ params }: PageProps) {
                       <span>ETF 분류 체계</span>
                     </div>
                     <div className="space-y-2">
-                      <div className="p-2.5 rounded-none bg-[#9E9E9E]">
+                      <div className="p-2.5 rounded-none bg-[#F9F8F6]">
                         <span className="text-sm text-[#000000]/60 block mb-0.5">대분류</span>
                         <span className="text-base font-bold text-[#000000] truncate block">
                           {etfList.category || '-'}
                         </span>
                       </div>
-                      <div className="p-2.5 rounded-none bg-[#9E9E9E]">
+                      <div className="p-2.5 rounded-none bg-[#F9F8F6]">
                         <span className="text-sm text-[#000000]/60 block mb-0.5">중분류</span>
                         <span className="text-base font-bold text-gray-900 truncate block">
                           {etfList.report || '-'}
                         </span>
                       </div>
-                      <div className="p-2.5 rounded-none bg-[#9E9E9E]">
+                      <div className="p-2.5 rounded-none bg-[#F9F8F6]">
                         <span className="text-sm text-[#000000]/60 block mb-0.5">세분류</span>
                         <span className="text-base font-bold text-gray-900 truncate block">
                           {etfList.focus2 || '-'}
                         </span>
                       </div>
-                      <div className="p-2.5 rounded-none bg-[#9E9E9E]">
+                      <div className="p-2.5 rounded-none bg-[#F9F8F6]">
                         <span className="text-sm text-[#000000]/60 block mb-0.5">세세분류</span>
                         <span className="text-base font-bold text-gray-900 truncate block">
                           {etfList.focus3 || '-'}
@@ -183,7 +183,7 @@ export default async function EtfDetailPage({ params }: PageProps) {
                     </div>
                   </div>
 
-                  <div className="mt-3 p-2.5 rounded-none bg-[#9E9E9E] flex flex-col justify-between gap-0.5">
+                  <div className="mt-3 p-2.5 rounded-none bg-[#F9F8F6] flex flex-col justify-between gap-0.5">
                     <span className="text-sm text-[#000000]/60">벤치마크 지수 (Index Tracked)</span>
                     <span className="text-base font-bold text-gray-900 truncate">
                       {etfList.index_tracked || '해당사항 없음'}
@@ -281,9 +281,9 @@ export default async function EtfDetailPage({ params }: PageProps) {
                   </div>
 
                   {/* 3열: 보유 비중 상위 10종목 (Table) */}
-                  <div className="h-full p-6 sm:p-8 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md space-y-4 flex flex-col justify-between">
+                  <div className="lg:h-[460px] p-6 sm:p-8 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md space-y-4 flex flex-col justify-between">
                     <div className="space-y-4">
-                      <div className="flex items-center justify-between border-b border-[#000000] pb-3">
+                      <div className="flex items-center justify-between pb-3">
                         <div>
                           <h3 className="text-xl font-extrabold text-gray-900 tracking-tight select-none">보유 비중 상위 10종목</h3>
                         </div>
@@ -294,7 +294,7 @@ export default async function EtfDetailPage({ params }: PageProps) {
                           보유종목 편입 정보가 없습니다.
                         </div>
                       ) : (
-                        <div className="overflow-x-auto max-h-75 scrollbar-thin rounded-none border border-t-[#000000] border-b-[#000000] bg-[#F9F8F6]">
+                        <div className="overflow-x-auto max-h-75 scrollbar-thin rounded-none border-t border-b border-t-[#000000] border-b-[#000000] border-l-0 border-r-0 bg-[#F9F8F6]">
                           <table className="w-full text-left border-collapse text-base">
                             <thead>
                               <tr className="bg-[#000000] text-white font-bold text-sm uppercase select-none">

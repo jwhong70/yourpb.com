@@ -409,7 +409,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
               {getSubCategories(activeMain).map((sub) => {
                 const isSubSelected = activeSub === sub.id;
                 return (
-                  <div key={sub.id} className="flex flex-col border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none overflow-hidden bg-inner-bg">
+                  <div key={sub.id} className="flex flex-col border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none overflow-hidden bg-[#F9F8F6]">
                     <button
                       onClick={() => setActiveSub(isSubSelected ? null : sub.id)}
                       className={`flex justify-between items-center p-4 text-left transition-colors duration-200 ${
@@ -452,7 +452,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                               return (
                                 <div 
                                   key={chartKey} 
-                                  className="flex flex-col border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none overflow-hidden transition-all duration-200 bg-inner-bg"
+                                  className="flex flex-col border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none overflow-hidden transition-all duration-200 bg-[#F9F8F6]"
                                 >
                                   {/* 소분류 헤더 */}
                                   <button
@@ -482,7 +482,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                         initial={{ opacity: 0, height: 0 }}
                                         animate={{ opacity: 1, height: 'auto' }}
                                         exit={{ opacity: 0, height: 0 }}
-                                        className="overflow-hidden bg-inner-bg border-t border-[#000000]"
+                                        className="overflow-hidden bg-[#F9F8F6] border-t border-[#000000]"
                                       >
                                         <div className="p-4">
                                           {!hasData ? (
@@ -496,6 +496,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                                   data={item.data} 
                                                   themeIndex={item.theme ?? 0} 
                                                   valueKey={item.valKey ?? 'value'} 
+                                                  title={item.title}
                                                 />
                                               )}
                                               {item.chartType === 'line' && (
@@ -503,12 +504,14 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                                   data={item.data} 
                                                   themeIndex={item.theme ?? 0} 
                                                   valueKey={item.valKey ?? 'value'} 
+                                                  title={item.title}
                                                 />
                                               )}
                                               {item.chartType === 'candle' && (
                                                 <MacroCandleChart 
                                                   data={item.data} 
                                                   themeIndex={item.theme ?? 0} 
+                                                  title={item.title}
                                                 />
                                               )}
                                             </>
