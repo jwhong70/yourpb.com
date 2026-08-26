@@ -158,7 +158,7 @@ export async function signInWithGoogle() {
   const headersList = await headers();
   const host = headersList.get('host');
   const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
-  const origin = `${protocol}://${host}`;
+  const origin = process.env.NEXT_PUBLIC_SITE_URL || `${protocol}://${host}`;
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
@@ -186,7 +186,7 @@ export async function signInWithKakao() {
   const headersList = await headers();
   const host = headersList.get('host');
   const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
-  const origin = `${protocol}://${host}`;
+  const origin = process.env.NEXT_PUBLIC_SITE_URL || `${protocol}://${host}`;
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'kakao',
