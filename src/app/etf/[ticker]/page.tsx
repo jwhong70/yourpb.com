@@ -281,7 +281,7 @@ export default async function EtfDetailPage({ params }: PageProps) {
                   </div>
 
                   {/* 3열: 보유 비중 상위 10종목 (Table) */}
-                  <div className="lg:h-[460px] p-6 sm:p-8 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md space-y-4 flex flex-col justify-between">
+                  <div className="lg:h-115 p-6 sm:p-8 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md space-y-4 flex flex-col justify-between">
                     <div className="space-y-4">
                       <div className="flex items-center justify-between pb-3">
                         <div>

@@ -30,10 +30,12 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
   const [interestFilter, setInterestFilter] = useState<'y' | 'all'>('y');
   const [selectedSector, setSelectedSector] = useState<string>('all');
   const [selectedIndustry, setSelectedIndustry] = useState<string>('all');
+  const [selectedPeriod, setSelectedPeriod] = useState<'1w' | '5w' | '20w' | '60w' | '120w'>('1w');
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
-  // 정렬 상태
-  const [sortColumn, setSortColumn] = useState<keyof StockWithPrice>('ticker');
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  // 정렬 상태 (기본 정렬: yield_1w, 내림차순 desc)
+  const [sortColumn, setSortColumn] = useState<keyof StockWithPrice>('yield_1w');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
   // 1. 대분류(sector2) 고유 목록 자동 추출 (필터 상태 연동)
   const sectors = useMemo(() => {
@@ -70,9 +72,10 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
       const matchInterest = interestFilter === 'all' || stock.interest === 'y';
       const matchSector = selectedSector === 'all' || stock.sector2 === selectedSector;
       const matchIndustry = selectedIndustry === 'all' || stock.industry2 === selectedIndustry;
-      return matchInterest && matchSector && matchIndustry;
+      const matchSearch = !searchTerm.trim() || stock.name.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchInterest && matchSector && matchIndustry && matchSearch;
     });
-  }, [initialStocks, selectedSector, selectedIndustry, interestFilter]);
+  }, [initialStocks, selectedSector, selectedIndustry, interestFilter, searchTerm]);
 
   // 4. 정렬 로직 적용
   const sortedStocks = useMemo(() => {
@@ -106,8 +109,15 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
       setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'));
     } else {
       setSortColumn(column);
-      setSortDirection('asc');
+      setSortDirection('desc'); // 새로운 정렬 기준 설정 시 내림차순(desc)이 기본값이 되도록 설정
     }
+  };
+
+  // 기간별 성과 선택 시 정렬 동조 핸들러
+  const handlePeriodChange = (period: '1w' | '5w' | '20w' | '60w' | '120w') => {
+    setSelectedPeriod(period);
+    setSortColumn(`yield_${period}` as keyof StockWithPrice);
+    setSortDirection('desc');
   };
 
   // 정렬 화살표 아이콘 렌더링
@@ -186,170 +196,160 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
         </div>
       </div>
 
-      {/* 1. 필터 셀렉트 박스 영역 */}
+      {/* 1. 필터 셀렉트 박스 및 종목명 검색창 영역 */}
       <div className="bg-box-bg p-6 rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white backdrop-blur-md shadow-sm">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* 대분류 드롭다운 */}
-          <div className="flex flex-col space-y-2">
-            <label htmlFor="sector-select" className="text-xs text-gray-700 font-bold tracking-wider">
-              대분류 (Sector)
-            </label>
-            <div className="relative">
-              <select
-                id="sector-select"
-                value={selectedSector}
-                onChange={handleSectorChange}
-                className="w-full appearance-none bg-white text-gray-800 border border-[#000000] rounded-none py-3.5 px-4 pr-10 text-sm font-semibold focus:outline-hidden focus:ring-1 focus:ring-black cursor-pointer transition-all shadow-xs"
-              >
-                <option value="all">전체 대분류</option>
-                {sectors.map((sector) => (
-                  <option key={sector} value={sector}>
-                    {sector}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+        <div className="flex flex-col gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* 대분류 드롭다운 */}
+            <div className="flex flex-col space-y-2">
+              <label htmlFor="sector-select" className="text-xs text-gray-700 font-bold tracking-wider">
+                대분류 (Sector)
+              </label>
+              <div className="relative">
+                <select
+                  id="sector-select"
+                  value={selectedSector}
+                  onChange={handleSectorChange}
+                  className="w-full appearance-none bg-white text-gray-800 border border-[#000000] rounded-none py-3.5 px-4 pr-10 text-sm font-semibold focus:outline-hidden focus:ring-1 focus:ring-black cursor-pointer transition-all shadow-xs"
+                >
+                  <option value="all">전체 대분류</option>
+                  {sectors.map((sector) => (
+                    <option key={sector} value={sector}>
+                      {sector}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+              </div>
+            </div>
+
+            {/* 중분류 드롭다운 */}
+            <div className="flex flex-col space-y-2">
+              <label htmlFor="industry-select" className="text-xs text-gray-700 font-bold tracking-wider">
+                중분류 (Industry)
+              </label>
+              <div className="relative">
+                <select
+                  id="industry-select"
+                  value={selectedIndustry}
+                  onChange={(e) => setSelectedIndustry(e.target.value)}
+                  className="w-full appearance-none bg-white text-gray-800 border border-[#000000] rounded-none py-3.5 px-4 pr-10 text-sm font-semibold focus:outline-hidden focus:ring-1 focus:ring-black cursor-pointer transition-all shadow-xs"
+                >
+                  <option value="all">전체 중분류</option>
+                  {industries.map((industry) => (
+                    <option key={industry} value={industry}>
+                      {industry}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+              </div>
             </div>
           </div>
 
-          {/* 중분류 드롭다운 */}
+          {/* 종목명 검색창 */}
           <div className="flex flex-col space-y-2">
-            <label htmlFor="industry-select" className="text-xs text-gray-700 font-bold tracking-wider">
-              중분류 (Industry)
+            <label htmlFor="search-input" className="text-xs text-gray-700 font-bold tracking-wider">
+              종목명 검색
             </label>
-            <div className="relative">
-              <select
-                id="industry-select"
-                value={selectedIndustry}
-                onChange={(e) => setSelectedIndustry(e.target.value)}
-                className="w-full appearance-none bg-white text-gray-800 border border-[#000000] rounded-none py-3.5 px-4 pr-10 text-sm font-semibold focus:outline-hidden focus:ring-1 focus:ring-black cursor-pointer transition-all shadow-xs"
-              >
-                <option value="all">전체 중분류</option>
-                {industries.map((industry) => (
-                  <option key={industry} value={industry}>
-                    {industry}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-            </div>
+            <input
+              id="search-input"
+              type="text"
+              placeholder="종목명을 입력하세요..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-white text-gray-800 border border-[#000000] rounded-none py-3.5 px-4 text-sm font-semibold focus:outline-hidden focus:ring-1 focus:ring-black transition-all shadow-xs"
+            />
           </div>
         </div>
       </div>
 
       {/* 2. 검색 결과 요약 및 표 영역 */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between px-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-2">
           <span className="text-xs text-gray-500 font-semibold select-none">
             검색 결과: <strong className="text-gray-900 text-sm font-extrabold">{sortedStocks.length}</strong>개 종목
           </span>
-          {!isPremium && (
-            <span className="inline-flex items-center gap-1 text-[10px] text-gold font-bold bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-full select-none">
-              <Lock className="w-3 h-3 text-gold" />
-              상세조회는 Premium 전용
-            </span>
-          )}
+          <div className="flex items-center gap-3">
+            {!isPremium && (
+              <span className="inline-flex items-center gap-1 text-[10px] text-gold font-bold bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-full select-none">
+                <Lock className="w-3 h-3 text-gold" />
+                Premium
+              </span>
+            )}
+            
+            {/* 기간별 성과 목록상자 */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-gray-700 shrink-0">기간별 성과 선택</span>
+              <div className="relative">
+                <select
+                  value={selectedPeriod}
+                  onChange={(e) => handlePeriodChange(e.target.value as any)}
+                  className="appearance-none bg-white text-gray-800 border border-[#000000] rounded-none py-1.5 px-3 pr-8 text-xs font-bold focus:outline-hidden focus:ring-1 focus:ring-black cursor-pointer shadow-xs select-none"
+                >
+                  <option value="1w">1주</option>
+                  <option value="5w">5주</option>
+                  <option value="20w">20주</option>
+                  <option value="60w">60주</option>
+                  <option value="120w">120주</option>
+                </select>
+                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none" />
+              </div>
+            </div>
+          </div>
         </div>
 
         {sortedStocks.length > 0 ? (
-          <div className="overflow-x-auto rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white bg-inner-bg shadow-lg">
-            <table className="w-full text-left border-collapse text-base">
+          <div className="overflow-x-auto rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white bg-box-bg shadow-lg">
+            <table className="w-full text-left border-collapse text-base table-fixed">
               <thead>
                 <tr className="bg-[#000000] text-white font-bold text-base uppercase tracking-wider select-none divide-x divide-white">
                   <th
                     onClick={() => handleSort('ticker')}
-                    className="py-4.5 px-5 sm:px-8 cursor-pointer hover:bg-gray-900 transition-colors"
+                    className="py-4 px-3 sm:px-6 cursor-pointer hover:bg-gray-900 transition-colors w-24 sm:w-36"
                   >
                     티커 {renderSortIcon('ticker')}
                   </th>
                   <th
                     onClick={() => handleSort('name')}
-                    className="py-4.5 px-4 cursor-pointer hover:bg-gray-900 transition-colors"
+                    className="py-4 px-2 sm:px-4 cursor-pointer hover:bg-gray-900 transition-colors"
                   >
                     종목명 {renderSortIcon('name')}
                   </th>
                   <th
-                    onClick={() => handleSort('close')}
-                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
+                    onClick={() => handleSort(`yield_${selectedPeriod}` as any)}
+                    className="py-4 px-3 sm:px-6 text-right cursor-pointer hover:bg-gray-900 transition-colors w-24 sm:w-44"
                   >
-                    현재가 {renderSortIcon('close')}
-                  </th>
-                  <th
-                    onClick={() => handleSort('yield_1w')}
-                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
-                  >
-                    1주 {renderSortIcon('yield_1w')}
-                  </th>
-                  <th
-                    onClick={() => handleSort('yield_5w')}
-                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
-                  >
-                    5주 {renderSortIcon('yield_5w')}
-                  </th>
-                  <th
-                    onClick={() => handleSort('yield_20w')}
-                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
-                  >
-                    20주 {renderSortIcon('yield_20w')}
-                  </th>
-                  <th
-                    onClick={() => handleSort('yield_60w')}
-                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
-                  >
-                    60주 {renderSortIcon('yield_60w')}
-                  </th>
-                  <th
-                    onClick={() => handleSort('yield_120w')}
-                    className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
-                  >
-                    120주 {renderSortIcon('yield_120w')}
+                    수익률 ({selectedPeriod === '1w' ? '1주' : selectedPeriod === '5w' ? '5주' : selectedPeriod === '20w' ? '20주' : selectedPeriod === '60w' ? '60주' : '120주'}) {renderSortIcon(`yield_${selectedPeriod}` as any)}
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#000000] text-base text-gray-900">
                 {sortedStocks.map((stock) => {
-                  const y1 = getYieldStyle(stock.yield_1w);
-                  const y5 = getYieldStyle(stock.yield_5w);
-                  const y20 = getYieldStyle(stock.yield_20w);
-                  const y60 = getYieldStyle(stock.yield_60w);
-                  const y120 = getYieldStyle(stock.yield_120w);
+                  const periodYield = stock[`yield_${selectedPeriod}` as keyof StockWithPrice] as number | null;
+                  const yieldStyle = getYieldStyle(periodYield);
 
                   return (
-                    <tr
-                      key={stock.ticker}
-                      onClick={() => handleRowClick(stock.ticker)}
-                      className="hover:bg-black/5 transition-colors cursor-pointer group divide-x divide-white"
-                    >
-                      <td className="py-4.5 px-5 sm:px-8 font-mono font-bold text-[#000000] group-hover:text-gray-700 transition-colors">
-                        {stock.ticker}
-                      </td>
-                      <td className="py-4.5 px-4 font-semibold max-w-60 sm:max-w-80 truncate" title={stock.name}>
-                        <div className="flex items-center gap-1.5">
-                          <span className="truncate">{stock.name}</span>
-                          {!isPremium && (
-                            <Lock className="w-3 h-3 text-gold/60 shrink-0" />
-                          )}
-                        </div>
-                      </td>
-                      <td className="py-4.5 px-4 text-right font-mono font-bold">
-                        {formatPrice(stock.close)}
-                      </td>
-                      <td className={`py-4.5 px-4 text-right font-mono ${y1.colorClass}`}>
-                        {y1.text}
-                      </td>
-                      <td className={`py-4.5 px-4 text-right font-mono ${y5.colorClass}`}>
-                        {y5.text}
-                      </td>
-                      <td className={`py-4.5 px-4 text-right font-mono ${y20.colorClass}`}>
-                        {y20.text}
-                      </td>
-                      <td className={`py-4.5 px-4 text-right font-mono ${y60.colorClass}`}>
-                        {y60.text}
-                      </td>
-                      <td className={`py-4.5 px-4 text-right font-mono ${y120.colorClass}`}>
-                        {y120.text}
-                      </td>
-                    </tr>
+                     <tr
+                       key={stock.ticker}
+                       onClick={() => handleRowClick(stock.ticker)}
+                       className="hover:bg-black/5 transition-colors cursor-pointer group divide-x divide-white"
+                     >
+                       <td className="py-4 px-3 sm:px-6 font-mono font-bold text-[#000000] group-hover:text-gray-700 transition-colors truncate">
+                         {stock.ticker}
+                       </td>
+                       <td className="py-4 px-2 sm:px-4 font-semibold truncate" title={stock.name}>
+                         <div className="flex items-center gap-1.5">
+                           <span className="truncate">{stock.name}</span>
+                           {!isPremium && (
+                             <Lock className="w-3 h-3 text-gold/60 shrink-0" />
+                           )}
+                         </div>
+                       </td>
+                       <td className={`py-4 px-3 sm:px-6 text-right font-mono truncate ${yieldStyle.colorClass}`}>
+                         {yieldStyle.text}
+                       </td>
+                     </tr>
                   );
                 })}
               </tbody>

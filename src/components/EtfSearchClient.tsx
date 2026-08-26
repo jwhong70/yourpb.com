@@ -137,24 +137,24 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
               {/* 검색 결과 표 */}
               {sortedList.length > 0 ? (
                 <div className="overflow-x-auto rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white bg-box-bg shadow-xl">
-                  <table className="w-full text-left border-collapse text-base">
+                  <table className="w-full text-left border-collapse text-base table-fixed">
                     <thead>
                       <tr className="bg-[#000000] text-white font-bold text-base uppercase tracking-wider select-none divide-x divide-white">
                         <th
                           onClick={() => handleSort('ticker')}
-                          className="py-4.5 px-5 sm:px-8 cursor-pointer hover:bg-gray-900 transition-colors w-28 sm:w-36"
+                          className="py-4 px-3 sm:px-6 cursor-pointer hover:bg-gray-900 transition-colors w-24 sm:w-36"
                         >
                           티커 {renderSortIcon('ticker')}
                         </th>
                         <th
                           onClick={() => handleSort('name')}
-                          className="py-4.5 px-4 cursor-pointer hover:bg-gray-900 transition-colors"
+                          className="py-4 px-2 sm:px-4 cursor-pointer hover:bg-gray-900 transition-colors"
                         >
                           이름 {renderSortIcon('name')}
                         </th>
                         <th
                           onClick={() => handleSort(`yield_${selectedPeriod}` as any)}
-                          className="py-4.5 px-6 text-right cursor-pointer hover:bg-gray-900 transition-colors w-36 sm:w-48"
+                          className="py-4 px-3 sm:px-6 text-right cursor-pointer hover:bg-gray-900 transition-colors w-24 sm:w-44"
                         >
                           수익률 ({selectedPeriod === '1w' ? '1주' : selectedPeriod === '5w' ? '5주' : selectedPeriod === '20w' ? '20주' : selectedPeriod === '60w' ? '60주' : '120주'}) {renderSortIcon(`yield_${selectedPeriod}` as any)}
                         </th>
@@ -169,13 +169,13 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
                             onClick={() => router.push(`/etf/${etf.ticker}`)}
                             className="hover:bg-black/5 transition-colors cursor-pointer"
                           >
-                            <td className="py-4 px-5 sm:px-8 font-mono font-bold text-[#000000] border-r border-r-white">
+                            <td className="py-4 px-3 sm:px-6 font-mono font-bold text-[#000000] border-r border-r-white truncate">
                               {etf.ticker}
                             </td>
-                            <td className="py-4 px-4 font-semibold max-w-64 sm:max-w-xl truncate border-r border-r-white" title={etf.name}>
+                            <td className="py-4 px-2 sm:px-4 font-semibold truncate border-r border-r-white" title={etf.name}>
                               {etf.name}
                             </td>
-                            <td className={`py-4 px-6 text-right font-mono border-r border-r-white ${getYieldColor(yieldVal)}`}>
+                            <td className={`py-4 px-3 sm:px-6 text-right font-mono border-r border-r-white truncate ${getYieldColor(yieldVal)}`}>
                               {formatYield(yieldVal)}
                             </td>
                           </tr>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, Instagram, Briefcase, GraduationCap, Award, User } from 'lucide-react';
+import { Mail, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import { getSessionUser } from '@/app/actions/auth';
 import Header from '@/components/Header';
@@ -72,7 +72,7 @@ export default async function AboutPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16 mt-10">
 
           {/* 1. 프로필 요약 (첫번째 블록) */}
-          <section className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none p-8 sm:p-10 shadow-2xl relative overflow-hidden">
+          <section className="bg-box-bg rounded-none p-8 sm:p-10 shadow-2xl relative overflow-hidden">
             {/* 미세한 팝 컬러 그라데이션 장식 배경 */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-sky-primary/10 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-red-accent/5 rounded-full blur-3xl pointer-events-none" />
@@ -113,26 +113,25 @@ export default async function AboutPage() {
 
           {/* 2. 경력 사항 타임라인 (두번째 블록) */}
           <section className="space-y-8">
-            <div className="flex items-center gap-2.5 border-b border-black pb-4">
-              <Briefcase className="w-6 h-6 text-[#000000]" />
+            <div className="flex items-center pb-2">
               <h2 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
                 전문 경력 (Career History)
               </h2>
             </div>
 
-            {/* 수직 타임라인 레이아웃 */}
-            <div className="relative border-l border-[#000000] ml-4 pl-6 sm:pl-8 space-y-10">
+            {/* 수직 타임라인 레이아웃 (세로선 스타일 변경) */}
+            <div className="relative border-l-2 border-[#D4AF37]/30 ml-4 pl-6 sm:pl-8 space-y-10">
               {careerHistory.map((item, idx) => (
                 <div key={idx} className="relative group">
-                  {/* 타임라인 원형 마커 노드 */}
-                  <span className="absolute -left-10 sm:-left-12 top-1.5 flex items-center justify-center w-5 h-5 rounded-full bg-white border-2 border-[#000000] group-hover:border-[#000000] transition-colors shadow-xs">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#000000] group-hover:bg-[#000000] transition-colors" />
+                  {/* 타임라인 원형 마커 노드 (블릿 스타일 변경) */}
+                  <span className="absolute -left-9.5 sm:-left-11 top-2.5 flex items-center justify-center w-4.5 h-4.5 rounded-full bg-white border-2 border-[#D4AF37] transition-all shadow-xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
                   </span>
 
                   {/* 경력 상세 카드 */}
-                  <div className="bg-inner-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none p-6 hover:shadow-md hover:border-[#000000] transition-all space-y-2">
+                  <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none p-6 hover:shadow-md hover:border-[#D4AF37] transition-all space-y-2">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                      <h3 className="text-xl font-extrabold text-[#000000] group-hover:text-[#000000] transition-colors">
+                      <h3 className="text-xl font-extrabold text-[#000000] group-hover:text-[#D4AF37] transition-colors">
                         {item.title}
                       </h3>
                       <span className="text-sm font-bold font-mono text-[#000000] shrink-0 bg-black/5 px-2.5 py-0.5 rounded-none self-start sm:self-center">
@@ -148,59 +147,9 @@ export default async function AboutPage() {
             </div>
           </section>
 
-          {/* 3. 학력 & 자격증 정보 */}
-          <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-            {/* 학력 정보 */}
-            <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none p-6 space-y-4 shadow-sm">
-              <div className="flex items-center gap-2 pb-2 border-b border-[#000000]">
-                <GraduationCap className="w-5 h-5 text-gray-700" />
-                <h3 className="text-xl font-extrabold text-gray-900">학력 사항</h3>
-              </div>
-              <ul className="space-y-3.5 text-base">
-                <li className="flex justify-between items-start gap-4">
-                  <div>
-                    <strong className="text-gray-900 block">한국외국어대학교 일반대학원 석사</strong>
-                    <span className="text-sm text-gray-500">재무관리 전공, 회계학 부전공</span>
-                  </div>
-                  <span className="text-sm font-bold text-gray-500 font-mono">2000.08</span>
-                </li>
-                <li className="flex justify-between items-start gap-4">
-                  <div>
-                    <strong className="text-gray-900 block">한국외국어대학교 학사</strong>
-                    <span className="text-sm text-gray-500">일본어 전공, 경영학 부전공</span>
-                  </div>
-                  <span className="text-sm font-bold text-gray-500 font-mono">1994.02</span>
-                </li>
-              </ul>
-            </div>
-
-            {/* 자격증 정보 */}
-            <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none p-6 space-y-4 shadow-sm">
-              <div className="flex items-center gap-2 pb-2 border-b border-[#000000]">
-                <Award className="w-5 h-5 text-gray-700" />
-                <h3 className="text-xl font-extrabold text-gray-900">금융 자격 취득</h3>
-              </div>
-              <ul className="space-y-3.5 text-base">
-                <li className="flex justify-between items-center gap-4">
-                  <span className="text-gray-900 font-medium">자산운용전문인력 (국토교통부)</span>
-                  <span className="text-sm font-bold text-gray-500 font-mono">2017.12</span>
-                </li>
-                <li className="flex justify-between items-center gap-4">
-                  <span className="text-gray-900 font-medium">부동산운용전문인력 (자산운용협회)</span>
-                  <span className="text-sm font-bold text-gray-500 font-mono">2007.07</span>
-                </li>
-                <li className="flex justify-between items-center gap-4">
-                  <span className="text-gray-900 font-medium">일반운용전문인력 (투자신탁협회)</span>
-                  <span className="text-sm font-bold text-gray-500 font-mono">2002.06</span>
-                </li>
-              </ul>
-            </div>
-
-          </section>
 
           {/* 4. CONTACT US (세번째 블록 - 이메일, 인스타 링크 연동) */}
-          <section className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none p-8 sm:p-10 space-y-8">
+          <section className="bg-box-bg rounded-none p-8 sm:p-10 space-y-8">
             <div className="text-center space-y-2">
               <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight select-none">
                 CONTACT US
@@ -216,16 +165,16 @@ export default async function AboutPage() {
               {/* 이메일 카드 */}
               <a
                 href="mailto:jwhong70@gmail.com"
-                className="flex flex-col items-center justify-center p-6 bg-inner-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white hover:border-black/50 rounded-none text-center transition-all hover:shadow-md group cursor-pointer"
+                className="flex flex-col items-center justify-center p-6 bg-[#D4AF37] hover:bg-[#c29d2f] rounded-none text-center transition-all hover:shadow-lg group cursor-pointer"
               >
-                <div className="text-[#000000] mb-4 group-hover:scale-110 transition-transform">
+                <div className="text-gray-900 mb-4 group-hover:scale-110 transition-transform">
                   <Mail className="w-8 h-8" />
                 </div>
-                <span className="text-sm text-gray-700 font-semibold tracking-wider uppercase mb-1">E-mail</span>
-                <strong className="text-base text-gray-900 font-sans group-hover:text-[#000000] transition-colors">
+                <span className="text-sm text-gray-900 font-extrabold tracking-wider uppercase mb-1">E-mail</span>
+                <strong className="text-base text-gray-900 font-sans group-hover:text-black transition-colors break-all">
                   jwhong70@gmail.com
                 </strong>
-                <span className="text-sm text-gray-500 mt-2">클릭하여 메일 발송하기 &rarr;</span>
+                <span className="text-sm text-gray-900/70 font-semibold mt-2">클릭하여 메일 발송하기 &rarr;</span>
               </a>
 
               {/* 인스타그램 카드 */}
@@ -233,16 +182,16 @@ export default async function AboutPage() {
                 href="https://www.instagram.com/yourpb_hong/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center p-6 bg-inner-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white hover:border-black/50 rounded-none text-center transition-all hover:shadow-md group cursor-pointer"
+                className="flex flex-col items-center justify-center p-6 bg-[#D4AF37] hover:bg-[#c29d2f] rounded-none text-center transition-all hover:shadow-lg group cursor-pointer"
               >
-                <div className="text-[#000000] mb-4 group-hover:scale-110 transition-transform">
+                <div className="text-gray-900 mb-4 group-hover:scale-110 transition-transform">
                   <Instagram className="w-8 h-8" />
                 </div>
-                <span className="text-sm text-gray-700 font-semibold tracking-wider uppercase mb-1">Instagram</span>
-                <strong className="text-base text-gray-900 font-sans group-hover:text-[#000000] transition-colors">
+                <span className="text-sm text-gray-900 font-extrabold tracking-wider uppercase mb-1">Instagram</span>
+                <strong className="text-base text-gray-900 font-sans group-hover:text-black transition-colors break-all">
                   @yourpb_hong
                 </strong>
-                <span className="text-sm text-gray-500 mt-2">클릭하여 프로필 방문하기 &rarr;</span>
+                <span className="text-sm text-gray-900/70 font-semibold mt-2">클릭하여 프로필 방문하기 &rarr;</span>
               </a>
 
             </div>

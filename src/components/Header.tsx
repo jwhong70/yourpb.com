@@ -91,14 +91,14 @@ export default function Header({ initialUser }: HeaderProps) {
                   <Link
                     key={link.name}
                     href={link.href}
-                    className={`text-base font-semibold transition-colors duration-200 px-3 h-14 flex items-center relative rounded-none ${isActive
+                    className={`text-base font-black transition-colors duration-200 px-3 h-14 flex items-center relative rounded-none ${isActive
                       ? 'text-white'
                       : 'text-[#9E9E9E] hover:text-white'
                       }`}
                   >
                     <span>{link.name}</span>
                     {isActive && (
-                      <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#D4AF37]" />
+                      <span className="absolute bottom-0 left-0 w-full h-1 bg-[#D4AF37]" />
                     )}
                   </Link>
                 );
@@ -187,7 +187,7 @@ export default function Header({ initialUser }: HeaderProps) {
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block px-4 py-3 rounded-none text-base font-semibold transition-colors duration-200 ${isActive
+                  className={`block px-4 py-3 rounded-none text-base font-black transition-colors duration-200 ${isActive
                     ? 'text-white'
                     : 'text-[#9E9E9E] hover:bg-white/5 hover:text-white'
                     }`}

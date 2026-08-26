@@ -21,9 +21,23 @@ interface WishlistGridProps {
 
 export default function WishlistGrid({ wishlist, isLoggedIn }: WishlistGridProps) {
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const handleImageError = (ticker: string) => {
     setImageErrors((prev) => ({ ...prev, [ticker]: true }));
+  };
+
+  // 모바일 가로 스크롤 시 활성 인덱스 계산
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const container = scrollRef.current;
+    const scrollLeft = container.scrollLeft;
+    const itemWidth = container.clientWidth / 2; // 카드 2장이 100%이므로 카드 1개는 너비의 절반
+    if (itemWidth > 0) {
+      const index = Math.round(scrollLeft / itemWidth);
+      setActiveIndex(index);
+    }
   };
 
   const getGradientClass = (category: string) => {
@@ -46,7 +60,7 @@ export default function WishlistGrid({ wishlist, isLoggedIn }: WishlistGridProps
           <LogIn className="w-8 h-8" />
         </div>
         <div className="space-y-2">
-          <h3 className="text-2xl font-extrabold text-gray-900 select-none">로그인이 필요한 서비스입니다</h3>
+          <h3 className="text-2xl font-extrabold text-gray-900 select-none">로그인이 필요한 service입니다</h3>
           <p className="text-base text-gray-500">찜 목록을 확인하고 관리하려면 로그인해 주세요.</p>
         </div>
         <Link
@@ -87,17 +101,25 @@ export default function WishlistGrid({ wishlist, isLoggedIn }: WishlistGridProps
         </span>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
-        {wishlist.map((etf) => {
+      {/* 모바일 560px 이하 flex-nowrap 스냅 레이아웃, 초과 시 grid 레이아웃 분기 */}
+      <div 
+        ref={scrollRef}
+        onScroll={handleScroll}
+        className="flex flex-nowrap overflow-x-auto min-[561px]:grid min-[561px]:grid-cols-3 lg:grid-cols-6 gap-6 snap-x snap-mandatory scroll-smooth pb-4 scrollbar-none"
+      >
+        {wishlist.map((etf, idx) => {
           const isError = imageErrors[etf.ticker];
           const storageUrl = `https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/poster-etf/${etf.ticker.toUpperCase()}.png`;
 
           return (
             <motion.div
               key={etf.ticker}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: (idx % 6) * 0.08 }}
               whileHover={{ scale: 1.05 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className="group flex flex-col bg-inner-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none hover:shadow-xl transition-all"
+              className="w-[calc(50%-12px)] shrink-0 min-[561px]:w-auto snap-start group flex flex-col bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none hover:shadow-xl transition-all"
             >
               <Link href={`/etf/${etf.ticker}`} className="block relative aspect-2/3 w-full overflow-hidden bg-navy/60">
                 {/* poster 상단 테두리 위에 이름 표시 */}
@@ -137,7 +159,7 @@ export default function WishlistGrid({ wishlist, isLoggedIn }: WishlistGridProps
               </Link>
 
               {/* 하단 정보 영역 */}
-              <div className="p-3 flex flex-col justify-between grow gap-2 bg-inner-bg">
+              <div className="p-3 flex flex-col justify-between grow gap-2 bg-box-bg">
                 <Link href={`/etf/${etf.ticker}`} className="block group-hover:text-sky-primary transition-colors">
                   <span className="text-sm font-bold text-[#000000] tracking-wide block mb-0.5">
                     {etf.ticker}
@@ -161,6 +183,18 @@ export default function WishlistGrid({ wishlist, isLoggedIn }: WishlistGridProps
             </motion.div>
           );
         })}
+      </div>
+
+      {/* 모바일 전용 닷 인디케이터 (560px 이하에서만 노출) */}
+      <div className="flex min-[561px]:hidden justify-center gap-1.5 pt-4">
+        {wishlist.map((_, idx) => (
+          <span
+            key={idx}
+            className={`w-1.5 h-1.5 rounded-full transition-all duration-200 ${
+              activeIndex === idx ? 'bg-[#000000] w-3' : 'bg-[#000000]/20'
+            }`}
+          />
+        ))}
       </div>
     </div>
   );

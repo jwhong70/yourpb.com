@@ -54,7 +54,7 @@ export default function EtfPerformanceChart({
   };
 
   return (
-    <div className="lg:h-[460px] flex flex-col p-6 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl">
+    <div className="lg:h-115 flex flex-col p-6 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl">
       <div className="flex items-center justify-between border-b border-black/10 pb-4 mb-6">
         <div>
           <h4 className="text-lg font-bold text-[#000000] tracking-tight">수익률 성과 지표</h4>

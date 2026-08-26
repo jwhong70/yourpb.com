@@ -181,25 +181,25 @@ export default async function StockDetailPage({ params }: PageProps) {
                       <span>주식 기초 정보 (Basic Info)</span>
                     </div>
                     <div className="space-y-2">
-                      <div className="p-2.5 rounded-none bg-inner-bg">
+                      <div className="p-2.5 rounded-none bg-[#F9F8F6]">
                         <span className="text-sm text-gray-700 block mb-0.5">회사명(티커)</span>
                         <span className="text-base font-bold text-gray-900 truncate block">
                           {stock.name} ({stock.ticker})
                         </span>
                       </div>
-                      <div className="p-2.5 rounded-none bg-inner-bg">
+                      <div className="p-2.5 rounded-none bg-[#F9F8F6]">
                         <span className="text-sm text-gray-700 block mb-0.5">대분류 (Sector)</span>
                         <span className="text-base font-bold text-[#000000] truncate block">
                           {isPremium ? (stock.sector2 || '-') : '••••'}
                         </span>
                       </div>
-                      <div className="p-2.5 rounded-none bg-inner-bg">
+                      <div className="p-2.5 rounded-none bg-[#F9F8F6]">
                         <span className="text-sm text-gray-700 block mb-0.5">중분류 (Industry)</span>
                         <span className="text-base font-bold text-gray-900 truncate block">
                           {isPremium ? (stock.industry2 || '-') : '••••'}
                         </span>
                       </div>
-                      <div className="p-2.5 rounded-none bg-inner-bg">
+                      <div className="p-2.5 rounded-none bg-[#F9F8F6]">
                         <span className="text-sm text-gray-700 block mb-0.5">부문 (Divisions)</span>
                         <span className="text-base font-bold text-gray-900 truncate block whitespace-pre-line">
                           {isPremium ? (stock.divisions || '정보 없음') : '••••'}
