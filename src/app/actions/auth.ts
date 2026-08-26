@@ -115,7 +115,7 @@ export async function getSessionUser() {
       return {
         id: user.id,
         email: user.email,
-        name: user.user_metadata?.name || '',
+        name: user.user_metadata?.name || user.user_metadata?.full_name || user.user_metadata?.nickname || user.user_metadata?.user_name || '사용자',
         membership_status: 'free',
         subscription_end_date: null,
       };
@@ -124,7 +124,7 @@ export async function getSessionUser() {
     return {
       id: profile.id,
       email: profile.email,
-      name: profile.name,
+      name: profile.name || user.user_metadata?.name || user.user_metadata?.full_name || user.user_metadata?.nickname || user.user_metadata?.user_name || '사용자',
       membership_status: profile.membership_status,
       subscription_end_date: profile.subscription_end_date,
     };

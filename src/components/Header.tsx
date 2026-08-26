@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, LogIn, LogOut, Award, Sparkles } from 'lucide-react';
+import { Menu, X, LogIn, LogOut, Award } from 'lucide-react';
 import { signOut } from '@/app/actions/auth';
 
 interface HeaderProps {
@@ -20,40 +20,15 @@ export default function Header({ initialUser }: HeaderProps) {
   const [user, setUser] = useState(initialUser);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // UI 데모를 위한 Mocking용 유저 상태 토글
-  const [isDemoMode, setIsDemoMode] = useState(false);
-
   // 이메일이나 유저 세션이 바뀔 때 업데이트
   useEffect(() => {
-    if (!isDemoMode) {
-      setUser(initialUser);
-    }
-  }, [initialUser, isDemoMode]);
+    setUser(initialUser);
+  }, [initialUser]);
 
   const handleLogout = async () => {
     document.cookie = "demo_user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     document.cookie = "demo_membership_status=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     await signOut();
-  };
-
-  // 데모 로그인/비로그인 전환 기능
-  const toggleDemoUser = () => {
-    if (!user) {
-      // 1. 비로그인 -> 데모 Premium
-      document.cookie = "demo_user=true; path=/";
-      document.cookie = "demo_membership_status=premium; path=/";
-      window.location.reload();
-    } else if (user.membership_status === 'premium') {
-      // 2. 데모 Premium -> 데모 Free
-      document.cookie = "demo_user=true; path=/";
-      document.cookie = "demo_membership_status=free; path=/";
-      window.location.reload();
-    } else {
-      // 3. 데모 Free -> 로그아웃
-      document.cookie = "demo_user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-      document.cookie = "demo_membership_status=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-      window.location.reload();
-    }
   };
 
   const navLinks = [
@@ -106,18 +81,8 @@ export default function Header({ initialUser }: HeaderProps) {
             </nav>
           </div>
 
-          {/* 오른쪽 로그인/로그아웃 및 데모 모드 버튼 */}
+          {/* 오른쪽 로그인/로그아웃 버튼 */}
           <div className="hidden lg:flex items-center gap-4">
-            {/* 데모 토글 버튼 */}
-            <button
-              onClick={toggleDemoUser}
-              title="UI 상태 테스트용 토글 (데모)"
-              className="flex items-center gap-1 text-[10px] px-2 py-1 bg-white/10 hover:bg-white/20 border border-white/20 rounded-md text-sky-primary transition-colors cursor-pointer"
-            >
-              <Sparkles className="w-3 h-3" />
-              <span>UI 토글</span>
-            </button>
-
             {user ? (
               <div className="flex items-center gap-6">
                 <div className="flex items-center gap-3 border-r border-white/10 pr-4">
@@ -156,15 +121,6 @@ export default function Header({ initialUser }: HeaderProps) {
 
           {/* 모바일 햄버거 버튼 */}
           <div className="flex lg:hidden items-center gap-2">
-            {/* 데모 토글 버튼 (모바일) */}
-            <button
-              onClick={toggleDemoUser}
-              className="flex items-center gap-1 text-[10px] px-2 py-1 bg-white/10 border border-white/20 rounded-md text-sky-primary"
-            >
-              <Sparkles className="w-3 h-3" />
-              <span>UI 토글</span>
-            </button>
-
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="text-white hover:text-sky-primary p-2 focus:outline-none transition-colors"
