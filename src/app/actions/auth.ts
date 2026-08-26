@@ -147,3 +147,60 @@ export async function getSessionUser() {
 
   return null;
 }
+
+/**
+ * 구글 소셜 로그인 Action
+ */
+export async function signInWithGoogle() {
+  const supabase = await createClient();
+
+  const { headers } = await import('next/headers');
+  const headersList = await headers();
+  const host = headersList.get('host');
+  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+  const origin = `${protocol}://${host}`;
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${origin}/auth/callback`,
+    },
+  });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  if (data.url) {
+    redirect(data.url);
+  }
+}
+
+/**
+ * 카카오 소셜 로그인 Action
+ */
+export async function signInWithKakao() {
+  const supabase = await createClient();
+
+  const { headers } = await import('next/headers');
+  const headersList = await headers();
+  const host = headersList.get('host');
+  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+  const origin = `${protocol}://${host}`;
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'kakao',
+    options: {
+      redirectTo: `${origin}/auth/callback`,
+    },
+  });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  if (data.url) {
+    redirect(data.url);
+  }
+}
+
