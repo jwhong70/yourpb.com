@@ -6,9 +6,10 @@ import {
   MacroBarChart, 
   MacroLineChart, 
   MacroCandleChart,
-  ChartDataPoint
+  ChartDataPoint,
+  downloadSvgAsPng
 } from './MacroCharts';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Download } from 'lucide-react';
 
 interface SignalState {
   prev: number | null;
@@ -35,9 +36,9 @@ interface ClientPageProps {
 function TrafficLight({ value, label, isParentSelected = false }: { value: number | null; label: string; isParentSelected?: boolean }) {
   if (value === null) {
     return (
-      <div className="flex flex-col items-center gap-1">
-        <div className="w-4 h-4 rounded-full bg-black/10 border border-black/15" />
-        <span className={`text-[8px] font-bold tracking-tighter ${isParentSelected ? 'text-[#000000]/30' : 'text-white/30'}`}>{label}</span>
+      <div className="flex flex-col items-center gap-0.5">
+        <div className="w-2.5 h-2.5 rounded-full bg-black/10 border border-black/15" />
+        <span className={`text-[7px] font-bold tracking-tighter ${isParentSelected ? 'text-[#000000]/30' : 'text-white/30'}`}>{label}</span>
       </div>
     );
   }
@@ -47,18 +48,18 @@ function TrafficLight({ value, label, isParentSelected = false }: { value: numbe
     ? 'bg-[#007C1F]' 
     : 'bg-[#D60016]';
   const shadowGlow = isPositive 
-    ? 'shadow-[0_0_10px_rgba(0,124,31,0.5)]' 
-    : 'shadow-[0_0_10px_rgba(214,0,22,0.5)]';
+    ? 'shadow-[0_0_6px_rgba(0,124,31,0.5)]' 
+    : 'shadow-[0_0_6px_rgba(214,0,22,0.5)]';
 
   return (
-    <div className="flex flex-col items-center gap-1">
+    <div className="flex flex-col items-center gap-0.5">
       <div 
-        className={`relative w-4.5 h-4.5 rounded-full ${colorBg} ${shadowGlow} border border-white/10 transition-all duration-500`} 
+        className={`relative w-2.5 h-2.5 rounded-full ${colorBg} ${shadowGlow} border border-white/10 transition-all duration-500`} 
       >
         {/* 3D 반사광 하이라이트 점 */}
-        <div className="absolute top-0.5 left-0.5 w-1.25 h-0.75 rounded-full bg-white/70 filter blur-[0.2px]" />
+        <div className="absolute top-0.5 left-0.5 w-0.75 h-0.5 rounded-full bg-white/70 filter blur-[0.2px]" />
       </div>
-      <span className="text-[8px] font-bold tracking-tighter" style={{ color: isPositive ? '#007C1F' : '#D60016' }}>
+      <span className="text-[7px] font-bold tracking-tighter" style={{ color: isPositive ? '#007C1F' : '#D60016' }}>
         {label}
       </span>
     </div>
@@ -99,11 +100,11 @@ function SignalBadge({ signal, isParentSelected = false }: { signal?: SignalStat
     }
 
     return (
-      <div className={`flex items-center gap-1.5 py-0.5 md:py-1 px-2 md:px-3 rounded-none backdrop-blur-md shrink-0 ${bgColor}`}>
-        <span className={`text-[10px] md:text-xs font-bold tracking-tight ${textColor}`}>
+      <div className={`flex items-center gap-1 py-0.5 px-1.5 md:px-2 rounded-none backdrop-blur-md shrink-0 ${bgColor}`}>
+        <span className={`text-[8px] md:text-[10px] font-bold tracking-tight ${textColor}`}>
           {formattedRating}
         </span>
-        <span className={`text-[10px] md:text-xs font-bold font-mono ${isParentSelected ? 'text-[#000000]/50' : 'text-white/50'}`}>
+        <span className={`text-[8px] md:text-[10px] font-bold font-mono ${isParentSelected ? 'text-[#000000]/50' : 'text-white/50'}`}>
           ({score})
         </span>
       </div>
@@ -111,7 +112,7 @@ function SignalBadge({ signal, isParentSelected = false }: { signal?: SignalStat
   }
 
   return (
-    <div className="flex items-center gap-2 md:gap-3.5 bg-transparent py-0.5 md:py-1 px-1.5 md:px-2.5 rounded-none backdrop-blur-md shrink-0">
+    <div className="flex items-center gap-1 md:gap-1.5 bg-transparent py-0.5 px-1 md:px-1.5 rounded-none backdrop-blur-md shrink-0">
       <TrafficLight value={signal.prev} label="MOM" isParentSelected={isParentSelected} />
       <TrafficLight value={signal.yoy} label="YOY" isParentSelected={isParentSelected} />
     </div>
@@ -402,14 +403,14 @@ export default function MacroClientPage({ data }: ClientPageProps) {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none p-6 shadow-md"
+            className="overflow-hidden bg-box-bg border-t border-b border-[#000000] rounded-none p-2 sm:p-6 shadow-md"
           >
             <div className="flex flex-col gap-4">
                {/* 중분류 목록 출력 */}
               {getSubCategories(activeMain).map((sub) => {
                 const isSubSelected = activeSub === sub.id;
                 return (
-                  <div key={sub.id} className="flex flex-col border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none overflow-hidden bg-[#F9F8F6]">
+                  <div key={sub.id} className="flex flex-col border-t border-b border-[#000000] rounded-none overflow-hidden bg-[#F9F8F6]">
                     <button
                       onClick={() => setActiveSub(isSubSelected ? null : sub.id)}
                       className={`flex justify-between items-center p-4 text-left transition-colors duration-200 ${
@@ -452,18 +453,35 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                               return (
                                 <div 
                                   key={chartKey} 
-                                  className="flex flex-col border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none overflow-hidden transition-all duration-200 bg-[#F9F8F6]"
+                                  className="flex flex-col border-t border-b border-[#000000] rounded-none overflow-hidden transition-all duration-200 bg-[#F9F8F6]"
                                 >
                                   {/* 소분류 헤더 */}
-                                  <button
+                                  <div
                                     onClick={() => toggleChart(chartKey)}
-                                    className={`flex justify-between items-center px-4 py-3 text-left transition-colors duration-150 ${
+                                    className={`flex justify-between items-center px-4 py-3 text-left transition-colors duration-150 cursor-pointer select-none ${
                                       isChartOpen ? 'bg-black/10' : 'hover:bg-black/5'
                                     }`}
                                   >
-                                    <span className="text-xs font-extrabold text-[#000000] tracking-tight">
-                                      {item.title}
-                                    </span>
+                                    <div className="flex items-center gap-1.5 min-w-0 grow">
+                                      <span className="text-xs font-extrabold text-[#000000] tracking-tight truncate">
+                                        {item.title}
+                                      </span>
+                                      {isChartOpen && (
+                                        <button
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            const svg = document.getElementById(`chart-svg-${chartKey}`) as SVGSVGElement | null;
+                                            if (svg) {
+                                              downloadSvgAsPng(svg, item.title);
+                                            }
+                                          }}
+                                          title="이미지 저장 (PNG)"
+                                          className="p-1 hover:bg-black/5 rounded-none active:scale-90 transition-all cursor-pointer shrink-0 text-black/60 hover:text-[#000000]"
+                                        >
+                                          <Download className="w-3.5 h-3.5" />
+                                        </button>
+                                      )}
+                                    </div>
                                     <div className="flex items-center gap-4">
                                       {/* 소분류 신호등 표시 */}
                                       <SignalBadge signal={itemSignal} />
@@ -473,7 +491,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                         }`} 
                                       />
                                     </div>
-                                  </button>
+                                  </div>
 
                                   {/* 소분류 차트 렌더링 영역 */}
                                   <AnimatePresence>
@@ -484,7 +502,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                         exit={{ opacity: 0, height: 0 }}
                                         className="overflow-hidden bg-[#F9F8F6] border-t border-[#000000]"
                                       >
-                                        <div className="p-4">
+                                        <div className="p-1 sm:p-4">
                                           {!hasData ? (
                                             <div className="flex items-center justify-center h-48 rounded-none bg-black/5 border border-black/10 text-gray-400 text-sm italic">
                                               데이터 수집 중입니다. (Null)
@@ -497,6 +515,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                                   themeIndex={item.theme ?? 0} 
                                                   valueKey={item.valKey ?? 'value'} 
                                                   title={item.title}
+                                                  chartKey={`chart-svg-${chartKey}`}
                                                 />
                                               )}
                                               {item.chartType === 'line' && (
@@ -505,6 +524,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                                   themeIndex={item.theme ?? 0} 
                                                   valueKey={item.valKey ?? 'value'} 
                                                   title={item.title}
+                                                  chartKey={`chart-svg-${chartKey}`}
                                                 />
                                               )}
                                               {item.chartType === 'candle' && (
@@ -512,6 +532,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                                   data={item.data} 
                                                   themeIndex={item.theme ?? 0} 
                                                   title={item.title}
+                                                  chartKey={`chart-svg-${chartKey}`}
                                                 />
                                               )}
                                             </>

@@ -21,15 +21,8 @@ export interface ChartDataPoint {
   rating?: string | null;
 }
 
-interface BaseChartProps {
-  data: ChartDataPoint[];
-  themeIndex?: number;
-  valueKey?: string;
-  title?: string; // 추가: 차트 고유 제목
-}
-
 // SVG를 PNG 파일로 렌더링 후 다운로드하는 공통 헬퍼 함수
-const downloadSvgAsPng = (svgElement: SVGSVGElement | null, fileName: string) => {
+export const downloadSvgAsPng = (svgElement: SVGSVGElement | null, fileName: string) => {
   if (!svgElement) return;
 
   try {
@@ -100,10 +93,18 @@ const formatLabel = (d: ChartDataPoint) => {
   return '';
 };
 
+interface BaseChartProps {
+  data: ChartDataPoint[];
+  themeIndex?: number;
+  valueKey?: string;
+  title?: string; // 추가: 차트 고유 제목
+  chartKey?: string; // 외부 돔 참조용 고유 키
+}
+
 // ----------------------------------------------------
 // 1. 세로 막대 차트 (MacroBarChart)
 // ----------------------------------------------------
-export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title = '세로막대 차트' }: BaseChartProps) {
+export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title = '세로막대 차트', chartKey }: BaseChartProps) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const theme = CHART_THEMES[themeIndex % CHART_THEMES.length];
   const svgRef = useRef<SVGSVGElement>(null);
@@ -141,7 +142,8 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title 
     const max = Math.max(...values, 0);
     const min = Math.min(...values, 0);
     const scaleMax = Math.max(Math.abs(max), Math.abs(min)) || 1;
-    return { maxVal: max, minVal: min, absMax: scaleMax * 1.15 };
+    // 여백 비율을 15%에서 3%로 줄여 차트 면적을 극대화
+    return { maxVal: max, minVal: min, absMax: scaleMax * 1.03 };
   }, [chartData]);
 
   // Zero Line 및 좌표 함수
@@ -186,16 +188,7 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title 
       {/* 차트 헤더 툴팁 */}
       <div className="flex justify-between items-center mb-4 h-8 px-1">
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => downloadSvgAsPng(svgRef.current, title)}
-            title="그래프 다운로드 (PNG)"
-            className="flex items-center gap-1 px-2.5 py-1.5 bg-[#000000] hover:bg-gray-900 active:scale-95 text-white text-[10px] font-extrabold tracking-wider transition-all cursor-pointer rounded-none shadow-sm select-none border border-black/10 shrink-0"
-          >
-            <svg className="w-3.5 h-3.5 text-white shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-            </svg>
-            <span>PNG 저장</span>
-          </button>
+          {/* PNG 다운로드 버튼은 외부 소분류 헤더로 이동됨 */}
         </div>
         <AnimatePresence>
           {hoveredItem && (
@@ -213,7 +206,7 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title 
       </div>
 
       <div className="relative w-full overflow-hidden" style={{ cursor: 'crosshair' }}>
-        <svg ref={svgRef} viewBox={`0 0 ${width} ${height}`} width="100%" height="100%" className="w-full h-auto overflow-visible">
+        <svg ref={svgRef} id={chartKey} viewBox={`0 0 ${width} ${height}`} width="100%" height="100%" className="w-full h-auto overflow-visible">
           {/* 뒷배경 격자선 */}
           {guideLines.map((val, idx) => {
             const y = getY(val);
@@ -304,7 +297,7 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title 
 // ----------------------------------------------------
 // 2. 선 차트 (MacroLineChart)
 // ----------------------------------------------------
-export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value', title = '선 차트' }: BaseChartProps) {
+export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value', title = '선 차트', chartKey }: BaseChartProps) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const theme = CHART_THEMES[themeIndex % CHART_THEMES.length];
   const svgRef = useRef<SVGSVGElement>(null);
@@ -340,9 +333,10 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value', title
     const max = Math.max(...values);
     const min = Math.min(...values);
     const diff = max - min || 10;
+    // 여백 비율을 8%에서 2%로 줄여 차트가 영역을 꽉 채우도록 설정
     return {
-      maxVal: max + diff * 0.08,
-      minVal: Math.max(0, min - diff * 0.08)
+      maxVal: max + diff * 0.02,
+      minVal: Math.max(0, min - diff * 0.02)
     };
   }, [chartData]);
 
@@ -389,16 +383,7 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value', title
       {/* 차트 헤더 툴팁 */}
       <div className="flex justify-between items-center mb-4 h-8 px-1">
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => downloadSvgAsPng(svgRef.current, title)}
-            title="그래프 다운로드 (PNG)"
-            className="flex items-center gap-1 px-2.5 py-1.5 bg-[#000000] hover:bg-gray-900 active:scale-95 text-white text-[10px] font-extrabold tracking-wider transition-all cursor-pointer rounded-none shadow-sm select-none border border-black/10 shrink-0"
-          >
-            <svg className="w-3.5 h-3.5 text-white shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-            </svg>
-            <span>PNG 저장</span>
-          </button>
+          {/* PNG 다운로드 버튼은 외부 소분류 헤더로 이동됨 */}
         </div>
         <AnimatePresence>
           {hoveredItem && (
@@ -416,7 +401,7 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value', title
       </div>
 
       <div className="relative w-full overflow-hidden" style={{ cursor: 'crosshair' }}>
-        <svg ref={svgRef} viewBox={`0 0 ${width} ${height}`} width="100%" height="100%" className="w-full h-auto overflow-visible">
+        <svg ref={svgRef} id={chartKey} viewBox={`0 0 ${width} ${height}`} width="100%" height="100%" className="w-full h-auto overflow-visible">
           {/* 뒷배경 격자선 */}
           {guideLines.map((val, idx) => {
             const y = getY(val);
@@ -536,7 +521,7 @@ interface CandlePoint {
 // ----------------------------------------------------
 // 3. 캔들 차트 (MacroCandleChart)
 // ----------------------------------------------------
-export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 캔들차트' }: BaseChartProps) {
+export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 캔들차트', chartKey }: BaseChartProps) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -572,9 +557,10 @@ export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 
     const max = Math.max(...highs);
     const min = Math.min(...lows);
     const diff = max - min || 10;
+    // 여백 비율을 5%에서 2%로 줄여 차트가 세로 영역을 꽉 채우도록 설정
     return {
-      maxVal: max + diff * 0.05,
-      minVal: Math.max(0, min - diff * 0.05)
+      maxVal: max + diff * 0.02,
+      minVal: Math.max(0, min - diff * 0.02)
     };
   }, [chartData]);
 
@@ -606,16 +592,7 @@ export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 
       {/* 차트 헤더 툴팁 */}
       <div className="flex justify-between items-center mb-4 h-8 px-1">
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => downloadSvgAsPng(svgRef.current, title)}
-            title="그래프 다운로드 (PNG)"
-            className="flex items-center gap-1 px-2.5 py-1.5 bg-[#000000] hover:bg-gray-900 active:scale-95 text-white text-[10px] font-extrabold tracking-wider transition-all cursor-pointer rounded-none shadow-sm select-none border border-black/10 shrink-0"
-          >
-            <svg className="w-3 h-3 text-white shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-            </svg>
-            <span>PNG 저장</span>
-          </button>
+          {/* PNG 다운로드 버튼은 외부 소분류 헤더로 이동됨 */}
         </div>
         <AnimatePresence>
           {hoveredItem && (
@@ -636,7 +613,7 @@ export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 
       </div>
 
       <div className="relative w-full overflow-hidden" style={{ cursor: 'crosshair' }}>
-        <svg ref={svgRef} viewBox={`0 0 ${width} ${height}`} width="100%" height="100%" className="w-full h-auto overflow-visible">
+        <svg ref={svgRef} id={chartKey} viewBox={`0 0 ${width} ${height}`} width="100%" height="100%" className="w-full h-auto overflow-visible">
           {/* 뒷배경 격자선 */}
           {guideLines.map((val, idx) => {
             const y = getY(val);
