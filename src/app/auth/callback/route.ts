@@ -12,11 +12,14 @@ export async function GET(request: Request) {
     
     // 1. 리다이렉트할 URL 결정 및 NextResponse 생성
     const forwardedHost = request.headers.get('x-forwarded-host');
-    const isLocalEnv = process.env.NODE_ENV === 'development';
+    const forwardedProto = request.headers.get('x-forwarded-proto');
+    const host = forwardedHost || request.headers.get('host') || '';
+    const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
     
     let redirectUrl = `${origin}${next}`;
-    if (!isLocalEnv && forwardedHost) {
-      redirectUrl = `https://${forwardedHost}${next}`;
+    if (!isLocal && forwardedHost) {
+      const proto = forwardedProto || 'https';
+      redirectUrl = `${proto}://${forwardedHost}${next}`;
     }
     
     const response = NextResponse.redirect(redirectUrl);

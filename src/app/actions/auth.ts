@@ -156,8 +156,10 @@ export async function signInWithGoogle() {
 
   const { headers } = await import('next/headers');
   const headersList = await headers();
-  const host = headersList.get('host');
-  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+  const host = headersList.get('host') || '';
+  const forwardedProto = headersList.get('x-forwarded-proto');
+  const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
+  const protocol = isLocal ? 'http' : (forwardedProto || 'https');
   const origin = process.env.NEXT_PUBLIC_SITE_URL || `${protocol}://${host}`;
 
   const { data, error } = await supabase.auth.signInWithOAuth({
@@ -184,8 +186,10 @@ export async function signInWithKakao() {
 
   const { headers } = await import('next/headers');
   const headersList = await headers();
-  const host = headersList.get('host');
-  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+  const host = headersList.get('host') || '';
+  const forwardedProto = headersList.get('x-forwarded-proto');
+  const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
+  const protocol = isLocal ? 'http' : (forwardedProto || 'https');
   const origin = process.env.NEXT_PUBLIC_SITE_URL || `${protocol}://${host}`;
 
   const { data, error } = await supabase.auth.signInWithOAuth({
