@@ -72,8 +72,8 @@ export default function LoginPage() {
 
           {/* 카드 상단 데코레이션: 빨간 원 안에 필름 아이콘 */}
           <div className="flex flex-col items-center mb-8">
-            <div className="w-16 h-16 bg-red-accent rounded-full flex items-center justify-center shadow-lg shadow-red-900/50 mb-3 border border-red-500/20">
-              <Film className="w-8 h-8 text-white" />
+            <div className="w-16 h-16 bg-[#D4AF37] rounded-full flex items-center justify-center shadow-lg shadow-[#D4AF37]/50 mb-3 border border-[#D4AF37]/20">
+              <Film className="w-8 h-8 text-black" />
             </div>
             <h1 className="text-2xl font-bold text-white tracking-wider">YOURPB</h1>
             <p className="text-xs text-slate-400 mt-1">ETF Investment Portfolio Manager</p>
@@ -88,7 +88,7 @@ export default function LoginPage() {
                 setSuccessMessage(null);
               }}
               className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${activeTab === 'login'
-                  ? 'bg-red-accent text-white shadow-md'
+                  ? 'bg-[#D4AF37] text-black shadow-md'
                   : 'text-slate-400 hover:text-white'
                 }`}
             >
@@ -101,7 +101,7 @@ export default function LoginPage() {
                 setSuccessMessage(null);
               }}
               className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${activeTab === 'signup'
-                  ? 'bg-red-accent text-white shadow-md'
+                  ? 'bg-[#D4AF37] text-black shadow-md'
                   : 'text-slate-400 hover:text-white'
                 }`}
             >
@@ -195,8 +195,8 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3.5 mt-2 hover:bg-red-700 active:bg-red-800 text-white font-bold rounded-xl text-sm transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red-900/40 relative overflow-hidden"
-              style={{ backgroundColor: '#dc2626' }}
+              className="w-full py-3.5 mt-2 hover:opacity-90 active:scale-95 text-black font-bold rounded-xl text-sm transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#D4AF37]/30 relative overflow-hidden"
+              style={{ backgroundColor: '#D4AF37' }}
             >
               {isLoading ? (
                 <div className="flex items-center justify-center gap-2">

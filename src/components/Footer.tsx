@@ -6,9 +6,13 @@ export default function Footer() {
     <footer className="w-full bg-[#000000] bg-linear-to-b from-white/8 via-[#000000] to-[#000000] py-12 border-t border-white/15 mt-auto shadow-[inset_0_1.5px_0_rgba(255,255,255,0.2),0_-4px_20px_rgba(0,0,0,0.06)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="flex flex-col items-center md:items-start text-center md:text-left">
-          <span className="text-lg font-extrabold tracking-widest text-red-accent animate-logo-glow mb-2 select-none">
-            YOURPB.COM
-          </span>
+          <Link href="/" className="flex items-center mb-2">
+            <img
+              src="/yourpb-final-logo.png"
+              alt="YOURPB.COM"
+              className="h-8 w-auto object-contain select-none"
+            />
+          </Link>
           <p className="text-xs text-white/80">
             © 2026 YOURPB.COM. All rights reserved. 대한민국 최고의 ETF 포트폴리오 자산관리 파트너.
           </p>

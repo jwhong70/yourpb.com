@@ -25,9 +25,12 @@ interface EtfSearchClientProps {
 export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
   const router = useRouter();
   
-  // 정렬 상태 변수
-  const [sortColumn, setSortColumn] = useState<keyof EtfWithPrice>('ticker');
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  // 기간 선택 상태 변수 추가
+  const [selectedPeriod, setSelectedPeriod] = useState<'1w' | '5w' | '20w' | '60w' | '120w'>('1w');
+
+  // 정렬 상태 변수 (초기 정렬: yield_1w, 내림차순 desc)
+  const [sortColumn, setSortColumn] = useState<keyof EtfWithPrice>('yield_1w');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
   // 정렬 핸들러
   const handleSort = (column: keyof EtfWithPrice) => {
@@ -35,7 +38,7 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
       setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'));
     } else {
       setSortColumn(column);
-      setSortDirection('asc');
+      setSortDirection('desc'); // 새로운 컬럼 정렬 시 내림차순(desc)이 기본값이 되도록 설정
     }
   };
 
@@ -96,22 +99,50 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
 
           return (
             <div className="space-y-4">
-              {/* 조회 결과 요약 */}
-              <div className="flex items-center justify-between px-2">
+              {/* 조회 결과 요약 및 기간 선택 */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-2">
                 <span className="text-xs text-[#000000]/60 font-semibold select-none">
                   검색 결과: <strong className="text-[#000000] text-sm font-extrabold">{sortedList.length}</strong>개 종목
                 </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-[#000000] font-bold">기간별 성과 선택</span>
+                  <div className="relative">
+                    <select
+                      value={selectedPeriod}
+                      onChange={(e) => {
+                        const val = e.target.value as any;
+                        setSelectedPeriod(val);
+                        // 기간이 변경되면 기본적으로 해당 기간의 내림차순(desc)으로 정렬 컬럼 변경
+                        setSortColumn(`yield_${val}` as any);
+                        setSortDirection('desc');
+                      }}
+                      className="px-4 py-2 pr-8 text-xs font-bold bg-white text-gray-800 border border-black/20 rounded-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-black appearance-none"
+                    >
+                      <option value="1w">1주</option>
+                      <option value="5w">5주</option>
+                      <option value="20w">20주</option>
+                      <option value="60w">60주</option>
+                      <option value="120w">120주</option>
+                    </select>
+                    {/* select 드롭다운 커스텀 화살표 */}
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                      <svg className="fill-current h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* 검색 결과 표 */}
               {sortedList.length > 0 ? (
-                <div className="overflow-x-auto rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white bg-inner-bg shadow-xl">
+                <div className="overflow-x-auto rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white bg-box-bg shadow-xl">
                   <table className="w-full text-left border-collapse text-base">
                     <thead>
                       <tr className="bg-[#000000] text-white font-bold text-base uppercase tracking-wider select-none divide-x divide-white">
                         <th
                           onClick={() => handleSort('ticker')}
-                          className="py-4.5 px-5 sm:px-8 cursor-pointer hover:bg-gray-900 transition-colors"
+                          className="py-4.5 px-5 sm:px-8 cursor-pointer hover:bg-gray-900 transition-colors w-28 sm:w-36"
                         >
                           티커 {renderSortIcon('ticker')}
                         </th>
@@ -122,76 +153,34 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
                           이름 {renderSortIcon('name')}
                         </th>
                         <th
-                          onClick={() => handleSort('close')}
-                          className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
+                          onClick={() => handleSort(`yield_${selectedPeriod}` as any)}
+                          className="py-4.5 px-6 text-right cursor-pointer hover:bg-gray-900 transition-colors w-36 sm:w-48"
                         >
-                          현재가 {renderSortIcon('close')}
-                        </th>
-                        <th
-                          onClick={() => handleSort('yield_1w')}
-                          className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
-                        >
-                          1주 {renderSortIcon('yield_1w')}
-                        </th>
-                        <th
-                          onClick={() => handleSort('yield_5w')}
-                          className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
-                        >
-                          5주 {renderSortIcon('yield_5w')}
-                        </th>
-                        <th
-                          onClick={() => handleSort('yield_20w')}
-                          className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
-                        >
-                          20주 {renderSortIcon('yield_20w')}
-                        </th>
-                        <th
-                          onClick={() => handleSort('yield_60w')}
-                          className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
-                        >
-                          60주 {renderSortIcon('yield_60w')}
-                        </th>
-                        <th
-                          onClick={() => handleSort('yield_120w')}
-                          className="py-4.5 px-4 text-right cursor-pointer hover:bg-gray-900 transition-colors"
-                        >
-                          120주 {renderSortIcon('yield_120w')}
+                          수익률 ({selectedPeriod === '1w' ? '1주' : selectedPeriod === '5w' ? '5주' : selectedPeriod === '20w' ? '20주' : selectedPeriod === '60w' ? '60주' : '120주'}) {renderSortIcon(`yield_${selectedPeriod}` as any)}
                         </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#000000] text-base text-[#000000]">
-                      {sortedList.map((etf) => (
-                        <tr
-                          key={etf.ticker}
-                          onClick={() => router.push(`/etf/${etf.ticker}`)}
-                          className="hover:bg-black/5 transition-colors cursor-pointer"
-                        >
-                          <td className="py-4 px-5 sm:px-8 font-mono font-bold text-[#000000] border-r border-r-white">
-                            {etf.ticker}
-                          </td>
-                          <td className="py-4 px-4 font-semibold max-w-64 sm:max-w-85 truncate border-r border-r-white" title={etf.name}>
-                            {etf.name}
-                          </td>
-                          <td className="py-4 px-4 text-right font-mono font-bold border-r border-r-white">
-                            {etf.close !== null ? etf.close.toLocaleString() : '-'}
-                          </td>
-                          <td className={`py-4 px-4 text-right font-mono border-r border-r-white ${getYieldColor(etf.yield_1w)}`}>
-                            {formatYield(etf.yield_1w)}
-                          </td>
-                          <td className={`py-4 px-4 text-right font-mono border-r border-r-white ${getYieldColor(etf.yield_5w)}`}>
-                            {formatYield(etf.yield_5w)}
-                          </td>
-                          <td className={`py-4 px-4 text-right font-mono border-r border-r-white ${getYieldColor(etf.yield_20w)}`}>
-                            {formatYield(etf.yield_20w)}
-                          </td>
-                          <td className={`py-4 px-4 text-right font-mono border-r border-r-white ${getYieldColor(etf.yield_60w)}`}>
-                            {formatYield(etf.yield_60w)}
-                          </td>
-                          <td className={`py-4 px-4 text-right font-mono border-r border-r-white ${getYieldColor(etf.yield_120w)}`}>
-                            {formatYield(etf.yield_120w)}
-                          </td>
-                        </tr>
-                      ))}
+                      {sortedList.map((etf) => {
+                        const yieldVal = etf[`yield_${selectedPeriod}` as keyof EtfWithPrice] as number | null;
+                        return (
+                          <tr
+                            key={etf.ticker}
+                            onClick={() => router.push(`/etf/${etf.ticker}`)}
+                            className="hover:bg-black/5 transition-colors cursor-pointer"
+                          >
+                            <td className="py-4 px-5 sm:px-8 font-mono font-bold text-[#000000] border-r border-r-white">
+                              {etf.ticker}
+                            </td>
+                            <td className="py-4 px-4 font-semibold max-w-64 sm:max-w-xl truncate border-r border-r-white" title={etf.name}>
+                              {etf.name}
+                            </td>
+                            <td className={`py-4 px-6 text-right font-mono border-r border-r-white ${getYieldColor(yieldVal)}`}>
+                              {formatYield(yieldVal)}
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>

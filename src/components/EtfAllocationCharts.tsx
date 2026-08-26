@@ -15,14 +15,16 @@ interface EtfAllocationChartsProps {
 
 // 프리미엄 색상 팔레트
 const COLOR_PALETTE = [
-  '#F96D69', // 코랄
-  '#5BC2E7', // 스카이
-  '#FFD735', // 옐로우
-  '#BAD739', // 라임
-  '#987956', // 골드
-  '#FFABC2', // 핑크
-  '#3AAD67', // 그린
-  '#8E8C8A', // 실버
+  '#1D2D44',
+  '#3E5C76',
+  '#5B7B9A',
+  '#748CAB',
+  '#2A7B88',
+  '#4EA5A5',
+  '#78C2B4',
+  '#A5D6C6',
+  '#C2CFD6',
+  '#E0E1DD',
 ];
 const OTHER_COLOR = '#334155'; // 기타 항목용 슬레이트 그레이
 
@@ -59,13 +61,13 @@ export default function EtfAllocationCharts({ allocations }: EtfAllocationCharts
     return result;
   };
 
-  const devData = getGroupedData('개발단계');
   const countryData = getGroupedData('국가');
+  const sectorData = getGroupedData('섹터');
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <DoughnutChartWidget title="개발단계별 비중" data={devData} />
       <DoughnutChartWidget title="국가별 비중" data={countryData} />
+      <DoughnutChartWidget title="섹터 비중" data={sectorData} />
     </div>
   );
 }
@@ -136,7 +138,7 @@ function DoughnutChartWidget({ title, data }: DoughnutChartWidgetProps) {
   };
 
   return (
-    <div className="flex flex-col items-center p-6 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl transition-all">
+    <div className="h-full flex flex-col items-center p-6 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl transition-all">
       <h3 className="text-lg font-bold text-[#000000] mb-6 select-none tracking-tight">
         {title}
       </h3>

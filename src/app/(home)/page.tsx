@@ -19,12 +19,12 @@ export default async function Home() {
 
   // 포트폴리오 비중 정의 (지정 브랜드 색상 반영)
   const portfolioData = [
-    { type: '현금', pct: 10, ticker: '', name: '현금 자산(KRW)', color: '#007C1F' },
-    { type: '채권', pct: 0, ticker: '', name: '미지정', color: '#00EE39' },
-    { type: '시장', pct: 20, ticker: 'MAGS', name: 'Roundhill Magnificent Seven ETF', color: '#FF97A1' },
-    { type: '섹터', pct: 50, ticker: 'XLE', name: 'Energy Select Sector SPDR Fund', color: '#FF3B4E' },
-    { type: '테마', pct: 0, ticker: '', name: '미지정', color: '#D60016' },
-    { type: '대체', pct: 20, ticker: 'UVXY', name: 'ProShares Ultra VIX Short-Term Futures ETF', color: '#000000' },
+    { type: '현금', pct: 10, ticker: '', name: '현금 자산(KRW)', color: '#3F6C5B' },
+    { type: '채권', pct: 0, ticker: '', name: '미지정', color: '#8EAEA2' },
+    { type: '시장', pct: 20, ticker: 'MAGS', name: 'Roundhill Magnificent Seven ETF', color: '#C85A48' },
+    { type: '섹터', pct: 50, ticker: 'XLE', name: 'Energy Select Sector SPDR Fund', color: '#E28771' },
+    { type: '테마', pct: 0, ticker: '', name: '미지정', color: '#F4BCA9' },
+    { type: '대체', pct: 20, ticker: 'UVXY', name: 'ProShares Ultra VIX Short-Term Futures ETF', color: '#4B5056' },
   ];
 
   // 그래프에 표시할 유효 비중 (0% 제외)
@@ -99,6 +99,34 @@ export default async function Home() {
                         strokeDasharray={strokeDasharray}
                         strokeDashoffset={strokeDashoffset}
                         transform="rotate(-90 180 180)"
+                      />
+                    );
+                  });
+                })()}
+
+                {/* 조각 간의 경계선(1px 흰색 테두리) 추가 */}
+                {(() => {
+                  let accumulatedPercent = 0;
+                  const cx = 180;
+                  const cy = 180;
+                  const chartRadius = radius + strokeWidth / 2;
+
+                  return chartItems.map((item, index) => {
+                    accumulatedPercent += item.pct;
+                    const angle = -Math.PI / 2 + (accumulatedPercent / totalPct) * 2 * Math.PI;
+
+                    const x2 = cx + chartRadius * Math.cos(angle);
+                    const y2 = cy + chartRadius * Math.sin(angle);
+
+                    return (
+                      <line
+                        key={`line-${index}`}
+                        x1={cx}
+                        y1={cy}
+                        x2={x2}
+                        y2={y2}
+                        stroke="#ffffff"
+                        strokeWidth="1"
                       />
                     );
                   });
