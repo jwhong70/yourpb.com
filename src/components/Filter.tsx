@@ -144,26 +144,26 @@ export default function Filter({
         {/* 1단계: 레버리지 토글 */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-3">
           <span className="text-xs text-[#000000] font-bold uppercase tracking-wider w-20">레버리지</span>
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full sm:w-auto">
             <button
               onClick={() => { setLeverageFilter('exclude'); setSelectedCategory('all'); setSelectedReport('all'); setSearchTerm(''); }}
-              className={`px-4 py-1.5 rounded-none text-xs font-bold transition-all cursor-pointer border ${
+              className={`flex-1 sm:flex-initial sm:w-36 py-1.5 rounded-none text-xs font-bold transition-all cursor-pointer border text-center ${
                 leverageFilter === 'exclude'
                   ? 'bg-[#000000] text-white border-[#000000] shadow-md'
                   : 'bg-white text-gray-800 border-black/20 hover:bg-black/5 shadow-sm'
               }`}
             >
-              레버리지 제외 (1X)
+              레버리지 제외
             </button>
             <button
               onClick={() => { setLeverageFilter('include'); setSelectedCategory('all'); setSelectedReport('all'); setSearchTerm(''); }}
-              className={`px-4 py-1.5 rounded-none text-xs font-bold transition-all cursor-pointer border ${
+              className={`flex-1 sm:flex-initial sm:w-36 py-1.5 rounded-none text-xs font-bold transition-all cursor-pointer border text-center ${
                 leverageFilter === 'include'
                   ? 'bg-[#000000] text-white border-[#000000] shadow-md'
                   : 'bg-white text-gray-800 border-black/20 hover:bg-black/5 shadow-sm'
               }`}
             >
-              레버리지 포함 (Leveraged/Inverse)
+              레버리지 포함
             </button>
           </div>
         </div>

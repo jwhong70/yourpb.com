@@ -301,30 +301,24 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
 
         {sortedStocks.length > 0 ? (
           <div className="overflow-x-auto rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white bg-box-bg shadow-lg">
-            <table className="w-full text-left border-collapse text-base table-fixed">
+            <table className="w-full text-left border-collapse text-sm font-sans table-fixed">
               <thead>
-                <tr className="bg-[#000000] text-white font-bold text-base uppercase tracking-wider select-none divide-x divide-white">
-                  <th
-                    onClick={() => handleSort('ticker')}
-                    className="py-4 px-3 sm:px-6 cursor-pointer hover:bg-gray-900 transition-colors w-24 sm:w-36"
-                  >
-                    티커 {renderSortIcon('ticker')}
-                  </th>
+                <tr className="bg-[#000000] text-white font-bold text-sm uppercase tracking-wider select-none divide-x divide-white">
                   <th
                     onClick={() => handleSort('name')}
-                    className="py-4 px-2 sm:px-4 cursor-pointer hover:bg-gray-900 transition-colors"
+                    className="py-3 px-3 sm:px-6 cursor-pointer hover:bg-gray-900 transition-colors"
                   >
                     종목명 {renderSortIcon('name')}
                   </th>
                   <th
                     onClick={() => handleSort(`yield_${selectedPeriod}` as any)}
-                    className="py-4 px-3 sm:px-6 text-right cursor-pointer hover:bg-gray-900 transition-colors w-24 sm:w-44"
+                    className="py-3 px-3 sm:px-6 text-right cursor-pointer hover:bg-gray-900 transition-colors w-24 sm:w-44"
                   >
                     수익률 ({selectedPeriod === '1w' ? '1주' : selectedPeriod === '5w' ? '5주' : selectedPeriod === '20w' ? '20주' : selectedPeriod === '60w' ? '60주' : '120주'}) {renderSortIcon(`yield_${selectedPeriod}` as any)}
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#000000] text-base text-gray-900">
+              <tbody className="divide-y divide-[#000000] text-sm text-gray-900 font-sans">
                 {sortedStocks.map((stock) => {
                   const periodYield = stock[`yield_${selectedPeriod}` as keyof StockWithPrice] as number | null;
                   const yieldStyle = getYieldStyle(periodYield);
@@ -335,10 +329,7 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
                        onClick={() => handleRowClick(stock.ticker)}
                        className="hover:bg-black/5 transition-colors cursor-pointer group divide-x divide-white"
                      >
-                       <td className="py-4 px-3 sm:px-6 font-mono font-bold text-[#000000] group-hover:text-gray-700 transition-colors truncate">
-                         {stock.ticker}
-                       </td>
-                       <td className="py-4 px-2 sm:px-4 font-semibold truncate" title={stock.name}>
+                       <td className="py-3 px-3 sm:px-6 font-semibold truncate" title={stock.name}>
                          <div className="flex items-center gap-1.5">
                            <span className="truncate">{stock.name}</span>
                            {!isPremium && (
@@ -346,7 +337,7 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
                            )}
                          </div>
                        </td>
-                       <td className={`py-4 px-3 sm:px-6 text-right font-mono truncate ${yieldStyle.colorClass}`}>
+                       <td className={`py-3 px-3 sm:px-6 text-right truncate ${yieldStyle.colorClass}`}>
                          {yieldStyle.text}
                        </td>
                      </tr>

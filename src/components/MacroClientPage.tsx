@@ -461,7 +461,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                       isChartOpen ? 'bg-black/10' : 'hover:bg-black/5'
                                     }`}
                                   >
-                                    <span className="text-base font-semibold text-[#000000] tracking-tight">
+                                    <span className="text-base font-extrabold text-[#000000] tracking-tight">
                                       {item.title}
                                     </span>
                                     <div className="flex items-center gap-4">

@@ -14,8 +14,8 @@ export default async function MacroPage() {
   const supabase = await createClient();
   const user = await getSessionUser();
 
-  // 2021-01-01 이후 데이터 쿼리
-  const startDate = '2021-01-01';
+  // 로딩 속도 최적화를 위해 조회 기간을 최근 약 2년 전(2024-06-01)으로 단축
+  const startDate = '2024-06-01';
 
   // Supabase 1000행 한도 페이징 극복을 위한 재귀적 fetchAll 헬퍼 함수
   const fetchAll = async (query: any) => {
@@ -1132,7 +1132,7 @@ export default async function MacroPage() {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
       <Header initialUser={user} />
-      <main className="grow pt-34">
+      <main className="grow pt-34 pb-20">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="mb-10 text-center sm:text-left">
             <h1 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
