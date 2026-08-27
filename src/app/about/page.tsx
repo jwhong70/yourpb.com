@@ -120,11 +120,11 @@ export default async function AboutPage() {
             </div>
 
             {/* 수직 타임라인 레이아웃 (세로선 스타일 변경) */}
-            <div className="relative border-l-2 border-[#D4AF37]/30 ml-4 pl-6 sm:pl-8 space-y-10">
+            <div className="relative border-l-2 border-[#D4AF37]/30 ml-4 pl-3 sm:pl-4 space-y-10">
               {careerHistory.map((item, idx) => (
                 <div key={idx} className="relative group">
                   {/* 타임라인 원형 마커 노드 (블릿 스타일 변경) */}
-                  <span className="absolute -left-9.5 sm:-left-11 top-2.5 flex items-center justify-center w-4.5 h-4.5 rounded-full bg-white border-2 border-[#D4AF37] transition-all shadow-xs">
+                  <span className="absolute -left-6.5 sm:-left-7.5 top-2.5 flex items-center justify-center w-4.5 h-4.5 rounded-full bg-white border-2 border-[#D4AF37] transition-all shadow-xs">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
                   </span>
 
