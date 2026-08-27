@@ -21,12 +21,12 @@ export default async function Home() {
 
   // 포트폴리오 비중 정의 (지정 브랜드 색상 반영)
   const portfolioData = [
-    { type: '현금', pct: 10, ticker: '', name: '현금 자산(KRW)', color: '#3F6C5B' },
-    { type: '채권', pct: 0, ticker: '', name: '미지정', color: '#8EAEA2' },
-    { type: '시장', pct: 20, ticker: 'MAGS', name: 'Roundhill Magnificent Seven ETF', color: '#C85A48' },
-    { type: '섹터', pct: 50, ticker: 'XLE', name: 'Energy Select Sector SPDR Fund', color: '#E28771' },
-    { type: '테마', pct: 0, ticker: '', name: '미지정', color: '#F4BCA9' },
-    { type: '대체', pct: 20, ticker: 'UVXY', name: 'ProShares Ultra VIX Short-Term Futures ETF', color: '#4B5056' },
+    { type: '현금', pct: 10, ticker: '', name: '현금 자산(KRW)', color: '#B3B3B3' },
+    { type: '채권', pct: 0, ticker: '', name: '미지정', color: '#E5E5E5' },
+    { type: '시장', pct: 20, ticker: 'MAGS', name: 'Roundhill Magnificent Seven ETF', color: '#737373' },
+    { type: '섹터', pct: 50, ticker: 'XLE', name: 'Energy Select Sector SPDR Fund', color: '#000000' },
+    { type: '테마', pct: 0, ticker: '', name: '미지정', color: '#E5E5E5' },
+    { type: '대체', pct: 20, ticker: 'UVXY', name: 'ProShares Ultra VIX Short-Term Futures ETF', color: '#4D4D4D' },
   ];
 
 

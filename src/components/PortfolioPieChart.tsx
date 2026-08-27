@@ -61,8 +61,8 @@ export default function PortfolioPieChart({ data }: PortfolioPieChartProps) {
           nameKey="name"
           innerRadius={0}
           outerRadius="90%"
-          stroke="#ffffff"
-          strokeWidth={1.5}
+          stroke="#000000"
+          strokeWidth={1}
         >
           {chartData.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={entry.fill} className="hover:opacity-90 transition-opacity duration-200 cursor-pointer" />
@@ -72,7 +72,7 @@ export default function PortfolioPieChart({ data }: PortfolioPieChartProps) {
             dataKey="name"
             position="inside"
             fill="#ffffff"
-            className="font-bold text-[13px] pointer-events-none fill-white font-serif"
+            className="font-bold text-[13px] pointer-events-none fill-white font-serif drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]"
             formatter={(value: any) => {
               if (value === undefined || value === null) return "";
               const valueStr = String(value);
