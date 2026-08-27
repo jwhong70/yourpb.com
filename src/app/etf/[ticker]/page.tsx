@@ -250,7 +250,7 @@ export default async function EtfDetailPage({ params }: PageProps) {
                     className="w-full max-w-md flex items-center justify-center gap-2.5 px-6 py-4.5 bg-[#000000] hover:bg-gray-900 active:scale-95 text-white font-black rounded-none shadow-lg transition-all cursor-pointer text-base"
                   >
                     <Download className="w-5 h-5" />
-                    <span>보고서 PDF 파일 다운로드</span>
+                    <span>보고서 PDF 다운로드</span>
                   </a>
                 ) : (
                   <button

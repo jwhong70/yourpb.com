@@ -8,7 +8,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: '고객센터 - YOURPB',
-  description: 'YOURPB 서비스 이용 중 불편하신 사항이나 피드백이 있으시면 언제든지 문의해 주세요.',
+  description: '당신의 피비 서비스 이용 중 불편하신 사항이나 피드백이 있으시면 언제든지 문의해 주세요.',
 };
 
 export default async function SupportPage() {
@@ -45,7 +45,7 @@ export default async function SupportPage() {
                   <h1 className="text-2xl sm:text-3xl font-black tracking-tight">고객센터</h1>
                 </div>
                 <p className="text-white/60 text-sm sm:text-base leading-relaxed">
-                  YOURPB 서비스 이용 중 불편한 점이 있으시거나 제휴 및 기타 문의 사항이 있으시다면 언제든 아래의 채널로 연락 주시기 바랍니다. 친절하고 신속하게 답변해 드리겠습니다.
+                  당신의 피비 서비스 이용 중 불편한 점이 있으시거나 제휴 및 기타 문의 사항이 있으시다면 언제든 아래의 채널로 연락 주시기 바랍니다. 친절하고 신속하게 답변해 드리겠습니다.
                 </p>
               </div>
 
