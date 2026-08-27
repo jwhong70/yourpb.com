@@ -1,7 +1,23 @@
 'use client';
 
-import React, { useState, useMemo, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useMemo } from 'react';
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  Cell,
+  AreaChart,
+  Area,
+  ComposedChart
+} from 'recharts';
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/components/ui/chart';
 
 // 공통 타입 정의
 export interface ChartDataPoint {
@@ -21,39 +37,32 @@ export interface ChartDataPoint {
   rating?: string | null;
 }
 
-// SVG를 PNG 파일로 렌더링 후 다운로드하는 공통 헬퍼 함수
+// SVG를 PNG 파일로 다운로드하는 공통 헬퍼 함수
 export const downloadSvgAsPng = (svgElement: SVGSVGElement | null, fileName: string) => {
   if (!svgElement) return;
 
   try {
-    // 1. XMLSerializer를 사용하여 SVG 요소를 문자열로 변환
     const svgString = new XMLSerializer().serializeToString(svgElement);
     const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
     const URL = window.URL || window.webkitURL || window;
     const blobURL = URL.createObjectURL(svgBlob);
 
-    // 2. 가상의 Image 객체에 로드
     const image = new Image();
     image.onload = () => {
-      // 3. Canvas 생성 및 크기 세팅 (고해상도를 위해 2배 확대)
       const canvas = document.createElement('canvas');
       const scale = 2;
       const width = svgElement.viewBox.baseVal.width || 800;
-      const height = svgElement.viewBox.baseVal.height || 280;
+      const height = svgElement.viewBox.baseVal.height || 560;
       
       canvas.width = width * scale;
       canvas.height = height * scale;
       
       const context = canvas.getContext('2d');
       if (context) {
-        // 배경색을 흰색으로 기본 마스킹 (투명 배경 방지)
         context.fillStyle = '#ffffff';
         context.fillRect(0, 0, canvas.width, canvas.height);
-        
-        // 이미지 드로잉
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
         
-        // 4. Data URL로 변환하여 파일 다운로드 링크 강제 트리거
         const pngDataUrl = canvas.toDataURL('image/png');
         const downloadLink = document.createElement('a');
         downloadLink.href = pngDataUrl;
@@ -69,16 +78,6 @@ export const downloadSvgAsPng = (svgElement: SVGSVGElement | null, fileName: str
     console.error('Error exporting chart as PNG:', error);
   }
 };
-
-// 색상 팔레트 정의 (사용자 지정 색상 다양하게 구성)
-export const CHART_THEMES = [
-  { primary: '#003CDC', secondary: '#5BC2E7', area: 'rgba(91, 194, 231, 0.15)', name: 'Blue-Sky' },
-  { primary: '#987956', secondary: '#8E8C8A', area: 'rgba(142, 140, 138, 0.15)', name: 'Gold-Silver' },
-  { primary: '#F96D69', secondary: '#FFABC2', area: 'rgba(255, 171, 194, 0.15)', name: 'Coral-Pink' },
-  { primary: '#3AAD67', secondary: '#BAD739', area: 'rgba(186, 215, 57, 0.15)', name: 'Green-Lime' },
-  { primary: '#FFD735', secondary: '#FF9F9B', area: 'rgba(255, 159, 155, 0.15)', name: 'Yellow-PinkLight' },
-  { primary: '#dc2626', secondary: '#FFABC2', area: 'rgba(255, 171, 194, 0.15)', name: 'Red-Pink' }
-];
 
 // 날짜 포맷팅 헬퍼
 const formatLabel = (d: ChartDataPoint) => {
@@ -97,78 +96,38 @@ interface BaseChartProps {
   data: ChartDataPoint[];
   themeIndex?: number;
   valueKey?: string;
-  title?: string; // 추가: 차트 고유 제목
-  chartKey?: string; // 외부 돔 참조용 고유 키
+  title?: string;
+  chartKey?: string;
+  barSize?: number;
 }
 
 // ----------------------------------------------------
 // 1. 세로 막대 차트 (MacroBarChart)
 // ----------------------------------------------------
-export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title = '세로막대 차트', chartKey }: BaseChartProps) {
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
-  const theme = CHART_THEMES[themeIndex % CHART_THEMES.length];
-  const svgRef = useRef<SVGSVGElement>(null);
-
-  // 유효한 수치 데이터 필터링 및 오름차순 정렬
+export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title = '세로막대 차트', chartKey, barSize = 32 }: BaseChartProps) {
   const chartData = useMemo(() => {
     return data
       .filter((d) => d.year !== undefined || d.date !== undefined)
       .map((d) => ({
         ...d,
-        displayVal: d[valueKey as keyof ChartDataPoint] !== undefined ? Number(d[valueKey as keyof ChartDataPoint]) : null,
+        name: formatLabel(d),
+        displayVal: (d[valueKey as keyof ChartDataPoint] !== undefined && d[valueKey as keyof ChartDataPoint] !== null) ? Number(d[valueKey as keyof ChartDataPoint]) : null,
       }))
       .filter((d) => d.displayVal !== null && !isNaN(d.displayVal))
       .sort((a, b) => {
         if (a.year && b.year) return a.year - b.year;
         return new Date(a.date || '').getTime() - new Date(b.date || '').getTime();
-      }) as (ChartDataPoint & { displayVal: number })[];
+      }) as (ChartDataPoint & { name: string; displayVal: number })[];
   }, [data, valueKey]);
 
-  // 설정값
-  const width = 800;
-  const height = 280;
-  const paddingLeft = 32;
-  const paddingRight = 10;
-  const paddingTop = 6;
-  const paddingBottom = 22;
-
-  const availableWidth = width - paddingLeft - paddingRight;
-  const availableHeight = height - paddingTop - paddingBottom;
-
-  // 최대/최소값 구하고 여백 계산
-  const { maxVal, minVal, absMax } = useMemo(() => {
-    if (chartData.length === 0) return { maxVal: 10, minVal: -10, absMax: 10 };
-    const values = chartData.map((d) => d.displayVal);
-    const max = Math.max(...values, 0);
-    const min = Math.min(...values, 0);
-    const scaleMax = Math.max(Math.abs(max), Math.abs(min)) || 1;
-    // 여백 비율을 15%에서 3%로 줄여 차트 면적을 극대화
-    return { maxVal: max, minVal: min, absMax: scaleMax * 1.03 };
-  }, [chartData]);
-
-  // Zero Line 및 좌표 함수
-  const zeroY = useMemo(() => {
-    // 음수가 있는 경우 정중앙 정렬, 없는 경우 하단 배치
-    if (minVal >= 0) return height - paddingBottom;
-    const scale = availableHeight / (absMax * 2);
-    return paddingTop + availableHeight / 2;
-  }, [minVal, availableHeight, absMax, paddingTop, paddingBottom]);
-
-  const getY = (val: number) => {
-    if (minVal >= 0) {
-      const scale = availableHeight / absMax;
-      return height - paddingBottom - val * scale;
-    }
-    const scale = availableHeight / (absMax * 2);
-    return zeroY - val * scale;
-  };
-
-  const colWidth = chartData.length > 0 ? availableWidth / chartData.length : 10;
-  const barWidth = Math.max(1.5, Math.min(24, colWidth * 0.7));
-
-  const getX = (idx: number) => {
-    return paddingLeft + idx * colWidth + colWidth / 2;
-  };
+  const chartConfig = useMemo(() => {
+    return {
+      displayVal: {
+        label: title,
+        color: '#333333',
+      }
+    };
+  }, [title]);
 
   if (chartData.length === 0) {
     return (
@@ -178,111 +137,42 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title 
     );
   }
 
-  const hoveredItem = hoveredIdx !== null ? chartData[hoveredIdx] : null;
-
-  // 가이드라인 값 계산
-  const guideLines = minVal >= 0 ? [absMax * 0.75, absMax * 0.35, 0] : [absMax * 0.7, 0, -absMax * 0.7];
-
   return (
-    <div className="flex flex-col p-1 sm:p-2 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-sm">
-      <div className="relative w-full overflow-hidden" style={{ cursor: 'crosshair' }}>
-        <AnimatePresence>
-          {hoveredItem && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute top-1.5 right-1.5 z-10 text-[9px] sm:text-xs text-[#000000]/90 bg-white/95 border border-black/15 backdrop-blur-md px-2 py-0.5 flex gap-2 font-mono shadow-xs select-none pointer-events-none"
-            >
-              <span className="text-yellow-accent font-bold">{formatLabel(hoveredItem)}</span>
-              <span>수치: <strong style={{ color: theme.secondary }}>{hoveredItem.displayVal.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 2 })}</strong></span>
-            </motion.div>
-          )}
-        </AnimatePresence>
-        <svg ref={svgRef} id={chartKey} viewBox={`0 0 ${width} ${height}`} width="100%" height="100%" className="w-full h-auto overflow-visible">
-          {/* 뒷배경 격자선 */}
-          {guideLines.map((val, idx) => {
-            const y = getY(val);
-            return (
-              <g key={idx} className="opacity-60">
-                <line
-                  x1={paddingLeft}
-                  y1={y}
-                  x2={width - paddingRight}
-                  y2={y}
-                  stroke="currentColor"
-                  strokeOpacity={0.12}
-                  strokeDasharray="4 4"
-                />
-                <text
-                  x={paddingLeft - 8}
-                  y={y + 3}
-                  textAnchor="end"
-                  fill="currentColor"
-                  opacity={0.5}
-                  className="text-[9px] font-semibold font-mono"
-                >
-                  {val.toFixed(1)}
-                </text>
-              </g>
-            );
-          })}
-
-          {/* 데이터 막대 렌더링 */}
-          {chartData.map((d, idx) => {
-            const x = getX(idx);
-            const y = getY(d.displayVal);
-            const isPositive = d.displayVal >= 0;
-            const barHeight = Math.abs(y - zeroY);
-            const barY = isPositive ? y : zeroY;
-
-            const isHovered = hoveredIdx === idx;
-            const fill = isPositive ? '#007C1F' : '#D60016';
-
-            return (
-              <g key={idx}>
-                <rect
-                  x={x - barWidth / 2}
-                  y={barY}
-                  width={barWidth}
-                  height={Math.max(1, barHeight)}
-                  fill={fill}
-                  rx={Math.max(1, barWidth * 0.15)}
-                  className="transition-all duration-200"
-                  style={{
-                    opacity: hoveredIdx !== null && !isHovered ? 0.4 : 1,
-                    filter: isHovered ? `drop-shadow(0 0 6px ${fill})` : 'none',
-                  }}
-                />
-
-                {/* X축 년/월 틱 라벨 */}
-                {idx % Math.max(1, Math.floor(chartData.length / 10)) === 0 && (
-                  <text
-                    x={x}
-                    y={height - 8}
-                    textAnchor="middle"
-                    fill="rgba(0,0,0,0.7)"
-                    className="text-[10px] font-bold font-mono select-none"
-                  >
-                    {formatLabel(d)}
-                  </text>
-                )}
-
-                {/* 인터랙션 영역 */}
-                <rect
-                  x={x - colWidth / 2}
-                  y={paddingTop}
-                  width={colWidth}
-                  height={availableHeight}
-                  fill="transparent"
-                  onMouseEnter={() => setHoveredIdx(idx)}
-                  onMouseLeave={() => setHoveredIdx(null)}
-                />
-              </g>
-            );
-          })}
-        </svg>
-      </div>
+    <div className="flex flex-col p-2 bg-[#F9F8F6] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-sm">
+      <ChartContainer config={chartConfig} className="w-full h-140 aspect-auto">
+        <BarChart
+          data={chartData}
+          id={chartKey}
+          margin={{ top: 20, right: 10, left: -20, bottom: 10 }}
+        >
+          <CartesianGrid strokeDasharray="4 4" strokeOpacity={0.2} vertical={false} />
+          <XAxis 
+            dataKey="name" 
+            tickLine={false} 
+            axisLine={false} 
+            tick={{ fontSize: 10, fontWeight: 'bold', fill: 'rgba(0,0,0,0.7)' }}
+          />
+          <YAxis 
+            tickLine={false} 
+            axisLine={false}
+            tick={{ fontSize: 9, fontWeight: 'semibold', fill: 'rgba(0,0,0,0.5)' }}
+          />
+          <ChartTooltip
+            cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
+            content={<ChartTooltipContent hideLabel />}
+          />
+          <Bar
+            dataKey="displayVal"
+            barSize={barSize}
+            radius={[2, 2, 0, 0]}
+          >
+            {chartData.map((entry, index) => {
+              const fill = entry.displayVal >= 0 ? '#333333' : '#9E9E9E';
+              return <Cell key={`cell-${index}`} fill={fill} />;
+            })}
+          </Bar>
+        </BarChart>
+      </ChartContainer>
     </div>
   );
 }
@@ -291,74 +181,29 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title 
 // 2. 선 차트 (MacroLineChart)
 // ----------------------------------------------------
 export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value', title = '선 차트', chartKey }: BaseChartProps) {
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
-  const theme = CHART_THEMES[themeIndex % CHART_THEMES.length];
-  const svgRef = useRef<SVGSVGElement>(null);
-
-  // 정제 및 정렬
   const chartData = useMemo(() => {
     return data
       .filter((d) => d.year !== undefined || d.date !== undefined)
       .map((d) => ({
         ...d,
-        displayVal: d[valueKey as keyof ChartDataPoint] !== undefined ? Number(d[valueKey as keyof ChartDataPoint]) : null,
+        name: formatLabel(d),
+        displayVal: (d[valueKey as keyof ChartDataPoint] !== undefined && d[valueKey as keyof ChartDataPoint] !== null) ? Number(d[valueKey as keyof ChartDataPoint]) : null,
       }))
       .filter((d) => d.displayVal !== null && !isNaN(d.displayVal))
       .sort((a, b) => {
         if (a.year && b.year) return a.year - b.year;
         return new Date(a.date || '').getTime() - new Date(b.date || '').getTime();
-      }) as (ChartDataPoint & { displayVal: number })[];
+      }) as (ChartDataPoint & { name: string; displayVal: number })[];
   }, [data, valueKey]);
 
-  const width = 800;
-  const height = 280;
-  const paddingLeft = 32;
-  const paddingRight = 10;
-  const paddingTop = 6;
-  const paddingBottom = 22;
-
-  const availableWidth = width - paddingLeft - paddingRight;
-  const availableHeight = height - paddingTop - paddingBottom;
-
-  const { maxVal, minVal } = useMemo(() => {
-    if (chartData.length === 0) return { maxVal: 100, minVal: 0 };
-    const values = chartData.map((d) => d.displayVal);
-    const max = Math.max(...values);
-    const min = Math.min(...values);
-    const diff = max - min || 10;
-    // 여백 비율을 8%에서 2%로 줄여 차트가 영역을 꽉 채우도록 설정
+  const chartConfig = useMemo(() => {
     return {
-      maxVal: max + diff * 0.02,
-      minVal: Math.max(0, min - diff * 0.02)
+      displayVal: {
+        label: title,
+        color: '#000000',
+      }
     };
-  }, [chartData]);
-
-  const getY = (val: number) => {
-    const scale = availableHeight / (maxVal - minVal);
-    return height - paddingBottom - (val - minVal) * scale;
-  };
-
-  const colWidth = chartData.length > 0 ? availableWidth / chartData.length : 10;
-  const getX = (idx: number) => {
-    return paddingLeft + idx * colWidth + colWidth / 2;
-  };
-
-  // 선 경로(Path) 문자열 빌드
-  const pathD = useMemo(() => {
-    if (chartData.length === 0) return '';
-    return chartData
-      .map((d, idx) => `${idx === 0 ? 'M' : 'L'} ${getX(idx)} ${getY(d.displayVal)}`)
-      .join(' ');
-  }, [chartData]);
-
-  // 영역 채우기(Area) 경로 빌드
-  const areaD = useMemo(() => {
-    if (chartData.length === 0) return '';
-    const firstX = getX(0);
-    const lastX = getX(chartData.length - 1);
-    const bottomY = height - paddingBottom;
-    return `${pathD} L ${lastX} ${bottomY} L ${firstX} ${bottomY} Z`;
-  }, [chartData, pathD]);
+  }, [title]);
 
   if (chartData.length === 0) {
     return (
@@ -368,199 +213,106 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value', title
     );
   }
 
-  const hoveredItem = hoveredIdx !== null ? chartData[hoveredIdx] : null;
-  const guideLines = [maxVal - (maxVal - minVal) * 0.15, minVal + (maxVal - minVal) * 0.5, minVal + (maxVal - minVal) * 0.15];
-
   return (
-    <div className="flex flex-col p-1 sm:p-2 rounded-none bg-box-bg border-t-[#000000] border-b-[#000000] border-l-white border-r-white border shadow-sm">
-      <div className="relative w-full overflow-hidden" style={{ cursor: 'crosshair' }}>
-        <AnimatePresence>
-          {hoveredItem && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute top-1.5 right-1.5 z-10 text-[9px] sm:text-xs text-[#000000]/90 bg-white/95 border border-black/15 backdrop-blur-md px-2 py-0.5 flex gap-2 font-mono shadow-xs select-none pointer-events-none"
-            >
-              <span className="text-yellow-accent font-bold">{formatLabel(hoveredItem)}</span>
-              <span>수치: <strong style={{ color: theme.secondary }}>{hoveredItem.displayVal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></span>
-            </motion.div>
-          )}
-        </AnimatePresence>
-        <svg ref={svgRef} id={chartKey} viewBox={`0 0 ${width} ${height}`} width="100%" height="100%" className="w-full h-auto overflow-visible">
-          {/* 뒷배경 격자선 */}
-          {guideLines.map((val, idx) => {
-            const y = getY(val);
-            return (
-              <g key={idx} className="opacity-60">
-                <line
-                  x1={paddingLeft}
-                  y1={y}
-                  x2={width - paddingRight}
-                  y2={y}
-                  stroke="currentColor"
-                  strokeOpacity={0.12}
-                  strokeDasharray="4 4"
-                />
-                <text
-                  x={paddingLeft - 8}
-                  y={y + 3}
-                  textAnchor="end"
-                  fill="currentColor"
-                  opacity={0.7}
-                  className="text-[10px] font-bold font-mono"
-                >
-                  {val.toLocaleString(undefined, { maximumFractionDigits: 1 })}
-                </text>
-              </g>
-            );
-          })}
-
-          {/* 선 밑 영역 채우기 */}
-          <path d={areaD} fill="rgba(0,0,0,0.08)" className="pointer-events-none" />
-
-          {/* 선 그리기 */}
-          <path
-            d={pathD}
-            fill="none"
+    <div className="flex flex-col p-2 bg-[#F9F8F6] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-sm">
+      <ChartContainer config={chartConfig} className="w-full h-140 aspect-auto">
+        <AreaChart
+          data={chartData}
+          id={chartKey}
+          margin={{ top: 20, right: 10, left: -20, bottom: 10 }}
+        >
+          <defs>
+            <linearGradient id={`colorGrad-${chartKey}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#000000" stopOpacity={0.08}/>
+              <stop offset="95%" stopColor="#000000" stopOpacity={0.00}/>
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="4 4" strokeOpacity={0.2} vertical={false} />
+          <XAxis 
+            dataKey="name" 
+            tickLine={false} 
+            axisLine={false} 
+            tick={{ fontSize: 10, fontWeight: 'bold', fill: 'rgba(0,0,0,0.7)' }}
+          />
+          <YAxis 
+            tickLine={false} 
+            axisLine={false}
+            tick={{ fontSize: 9, fontWeight: 'semibold', fill: 'rgba(0,0,0,0.5)' }}
+            domain={['auto', 'auto']}
+          />
+          <ChartTooltip
+            content={<ChartTooltipContent hideLabel />}
+          />
+          <Area
+            type="monotone"
+            dataKey="displayVal"
             stroke="#000000"
             strokeWidth={2.5}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="pointer-events-none"
+            fillOpacity={1}
+            fill={`url(#colorGrad-${chartKey})`}
           />
-
-          {/* 호버 가이드 세로선 */}
-          {hoveredIdx !== null && (
-            <line
-              x1={getX(hoveredIdx)}
-              y1={paddingTop}
-              x2={getX(hoveredIdx)}
-              y2={height - paddingBottom}
-              stroke="rgba(0, 0, 0, 0.25)"
-              strokeWidth={1}
-              strokeDasharray="3 3"
-              className="pointer-events-none"
-            />
-          )}
-
-          {/* 호버 포인트 원형 링 */}
-          {hoveredIdx !== null && hoveredItem && (
-            <circle
-              cx={getX(hoveredIdx)}
-              cy={getY(hoveredItem.displayVal)}
-              r={5}
-              fill="#000000"
-              stroke="#FFFFFF"
-              strokeWidth={2}
-              style={{ filter: 'drop-shadow(0 0 4px rgba(0,0,0,0.3))' }}
-              className="pointer-events-none"
-            />
-          )}
-
-          {/* 데이터 축 라벨 렌더링 및 마우스 인터랙션 영역 */}
-          {chartData.map((d, idx) => {
-            const x = getX(idx);
-
-            return (
-              <g key={idx}>
-                {/* X축 라벨 */}
-                {idx % Math.max(1, Math.floor(chartData.length / 10)) === 0 && (
-                  <text
-                    x={x}
-                    y={height - 8}
-                    textAnchor="middle"
-                    fill="rgba(0,0,0,0.7)"
-                    className="text-[10px] font-bold font-mono select-none"
-                  >
-                    {formatLabel(d)}
-                  </text>
-                )}
-
-                {/* 인터랙션 영역 */}
-                <rect
-                  x={x - colWidth / 2}
-                  y={paddingTop}
-                  width={colWidth}
-                  height={availableHeight}
-                  fill="transparent"
-                  onMouseEnter={() => setHoveredIdx(idx)}
-                  onMouseLeave={() => setHoveredIdx(null)}
-                />
-              </g>
-            );
-          })}
-        </svg>
-      </div>
+        </AreaChart>
+      </ChartContainer>
     </div>
   );
 }
 
 interface CandlePoint {
   date: string;
+  name: string;
   open: number;
   high: number;
   low: number;
   close: number;
+  isBullish: boolean;
+  wick: number[];
+  body: number[];
+  fill: string;
 }
 
 // ----------------------------------------------------
 // 3. 캔들 차트 (MacroCandleChart)
 // ----------------------------------------------------
 export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 캔들차트', chartKey }: BaseChartProps) {
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
-
-  // 정제 및 정렬 (시, 고, 저, 종 필수)
   const chartData = useMemo(() => {
     return data
       .filter((d) => d.date !== undefined)
-      .map((d) => ({
-        date: d.date!,
-        open: d.open !== undefined && d.open !== null ? Number(d.open) : null,
-        high: d.high !== undefined && d.high !== null ? Number(d.high) : null,
-        low: d.low !== undefined && d.low !== null ? Number(d.low) : null,
-        close: d.close !== undefined && d.close !== null ? Number(d.close) : null,
-      }))
-      .filter((d) => d.open !== null && d.high !== null && d.low !== null && d.close !== null)
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()) as CandlePoint[];
+      .map((d) => {
+        if (!d.date) return null;
+        const o = d.open !== undefined && d.open !== null ? Number(d.open) : null;
+        const h = d.high !== undefined && d.high !== null ? Number(d.high) : null;
+        const l = d.low !== undefined && d.low !== null ? Number(d.low) : null;
+        const c = d.close !== undefined && d.close !== null ? Number(d.close) : null;
+        
+        if (o === null || h === null || l === null || c === null) return null;
+        
+        const isBullish = c >= o;
+        
+        return {
+          ...d,
+          name: d.date.slice(2, 7),
+          open: o,
+          high: h,
+          low: l,
+          close: c,
+          isBullish,
+          wick: [l, h],
+          body: isBullish ? [o, c] : [c, o],
+          fill: '#000000',
+        };
+      })
+      .filter(Boolean)
+      .sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime()) as CandlePoint[];
   }, [data]);
 
-  const width = 800;
-  const height = 280;
-  const paddingLeft = 32;
-  const paddingRight = 10;
-  const paddingTop = 6;
-  const paddingBottom = 22;
-
-  const availableWidth = width - paddingLeft - paddingRight;
-  const availableHeight = height - paddingTop - paddingBottom;
-
-  const { maxVal, minVal } = useMemo(() => {
-    if (chartData.length === 0) return { maxVal: 100, minVal: 0 };
-    const highs = chartData.map((d) => d.high);
-    const lows = chartData.map((d) => d.low);
-    const max = Math.max(...highs);
-    const min = Math.min(...lows);
-    const diff = max - min || 10;
-    // 여백 비율을 5%에서 2%로 줄여 차트가 세로 영역을 꽉 채우도록 설정
+  const chartConfig = useMemo(() => {
     return {
-      maxVal: max + diff * 0.02,
-      minVal: Math.max(0, min - diff * 0.02)
+      close: {
+        label: '종가',
+        color: '#000000',
+      }
     };
-  }, [chartData]);
-
-  const getY = (val: number) => {
-    const scale = availableHeight / (maxVal - minVal);
-    return height - paddingBottom - (val - minVal) * scale;
-  };
-
-  const colWidth = chartData.length > 0 ? availableWidth / chartData.length : 10;
-  const candleWidth = Math.max(1.5, Math.min(10, colWidth * 0.7));
-
-  const getX = (idx: number) => {
-    return paddingLeft + idx * colWidth + colWidth / 2;
-  };
+  }, []);
 
   if (chartData.length === 0) {
     return (
@@ -570,127 +322,71 @@ export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 
     );
   }
 
-  const hoveredItem = hoveredIdx !== null ? chartData[hoveredIdx] : null;
-  const guideLines = [maxVal - (maxVal - minVal) * 0.15, minVal + (maxVal - minVal) * 0.5, minVal + (maxVal - minVal) * 0.15];
-
   return (
-    <div className="flex flex-col p-1 sm:p-2 rounded-none bg-box-bg border-t-[#000000] border-b-[#000000] border-l-white border-r-white border shadow-sm">
-      <div className="relative w-full overflow-hidden" style={{ cursor: 'crosshair' }}>
-        <AnimatePresence>
-          {hoveredItem && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute top-1.5 right-1.5 z-10 text-[10px] sm:text-xs text-[#000000]/95 bg-white/95 border border-black/15 backdrop-blur-md px-2 py-1.5 flex flex-wrap gap-x-2 gap-y-0.5 font-mono shadow-xs select-none pointer-events-none"
-            >
-              <span className="text-yellow-accent font-bold shrink-0">{hoveredItem.date}</span>
-              <span>시: <strong>{hoveredItem.open.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></span>
-              <span className="shrink-0">고: <strong className="text-[#D60016]">{hoveredItem.high.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></span>
-              <span className="shrink-0">저: <strong className="text-[#007C1F]">{hoveredItem.low.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></span>
-              <span className="shrink-0">종: <strong>{hoveredItem.close.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></span>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      <div className="relative w-full overflow-hidden" style={{ cursor: 'crosshair' }}>
-        <svg ref={svgRef} id={chartKey} viewBox={`0 0 ${width} ${height}`} width="100%" height="100%" className="w-full h-auto overflow-visible">
-          {/* 뒷배경 격자선 */}
-          {guideLines.map((val, idx) => {
-            const y = getY(val);
-            return (
-              <g key={idx} className="opacity-60">
-                <line
-                  x1={paddingLeft}
-                  y1={y}
-                  x2={width - paddingRight}
-                  y2={y}
-                  stroke="currentColor"
-                  strokeOpacity={0.12}
-                  strokeDasharray="4 4"
-                />
-                <text
-                  x={paddingLeft - 8}
-                  y={y + 3}
-                  textAnchor="end"
-                  fill="currentColor"
-                  opacity={0.7}
-                  className="text-[10px] font-bold font-mono"
-                >
-                  {val.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                </text>
-              </g>
-            );
-          })}
-
-          {/* 캔들 렌더링 */}
-          {chartData.map((d, idx) => {
-            const isBullish = d.close >= d.open;
-            const bodyTop = isBullish ? getY(d.close) : getY(d.open);
-            const bodyBottom = isBullish ? getY(d.open) : getY(d.close);
-            const bodyHeight = Math.max(1, bodyBottom - bodyTop);
-
-            const x = getX(idx);
-            const color = isBullish ? '#007C1F' : '#D60016';
-
-            const isHovered = hoveredIdx === idx;
-
-            return (
-              <g key={idx}>
-                {/* 꼬리선 (고가 - 저가) */}
-                <line
-                  x1={x}
-                  y1={getY(d.high)}
-                  x2={x}
-                  y2={getY(d.low)}
-                  stroke={color}
-                  strokeWidth={1.2}
-                  style={{ opacity: hoveredIdx !== null && !isHovered ? 0.3 : 1 }}
-                />
-
-                {/* 몸통 */}
-                <rect
-                  x={x - candleWidth / 2}
-                  y={bodyTop}
-                  width={candleWidth}
-                  height={bodyHeight}
-                  fill={color}
-                  className="transition-all duration-200"
-                  style={{
-                    opacity: hoveredIdx !== null && !isHovered ? 0.3 : 1,
-                    filter: isHovered ? `drop-shadow(0 0 5px ${color})` : 'none',
-                  }}
-                />
-
-                {/* X축 날짜 라벨 */}
-                {idx % Math.max(1, Math.floor(chartData.length / 10)) === 0 && (
-                  <text
-                    x={x}
-                    y={height - 8}
-                    textAnchor="middle"
-                    fill="rgba(0,0,0,0.5)"
-                    className="text-[9px] font-medium font-mono select-none"
-                  >
-                    {d.date.slice(2, 7)}
-                  </text>
-                )}
-
-                {/* 인터랙션 영역 */}
-                <rect
-                  x={x - colWidth / 2}
-                  y={paddingTop}
-                  width={colWidth}
-                  height={availableHeight}
-                  fill="transparent"
-                  onMouseEnter={() => setHoveredIdx(idx)}
-                  onMouseLeave={() => setHoveredIdx(null)}
-                />
-              </g>
-            );
-          })}
-        </svg>
-      </div>
+    <div className="flex flex-col p-2 bg-[#F9F8F6] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-sm">
+      <ChartContainer config={chartConfig} className="w-full h-140 aspect-auto">
+        <ComposedChart
+          data={chartData}
+          id={chartKey}
+          margin={{ top: 20, right: 10, left: -20, bottom: 10 }}
+        >
+          <CartesianGrid strokeDasharray="4 4" strokeOpacity={0.2} vertical={false} />
+          <XAxis 
+            dataKey="name" 
+            tickLine={false} 
+            axisLine={false} 
+            tick={{ fontSize: 9, fill: 'rgba(0,0,0,0.5)' }}
+          />
+          <YAxis 
+            tickLine={false} 
+            axisLine={false}
+            tick={{ fontSize: 9, fontWeight: 'semibold', fill: 'rgba(0,0,0,0.5)' }}
+            domain={['auto', 'auto']}
+          />
+          <Tooltip
+            content={({ active, payload }) => {
+              if (active && payload && payload.length) {
+                const d = payload[0].payload;
+                return (
+                  <div className="grid min-w-32 items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl font-mono">
+                    <div className="font-medium text-muted-foreground">{d.date}</div>
+                    <div className="grid gap-0.5">
+                      <div>시가: <span className="font-semibold">{d.open.toLocaleString(undefined, { maximumFractionDigits: 1 })}</span></div>
+                      <div>고가: <span className="font-semibold">{d.high.toLocaleString(undefined, { maximumFractionDigits: 1 })}</span></div>
+                      <div>저가: <span className="font-semibold">{d.low.toLocaleString(undefined, { maximumFractionDigits: 1 })}</span></div>
+                      <div>종가: <span className="font-semibold">{d.close.toLocaleString(undefined, { maximumFractionDigits: 1 })}</span></div>
+                    </div>
+                  </div>
+                );
+              }
+              return null;
+            }}
+          />
+          {/* High-Low Wick */}
+          <Bar
+            dataKey="wick"
+            barSize={1.5}
+          >
+            {chartData.map((entry, index) => (
+              <Cell key={`wick-cell-${index}`} fill="#000000" />
+            ))}
+          </Bar>
+          {/* Open-Close Body */}
+          <Bar
+            dataKey="body"
+            barSize={8}
+          >
+            {chartData.map((entry, index) => (
+              <Cell 
+                key={`body-cell-${index}`} 
+                fill={entry.isBullish ? '#FFFFFF' : '#000000'} 
+                stroke="#000000"
+                strokeWidth={1}
+              />
+            ))}
+          </Bar>
+        </ComposedChart>
+      </ChartContainer>
     </div>
   );
 }

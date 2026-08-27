@@ -43,7 +43,7 @@ export default function Footer() {
             <span className="hidden md:inline text-white/10">|</span>
             <span><strong>사업자등록번호:</strong> 390-26-02070</span>
             <span className="hidden md:inline text-white/10">|</span>
-            <span><strong>통신판매업신고번호:</strong> 신고 예정</span>
+            <span><strong>통신판매업신고번호:</strong> 제 2026-고양일산동-1750 호</span>
           </p>
           <p className="flex flex-wrap gap-x-3 gap-y-1 justify-center md:justify-start">
             <span><strong>사업장 주소:</strong> 경기도 고양시 일산동구 위시티4로 80, 106동 602호(식사동, 위시티일산자이1단지)</span>

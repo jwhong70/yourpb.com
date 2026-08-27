@@ -410,23 +410,27 @@ export default function MacroClientPage({ data }: ClientPageProps) {
               {getSubCategories(activeMain).map((sub) => {
                 const isSubSelected = activeSub === sub.id;
                 return (
-                  <div key={sub.id} className="flex flex-col border-t border-b border-[#000000] rounded-none overflow-hidden bg-[#F9F8F6]">
+                  <div key={sub.id} className="flex flex-col border-t border-b border-[#000000] rounded-none overflow-hidden bg-[#9E9E9E]">
                     <button
                       onClick={() => setActiveSub(isSubSelected ? null : sub.id)}
                       className={`flex justify-between items-center p-4 text-left transition-colors duration-200 ${
                         isSubSelected ? 'bg-black/10' : 'hover:bg-black/5'
                       }`}
                     >
-                      <h4 className="text-base font-extrabold text-[#000000] tracking-tight flex items-center gap-2 select-none">
+                      <h4 
+                        className="text-base font-extrabold tracking-tight flex items-center gap-2 select-none"
+                        style={{ color: '#000000' }}
+                      >
                         {sub.title}
                       </h4>
                       <div className="flex items-center gap-4">
                         {/* 중분류 신호등 표시 */}
                         <SignalBadge signal={sub.signal} />
                         <ChevronDown 
-                          className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${
-                            isSubSelected ? 'transform rotate-180 text-gray-800' : ''
+                          className={`w-4 h-4 transition-transform duration-200 ${
+                            isSubSelected ? 'transform rotate-180' : ''
                           }`} 
+                          style={{ color: '#000000' }}
                         />
                       </div>
                     </button>
@@ -450,21 +454,41 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                               // 신호값 결정 (개별 신호등이 명세된 경우 적용, 없는 경우 상위 연동 혹은 null)
                               const itemSignal = item.signal || { prev: null, yoy: null };
 
+                              // 신호값에 따른 배경색 결정
+                              let subItemBg = "bg-[#4B5056]"; // 기본: 신호가 다르거나 없을 때
+                              if (itemSignal.isText) {
+                                const ratingLower = (itemSignal.rating || 'neutral').toLowerCase();
+                                if (ratingLower.includes('greed')) {
+                                  subItemBg = "bg-[#3F6C5B]";
+                                } else if (ratingLower.includes('fear')) {
+                                  subItemBg = "bg-[#C85A48]";
+                                }
+                              } else {
+                                if (itemSignal.prev === 1 && itemSignal.yoy === 1) {
+                                  subItemBg = "bg-[#3F6C5B]";
+                                } else if (itemSignal.prev === -1 && itemSignal.yoy === -1) {
+                                  subItemBg = "bg-[#C85A48]";
+                                }
+                              }
+
+                              // 소분류 숫자(1.1.1. 등) 제거
+                              const cleanTitle = item.title.replace(/^\d+(\.\d+)*\.?\s*/, "");
+
                               return (
                                 <div 
                                   key={chartKey} 
-                                  className="flex flex-col border-t border-b border-[#000000] rounded-none overflow-hidden transition-all duration-200 bg-[#F9F8F6]"
+                                  className={`flex flex-col border-t border-b border-[#000000] rounded-none overflow-hidden transition-all duration-200 ${subItemBg}`}
                                 >
                                   {/* 소분류 헤더 */}
                                   <div
                                     onClick={() => toggleChart(chartKey)}
                                     className={`flex justify-between items-center px-4 py-3 text-left transition-colors duration-150 cursor-pointer select-none ${
-                                      isChartOpen ? 'bg-black/10' : 'hover:bg-black/5'
+                                      isChartOpen ? 'bg-white/15' : 'hover:bg-white/5'
                                     }`}
                                   >
                                     <div className="flex items-center gap-1.5 min-w-0 grow">
-                                      <span className="text-xs font-extrabold text-[#000000] tracking-tight truncate">
-                                        {item.title}
+                                      <span className="text-xs font-extrabold text-white tracking-tight truncate">
+                                        {cleanTitle}
                                       </span>
                                       {isChartOpen && (
                                         <button
@@ -472,22 +496,21 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                             e.stopPropagation();
                                             const svg = document.getElementById(`chart-svg-${chartKey}`) as SVGSVGElement | null;
                                             if (svg) {
-                                              downloadSvgAsPng(svg, item.title);
+                                              downloadSvgAsPng(svg, cleanTitle);
                                             }
                                           }}
                                           title="이미지 저장 (PNG)"
-                                          className="p-1 hover:bg-black/5 rounded-none active:scale-90 transition-all cursor-pointer shrink-0 text-black/60 hover:text-[#000000]"
+                                          className="p-1 hover:bg-white/10 rounded-none active:scale-90 transition-all cursor-pointer shrink-0 text-white/70 hover:text-white"
                                         >
                                           <Download className="w-3.5 h-3.5" />
                                         </button>
                                       )}
                                     </div>
                                     <div className="flex items-center gap-4">
-                                      {/* 소분류 신호등 표시 */}
-                                      <SignalBadge signal={itemSignal} />
+                                      {/* 신호등 제거 */}
                                       <ChevronDown 
-                                        className={`w-3.5 h-3.5 text-gray-400 transition-transform duration-200 ${
-                                          isChartOpen ? 'transform rotate-180 text-gray-800' : ''
+                                        className={`w-3.5 h-3.5 text-white transition-transform duration-200 ${
+                                          isChartOpen ? 'transform rotate-180 text-white' : ''
                                         }`} 
                                       />
                                     </div>
@@ -516,6 +539,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                                   valueKey={item.valKey ?? 'value'} 
                                                   title={item.title}
                                                   chartKey={`chart-svg-${chartKey}`}
+                                                  barSize={sub.id === '1-1' ? 64 : 32}
                                                 />
                                               )}
                                               {item.chartType === 'line' && (
