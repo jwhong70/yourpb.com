@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
+import { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Cell } from 'recharts';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
 
 export interface PriceItem {
   date: string;
@@ -14,109 +16,49 @@ interface EtfCandleChartProps {
   prices: PriceItem[];
 }
 
-export default function EtfCandleChart({ prices }: EtfCandleChartProps) {
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+const chartConfig = {
+  openClose: {
+    label: '주가 (시가/종가)',
+  },
+} satisfies ChartConfig;
 
-  // 1. 데이터를 날짜 오름차순(오래된 날짜 -> 최신 날짜)으로 정렬 및 수치 변환
+export default function EtfCandleChart({ prices }: EtfCandleChartProps) {
+  // 1. 데이터를 날짜 오름차순(오래된 날짜 -> 최신 날짜)으로 정렬 및 레인지 데이터 가공
   const chartData = useMemo(() => {
     return [...prices]
-      .map((p) => ({
-        date: p.date,
-        open: Number(p.open),
-        high: Number(p.high),
-        low: Number(p.low),
-        close: Number(p.close),
-      }))
+      .map((p) => {
+        const open = Number(p.open);
+        const close = Number(p.close);
+        const high = Number(p.high);
+        const low = Number(p.low);
+        const isBullish = close >= open;
+
+        return {
+          date: p.date,
+          open,
+          high,
+          low,
+          close,
+          // Recharts 범위 바용 배열 데이터 [하한, 상한]
+          openClose: isBullish ? [open, close] : [close, open],
+          lowHigh: [low, high],
+          isBullish,
+        };
+      })
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }, [prices]);
 
-  // 2. 가로 캔버스 크기 및 설정
-  const chartWidth = 800; // 가상 너비 고정
-  const chartHeight = 320; // 가상 높이 고정
-  const paddingRight = 45;
-  const paddingLeft = 20;
-  const paddingY = 25;
-
-  const availableWidth = chartWidth - paddingLeft - paddingRight;
-
-  // 데이터 1개당 배정된 컬럼의 가로폭
-  const colWidth = useMemo(() => {
-    if (chartData.length === 0) return 10;
-    return availableWidth / chartData.length;
-  }, [chartData.length, availableWidth]);
-
-  // 각 캔들의 두께 (컬럼폭의 75%, 최소 1.5px 최대 12px)
-  const candleWidth = useMemo(() => {
-    return Math.max(1.5, Math.min(12, colWidth * 0.75));
-  }, [colWidth]);
-
-  // 3. 고가(high)와 저가(low)의 최대/최소값 계산
-  const { maxPrice, minPrice } = useMemo(() => {
-    if (chartData.length === 0) return { maxPrice: 100, minPrice: 0 };
-    let max = -Infinity;
-    let min = Infinity;
-    chartData.forEach((d) => {
-      if (d.high > max) max = d.high;
-      if (d.low < min) min = d.low;
-    });
-
-    // 상하단에 여백을 주기 위해 범위 확장
-    const diff = max - min || 10;
-    return {
-      maxPrice: max + diff * 0.05,
-      minPrice: Math.max(0, min - diff * 0.05),
-    };
-  }, [chartData]);
-
-  // 4. 가격을 SVG Y 좌표로 매핑하는 헬퍼 함수
-  const getY = (price: number) => {
-    const scale = (chartHeight - paddingY * 2) / (maxPrice - minPrice);
-    return chartHeight - paddingY - (price - minPrice) * scale;
+  const formatDecimal = (val: number) => {
+    return val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
-
-  // 5. 가로 위치 X 좌표 매핑
-  const getX = (index: number) => {
-    return paddingLeft + index * colWidth + (colWidth / 2);
-  };
-
-  // 호버 중인 아이템 정보
-  const hoveredItem = hoveredIdx !== null ? chartData[hoveredIdx] : null;
-
-  // 보조 격자선 가격 계산
-  const gridLines = useMemo(() => {
-    const lines = [];
-    const count = 4;
-    const step = (maxPrice - minPrice) / count;
-    for (let i = 0; i <= count; i++) {
-      const price = minPrice + step * i;
-      lines.push(price);
-    }
-    return lines;
-  }, [maxPrice, minPrice]);
 
   return (
     <div className="lg:h-115 flex flex-col p-6 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl">
-      {/* 최상단: 현재 정보 및 툴팁 */}
+      {/* 타이틀 영역 */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-black/10 pb-4 mb-6">
         <div>
           <h3 className="text-lg font-bold text-[#000000] tracking-tight">주가 추이</h3>
-          <p className="text-xs text-[#000000]/60 mt-1">마우스를 올리거나 스크롤하여 상세 가격을 확인하실 수 있습니다.</p>
-        </div>
-
-        {/* 실시간 툴팁 */}
-        <div className="h-10 flex items-center">
-          {hoveredItem ? (
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#000000] bg-black/5 px-3 py-1.5 rounded-none border border-black/10">
-              <span className="font-bold text-[#000000] shrink-0">{hoveredItem.date}</span>
-              <span className="shrink-0">시: <strong className="text-[#000000]">{hoveredItem.open.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></span>
-              <span className="shrink-0">고: <strong className="text-[#000000]">{hoveredItem.high.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></span>
-              <span className="shrink-0">저: <strong className="text-[#000000]">{hoveredItem.low.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></span>
-              <span className="shrink-0">종: <strong className="text-[#000000]">{hoveredItem.close.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></span>
-            </div>
-          ) : (
-            <div className="text-xs text-[#000000]/40 italic">차트 위에 마우스를 올리면 가격 상세가 노출됩니다.</div>
-          )}
+          <p className="text-xs text-[#000000]/60 mt-1">마우스를 올려서 상세 주가 정보를 확인하실 수 있습니다.</p>
         </div>
       </div>
 
@@ -125,111 +67,66 @@ export default function EtfCandleChart({ prices }: EtfCandleChartProps) {
           가격 데이터가 존재하지 않습니다.
         </div>
       ) : (
-        /* 차트 컨테이너 - 스크롤바 없이 가로 100% 핏 */
-        <div 
-          ref={containerRef}
-          className="relative w-full overflow-hidden pb-2"
-          style={{ cursor: 'crosshair' }}
-        >
-          <svg 
-            viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-            width="100%"
-            height="100%"
-            className="w-full h-auto overflow-visible"
-          >
-            {/* 뒷배경 가로 격자선 및 가격 레이블 */}
-            {gridLines.map((price, idx) => {
-              const y = getY(price);
-              return (
-                <g key={idx} className="opacity-40">
-                  <line
-                    x1={0}
-                    y1={y}
-                    x2={chartWidth - paddingRight}
-                    y2={y}
-                    stroke="rgba(0, 0, 0, 0.1)"
+        /* shadcn/ui 기반 흑백 캔들 차트 뷰포트 */
+        <div className="relative w-full h-80 pb-2">
+          <ChartContainer config={chartConfig} className="w-full h-full">
+            <ComposedChart data={chartData} margin={{ top: 15, right: 10, left: -20, bottom: 5 }}>
+              <CartesianGrid vertical={false} stroke="rgba(0,0,0,0.05)" />
+              <XAxis
+                dataKey="date"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tickFormatter={(value) => value.slice(2, 7)}
+                className="text-[9px] font-medium"
+              />
+              <YAxis
+                domain={['auto', 'auto']}
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                className="text-[9px] font-medium"
+              />
+              {/* 캔들 꼬리선: 얇은 검은색 막대 */}
+              <Bar
+                dataKey="lowHigh"
+                fill="#000000"
+                barSize={1}
+                className="opacity-75"
+                isAnimationActive={false}
+              />
+              {/* 캔들 몸통: 상승(흰색 채움 + 검은 테두리), 하락(검은색 솔리드) */}
+              <Bar dataKey="openClose" barSize={8} isAnimationActive={false}>
+                {chartData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={entry.isBullish ? '#ffffff' : '#000000'}
+                    stroke="#000000"
                     strokeWidth={1}
-                    strokeDasharray="4 4"
                   />
-                  <text
-                    x={chartWidth - paddingRight + 6}
-                    y={y + 4}
-                    fill="rgba(0, 0, 0, 0.6)"
-                    className="text-[10px] font-semibold"
-                  >
-                    {price.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                  </text>
-                </g>
-              );
-            })}
-
-            {/* 캔들 렌더링 */}
-            {chartData.map((d, idx) => {
-              const isBullish = d.close >= d.open;
-              const bodyTop = isBullish ? getY(d.close) : getY(d.open);
-              const bodyBottom = isBullish ? getY(d.open) : getY(d.close);
-              const bodyHeight = Math.max(1, bodyBottom - bodyTop);
-
-              const x = getX(idx);
-              const color = isBullish ? '#007C1F' : '#D60016'; // 상승: #007C1F, 하락: #D60016
-              
-              const isHovered = hoveredIdx === idx;
-
-              return (
-                <g key={idx}>
-                  {/* 꼬리선 (고가 - 저가) */}
-                  <line
-                    x1={x}
-                    y1={getY(d.high)}
-                    x2={x}
-                    y2={getY(d.low)}
-                    stroke={color}
-                    strokeWidth={Math.max(0.8, candleWidth * 0.2)}
-                    style={{ opacity: hoveredIdx !== null && !isHovered ? 0.4 : 1 }}
-                  />
-                  
-                  {/* 몸통 상자 */}
-                  <rect
-                    x={x - (candleWidth / 2)}
-                    y={bodyTop}
-                    width={candleWidth}
-                    height={bodyHeight}
-                    fill={color}
-                    rx={0.5}
-                    style={{ 
-                      opacity: hoveredIdx !== null && !isHovered ? 0.4 : 1,
-                      filter: isHovered ? `drop-shadow(0 0 4px ${color})` : 'none',
-                      transition: 'opacity 0.2s'
+                ))}
+              </Bar>
+              <ChartTooltip
+                cursor={{ stroke: 'rgba(0, 0, 0, 0.1)', strokeWidth: 1 }}
+                content={
+                  <ChartTooltipContent
+                    labelFormatter={(value) => `일자: ${value}`}
+                    formatter={(_, __, item) => {
+                      const payload = item.payload;
+                      return (
+                        <div className="flex flex-col gap-1 text-[11px] font-semibold text-gray-900">
+                          <div>시가: {formatDecimal(payload.open)}</div>
+                          <div>고가: {formatDecimal(payload.high)}</div>
+                          <div>저가: {formatDecimal(payload.low)}</div>
+                          <div>종가: {formatDecimal(payload.close)}</div>
+                        </div>
+                      );
                     }}
                   />
-
-                  {/* 월별 또는 특정 일자 레이블 표시 (데이터 수량에 맞추어 레이블 빈도 동적 조절) */}
-                  {idx % Math.max(5, Math.floor(chartData.length / 10)) === 0 && (
-                    <text
-                      x={x}
-                      y={chartHeight - 4}
-                      textAnchor="middle"
-                      fill="rgba(0, 0, 0, 0.5)"
-                      className="text-[9px] font-medium pointer-events-none select-none"
-                    >
-                      {d.date.slice(2, 7)}
-                    </text>
-                  )}
-
-                  {/* 인터랙션용 대형 투명 rect */}
-                  <rect
-                    x={x - (colWidth / 2)}
-                    y={0}
-                    width={colWidth}
-                    height={chartHeight}
-                    fill="transparent"
-                    onMouseEnter={() => setHoveredIdx(idx)}
-                    onMouseLeave={() => setHoveredIdx(null)}
-                  />
-                </g>
-              );
-            })}
-          </svg>
+                }
+              />
+            </ComposedChart>
+          </ChartContainer>
         </div>
       )}
     </div>

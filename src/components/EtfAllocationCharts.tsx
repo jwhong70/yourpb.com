@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { PieChart, Pie, Cell } from 'recharts';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
 
 export interface AllocationItem {
   allocation_type: string;
@@ -13,23 +14,21 @@ interface EtfAllocationChartsProps {
   allocations: AllocationItem[];
 }
 
-// 프리미엄 색상 팔레트
-const COLOR_PALETTE = [
-  '#1D2D44',
-  '#3E5C76',
-  '#5B7B9A',
-  '#748CAB',
-  '#2A7B88',
-  '#4EA5A5',
-  '#78C2B4',
-  '#A5D6C6',
-  '#C2CFD6',
-  '#E0E1DD',
+// 명도 순서 흑백 모노크롬 그라데이션 팔레트
+const MONO_PALETTE = [
+  '#000000', // 1위 (검은색)
+  '#262626', // 2위 (차콜)
+  '#4D4D4D', // 3위 (짙은 회색)
+  '#737373', // 4위 (미디엄 그레이)
+  '#999999', // 5위 (그레이)
+  '#B3B3B3', // 6위 (라이트 그레이)
+  '#CCCCCC', // 7위 (실버)
+  '#E5E5E5', // 8위
+  '#F2F2F2', // 9위
 ];
-const OTHER_COLOR = '#334155'; // 기타 항목용 슬레이트 그레이
 
 export default function EtfAllocationCharts({ allocations }: EtfAllocationChartsProps) {
-  // 1. 타입별 데이터 그룹화 및 기타 항목 계산
+  // 타입별 데이터 그룹화 및 기타 항목 계산
   const getGroupedData = (type: string) => {
     const filtered = allocations.filter((item) => item.allocation_type === type);
     
@@ -44,7 +43,6 @@ export default function EtfAllocationCharts({ allocations }: EtfAllocationCharts
     // 비중의 합이 100% 이하인 경우 '기타' 추가
     if (sum < 100 && sum > 0) {
       const rest = 100 - sum;
-      // 소수점 둘째 자리까지 안전하게 가공
       result.push({
         name: '기타',
         value: parseFloat(rest.toFixed(4)),
@@ -78,64 +76,18 @@ interface DoughnutChartWidgetProps {
 }
 
 function DoughnutChartWidget({ title, data }: DoughnutChartWidgetProps) {
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const chartConfig = {} satisfies ChartConfig;
 
-  // SVG 파라미터
-  const cx = 100;
-  const cy = 100;
-  const rOuter = 85;
-
-  // 데이터의 총합 (100% 보장되지만 안전장치로 계산)
-  const total = data.reduce((acc, curr) => acc + curr.value, 0) || 100;
-
-  // 누적 각도를 추적하여 호 조각 생성
-  let currentAngle = 0;
+  // 범례 및 파이에 맵핑할 색상 결정
   const segments = data.map((item, idx) => {
-    const angleSize = (item.value / total) * 360;
-    const startAngle = currentAngle;
-    const endAngle = currentAngle + angleSize;
-    currentAngle = endAngle;
-
-    // 색상 지정
-    const fill = item.name === '기타' 
-      ? OTHER_COLOR 
-      : COLOR_PALETTE[idx % COLOR_PALETTE.length];
-
+    const fill = item.name === '기타'
+      ? '#808080' // 기타 항목은 일관된 중간 회색
+      : MONO_PALETTE[idx % MONO_PALETTE.length];
     return {
       ...item,
-      startAngle,
-      endAngle,
       fill,
-      index: idx,
     };
   });
-
-  // 호(Arc) 패스 계산 헬퍼 함수 (파이 차트용)
-  const getPiePath = (
-    startAngle: number,
-    endAngle: number,
-    isHovered: boolean
-  ) => {
-    // 호버 시 살짝 확장 효과
-    const outerR = isHovered ? rOuter + 4 : rOuter;
-
-    const rad = (degree: number) => ((degree - 90) * Math.PI) / 180;
-    const sRad = rad(startAngle);
-    
-    // Next.js 렌더링 시 정밀도 소실 및 오차 방지
-    let diff = endAngle - startAngle;
-    if (diff >= 360) diff = 359.999;
-    const eRad = rad(startAngle + diff);
-
-    const x1 = (cx + outerR * Math.cos(sRad)).toFixed(4);
-    const y1 = (cy + outerR * Math.sin(sRad)).toFixed(4);
-    const x2 = (cx + outerR * Math.cos(eRad)).toFixed(4);
-    const y2 = (cy + outerR * Math.sin(eRad)).toFixed(4);
-
-    const largeArcFlag = diff > 180 ? 1 : 0;
-
-    return `M ${x1} ${y1} A ${outerR} ${outerR} 0 ${largeArcFlag} 1 ${x2} ${y2} L ${cx} ${cy} Z`;
-  };
 
   return (
     <div className="lg:h-115 flex flex-col items-center p-6 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl transition-all">
@@ -149,59 +101,64 @@ function DoughnutChartWidget({ title, data }: DoughnutChartWidgetProps) {
         </div>
       ) : (
         <>
-          {/* SVG Pie Chart */}
+          {/* Recharts Pie 도넛 차트 */}
           <div className="relative w-50 h-50 mb-6">
-            <svg viewBox="0 0 200 200" className="w-full h-full overflow-visible">
-              <g className="cursor-pointer">
-                {segments.map((seg, idx) => {
-                  const isHovered = hoveredIdx === idx;
-                  return (
-                    <path
-                      key={idx}
-                      d={getPiePath(seg.startAngle, seg.endAngle, isHovered)}
-                      fill={seg.fill}
-                      onMouseEnter={() => setHoveredIdx(idx)}
-                      onMouseLeave={() => setHoveredIdx(null)}
-                      className="transition-all duration-300 ease-out"
-                      style={{
-                        filter: isHovered ? `drop-shadow(0 0 8px ${seg.fill}80)` : 'none',
-                        opacity: hoveredIdx !== null && !isHovered ? 0.6 : 1,
-                      }}
+            <ChartContainer config={chartConfig} className="w-full h-full">
+              <PieChart>
+                <Pie
+                  data={segments}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={85}
+                  paddingAngle={1}
+                  dataKey="value"
+                  isAnimationActive={false}
+                >
+                  {segments.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={entry.fill}
+                      stroke="#000000"
+                      strokeWidth={0.5}
                     />
-                  );
-                })}
-              </g>
-            </svg>
+                  ))}
+                </Pie>
+                <ChartTooltip
+                  cursor={false}
+                  content={
+                    <ChartTooltipContent
+                      nameKey="name"
+                      hideLabel
+                      formatter={(value, name) => [`${(value as number).toFixed(1)}%`, name]}
+                    />
+                  }
+                />
+              </PieChart>
+            </ChartContainer>
           </div>
 
-          {/* 범례 리스트 */}
+          {/* 범례 리스트 (글자 크기 text-base, 두께 font-semibold 통일) */}
           <div className="w-full space-y-2 max-h-40 overflow-y-auto pr-1 scrollbar-thin">
-            {segments.map((seg, idx) => {
-              const isHovered = hoveredIdx === idx;
-              return (
-                <div
-                  key={idx}
-                  onMouseEnter={() => setHoveredIdx(idx)}
-                  onMouseLeave={() => setHoveredIdx(null)}
-                  className={`flex items-center justify-between px-2.5 py-1.5 rounded-none transition-colors cursor-pointer ${
-                    isHovered ? 'bg-black/10' : 'hover:bg-black/5'
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="w-3 h-3 rounded-full shrink-0"
-                      style={{ backgroundColor: seg.fill }}
-                    />
-                    <span className="text-sm font-semibold text-[#000000] truncate max-w-30">
-                      {seg.name}
-                    </span>
-                  </div>
-                  <span className="text-sm font-bold text-[#000000]">
-                    {seg.value.toFixed(1)}%
+            {segments.map((seg, idx) => (
+              <div
+                key={idx}
+                className="flex items-center justify-between px-2.5 py-1.5 rounded-none transition-colors hover:bg-black/5"
+              >
+                <div className="flex items-center gap-2">
+                  <span
+                    className="w-3 h-3 rounded-full shrink-0"
+                    style={{ backgroundColor: seg.fill }}
+                  />
+                  <span className="text-base font-semibold text-gray-900 truncate max-w-30">
+                    {seg.name}
                   </span>
                 </div>
-              );
-            })}
+                <span className="text-base font-semibold text-gray-900">
+                  {seg.value.toFixed(1)}%
+                </span>
+              </div>
+            ))}
           </div>
         </>
       )}

@@ -148,7 +148,7 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
                         </th>
                         <th
                           onClick={() => handleSort(`yield_${selectedPeriod}` as any)}
-                          className="py-3 px-3 sm:px-6 text-right cursor-pointer hover:bg-gray-900 transition-colors w-24 sm:w-44"
+                          className="py-3 px-3 sm:px-6 text-right cursor-pointer hover:bg-gray-900 transition-colors w-36 sm:w-44"
                         >
                           수익률 ({selectedPeriod === '1w' ? '1주' : selectedPeriod === '5w' ? '5주' : selectedPeriod === '20w' ? '20주' : selectedPeriod === '60w' ? '60주' : '120주'}) {renderSortIcon(`yield_${selectedPeriod}` as any)}
                         </th>

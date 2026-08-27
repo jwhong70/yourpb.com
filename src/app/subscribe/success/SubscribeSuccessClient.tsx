@@ -116,7 +116,7 @@ export default function SubscribeSuccessClient({
           <div className="space-y-2 leading-relaxed text-[#000000]/80">
             <div className="flex justify-between">
               <span className="text-gray-500">주문서 번호 (Order ID)</span>
-              <span className="font-mono text-gray-900 truncate max-w-[200px]">{orderId}</span>
+              <span className="font-mono text-gray-900 truncate max-w-50">{orderId}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500">결제 플랜 (Membership)</span>

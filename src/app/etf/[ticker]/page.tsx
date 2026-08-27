@@ -157,26 +157,26 @@ export default async function EtfDetailPage({ params }: PageProps) {
                     </div>
                     <div className="space-y-2">
                       <div className="p-2.5 rounded-none bg-[#F9F8F6]">
-                        <span className="text-sm text-[#000000]/60 block mb-0.5">대분류</span>
-                        <span className="text-base font-bold text-[#000000] truncate block">
+                        <span className="text-base font-semibold text-gray-500 block mb-0.5">대분류</span>
+                        <span className="text-base font-semibold text-gray-900 truncate block">
                           {etfList.category || '-'}
                         </span>
                       </div>
                       <div className="p-2.5 rounded-none bg-[#F9F8F6]">
-                        <span className="text-sm text-[#000000]/60 block mb-0.5">중분류</span>
-                        <span className="text-base font-bold text-gray-900 truncate block">
+                        <span className="text-base font-semibold text-gray-500 block mb-0.5">중분류</span>
+                        <span className="text-base font-semibold text-gray-900 truncate block">
                           {etfList.report || '-'}
                         </span>
                       </div>
                       <div className="p-2.5 rounded-none bg-[#F9F8F6]">
-                        <span className="text-sm text-[#000000]/60 block mb-0.5">세분류</span>
-                        <span className="text-base font-bold text-gray-900 truncate block">
+                        <span className="text-base font-semibold text-gray-500 block mb-0.5">세분류</span>
+                        <span className="text-base font-semibold text-gray-900 truncate block">
                           {etfList.focus2 || '-'}
                         </span>
                       </div>
                       <div className="p-2.5 rounded-none bg-[#F9F8F6]">
-                        <span className="text-sm text-[#000000]/60 block mb-0.5">세세분류</span>
-                        <span className="text-base font-bold text-gray-900 truncate block">
+                        <span className="text-base font-semibold text-gray-500 block mb-0.5">세세분류</span>
+                        <span className="text-base font-semibold text-gray-900 truncate block">
                           {etfList.focus3 || '-'}
                         </span>
                       </div>
@@ -184,8 +184,8 @@ export default async function EtfDetailPage({ params }: PageProps) {
                   </div>
 
                   <div className="mt-3 p-2.5 rounded-none bg-[#F9F8F6] flex flex-col justify-between gap-0.5">
-                    <span className="text-sm text-[#000000]/60">벤치마크 지수 (Index Tracked)</span>
-                    <span className="text-base font-bold text-gray-900 truncate">
+                    <span className="text-base font-semibold text-gray-500">벤치마크 지수 (Index Tracked)</span>
+                    <span className="text-base font-semibold text-gray-900 truncate">
                       {etfList.index_tracked || '해당사항 없음'}
                     </span>
                   </div>
@@ -198,7 +198,7 @@ export default async function EtfDetailPage({ params }: PageProps) {
                       <span>ETF 개요 및 투자 포인트</span>
                     </div>
                     <h3 className="text-xl font-extrabold text-gray-900 mb-2.5 select-none">펀드 분석 요약</h3>
-                    <p className="text-[#000000]/80 text-base leading-relaxed whitespace-pre-line font-sans">
+                    <p className="text-gray-900 text-base font-semibold leading-relaxed whitespace-pre-line font-sans">
                       {etfList.description || '이 펀드에 대한 상세 리서치 요약 정보가 아직 등록되지 않았습니다.'}
                     </p>
                   </div>
@@ -213,26 +213,26 @@ export default async function EtfDetailPage({ params }: PageProps) {
 
                   <div className="space-y-2.5 pt-1.5">
                     <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
-                      <span className="text-base text-gray-600">PER (주가수익비율)</span>
-                      <span className="text-base font-extrabold text-[#000000]">
+                      <span className="text-base font-semibold text-gray-500">PER (주가수익비율)</span>
+                      <span className="text-base font-semibold text-gray-900">
                         {isPremium ? formatNum(etfInfo?.pe_ratio) : '**.*'}
                       </span>
                     </div>
                     <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
-                      <span className="text-base text-gray-600">PBR (주가순자산비율)</span>
-                      <span className="text-base font-extrabold text-[#000000]">
+                      <span className="text-base font-semibold text-gray-500">PBR (주가순자산비율)</span>
+                      <span className="text-base font-semibold text-gray-900">
                         {isPremium ? formatNum(etfInfo?.pb_ratio) : '**.*'}
                       </span>
                     </div>
                     <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
-                      <span className="text-base text-gray-600">분배율 (Distribution Yield)</span>
-                      <span className="text-base font-extrabold text-[#000000]">
+                      <span className="text-base font-semibold text-gray-500">분배율 (Distribution Yield)</span>
+                      <span className="text-base font-semibold text-gray-900">
                         {isPremium ? formatPercent(etfInfo?.distribution_yield) : '**.*%'}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-base text-gray-600">만기수익률 (YTM)</span>
-                      <span className="text-base font-extrabold text-[#000000]">
+                      <span className="text-base font-semibold text-gray-500">만기수익률 (YTM)</span>
+                      <span className="text-base font-semibold text-gray-900">
                         {isPremium ? formatPercent(etfInfo?.yield_to_maturity) : '**.*%'}
                       </span>
                     </div>
@@ -294,26 +294,26 @@ export default async function EtfDetailPage({ params }: PageProps) {
                           보유종목 편입 정보가 없습니다.
                         </div>
                       ) : (
-                        <div className="overflow-x-auto max-h-75 scrollbar-thin rounded-none border-t border-b border-t-[#000000] border-b-[#000000] border-l-0 border-r-0 bg-[#F9F8F6]">
+                        <div className="overflow-x-auto max-h-75 scrollbar-thin rounded-none border-t border-b border-t-white/10 border-b-white/10 border-l-0 border-r-0 bg-[#F9F8F6]">
                           <table className="w-full text-left border-collapse text-base">
                             <thead>
-                              <tr className="bg-[#000000] text-white font-bold text-sm uppercase select-none">
-                                <th className="py-2 px-2 text-white">순위</th>
-                                <th className="py-2 px-2 text-white">티커</th>
-                                <th className="py-2 px-2 text-white">종목명</th>
-                                <th className="py-2 px-2 text-right text-white">비중</th>
+                              <tr className="bg-[#000000] text-white font-semibold text-base uppercase select-none">
+                                <th className="py-2 px-2 text-white font-semibold">순위</th>
+                                <th className="py-2 px-2 text-white font-semibold">티커</th>
+                                <th className="py-2 px-2 text-white font-semibold">종목명</th>
+                                <th className="py-2 px-2 text-right text-white font-semibold">비중</th>
                               </tr>
                             </thead>
-                            <tbody className="divide-y divide-[#000000] text-base font-medium text-[#000000]">
+                            <tbody className="divide-y divide-[#000000] text-base font-semibold text-gray-900">
                               {(isPremium ? holdings : holdings.slice(0, 10).map((h, i) => ({ ...h, holding_symbol: '••••', holding_name: 'Premium Lock' }))).map((h, idx) => (
                                 <tr
                                   key={idx}
                                   className="hover:bg-black/5 transition-colors cursor-pointer"
                                 >
-                                  <td className="py-2.5 px-2 font-bold text-[#000000]/60">{idx + 1}</td>
-                                  <td className="py-2.5 px-2 text-[#000000] uppercase font-semibold">{h.holding_symbol}</td>
-                                  <td className="py-2.5 px-2 truncate max-w-20 sm:max-w-30">{h.holding_name || '-'}</td>
-                                  <td className="py-2.5 px-2 text-right font-extrabold text-[#000000]">{isPremium ? formatPercent(h.allocation_pct) : '•.••%'}</td>
+                                  <td className="py-2.5 px-2 font-semibold text-gray-500">{idx + 1}</td>
+                                  <td className="py-2.5 px-2 text-gray-900 uppercase font-semibold">{h.holding_symbol}</td>
+                                  <td className="py-2.5 px-2 truncate max-w-20 sm:max-w-30 font-semibold">{h.holding_name || '-'}</td>
+                                  <td className="py-2.5 px-2 text-right font-semibold text-gray-900">{isPremium ? formatPercent(h.allocation_pct) : '•.••%'}</td>
                                 </tr>
                               ))}
                             </tbody>
