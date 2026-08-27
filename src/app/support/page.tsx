@@ -64,7 +64,7 @@ export default async function SupportPage() {
                     <span className="text-sm font-bold text-white/50">전화 상담</span>
                   </div>
                   <div className="space-y-1">
-                    <span className="text-xl font-black text-white block group-hover:text-[#D4AF37] transition-colors">
+                    <span className="text-lg font-black text-white block group-hover:text-[#D4AF37] transition-colors">
                       070-4507-4460
                     </span>
                     <span className="text-xs text-white/40 block">클릭 시 즉시 통화 연결</span>
@@ -83,7 +83,7 @@ export default async function SupportPage() {
                     <span className="text-sm font-bold text-white/50">이메일 문의</span>
                   </div>
                   <div className="space-y-1">
-                    <span className="text-lg font-black text-white block group-hover:text-[#D4AF37] transition-colors break-all">
+                    <span className="text-base font-black text-white block group-hover:text-[#D4AF37] transition-colors break-all">
                       jwhong70@gmail.com
                     </span>
                     <span className="text-xs text-white/40 block">제휴 및 일반 서면 피드백</span>
