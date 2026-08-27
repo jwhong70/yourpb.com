@@ -139,7 +139,7 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title 
 
   return (
     <div className="flex flex-col p-2 bg-[#F9F8F6] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-sm">
-      <ChartContainer config={chartConfig} className="w-full h-140 aspect-auto">
+      <ChartContainer config={chartConfig} className="w-full h-96 aspect-auto">
         <BarChart
           data={chartData}
           id={chartKey}
@@ -215,7 +215,7 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value', title
 
   return (
     <div className="flex flex-col p-2 bg-[#F9F8F6] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-sm">
-      <ChartContainer config={chartConfig} className="w-full h-140 aspect-auto">
+      <ChartContainer config={chartConfig} className="w-full h-96 aspect-auto">
         <AreaChart
           data={chartData}
           id={chartKey}
@@ -324,7 +324,7 @@ export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 
 
   return (
     <div className="flex flex-col p-2 bg-[#F9F8F6] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-sm">
-      <ChartContainer config={chartConfig} className="w-full h-140 aspect-auto">
+      <ChartContainer config={chartConfig} className="w-full h-96 aspect-auto">
         <ComposedChart
           data={chartData}
           id={chartKey}

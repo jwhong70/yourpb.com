@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, Instagram } from 'lucide-react';
+import { Mail, Instagram, Phone } from 'lucide-react';
 import Link from 'next/link';
 import { getSessionUser } from '@/app/actions/auth';
 import Header from '@/components/Header';
@@ -159,8 +159,8 @@ export default async function AboutPage() {
               </p>
             </div>
 
-            {/* 2열 배치 (이메일, 인스타그램) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+            {/* 3열 배치 (이메일, 전화, 인스타그램) */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
 
               {/* 이메일 카드 */}
               <a
@@ -175,6 +175,21 @@ export default async function AboutPage() {
                   jwhong70@gmail.com
                 </strong>
                 <span className="text-sm text-gray-900/70 font-semibold mt-2">클릭하여 메일 발송하기 &rarr;</span>
+              </a>
+
+              {/* 전화 문의 카드 */}
+              <a
+                href="tel:070-4507-4460"
+                className="flex flex-col items-center justify-center p-6 bg-[#D4AF37] hover:bg-[#c29d2f] rounded-none text-center transition-all hover:shadow-lg group cursor-pointer"
+              >
+                <div className="text-gray-900 mb-4 group-hover:scale-110 transition-transform">
+                  <Phone className="w-8 h-8" />
+                </div>
+                <span className="text-sm text-gray-900 font-extrabold tracking-wider uppercase mb-1">Phone</span>
+                <strong className="text-base text-gray-900 font-sans group-hover:text-black transition-colors break-all">
+                  070-4507-4460
+                </strong>
+                <span className="text-sm text-gray-900/70 font-semibold mt-2">클릭하여 전화 걸기 &rarr;</span>
               </a>
 
               {/* 인스타그램 카드 */}

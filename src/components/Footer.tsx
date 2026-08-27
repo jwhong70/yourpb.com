@@ -51,7 +51,7 @@ export default function Footer() {
             <span><strong>개인정보보호책임자:</strong> 홍정웅</span>
           </p>
           <p className="flex flex-wrap gap-x-3 gap-y-1 justify-center md:justify-start">
-            <span><strong>고객센터:</strong> 070-4507-4460</span>
+            <span><strong>고객센터:</strong> <a href="tel:070-4507-4460" className="hover:underline">070-4507-4460</a></span>
             <span className="hidden md:inline text-white/10">|</span>
             <span><strong>이메일:</strong> jwhong70@gmail.com</span>
           </p>
