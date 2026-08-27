@@ -15,7 +15,7 @@ export default function Footer() {
               />
             </Link>
             <p className="text-xs text-white/80">
-              © 2026 당신의 피비. All rights reserved. 대한민국 최고의 ETF 포트폴리오 자산관리 파트너.
+              © 2026 당신의 피비. All rights reserved.
             </p>
           </div>
           <nav className="flex flex-wrap gap-4 md:gap-6 justify-center md:justify-end">
