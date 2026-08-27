@@ -6,10 +6,10 @@ import { createClient } from '@/lib/supabase-server';
 
 /**
  * 사용자의 멤버십 상태를 Premium으로 업그레이드하는 서버 액션
- * @param plan 플랜 종류 ('1month' | '12months')
+ * @param plan 플랜 종류 ('1month' | '6months')
  * @returns 성공 여부 및 결과 객체
  */
-export async function upgradeToPremium(plan: '1month' | '12months') {
+export async function upgradeToPremium(plan: '1month' | '6months') {
   try {
     const supabase = await createClient();
 
@@ -23,8 +23,8 @@ export async function upgradeToPremium(plan: '1month' | '12months') {
     const expiryDate = new Date();
     if (plan === '1month') {
       expiryDate.setMonth(expiryDate.getMonth() + 1);
-    } else if (plan === '12months') {
-      expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+    } else if (plan === '6months') {
+      expiryDate.setMonth(expiryDate.getMonth() + 6);
     } else {
       return { success: false, error: '올바르지 않은 구독 플랜 종류입니다.' };
     }
@@ -69,7 +69,7 @@ export async function confirmTossPayment(
   paymentKey: string,
   orderId: string,
   amount: number,
-  plan: '1month' | '12months'
+  plan: '1month' | '6months'
 ) {
   try {
     // 1. 토스페이먼츠 승인 API 호출

@@ -22,7 +22,7 @@ export default async function SubscribeSuccessPage({ searchParams }: SuccessPage
   const paymentKey = params.paymentKey || '';
   const orderId = params.orderId || '';
   const amount = Number(params.amount || '0');
-  const plan = (params.plan === '1month' ? '1month' : '12months') as '1month' | '12months';
+  const plan = (params.plan === '1month' ? '1month' : '6months') as '1month' | '6months';
 
   // 1. 유효하지 않은 요청 가드
   if (!paymentKey || !orderId || amount <= 0) {

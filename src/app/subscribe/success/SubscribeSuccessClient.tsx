@@ -9,7 +9,7 @@ interface SubscribeSuccessClientProps {
   paymentKey: string;
   orderId: string;
   amount: number;
-  plan: '1month' | '12months';
+  plan: '1month' | '6months';
 }
 
 export default function SubscribeSuccessClient({
@@ -121,7 +121,7 @@ export default function SubscribeSuccessClient({
             <div className="flex justify-between">
               <span className="text-gray-500">결제 플랜 (Membership)</span>
               <span className="font-bold text-gray-900">
-                {plan === '1month' ? '프리미엄 1개월' : '프리미엄 1년 (연간)'}
+                {plan === '1month' ? '프리미엄 1개월' : '프리미엄 6개월'}
               </span>
             </div>
             <div className="flex justify-between">

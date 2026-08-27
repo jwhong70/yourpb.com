@@ -21,7 +21,7 @@ const TOSS_CLIENT_KEY = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY || 'test_gck_doc
 
 export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
   const router = useRouter();
-  const [selectedPlan, setSelectedPlan] = useState<'1month' | '12months'>('12months');
+  const [selectedPlan, setSelectedPlan] = useState<'1month' | '6months'>('6months');
   const [widgets, setWidgets] = useState<any>(null);
   const [isWidgetLoading, setIsWidgetLoading] = useState(true);
   const [isPending, setIsPending] = useState<string | null>(null);
@@ -43,7 +43,7 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
         const customerKey = initialUser.id || 'ANONYMOUS';
         const widgetsInstance = tossPayments.widgets({ customerKey });
 
-        const amount = selectedPlan === '1month' ? 5000 : 50000;
+        const amount = selectedPlan === '1month' ? 5000 : 25000;
         await widgetsInstance.setAmount({
           currency: 'KRW',
           value: amount,
@@ -74,7 +74,7 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
   // 2. 선택 요금제(plan) 변경 시 결제위젯 금액 업데이트
   useEffect(() => {
     if (widgets) {
-      const amount = selectedPlan === '1month' ? 5000 : 50000;
+      const amount = selectedPlan === '1month' ? 5000 : 25000;
       widgets.setAmount({
         currency: 'KRW',
         value: amount,
@@ -105,8 +105,8 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
     setIsPending(selectedPlan);
 
     try {
-      const amount = selectedPlan === '1month' ? 5000 : 50000;
-      const orderName = selectedPlan === '1month' ? '당신의피비 프리미엄 멤버십 1개월' : '당신의피비 프리미엄 멤버십 1년';
+      const amount = selectedPlan === '1month' ? 5000 : 25000;
+      const orderName = selectedPlan === '1month' ? '당신의피비 프리미엄 멤버십 1개월' : '당신의피비 프리미엄 멤버십 6개월';
       const orderId = `order-${randomId()}`;
 
       // 토스페이먼츠 결제 요청 실행 (결제 인증 리다이렉트)
@@ -170,11 +170,11 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
           </div>
         </div>
 
-        {/* 2. 1년 플랜 카드 (추천) */}
+        {/* 2. 6개월 플랜 카드 (추천) */}
         <div 
-          onClick={() => setSelectedPlan('12months')}
+          onClick={() => setSelectedPlan('6months')}
           className={`flex flex-col bg-[#000000] border cursor-pointer rounded-none p-8 lg:p-10 shadow-2xl justify-between space-y-8 relative transition-all duration-300 ${
-            selectedPlan === '12months' 
+            selectedPlan === '6months' 
               ? 'border-[#D4AF37] scale-105 z-10 shadow-[#D4AF37]/5' 
               : 'border-white/10 opacity-70 hover:opacity-100'
           }`}
@@ -187,12 +187,12 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
           <div className="space-y-6">
             <div className="pt-2">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-[#D4AF37] uppercase tracking-wider">1년 멤버십</h3>
+                <h3 className="text-lg font-bold text-[#D4AF37] uppercase tracking-wider">6개월 멤버십</h3>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold text-white bg-red-accent/90 border border-red-500/20 px-2 py-0.5 rounded-none">
                     17% 할인
                   </span>
-                  {selectedPlan === '12months' && (
+                  {selectedPlan === '6months' && (
                     <span className="text-[10px] font-black text-black bg-[#D4AF37] px-2 py-0.5 uppercase tracking-wide">
                       SELECTED
                     </span>
@@ -200,10 +200,10 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
                 </div>
               </div>
               <div className="mt-4 flex items-baseline">
-                <span className="text-4xl lg:text-5xl font-black tracking-tight text-white">₩50,000</span>
-                <span className="ml-2 text-sm font-semibold text-gray-500">/ 년</span>
+                <span className="text-4xl lg:text-5xl font-black tracking-tight text-white">₩25,000</span>
+                <span className="ml-2 text-sm font-semibold text-gray-500">/ 6개월</span>
               </div>
-              <p className="mt-2 text-xs text-gray-400">정가 ₩60,000 ➡️ 연 ₩50,000 (추천 상품)</p>
+              <p className="mt-2 text-xs text-gray-400">정가 ₩30,000 ➡️ ₩25,000 (추천 상품)</p>
             </div>
 
             {/* 혜택 리스트 */}
@@ -261,7 +261,7 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
             </div>
           ) : (
             <span>
-              결제하기 (₩{(selectedPlan === '1month' ? 5000 : 50000).toLocaleString()})
+              결제하기 (₩{(selectedPlan === '1month' ? 5000 : 25000).toLocaleString()})
             </span>
           )}
         </button>
