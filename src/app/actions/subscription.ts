@@ -61,3 +61,50 @@ export async function upgradeToPremium(plan: '1month' | '12months') {
     return { success: false, error: err.message || '멤버십 업그레이드 처리 중 예상치 못한 오류가 발생했습니다.' };
   }
 }
+
+/**
+ * 토스페이먼츠 결제 승인을 요청하고 성공 시 멤버십을 업그레이드하는 서버 액션
+ */
+export async function confirmTossPayment(
+  paymentKey: string,
+  orderId: string,
+  amount: number,
+  plan: '1month' | '12months'
+) {
+  try {
+    // 1. 토스페이먼츠 승인 API 호출
+    const secretKey = process.env.TOSS_SECRET_KEY || 'test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6';
+    const basicToken = Buffer.from(`${secretKey}:`).toString('base64');
+
+    const response = await fetch('https://api.tosspayments.com/v1/payments/confirm', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${basicToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        paymentKey,
+        orderId,
+        amount,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error('Toss Payments confirmation failed:', data);
+      return { success: false, error: data.message || '결제 승인 요청이 실패했습니다.' };
+    }
+
+    // 2. 승인 성공 시 멤버십 업그레이드 진행
+    const upgradeResult = await upgradeToPremium(plan);
+    if (!upgradeResult.success) {
+      return { success: false, error: upgradeResult.error };
+    }
+
+    return { success: true, data };
+  } catch (err: any) {
+    console.error('Toss Payments confirmTossPayment execution error:', err);
+    return { success: false, error: err.message || '결제 승인 처리 중 예상치 못한 오류가 발생했습니다.' };
+  }
+}
