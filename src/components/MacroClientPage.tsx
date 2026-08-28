@@ -26,6 +26,7 @@ interface SubCategoryItem {
   valKey?: string;
   signal?: SignalState;
   theme?: number;
+  ticker?: string;
 }
 
 interface ClientPageProps {
@@ -196,156 +197,157 @@ export default function MacroClientPage({ data }: ClientPageProps) {
       // 1.1. GDP 하위 카테고리
       case '1-1':
         return [
-          { title: '1.1.1. 세계 GDP - 실질 GDP성장률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.world_gdp.imf, theme: 0 },
-          { title: '1.1.1. 세계 GDP - OECD 경기선행지수', chartType: 'line', data: data.economic.gdp.world_gdp.oecd, theme: 1 },
-          { title: '1.1.2. 미국 GDP - 실질 GDP성장률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.us_gdp.imf, theme: 0 },
-          { title: '1.1.2. 미국 GDP - 실질 GDP성장률(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.gdp_q, valKey: 'yoy_pct', theme: 2 },
-          { title: '1.1.2. 미국 GDP - 실질 개인소비지출(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.pce_q, valKey: 'yoy_pct', theme: 3 },
-          { title: '1.1.2. 미국 GDP - 실질 민간 총국내투자(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.gpdi_q, valKey: 'yoy_pct', theme: 4 },
-          { title: '1.1.2. 미국 GDP - 실질 민간 비주거 고정투자(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.pnfi_q, valKey: 'yoy_pct', theme: 5 },
-          { title: '1.1.2. 미국 GDP - 실질 민간 주거 고정투자(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.prfi_q, valKey: 'yoy_pct', theme: 0 },
-          { title: '1.1.2. 미국 GDP - 실질 재화/서비스 수출(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.exp_q, valKey: 'yoy_pct', theme: 1 },
-          { title: '1.1.2. 미국 GDP - 실질 재화/서비스 수입(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.imp_q, valKey: 'yoy_pct', theme: 2 },
-          { title: '1.1.2. 미국 GDP - 실질 정부 소비지출/총투자(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.gov_q, valKey: 'yoy_pct', theme: 3 },
-          { title: '1.1.2. 미국 GDP - 비농업 부문 시간당 노동생산성', chartType: 'bar', data: data.economic.gdp.us_gdp.prod_q, valKey: 'yoy_pct', theme: 4 },
-          { title: '1.1.2. 미국 GDP - OECD 경기선행지수', chartType: 'line', data: data.economic.gdp.us_gdp.oecd, theme: 1 },
-          { title: '1.1.2. 미국 GDP - GDPNow 실질 GDP 추정치', chartType: 'line', data: data.economic.gdp.us_gdp.gdpnow.data, signal: data.economic.gdp.us_gdp.gdpnow.signal, theme: 5 },
+          { title: '1.1.1. 세계 GDP - 실질 GDP성장률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.world_gdp.imf, theme: 0, ticker: 'g001_ngdp_rpch_a' },
+          { title: '1.1.1. 세계 GDP - OECD 경기선행지수', chartType: 'line', data: data.economic.gdp.world_gdp.oecd, theme: 1, ticker: 'g20' },
+          { title: '1.1.2. 미국 GDP - 실질 GDP성장률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.us_gdp.imf, theme: 0, ticker: 'usa_ngdp_rpch_a' },
+          { title: '1.1.2. 미국 GDP - 실질 GDP성장률(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.gdp_q, valKey: 'yoy_pct', theme: 2, ticker: 'gdpc1' },
+          { title: '1.1.2. 미국 GDP - 실질 개인소비지출(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.pce_q, valKey: 'yoy_pct', theme: 3, ticker: 'pcecc96' },
+          { title: '1.1.2. 미국 GDP - 실질 민간 총국내투자(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.gpdi_q, valKey: 'yoy_pct', theme: 4, ticker: 'gpdic1' },
+          { title: '1.1.2. 미국 GDP - 실질 민간 비주거 고정투자(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.pnfi_q, valKey: 'yoy_pct', theme: 5, ticker: 'pnfic1' },
+          { title: '1.1.2. 미국 GDP - 실질 민간 주거 고정투자(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.prfi_q, valKey: 'yoy_pct', theme: 0, ticker: 'prfic1' },
+          { title: '1.1.2. 미국 GDP - 실질 재화/서비스 수출(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.exp_q, valKey: 'yoy_pct', theme: 1, ticker: 'expgsc1' },
+          { title: '1.1.2. 미국 GDP - 실질 재화/서비스 수입(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.imp_q, valKey: 'yoy_pct', theme: 2, ticker: 'impgsc1' },
+          { title: '1.1.2. 미국 GDP - 실질 정부 소비지출/총투자(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.gov_q, valKey: 'yoy_pct', theme: 3, ticker: 'gcec1' },
+          { title: '1.1.2. 미국 GDP - 비농업 부문 시간당 노동생산성', chartType: 'bar', data: data.economic.gdp.us_gdp.prod_q, valKey: 'yoy_pct', theme: 4, ticker: 'ophnfb' },
+          { title: '1.1.2. 미국 GDP - OECD 경기선행지수', chartType: 'line', data: data.economic.gdp.us_gdp.oecd, theme: 1, ticker: 'united_states' },
+          { title: '1.1.2. 미국 GDP - GDPNow 실질 GDP 추정치', chartType: 'line', data: data.economic.gdp.us_gdp.gdpnow.data, signal: data.economic.gdp.us_gdp.gdpnow.signal, theme: 5, ticker: 'gdpnow' },
           
-          { title: '1.1.3. 한국 GDP - 실질 GDP성장률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.imf, theme: 0 },
-          { title: '1.1.3. 한국 GDP - 총투자비율(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.inv, theme: 1 },
-          { title: '1.1.3. 한국 GDP - 소비자물가상승률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.cpi, theme: 2 },
-          { title: '1.1.3. 한국 GDP - 재정수지(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.bal, theme: 3 },
-          { title: '1.1.3. 한국 GDP - 정부총채무(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.debt, theme: 4 },
-          { title: '1.1.3. 한국 GDP - 경상수지비율(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.ca, theme: 5 },
-          { title: '1.1.3. 한국 GDP - OECD 경기선행지수', chartType: 'line', data: data.economic.gdp.kr_gdp.oecd, theme: 1 },
+          { title: '1.1.3. 한국 GDP - 실질 GDP성장률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.imf, theme: 0, ticker: 'kor_ngdp_rpch_a' },
+          { title: '1.1.3. 한국 GDP - 총투자비율(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.inv, theme: 1, ticker: 'kor_nid_ngdp_a' },
+          { title: '1.1.3. 한국 GDP - 소비자물가상승률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.cpi, theme: 2, ticker: 'kor_pcpipch_a' },
+          { title: '1.1.3. 한국 GDP - 재정수지(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.bal, theme: 3, ticker: 'kor_ggxcnl_ngdp_a' },
+          { title: '1.1.3. 한국 GDP - 정부총채무(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.debt, theme: 4, ticker: 'kor_ggxwdg_ngdp_a' },
+          { title: '1.1.3. 한국 GDP - 경상수지비율(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.ca, theme: 5, ticker: 'kor_bca_ngdpd_a' },
+          { title: '1.1.3. 한국 GDP - OECD 경기선행지수', chartType: 'line', data: data.economic.gdp.kr_gdp.oecd, theme: 1, ticker: 'korea' },
 
-          { title: '1.1.4. 중국 GDP - 실질 GDP성장률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.cn_gdp.imf, theme: 0 },
-          { title: '1.1.4. 중국 GDP - 총투자비율(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.cn_gdp.inv, theme: 1 },
-          { title: '1.1.4. 중국 GDP - 소비자물가상승률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.cn_gdp.cpi, theme: 2 },
-          { title: '1.1.4. 중국 GDP - 재정수지(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.cn_gdp.bal, theme: 3 },
-          { title: '1.1.4. 중국 GDP - 정부총채무(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.cn_gdp.debt, theme: 4 },
-          { title: '1.1.4. 중국 GDP - 경상수지비율(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.cn_gdp.ca, theme: 5 },
-          { title: '1.1.4. 중국 GDP - OECD 경기선행지수', chartType: 'line', data: data.economic.gdp.cn_gdp.oecd, theme: 1 },
+          { title: '1.1.4. 중국 GDP - 실질 GDP성장률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.cn_gdp.imf, theme: 0, ticker: 'chn_ngdp_rpch_a' },
+          { title: '1.1.4. 중국 GDP - 총투자비율(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.cn_gdp.inv, theme: 1, ticker: 'chn_nid_ngdp_a' },
+          { title: '1.1.4. 중국 GDP - 소비자물가상승률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.cn_gdp.cpi, theme: 2, ticker: 'chn_pcpipch_a' },
+          { title: '1.1.4. 중국 GDP - 재정수지(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.cn_gdp.bal, theme: 3, ticker: 'chn_ggxcnl_ngdp_a' },
+          { title: '1.1.4. 중국 GDP - 정부총채무(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.cn_gdp.debt, theme: 4, ticker: 'chn_ggxwdg_ngdp_a' },
+          { title: '1.1.4. 중국 GDP - 경상수지비율(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.cn_gdp.ca, theme: 5, ticker: 'chn_bca_ngdpd_a' },
+          { title: '1.1.4. 중국 GDP - OECD 경기선행지수', chartType: 'line', data: data.economic.gdp.cn_gdp.oecd, theme: 1, ticker: 'china' },
         ];
 
       // 1.2. 소비 하위 지표들
       case '1-2':
         return [
-          { title: '1.2.1. 신규 실업수당 청구건수(4주평균)', chartType: 'line', data: data.economic.consumption.ic4wsa.data, signal: data.economic.consumption.ic4wsa.signal, theme: 5 },
-          { title: '1.2.2. 구인건수(JOLTS)', chartType: 'line', data: data.economic.consumption.jtsjol.data, signal: data.economic.consumption.jtsjol.signal, theme: 1 },
-          { title: '1.2.3. 비농업 부문 고용자수', chartType: 'bar', data: data.economic.consumption.payems.data, valKey: 'mom', signal: data.economic.consumption.payems.signal, theme: 0 },
-          { title: '1.2.4. 실업률', chartType: 'line', data: data.economic.consumption.unrate.data, signal: data.economic.consumption.unrate.signal, theme: 5 },
-          { title: '1.2.5. 총 소비자신용', chartType: 'bar', data: data.economic.consumption.totalsl.data, valKey: 'yoy_pct', signal: data.economic.consumption.totalsl.signal, theme: 2 },
-          { title: '1.2.6. 소매판매', chartType: 'bar', data: data.economic.consumption.rsafs.data, valKey: 'yoy_pct', signal: data.economic.consumption.rsafs.signal, theme: 3 },
-          { title: '1.2.7. 개인 소비지출', chartType: 'bar', data: data.economic.consumption.pce.data, valKey: 'yoy_pct', signal: data.economic.consumption.pce.signal, theme: 4 },
+          { title: '1.2.1. 신규 실업수당 청구건수(4주평균)', chartType: 'line', data: data.economic.consumption.ic4wsa.data, signal: data.economic.consumption.ic4wsa.signal, theme: 5, ticker: 'ic4wsa' },
+          { title: '1.2.2. 구인건수(JOLTS)', chartType: 'line', data: data.economic.consumption.jtsjol.data, signal: data.economic.consumption.jtsjol.signal, theme: 1, ticker: 'jtsjol' },
+          { title: '1.2.3. 비농업 부문 고용자수', chartType: 'bar', data: data.economic.consumption.payems.data, valKey: 'mom', signal: data.economic.consumption.payems.signal, theme: 0, ticker: 'payems' },
+          { title: '1.2.4. 실업률', chartType: 'line', data: data.economic.consumption.unrate.data, signal: data.economic.consumption.unrate.signal, theme: 5, ticker: 'unrate' },
+          { title: '1.2.5. 총 소비자신용', chartType: 'bar', data: data.economic.consumption.totalsl.data, valKey: 'yoy_pct', signal: data.economic.consumption.totalsl.signal, theme: 2, ticker: 'totalsl' },
+          { title: '1.2.6. 소매판매', chartType: 'bar', data: data.economic.consumption.rsafs.data, valKey: 'yoy_pct', signal: data.economic.consumption.rsafs.signal, theme: 3, ticker: 'rsafs' },
+          { title: '1.2.7. 개인 소비지출', chartType: 'bar', data: data.economic.consumption.pce.data, valKey: 'yoy_pct', signal: data.economic.consumption.pce.signal, theme: 4, ticker: 'pce' },
         ];
 
       // 1.3. 생산 하위 지표들
       case '1-3':
         return [
-          { title: '1.3.1. 산업생산지수', chartType: 'bar', data: data.economic.production.indpro.data, valKey: 'yoy_pct', signal: data.economic.production.indpro.signal, theme: 0 },
-          { title: '1.3.2. 전체 산업가동률', chartType: 'line', data: data.economic.production.tcu.data, signal: data.economic.production.tcu.signal, theme: 1 },
-          { title: '1.3.3. 내구재 신규주문', chartType: 'bar', data: data.economic.production.dgorder.data, valKey: 'yoy_pct', signal: data.economic.production.dgorder.signal, theme: 3 },
+          { title: '1.3.1. 산업생산지수', chartType: 'bar', data: data.economic.production.indpro.data, valKey: 'yoy_pct', signal: data.economic.production.indpro.signal, theme: 0, ticker: 'indpro' },
+          { title: '1.3.2. 전체 산업가동률', chartType: 'line', data: data.economic.production.tcu.data, signal: data.economic.production.tcu.signal, theme: 1, ticker: 'tcu' },
+          { title: '1.3.3. 내구재 신규주문', chartType: 'bar', data: data.economic.production.dgorder.data, valKey: 'yoy_pct', signal: data.economic.production.dgorder.signal, theme: 3, ticker: 'dgorder' },
         ];
 
       // 2.1. 금리 하위 지표들
       case '2-1':
         return [
-          { title: '2.1.1. 미국 연방기금금리 목표범위 상단', chartType: 'line', data: data.regulator.rates.dfedtaru.data, signal: data.regulator.rates.dfedtaru.signal, theme: 5 },
-          { title: '2.1.2. 미국 3개월 단기 국채수익률', chartType: 'candle', data: data.regulator.rates.irx.data, signal: data.regulator.rates.irx.signal },
-          { title: '2.1.3. 미국 10년물 국채수익률', chartType: 'candle', data: data.regulator.rates.tnx.data, signal: data.regulator.rates.tnx.signal },
-          { title: '2.1.4. 미국 30년물 국채수익률', chartType: 'candle', data: data.regulator.rates.tyx.data, signal: data.regulator.rates.tyx.signal },
-          { title: '2.1.5. 미국 국채 10년물 - 2년물 금리차', chartType: 'bar', data: data.regulator.rates.t10y2y.data, theme: 2 },
-          { title: '2.1.6. 미국 국채 10년물 - 3개월물 금리차', chartType: 'bar', data: data.regulator.rates.t10y3m.data, theme: 3 },
+          { title: '2.1.1. 미국 연방기금금리 목표범위 상단', chartType: 'line', data: data.regulator.rates.dfedtaru.data, signal: data.regulator.rates.dfedtaru.signal, theme: 5, ticker: 'dfedtaru' },
+          { title: '2.1.2. 미국 3개월 단기 국채수익률', chartType: 'candle', data: data.regulator.rates.irx.data, signal: data.regulator.rates.irx.signal, ticker: '^IRX' },
+          { title: '2.1.3. 미국 10년물 국채수익률', chartType: 'candle', data: data.regulator.rates.tnx.data, signal: data.regulator.rates.tnx.signal, ticker: '^TNX' },
+          { title: '2.1.4. 미국 30년물 국채수익률', chartType: 'candle', data: data.regulator.rates.tyx.data, signal: data.regulator.rates.tyx.signal, ticker: '^TYX' },
+          { title: '2.1.5. 미국 국채 10년물 - 2년물 금리차', chartType: 'bar', data: data.regulator.rates.t10y2y.data, theme: 2, ticker: 't10y2y' },
+          { title: '2.1.6. 미국 국채 10년물 - 3개월물 금리차', chartType: 'bar', data: data.regulator.rates.t10y3m.data, theme: 3, ticker: 't10y3m' },
         ];
 
       // 2.2. 유동성 하위 지표들
       case '2-2':
         return [
-          { title: '2.2.1. 연방준비제도 총자산', chartType: 'bar', data: data.regulator.liquidity.treast.data, valKey: 'wow', signal: data.regulator.liquidity.treast.signal, theme: 0 },
-          { title: '2.2.2. 연준 보유 MBS', chartType: 'bar', data: data.regulator.liquidity.wshomcb.data, valKey: 'wow', signal: data.regulator.liquidity.wshomcb.signal, theme: 1 },
-          { title: '2.2.3. 화폐발행액(유통화폐)', chartType: 'bar', data: data.regulator.liquidity.wcurcir.data, valKey: 'wow', signal: data.regulator.liquidity.wcurcir.signal, theme: 2 },
-          { title: '2.2.4. 역레포 거래총액', chartType: 'bar', data: data.regulator.liquidity.rrpontsyd.data, valKey: 'wow', signal: data.regulator.liquidity.rrpontsyd.signal, theme: 3 },
-          { title: '2.2.5. 재무부 일반계정잔액(TGA)', chartType: 'bar', data: data.regulator.liquidity.wtregen.data, valKey: 'wow', signal: data.regulator.liquidity.wtregen.signal, theme: 4 },
+          { title: '2.2.1. 연방준비제도 총자산', chartType: 'bar', data: data.regulator.liquidity.treast.data, valKey: 'wow', signal: data.regulator.liquidity.treast.signal, theme: 0, ticker: 'treast' },
+          { title: '2.2.2. 연준 보유 MBS', chartType: 'bar', data: data.regulator.liquidity.wshomcb.data, valKey: 'wow', signal: data.regulator.liquidity.wshomcb.signal, theme: 1, ticker: 'wshomcb' },
+          { title: '2.2.3. 화폐발행액(유통화폐)', chartType: 'bar', data: data.regulator.liquidity.wcurcir.data, valKey: 'wow', signal: data.regulator.liquidity.wcurcir.signal, theme: 2, ticker: 'wcurcir' },
+          { title: '2.2.4. 역레포 거래총액', chartType: 'bar', data: data.regulator.liquidity.rrpontsyd.data, valKey: 'wow', signal: data.regulator.liquidity.rrpontsyd.signal, theme: 3, ticker: 'rrpontsyd' },
+          { title: '2.2.5. 재무부 일반계정잔액(TGA)', chartType: 'bar', data: data.regulator.liquidity.wtregen.data, valKey: 'wow', signal: data.regulator.liquidity.wtregen.signal, theme: 4, ticker: 'wtregen' },
         ];
 
       // 2.3. 물가 하위 지표들
       case '2-3':
         return [
-          { title: '2.3.1. 헤드라인 CPI', chartType: 'bar', data: data.regulator.prices.cpiaucsl.data, valKey: 'yoy_pct', signal: data.regulator.prices.cpiaucsl.signal, theme: 0 },
-          { title: '2.3.2. Core CPI', chartType: 'bar', data: data.regulator.prices.cpilfesl.data, valKey: 'yoy_pct', signal: data.regulator.prices.cpilfesl.signal, theme: 2 },
-          { title: '2.3.3. PCE 물가지수', chartType: 'bar', data: data.regulator.prices.pcepi.data, valKey: 'yoy_pct', signal: data.regulator.prices.pcepi.signal, theme: 3 },
-          { title: '2.3.4. Core PCE', chartType: 'bar', data: data.regulator.prices.pcepilfe.data, valKey: 'yoy_pct', signal: data.regulator.prices.pcepilfe.signal, theme: 4 },
-          { title: '2.3.5. 최종 수요 PPI', chartType: 'bar', data: data.regulator.prices.ppifis.data, valKey: 'yoy_pct', signal: data.regulator.prices.ppifis.signal, theme: 5 },
-          { title: '2.3.6. Core PPI', chartType: 'bar', data: data.regulator.prices.wpsfd.data, valKey: 'yoy_pct', signal: data.regulator.prices.wpsfd.signal, theme: 2 },
+          { title: '2.3.1. 헤드라인 CPI', chartType: 'bar', data: data.regulator.prices.cpiaucsl.data, valKey: 'yoy_pct', signal: data.regulator.prices.cpiaucsl.signal, theme: 0, ticker: 'cpiaucsl' },
+          { title: '2.3.2. Core CPI', chartType: 'bar', data: data.regulator.prices.cpilfesl.data, valKey: 'yoy_pct', signal: data.regulator.prices.cpilfesl.signal, theme: 2, ticker: 'cpilfesl' },
+          { title: '2.3.3. PCE 물가지수', chartType: 'bar', data: data.regulator.prices.pcepi.data, valKey: 'yoy_pct', signal: data.regulator.prices.pcepi.signal, theme: 3, ticker: 'pcepi' },
+          { title: '2.3.4. Core PCE', chartType: 'bar', data: data.regulator.prices.pcepilfe.data, valKey: 'yoy_pct', signal: data.regulator.prices.pcepilfe.signal, theme: 4, ticker: 'pcepilfe' },
+          { title: '2.3.5. 최종 수요 PPI', chartType: 'bar', data: data.regulator.prices.ppifis.data, valKey: 'yoy_pct', signal: data.regulator.prices.ppifis.signal, theme: 5, ticker: 'ppifis' },
+          { title: '2.3.6. Core PPI', chartType: 'bar', data: data.regulator.prices.wpsfd.data, valKey: 'yoy_pct', signal: data.regulator.prices.wpsfd.signal, theme: 2, ticker: 'wpsfd49116' },
         ];
 
       // 3.1. 리스크 하위 지표들
       case '3-1':
         return [
-          { title: '3.1.1. CNN 공포/탐욕지수', chartType: 'line', data: data.risk_attitude.risk.fear_greed.data, valKey: 'score', signal: data.risk_attitude.risk.fear_greed.signal, theme: 1 },
-          { title: '3.1.2. CBOE 변동성 지수(VIX)', chartType: 'candle', data: data.risk_attitude.risk.vix.data, signal: data.risk_attitude.risk.vix.signal },
+          { title: '3.1.1. CNN 공포/탐욕지수', chartType: 'line', data: data.risk_attitude.risk.fear_greed.data, valKey: 'score', signal: data.risk_attitude.risk.fear_greed.signal, theme: 1, ticker: 'score' },
+          { title: '3.1.2. CBOE 변동성 지수(VIX)', chartType: 'candle', data: data.risk_attitude.risk.vix.data, signal: data.risk_attitude.risk.vix.signal, ticker: '^VIX' },
         ];
 
       // 3.2. 통화 하위 지표들
       case '3-2':
         return [
-          { title: '3.2.1. 달러 인덱스(DXY)', chartType: 'candle', data: data.risk_attitude.currency.dxy.data, signal: data.risk_attitude.currency.dxy.signal },
-          { title: '3.2.2. 미국 국채 10년물 - 3개월물 금리차', chartType: 'line', data: data.risk_attitude.currency.t10y3m.data, theme: 1 },
-          { title: '3.2.3. 유로/달러 환율', chartType: 'candle', data: data.risk_attitude.currency.eurusd.data, signal: data.risk_attitude.currency.eurusd.signal },
-          { title: '3.2.4. 달러/엔 환율', chartType: 'candle', data: data.risk_attitude.currency.usdjpy.data, signal: data.risk_attitude.currency.usdjpy.signal },
-          { title: '3.2.5. 달러/위안 환율', chartType: 'candle', data: data.risk_attitude.currency.usdchn.data, signal: data.risk_attitude.currency.usdchn.signal },
-          { title: '3.2.6. 달러/원 환율', chartType: 'candle', data: data.risk_attitude.currency.usdkrw.data, signal: data.risk_attitude.currency.usdkrw.signal },
-          { title: '3.2.7. 달러/대만달러 환율', chartType: 'candle', data: data.risk_attitude.currency.usdtwd.data, signal: data.risk_attitude.currency.usdtwd.signal },
+          { title: '3.2.1. 달러 인덱스(DXY)', chartType: 'candle', data: data.risk_attitude.currency.dxy.data, signal: data.risk_attitude.currency.dxy.signal, ticker: 'DX-Y.NYB' },
+          { title: '3.2.2. 미국 국채 10년물 - 3개월물 금리차', chartType: 'line', data: data.risk_attitude.currency.t10y3m.data, theme: 1, ticker: 't10y3m' },
+          { title: '3.2.3. 유로/달러 환율', chartType: 'candle', data: data.risk_attitude.currency.eurusd.data, signal: data.risk_attitude.currency.eurusd.signal, ticker: 'EURUSD=X' },
+          { title: '3.2.4. 달러/엔 환율', chartType: 'candle', data: data.risk_attitude.currency.usdjpy.data, signal: data.risk_attitude.currency.usdjpy.signal, ticker: 'JPY=X' },
+          { title: '3.2.5. 달러/위안 환율', chartType: 'candle', data: data.risk_attitude.currency.usdchn.data, signal: data.risk_attitude.currency.usdchn.signal, ticker: 'CNY=X' },
+          { title: '3.2.6. 달러/원 환율', chartType: 'candle', data: data.risk_attitude.currency.usdkrw.data, signal: data.risk_attitude.currency.usdkrw.signal, ticker: 'KRW=X' },
+          { title: '3.2.7. 달러/대만달러 환율', chartType: 'candle', data: data.risk_attitude.currency.usdtwd.data, signal: data.risk_attitude.currency.usdtwd.signal, ticker: 'TWD=X' },
         ];
 
       // 3.3. 상품 하위 지표들
       case '3-3':
         return [
-          { title: '3.3.1. 금 선물', chartType: 'candle', data: data.risk_attitude.commodities.gold.data, signal: data.risk_attitude.commodities.gold.signal },
-          { title: '3.3.2. WTI 원유 선물', chartType: 'candle', data: data.risk_attitude.commodities.wti.data, signal: data.risk_attitude.commodities.wti.signal },
-          { title: '3.3.3. 구리 선물', chartType: 'candle', data: data.risk_attitude.commodities.copper.data, signal: data.risk_attitude.commodities.copper.signal },
-          { title: '3.3.4. 밀 선물', chartType: 'candle', data: data.risk_attitude.commodities.wheat.data, signal: data.risk_attitude.commodities.wheat.signal },
-          { title: '3.3.5. 옥수수 선물', chartType: 'candle', data: data.risk_attitude.commodities.corn.data, signal: data.risk_attitude.commodities.corn.signal },
+          { title: '3.3.1. 금 선물', chartType: 'candle', data: data.risk_attitude.commodities.gold.data, signal: data.risk_attitude.commodities.gold.signal, ticker: 'GC=F' },
+          { title: '3.3.2. WTI 원유 선물', chartType: 'candle', data: data.risk_attitude.commodities.wti.data, signal: data.risk_attitude.commodities.wti.signal, ticker: 'CL=F' },
+          { title: '3.3.3. 구리 선물', chartType: 'candle', data: data.risk_attitude.commodities.copper.data, signal: data.risk_attitude.commodities.copper.signal, ticker: 'HG=F' },
+          { title: '3.3.4. 밀 선물', chartType: 'candle', data: data.risk_attitude.commodities.wheat.data, signal: data.risk_attitude.commodities.wheat.signal, ticker: 'ZW=F' },
+          { title: '3.3.5. 옥수수 선물', chartType: 'candle', data: data.risk_attitude.commodities.corn.data, signal: data.risk_attitude.commodities.corn.signal, ticker: 'ZC=F' },
         ];
 
       // 4.1. 주식사이클 하위 지표들
       case '4-1':
         return [
-          { title: '4.1.1. S&P 500 지수', chartType: 'candle', data: data.market.stocks.spx.data, signal: data.market.stocks.spx.signal },
-          { title: '4.1.2. 나스닥 종합 지수', chartType: 'candle', data: data.market.stocks.ixic.data, signal: data.market.stocks.ixic.signal },
-          { title: '4.1.3. 러셀 2000 지수', chartType: 'candle', data: data.market.stocks.rut.data, signal: data.market.stocks.rut.signal },
-          { title: '4.1.4. 유로 스톡스 50 지수', chartType: 'candle', data: data.market.stocks.stoxx.data, signal: data.market.stocks.stoxx.signal },
-          { title: '4.1.5. 닛케이 225 지수', chartType: 'candle', data: data.market.stocks.n225.data, signal: data.market.stocks.n225.signal },
-          { title: '4.1.6. 코스피 지수', chartType: 'candle', data: data.market.stocks.kospi.data, signal: data.market.stocks.kospi.signal },
-          { title: '4.1.7. 상하이 종합 지수', chartType: 'candle', data: data.market.stocks.ssec.data, signal: data.market.stocks.ssec.signal },
-          { title: '4.1.8. 항셍 지수', chartType: 'candle', data: data.market.stocks.hsi.data, signal: data.market.stocks.hsi.signal },
+          { title: '4.1.1. S&P 500 지수', chartType: 'candle', data: data.market.stocks.spx.data, signal: data.market.stocks.spx.signal, ticker: '^GSPC' },
+          { title: '4.1.2. 나스닥 종합 지수', chartType: 'candle', data: data.market.stocks.ixic.data, signal: data.market.stocks.ixic.signal, ticker: '^IXIC' },
+          { title: '4.1.3. 러셀 2000 지수', chartType: 'candle', data: data.market.stocks.rut.data, signal: data.market.stocks.rut.signal, ticker: '^RUT' },
+          { title: '4.1.4. 유로 스톡스 50 지수', chartType: 'candle', data: data.market.stocks.stoxx.data, signal: data.market.stocks.stoxx.signal, ticker: '^STOXX50E' },
+          { title: '4.1.5. 닛케이 225 지수', chartType: 'candle', data: data.market.stocks.n225.data, signal: data.market.stocks.n225.signal, ticker: '^N225' },
+          { title: '4.1.6. 코스피 지수', chartType: 'candle', data: data.market.stocks.kospi.data, signal: data.market.stocks.kospi.signal, ticker: '^KS11' },
+          { title: '4.1.7. 상하이 종합 지수', chartType: 'candle', data: data.market.stocks.ssec.data, signal: data.market.stocks.ssec.signal, ticker: '000001.SS' },
+          { title: '4.1.8. 항셍 지수', chartType: 'candle', data: data.market.stocks.hsi.data, signal: data.market.stocks.hsi.signal, ticker: '^HSI' },
         ];
 
       // 4.2. 신용사이클 하위 지표들
       case '4-2':
         return [
-          { title: '4.2.1. Baa 회사채 - 10년물 국채 스프레드', chartType: 'line', data: data.market.credit.baa10y.data, signal: data.market.credit.baa10y.signal, theme: 5 },
-          { title: '4.2.2. ICE BofA 미국 하이일드 채권 실효수익률', chartType: 'line', data: data.market.credit.hy.data, signal: data.market.credit.hy.signal, theme: 5 },
-          { title: '4.2.3. 기업어음(CP) 발행 잔액', chartType: 'line', data: data.market.credit.cp.data, signal: data.market.credit.cp.signal, theme: 1 },
-          { title: '4.2.4. 통화량(M2)', chartType: 'bar', data: data.market.credit.m2.data, valKey: 'yoy_pct', signal: data.market.credit.m2.signal, theme: 2 },
+          { title: '4.2.1. Baa 회사채 - 10년물 국채 스프레드', chartType: 'line', data: data.market.credit.baa10y.data, signal: data.market.credit.baa10y.signal, theme: 5, ticker: 'baa10y' },
+          { title: '4.2.2. ICE BofA 미국 하이일드 채권 실효수익률', chartType: 'line', data: data.market.credit.hy.data, signal: data.market.credit.hy.signal, theme: 5, ticker: 'bamlh0a0hym2ey' },
+          { title: '4.2.3. 기업어음(CP) 발행 잔액', chartType: 'line', data: data.market.credit.cp.data, signal: data.market.credit.cp.signal, theme: 1, ticker: 'compout' },
+          { title: '4.2.4. 통화량(M2)', chartType: 'bar', data: data.market.credit.m2.data, valKey: 'yoy_pct', signal: data.market.credit.m2.signal, theme: 2, ticker: 'wm2ns' },
         ];
 
       // 4.3. 부동산사이클 하위 지표들
       case '4-3':
         return [
-          { title: '4.3.1. 총 건설지출액', chartType: 'bar', data: data.market.real_estate.ttlcons.data, valKey: 'yoy_pct', signal: data.market.real_estate.ttlcons.signal, theme: 0 },
-          { title: '4.3.2. 신규주택 건축허가건수', chartType: 'bar', data: data.market.real_estate.permit.data, valKey: 'yoy_pct', signal: data.market.real_estate.permit.signal, theme: 2 },
-          { title: '4.3.3. 신규주택 착공건수', chartType: 'bar', data: data.market.real_estate.houst.data, valKey: 'yoy_pct', signal: data.market.real_estate.houst.signal, theme: 3 },
-          { title: '4.3.4. 기존주택 매매건수', chartType: 'bar', data: data.market.real_estate.exhos.data, valKey: 'value', signal: data.market.real_estate.exhos.signal, theme: 4 },
-          { title: '4.3.5. 신규단독주택 판매건수', chartType: 'bar', data: data.market.real_estate.hsn1f.data, valKey: 'yoy_pct', signal: data.market.real_estate.hsn1f.signal, theme: 5 },
-          { title: '4.3.6. S&P 케이스-실러 주택가격지수', chartType: 'bar', data: data.market.real_estate.spcs.data, valKey: 'yoy_pct', signal: data.market.real_estate.spcs.signal, theme: 2 },
+          { title: '4.3.1. 총 건설지출액', chartType: 'bar', data: data.market.real_estate.ttlcons.data, valKey: 'yoy_pct', signal: data.market.real_estate.ttlcons.signal, theme: 0, ticker: 'ttlcons' },
+          { title: '4.3.2. 신규주택 건축허가건수', chartType: 'bar', data: data.market.real_estate.permit.data, valKey: 'yoy_pct', signal: data.market.real_estate.permit.signal, theme: 2, ticker: 'permit' },
+          { title: '4.3.3. 신규주택 착공건수', chartType: 'bar', data: data.market.real_estate.houst.data, valKey: 'yoy_pct', signal: data.market.real_estate.houst.signal, theme: 3, ticker: 'houst' },
+          { title: '4.3.4. 기존주택 매매건수', chartType: 'bar', data: data.market.real_estate.exhos.data, valKey: 'value', signal: data.market.real_estate.exhos.signal, theme: 4, ticker: 'exhoslusm495s' },
+          { title: '4.3.5. 신규단독주택 판매건수', chartType: 'bar', data: data.market.real_estate.hsn1f.data, valKey: 'yoy_pct', signal: data.market.real_estate.hsn1f.signal, theme: 5, ticker: 'hsn1f' },
+          { title: '4.3.6. S&P 케이스-실러 주택가격지수', chartType: 'bar', data: data.market.real_estate.spcs.data, valKey: 'yoy_pct', signal: data.market.real_estate.spcs.signal, theme: 2, ticker: 'spcs20rsa' },
         ];
 
       default:
         return [];
     }
   };
+
 
   return (
     <div className="flex flex-col gap-6">
@@ -536,6 +538,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                                   title={item.title}
                                                   chartKey={`chart-svg-${chartKey}`}
                                                   barSize={sub.id === '1-1' ? 64 : 32}
+                                                  source={item.ticker ? data.sources?.[item.ticker] : undefined}
                                                 />
                                               )}
                                               {item.chartType === 'line' && (
@@ -545,6 +548,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                                   valueKey={item.valKey ?? 'value'} 
                                                   title={item.title}
                                                   chartKey={`chart-svg-${chartKey}`}
+                                                  source={item.ticker ? data.sources?.[item.ticker] : undefined}
                                                 />
                                               )}
                                               {item.chartType === 'candle' && (
@@ -553,6 +557,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                                                   themeIndex={item.theme ?? 0} 
                                                   title={item.title}
                                                   chartKey={`chart-svg-${chartKey}`}
+                                                  source={item.ticker ? data.sources?.[item.ticker] : undefined}
                                                 />
                                               )}
                                             </>

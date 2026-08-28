@@ -227,13 +227,14 @@ export default async function StockDetailPage({ params }: PageProps) {
 
               {/* 차트 영역 (반응형 2단 - 480px 분기) */}
               <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-8">
-                <StockCandleChart prices={prices} />
+                <StockCandleChart prices={prices} source="yfinance" />
                 <StockPerformanceChart
                   yield_1w={yield_1w}
                   yield_5w={yield_5w}
                   yield_20w={yield_20w}
                   yield_60w={yield_60w}
                   yield_120w={yield_120w}
+                  source="yfinance"
                 />
               </div>
 

@@ -277,6 +277,7 @@ export default async function EtfDetailPage({ params }: PageProps) {
                         { allocation_type: '섹터', category_name: '기술', allocation_pct: 50 },
                         { allocation_type: '섹터', category_name: '금융', allocation_pct: 30 },
                       ]}
+                      source="yfinance"
                     />
                   </div>
 
@@ -322,8 +323,9 @@ export default async function EtfDetailPage({ params }: PageProps) {
                       )}
                     </div>
 
-                    <div className="pt-2 text-sm text-gray-500 text-center">
-                      기준: 순자산 대비 편입 비중
+                    <div className="pt-2 text-sm text-gray-500 flex justify-between items-center select-none">
+                      <span>기준: 순자산 대비 편입 비중</span>
+                      <span className="font-mono text-[10px]">source: yfinance</span>
                     </div>
                   </div>
 
@@ -340,6 +342,7 @@ export default async function EtfDetailPage({ params }: PageProps) {
                     low: 95,
                     close: 102
                   }))}
+                  source="yfinance"
                 />
                 <EtfPerformanceChart
                   yield_1w={isPremium ? yield_1w : 1.2}
@@ -347,6 +350,7 @@ export default async function EtfDetailPage({ params }: PageProps) {
                   yield_20w={isPremium ? yield_20w : 12.4}
                   yield_60w={isPremium ? yield_60w : 24.8}
                   yield_120w={isPremium ? yield_120w : 52.1}
+                  source="yfinance"
                 />
               </div>
 

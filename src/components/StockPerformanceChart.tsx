@@ -10,6 +10,7 @@ interface StockPerformanceChartProps {
   yield_20w: number | null;
   yield_60w: number | null;
   yield_120w: number | null;
+  source?: string;
 }
 
 const chartConfig = {
@@ -24,6 +25,7 @@ export default function StockPerformanceChart({
   yield_20w,
   yield_60w,
   yield_120w,
+  source,
 }: StockPerformanceChartProps) {
   // 1. 유효한 데이터만 맵핑
   const chartData = useMemo(() => {
@@ -115,6 +117,11 @@ export default function StockPerformanceChart({
               />
             </BarChart>
           </ChartContainer>
+        </div>
+      )}
+      {source && (
+        <div className="text-right text-[10px] text-gray-500 font-mono mt-1 mr-2 select-none">
+          source: {source}
         </div>
       )}
     </div>

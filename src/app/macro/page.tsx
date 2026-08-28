@@ -45,6 +45,7 @@ export default async function MacroPage() {
     fredMRaw,
     indexRaw,
     fgRaw,
+    indexListRaw,
   ] = await Promise.all([
     fetchAll(supabase.from('macro_weo').select('*').in('ticker', [
       'g001_ngdp_rpch_a', 'usa_ngdp_rpch_a', 'kor_ngdp_rpch_a', 'kor_nid_ngdp_a',
@@ -80,6 +81,8 @@ export default async function MacroPage() {
     ]).gte('date', startDate)),
 
     fetchAll(supabase.from('fear_greed').select('*').gte('date', startDate)),
+
+    fetchAll(supabase.from('index_list').select('ticker, source')),
   ]);
 
   // 안전장치
@@ -90,6 +93,9 @@ export default async function MacroPage() {
   const fredM = fredMRaw || [];
   const indexPrices = indexRaw || [];
   const fearGreed = fgRaw || [];
+  const indexList = indexListRaw || [];
+
+
 
   // Ticker별 Grouping Helper
   const groupByKey = <T extends { ticker?: string; year?: number; date?: string }>(
@@ -944,8 +950,19 @@ export default async function MacroPage() {
     sub_real_estate_sig,
   ]);
 
+  // sourceMap 생성
+  const sourceMap: Record<string, string> = {};
+  for (const item of indexList) {
+    if (item.ticker) {
+      sourceMap[item.ticker] = item.source || '';
+    }
+  }
+
   // 클라이언트에 내려줄 데이터 구조화
   const dashboardData = {
+    // index_list 소스 맵 추가
+    sources: sourceMap,
+
     // 1. 경제사이클
     economic: {
       signal: main_economic_sig,

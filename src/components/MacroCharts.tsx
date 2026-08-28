@@ -99,12 +99,13 @@ interface BaseChartProps {
   title?: string;
   chartKey?: string;
   barSize?: number;
+  source?: string;
 }
 
 // ----------------------------------------------------
 // 1. 세로 막대 차트 (MacroBarChart)
 // ----------------------------------------------------
-export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title = '세로막대 차트', chartKey, barSize = 32 }: BaseChartProps) {
+export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title = '세로막대 차트', chartKey, barSize = 32, source }: BaseChartProps) {
   const chartData = useMemo(() => {
     return data
       .filter((d) => d.year !== undefined || d.date !== undefined)
@@ -173,6 +174,11 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title 
           </Bar>
         </BarChart>
       </ChartContainer>
+      {source && (
+        <div className="text-right text-[10px] text-gray-500 font-mono mt-1 mr-2 select-none">
+          source: {source}
+        </div>
+      )}
     </div>
   );
 }
@@ -180,7 +186,7 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title 
 // ----------------------------------------------------
 // 2. 선 차트 (MacroLineChart)
 // ----------------------------------------------------
-export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value', title = '선 차트', chartKey }: BaseChartProps) {
+export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value', title = '선 차트', chartKey, source }: BaseChartProps) {
   const chartData = useMemo(() => {
     return data
       .filter((d) => d.year !== undefined || d.date !== undefined)
@@ -253,6 +259,11 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value', title
           />
         </AreaChart>
       </ChartContainer>
+      {source && (
+        <div className="text-right text-[10px] text-gray-500 font-mono mt-1 mr-2 select-none">
+          source: {source}
+        </div>
+      )}
     </div>
   );
 }
@@ -273,7 +284,7 @@ interface CandlePoint {
 // ----------------------------------------------------
 // 3. 캔들 차트 (MacroCandleChart)
 // ----------------------------------------------------
-export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 캔들차트', chartKey }: BaseChartProps) {
+export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 캔들차트', chartKey, source }: BaseChartProps) {
   const chartData = useMemo(() => {
     return data
       .filter((d) => d.date !== undefined)
@@ -351,10 +362,10 @@ export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 
                   <div className="grid min-w-32 items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl font-mono">
                     <div className="font-medium text-muted-foreground">{d.date}</div>
                     <div className="grid gap-0.5">
-                      <div>시가: <span className="font-semibold">{d.open.toLocaleString(undefined, { maximumFractionDigits: 1 })}</span></div>
-                      <div>고가: <span className="font-semibold">{d.high.toLocaleString(undefined, { maximumFractionDigits: 1 })}</span></div>
-                      <div>저가: <span className="font-semibold">{d.low.toLocaleString(undefined, { maximumFractionDigits: 1 })}</span></div>
-                      <div>종가: <span className="font-semibold">{d.close.toLocaleString(undefined, { maximumFractionDigits: 1 })}</span></div>
+                       <div>시가: <span className="font-semibold">{d.open.toLocaleString(undefined, { maximumFractionDigits: 1 })}</span></div>
+                       <div>고가: <span className="font-semibold">{d.high.toLocaleString(undefined, { maximumFractionDigits: 1 })}</span></div>
+                       <div>저가: <span className="font-semibold">{d.low.toLocaleString(undefined, { maximumFractionDigits: 1 })}</span></div>
+                       <div>종가: <span className="font-semibold">{d.close.toLocaleString(undefined, { maximumFractionDigits: 1 })}</span></div>
                     </div>
                   </div>
                 );
@@ -387,6 +398,11 @@ export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 
           </Bar>
         </ComposedChart>
       </ChartContainer>
+      {source && (
+        <div className="text-right text-[10px] text-gray-500 font-mono mt-1 mr-2 select-none">
+          source: {source}
+        </div>
+      )}
     </div>
   );
 }

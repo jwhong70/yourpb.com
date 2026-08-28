@@ -12,6 +12,7 @@ export interface AllocationItem {
 
 interface EtfAllocationChartsProps {
   allocations: AllocationItem[];
+  source?: string;
 }
 
 // 명도 순서 흑백 모노크롬 그라데이션 팔레트
@@ -27,7 +28,7 @@ const MONO_PALETTE = [
   '#F2F2F2', // 9위
 ];
 
-export default function EtfAllocationCharts({ allocations }: EtfAllocationChartsProps) {
+export default function EtfAllocationCharts({ allocations, source }: EtfAllocationChartsProps) {
   // 타입별 데이터 그룹화 및 기타 항목 계산
   const getGroupedData = (type: string) => {
     const filtered = allocations.filter((item) => item.allocation_type === type);
@@ -63,9 +64,9 @@ export default function EtfAllocationCharts({ allocations }: EtfAllocationCharts
   const sectorData = getGroupedData('섹터');
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <DoughnutChartWidget title="국가별 비중" data={countryData} />
-      <DoughnutChartWidget title="섹터 비중" data={sectorData} />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+      <DoughnutChartWidget title="국가별 비중" data={countryData} source={source} />
+      <DoughnutChartWidget title="섹터 비중" data={sectorData} source={source} />
     </div>
   );
 }
@@ -73,9 +74,10 @@ export default function EtfAllocationCharts({ allocations }: EtfAllocationCharts
 interface DoughnutChartWidgetProps {
   title: string;
   data: { name: string; value: number }[];
+  source?: string;
 }
 
-function DoughnutChartWidget({ title, data }: DoughnutChartWidgetProps) {
+function DoughnutChartWidget({ title, data, source }: DoughnutChartWidgetProps) {
   const chartConfig = {} satisfies ChartConfig;
 
   // 범례 및 파이에 맵핑할 색상 결정
@@ -90,77 +92,84 @@ function DoughnutChartWidget({ title, data }: DoughnutChartWidgetProps) {
   });
 
   return (
-    <div className="lg:h-115 flex flex-col items-center p-6 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl transition-all">
-      <h3 className="text-lg font-bold text-[#000000] mb-6 select-none tracking-tight">
-        {title}
-      </h3>
+    <div className="lg:h-115 flex flex-col items-center p-6 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl transition-all justify-between w-full">
+      <div className="w-full flex flex-col items-center">
+        <h3 className="text-lg font-bold text-[#000000] mb-6 select-none tracking-tight">
+          {title}
+        </h3>
 
-      {data.length === 0 ? (
-        <div className="flex items-center justify-center h-50 text-white/40 text-sm">
-          데이터가 존재하지 않습니다.
-        </div>
-      ) : (
-        <>
-          {/* Recharts Pie 도넛 차트 */}
-          <div className="relative w-50 h-50 mb-6">
-            <ChartContainer config={chartConfig} className="w-full h-full">
-              <PieChart>
-                <Pie
-                  data={segments}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={85}
-                  paddingAngle={1}
-                  dataKey="value"
-                  isAnimationActive={false}
-                >
-                  {segments.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={entry.fill}
-                      stroke="#000000"
-                      strokeWidth={0.5}
-                    />
-                  ))}
-                </Pie>
-                <ChartTooltip
-                  cursor={false}
-                  content={
-                    <ChartTooltipContent
-                      nameKey="name"
-                      hideLabel
-                      formatter={(value, name) => [`${(value as number).toFixed(1)}%`, name]}
-                    />
-                  }
-                />
-              </PieChart>
-            </ChartContainer>
+        {data.length === 0 ? (
+          <div className="flex items-center justify-center h-50 text-white/40 text-sm">
+            데이터가 존재하지 않습니다.
           </div>
-
-          {/* 범례 리스트 (글자 크기 text-base, 두께 font-semibold 통일) */}
-          <div className="w-full space-y-2 max-h-40 overflow-y-auto pr-1 scrollbar-thin">
-            {segments.map((seg, idx) => (
-              <div
-                key={idx}
-                className="flex items-center justify-between px-2.5 py-1.5 rounded-none transition-colors hover:bg-black/5"
-              >
-                <div className="flex items-center gap-2">
-                  <span
-                    className="w-3 h-3 rounded-full shrink-0"
-                    style={{ backgroundColor: seg.fill }}
+        ) : (
+          <>
+            {/* Recharts Pie 도넛 차트 */}
+            <div className="relative w-50 h-50 mb-6">
+              <ChartContainer config={chartConfig} className="w-full h-full">
+                <PieChart>
+                  <Pie
+                    data={segments}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={85}
+                    paddingAngle={1}
+                    dataKey="value"
+                    isAnimationActive={false}
+                  >
+                    {segments.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={entry.fill}
+                        stroke="#000000"
+                        strokeWidth={0.5}
+                      />
+                    ))}
+                  </Pie>
+                  <ChartTooltip
+                    cursor={false}
+                    content={
+                      <ChartTooltipContent
+                        nameKey="name"
+                        hideLabel
+                        formatter={(value, name) => [`${(value as number).toFixed(1)}%`, name]}
+                      />
+                    }
                   />
-                  <span className="text-base font-semibold text-gray-900 truncate max-w-30">
-                    {seg.name}
+                </PieChart>
+              </ChartContainer>
+            </div>
+
+            {/* 범례 리스트 (글자 크기 text-base, 두께 font-semibold 통일) */}
+            <div className="w-full space-y-2 max-h-40 overflow-y-auto pr-1 scrollbar-thin">
+              {segments.map((seg, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center justify-between px-2.5 py-1.5 rounded-none transition-colors hover:bg-black/5"
+                >
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="w-3 h-3 rounded-full shrink-0"
+                      style={{ backgroundColor: seg.fill }}
+                    />
+                    <span className="text-base font-semibold text-gray-900 truncate max-w-30">
+                      {seg.name}
+                    </span>
+                  </div>
+                  <span className="text-base font-semibold text-gray-900">
+                    {seg.value.toFixed(1)}%
                   </span>
                 </div>
-                <span className="text-base font-semibold text-gray-900">
-                  {seg.value.toFixed(1)}%
-                </span>
-              </div>
-            ))}
-          </div>
-        </>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+      {source && (
+        <div className="w-full text-right text-[10px] text-gray-500 font-mono mt-2 mr-2 select-none">
+          source: {source}
+        </div>
       )}
     </div>
   );

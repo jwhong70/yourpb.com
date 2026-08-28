@@ -14,6 +14,7 @@ export interface PriceItem {
 
 interface StockCandleChartProps {
   prices: PriceItem[];
+  source?: string;
 }
 
 const chartConfig = {
@@ -22,7 +23,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function StockCandleChart({ prices }: StockCandleChartProps) {
+export default function StockCandleChart({ prices, source }: StockCandleChartProps) {
   // 1. 데이터를 날짜 오름차순(오래된 날짜 -> 최신 날짜)으로 정렬 및 레인지 데이터 가공
   const chartData = useMemo(() => {
     return [...prices]
@@ -123,6 +124,11 @@ export default function StockCandleChart({ prices }: StockCandleChartProps) {
               />
             </ComposedChart>
           </ChartContainer>
+        </div>
+      )}
+      {source && (
+        <div className="text-right text-[10px] text-gray-500 font-mono mt-1 mr-2 select-none">
+          source: {source}
         </div>
       )}
     </div>
