@@ -262,15 +262,11 @@ export default function MacroClientPage({ data }: ClientPageProps) {
       // 2.2. 유동성 하위 지표들
       case '2-2':
         return [
-          { title: '2.2.1. 연방준비제도 총자산', chartType: 'bar', data: data.regulator.liquidity.treast.data, signal: data.regulator.liquidity.treast.signal, theme: 0 },
-          { title: '2.2.2. 연준 보유 MBS', chartType: 'bar', data: data.regulator.liquidity.mbs.data, signal: data.regulator.liquidity.mbs.signal, theme: 1 },
-          { title: '2.2.3. 화폐발행액(유통화폐)', chartType: 'bar', data: data.regulator.liquidity.wcurcir.data, signal: data.regulator.liquidity.wcurcir.signal, theme: 2 },
-          { title: '2.2.4. 역레포 거래총액', chartType: 'bar', data: data.regulator.liquidity.rrpontsyd.data, signal: data.regulator.liquidity.rrpontsyd.signal, theme: 3 },
-          { title: '2.2.5. 역레포 응찰금리', chartType: 'line', data: data.regulator.liquidity.rrpontsyaward.data, theme: 1 },
-          { title: '2.2.6. SOFR', chartType: 'line', data: data.regulator.liquidity.sofr.data, theme: 5 },
-          { title: '2.2.7. 재무부 일반계정잔액(TGA)', chartType: 'bar', data: data.regulator.liquidity.wtregen.data, signal: data.regulator.liquidity.wtregen.signal, theme: 4 },
-          { title: '2.2.8. 연준 예치 지급준비금', chartType: 'bar', data: data.regulator.liquidity.wrbwfrbl.data, signal: data.regulator.liquidity.wrbwfrbl.signal, theme: 0 },
-          { title: '2.2.9. 미국 연방정부 재정수지', chartType: 'bar', data: data.regulator.liquidity.mtsds.data, valKey: 'mom', signal: data.regulator.liquidity.mtsds.signal, theme: 2 },
+          { title: '2.2.1. 연방준비제도 총자산', chartType: 'bar', data: data.regulator.liquidity.treast.data, valKey: 'wow', signal: data.regulator.liquidity.treast.signal, theme: 0 },
+          { title: '2.2.2. 연준 보유 MBS', chartType: 'bar', data: data.regulator.liquidity.wshomcb.data, valKey: 'wow', signal: data.regulator.liquidity.wshomcb.signal, theme: 1 },
+          { title: '2.2.3. 화폐발행액(유통화폐)', chartType: 'bar', data: data.regulator.liquidity.wcurcir.data, valKey: 'wow', signal: data.regulator.liquidity.wcurcir.signal, theme: 2 },
+          { title: '2.2.4. 역레포 거래총액', chartType: 'bar', data: data.regulator.liquidity.rrpontsyd.data, valKey: 'wow', signal: data.regulator.liquidity.rrpontsyd.signal, theme: 3 },
+          { title: '2.2.5. 재무부 일반계정잔액(TGA)', chartType: 'bar', data: data.regulator.liquidity.wtregen.data, valKey: 'wow', signal: data.regulator.liquidity.wtregen.signal, theme: 4 },
         ];
 
       // 2.3. 물가 하위 지표들
@@ -341,7 +337,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
           { title: '4.3.1. 총 건설지출액', chartType: 'bar', data: data.market.real_estate.ttlcons.data, valKey: 'yoy_pct', signal: data.market.real_estate.ttlcons.signal, theme: 0 },
           { title: '4.3.2. 신규주택 건축허가건수', chartType: 'bar', data: data.market.real_estate.permit.data, valKey: 'yoy_pct', signal: data.market.real_estate.permit.signal, theme: 2 },
           { title: '4.3.3. 신규주택 착공건수', chartType: 'bar', data: data.market.real_estate.houst.data, valKey: 'yoy_pct', signal: data.market.real_estate.houst.signal, theme: 3 },
-          { title: '4.3.4. 기존주택 매매건수', chartType: 'bar', data: data.market.real_estate.exhos.data, valKey: 'yoy_pct', signal: data.market.real_estate.exhos.signal, theme: 4 },
+          { title: '4.3.4. 기존주택 매매건수', chartType: 'bar', data: data.market.real_estate.exhos.data, valKey: 'value', signal: data.market.real_estate.exhos.signal, theme: 4 },
           { title: '4.3.5. 신규단독주택 판매건수', chartType: 'bar', data: data.market.real_estate.hsn1f.data, valKey: 'yoy_pct', signal: data.market.real_estate.hsn1f.signal, theme: 5 },
           { title: '4.3.6. S&P 케이스-실러 주택가격지수', chartType: 'bar', data: data.market.real_estate.spcs.data, valKey: 'yoy_pct', signal: data.market.real_estate.spcs.signal, theme: 2 },
         ];

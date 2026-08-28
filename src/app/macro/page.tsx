@@ -63,20 +63,19 @@ export default async function MacroPage() {
 
     fetchAll(supabase.from('macro_fred_w').select('*').in('ticker', [
       'gdpnow', 'ic4wsa', 't10y2y', 't10y3m', 'dfedtaru', 'treast', 'wcurcir',
-      'rrpontsyd', 'rrpontsyaward', 'sofr', 'wtregen', 'wrbwfrbl', 'baa10y',
-      'bamlh0a0hym2ey', 'compout'
+      'rrpontsyd', 'wtregen', 'baa10y', 'bamlh0a0hym2ey', 'compout', 'wshomcb'
     ]).gte('date', startDate)),
 
     fetchAll(supabase.from('macro_fred_m').select('*').in('ticker', [
       'jtsjol', 'payems', 'unrate', 'totalsl', 'rsafs', 'pce', 'indpro', 'tcu',
-      'dgorder', 'mtsds133fms', 'cpiaucsl', 'cpilfesl', 'pcepi', 'pcepilfe',
+      'dgorder', 'cpiaucsl', 'cpilfesl', 'pcepi', 'pcepilfe',
       'ppifis', 'wpsfd49116', 'wm2ns', 'ttlcons', 'permit', 'houst', 'exhoslusm495s',
       'hsn1f', 'spcs20rsa'
     ]).gte('date', startDate)),
 
     fetchAll(supabase.from('index_prices').select('*').in('ticker', [
       '^IRX', '^TNX', '^TYX', '^VIX', 'DX-Y.NYB', 'EURUSD=X', 'JPY=X', 'CNY=X',
-      'KRW=X', 'TWD=X', 'GC=F', 'MCL=F', 'HG=F', 'ZW=F', 'ZC=F', '^GSPC', '^IXIC',
+      'KRW=X', 'TWD=X', 'GC=F', 'CL=F', 'HG=F', 'ZW=F', 'ZC=F', '^GSPC', '^IXIC',
       '^RUT', '^STOXX50E', '^N225', '^KS11', '000001.SS', '^HSI'
     ]).gte('date', startDate)),
 
@@ -374,13 +373,13 @@ export default async function MacroPage() {
     }
     : { prev: null, yoy: null };
 
-  // 2.2.2. 연준 보유 MBS (동일 티커 wcurcir 적용)
-  const mbs = sortData(fredWGroups['wcurcir'] || []);
-  const mbs_val = getLastValid(mbs, ['yield_4w', 'yield_52w']);
-  const mbs_sig = mbs_val
+  // 2.2.2. 연준 보유 MBS (wshomcb)
+  const wshomcb = sortData(fredWGroups['wshomcb'] || []);
+  const wshomcb_val = getLastValid(wshomcb, ['yield_4w', 'yield_52w']);
+  const wshomcb_sig = wshomcb_val
     ? {
-      prev: mbs_val.yield_4w >= 0 ? 1 : -1,
-      yoy: mbs_val.yield_52w >= 0 ? 1 : -1,
+      prev: wshomcb_val.yield_4w >= 0 ? 1 : -1,
+      yoy: wshomcb_val.yield_52w >= 0 ? 1 : -1,
     }
     : { prev: null, yoy: null };
 
@@ -404,38 +403,13 @@ export default async function MacroPage() {
     }
     : { prev: null, yoy: null };
 
-  // 2.2.5. 역레포 응찰금리
-  const rrpontsyaward = sortData(fredWGroups['rrpontsyaward'] || []);
-  // 2.2.6. SOFR
-  const sofr = sortData(fredWGroups['sofr'] || []);
-
-  // 2.2.7. 재무부 일반계정잔액(TGA)
+  // 2.2.5. 재무부 일반계정잔액(TGA)
   const wtregen = sortData(fredWGroups['wtregen'] || []);
   const wtregen_val = getLastValid(wtregen, ['yield_4w', 'yield_52w']);
   const wtregen_sig = wtregen_val
     ? {
       prev: wtregen_val.yield_4w >= 0 ? 1 : -1,
       yoy: wtregen_val.yield_52w >= 0 ? 1 : -1,
-    }
-    : { prev: null, yoy: null };
-
-  // 2.2.8. 연준 예치 지급준비금
-  const wrbwfrbl = sortData(fredWGroups['wrbwfrbl'] || []);
-  const wrbwfrbl_val = getLastValid(wrbwfrbl, ['yield_4w', 'yield_52w']);
-  const wrbwfrbl_sig = wrbwfrbl_val
-    ? {
-      prev: wrbwfrbl_val.yield_4w >= 0 ? 1 : -1,
-      yoy: wrbwfrbl_val.yield_52w >= 0 ? 1 : -1,
-    }
-    : { prev: null, yoy: null };
-
-  // 2.2.9. 미국 연방정부 재정수지
-  const mtsds = sortData(fredMGroups['mtsds133fms'] || []);
-  const mtsds_val = getLastValid(mtsds, ['mom_pct', 'yoy_pct']);
-  const mtsds_sig = mtsds_val
-    ? {
-      prev: mtsds_val.mom_pct <= 0 ? 1 : -1,
-      yoy: mtsds_val.yoy_pct <= 0 ? 1 : -1,
     }
     : { prev: null, yoy: null };
 
@@ -630,7 +604,7 @@ export default async function MacroPage() {
     : { prev: null, yoy: null };
 
   // 3.3.2. WTI 원유 선물
-  const wti_fut = sortData(indexGroups['MCL=F'] || []);
+  const wti_fut = sortData(indexGroups['CL=F'] || []);
   const wti_fut_val = getLastValid(wti_fut, ['yield_4w', 'yield_52w']);
   const wti_fut_sig = wti_fut_val
     ? {
@@ -904,10 +878,10 @@ export default async function MacroPage() {
   // 2.2. 유동성 신호
   const sub_liq_sig = calcCombined([
     treast_sig,
-    mbs_sig,
+    wshomcb_sig,
     wcurcir_sig,
+    rrpontsyd_sig,
     wtregen_sig,
-    wrbwfrbl_sig,
   ]);
 
   // 2.3. 물가 신호
@@ -1048,14 +1022,10 @@ export default async function MacroPage() {
       liquidity: {
         signal: sub_liq_sig,
         treast: { data: treast, signal: treast_sig },
-        mbs: { data: mbs, signal: mbs_sig },
+        wshomcb: { data: wshomcb, signal: wshomcb_sig },
         wcurcir: { data: wcurcir, signal: wcurcir_sig },
         rrpontsyd: { data: rrpontsyd, signal: rrpontsyd_sig },
-        rrpontsyaward: { data: rrpontsyaward },
-        sofr: { data: sofr },
         wtregen: { data: wtregen, signal: wtregen_sig },
-        wrbwfrbl: { data: wrbwfrbl, signal: wrbwfrbl_sig },
-        mtsds: { data: mtsds, signal: mtsds_sig },
       },
       prices: {
         signal: sub_price_sig,
