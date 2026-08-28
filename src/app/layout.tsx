@@ -11,7 +11,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "당신의 피비 - ETF 포트폴리오 자산관리 파트너",
-  description: "당신의 PB는 누구입니까? 최적의 ETF 포트폴리오 솔루션 YOURPB",
+  description: "당신의 PB는 누구입니까? 최적의 솔루션 당신의 피비",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -23,8 +23,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "당신의 피비",
-    description: "당신의 PB는 누구입니까? 최적의 ETF 포트폴리오 솔루션 YOURPB",
-    url: "https://yourpb.com",
+    description: "당신의 PB는 누구입니까? 최적의 솔루션 당신의 피비",
+    url: "https://yourpb.vercel.app",
     siteName: "당신의 피비",
     images: [
       {
