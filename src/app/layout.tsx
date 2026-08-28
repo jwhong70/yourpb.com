@@ -10,6 +10,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://yourpb.vercel.app"),
   title: "당신의 피비 - ETF 포트폴리오 자산관리 파트너",
   description: "당신의 PB는 누구입니까? 최적의 솔루션 당신의 피비",
   manifest: "/manifest.json",
