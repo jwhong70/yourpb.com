@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { Star } from 'lucide-react';
 import Filter from './Filter';
 
 interface EtfWithPrice {
@@ -16,6 +17,7 @@ interface EtfWithPrice {
   yield_20w: number | null;
   yield_60w: number | null;
   yield_120w: number | null;
+  interest?: string;
 }
 
 interface EtfSearchClientProps {
@@ -24,6 +26,37 @@ interface EtfSearchClientProps {
 
 export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
   const router = useRouter();
+
+  // ETF 목록 상태 관리
+  const [etfs, setEtfs] = useState<EtfWithPrice[]>(initialEtfs);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // 컴포넌트 마운트 시 localStorage에서 관심 ETF 티커 로드
+  useEffect(() => {
+    setIsMounted(true);
+    try {
+      const stored = localStorage.getItem('yourpb_interest_etf_tickers');
+      if (stored) {
+        const tickers: string[] = JSON.parse(stored);
+        setEtfs((prev) =>
+          prev.map((e) => ({
+            ...e,
+            interest: tickers.includes(e.ticker) ? 'y' : 'n',
+          }))
+        );
+      } else {
+        // 기본적으로 관심 ETF 상품은 아무것도 없도록 모두 'n'으로 설정
+        setEtfs((prev) =>
+          prev.map((e) => ({
+            ...e,
+            interest: 'n',
+          }))
+        );
+      }
+    } catch (e) {
+      console.error('Failed to load etf interest tickers from localStorage:', e);
+    }
+  }, []);
   
   // 기간 선택 상태 변수 추가
   const [selectedPeriod, setSelectedPeriod] = useState<'1w' | '5w' | '20w' | '60w' | '120w'>('1w');
@@ -31,6 +64,36 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
   // 정렬 상태 변수 (초기 정렬: yield_1w, 내림차순 desc)
   const [sortColumn, setSortColumn] = useState<keyof EtfWithPrice>('yield_1w');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+
+  // 관심 종목 등록/해제 핸들러 (localStorage 기반)
+  const handleToggleInterest = (e: React.MouseEvent, ticker: string, currentInterest?: string) => {
+    e.stopPropagation(); // 행 클릭 시 상세 페이지 이동 전파 차단
+
+    const nextInterest = currentInterest === 'y' ? 'n' : 'y';
+
+    // 1. UI 상태 즉시 반영
+    setEtfs((prev) =>
+      prev.map((etf) => (etf.ticker === ticker ? { ...etf, interest: nextInterest } : etf))
+    );
+
+    // 2. localStorage 업데이트
+    try {
+      const stored = localStorage.getItem('yourpb_interest_etf_tickers');
+      let tickers: string[] = stored ? JSON.parse(stored) : [];
+
+      if (nextInterest === 'y') {
+        if (!tickers.includes(ticker)) {
+          tickers.push(ticker);
+        }
+      } else {
+        tickers = tickers.filter((t) => t !== ticker);
+      }
+
+      localStorage.setItem('yourpb_interest_etf_tickers', JSON.stringify(tickers));
+    } catch (err) {
+      console.error('Failed to update localStorage for etf interest tickers:', err);
+    }
+  };
 
   // 정렬 핸들러
   const handleSort = (column: keyof EtfWithPrice) => {
@@ -93,7 +156,7 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
   return (
     <div className="space-y-6">
       {/* 3단계 필터 버튼 영역 재사용 */}
-      <Filter initialEtfs={initialEtfs as any}>
+      <Filter initialEtfs={etfs as any}>
         {(filteredEtfs) => {
           const sortedList = getSortedEtfs(filteredEtfs);
 
@@ -101,9 +164,15 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
             <div className="space-y-4">
               {/* 조회 결과 요약 및 기간 선택 */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-2">
-                <span className="text-xs text-[#000000]/60 font-semibold select-none">
-                  검색 결과: <strong className="text-[#000000] text-sm font-extrabold">{sortedList.length}</strong>개 종목
-                </span>
+                <div className="flex flex-col space-y-1">
+                  <span className="text-xs text-[#000000]/60 font-semibold select-none">
+                    검색 결과: <strong className="text-[#000000] text-sm font-extrabold">{sortedList.length}</strong>개 종목
+                  </span>
+                  <span className="text-[11px] text-gray-400 font-medium select-none flex items-center gap-1">
+                    <Star className="w-3.5 h-3.5 fill-[#D4AF37] text-[#D4AF37]" />
+                    종목명 왼쪽의 별을 클릭하여 나만의 관심 ETF 상품을 관리해 보세요.
+                  </span>
+                </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-[#000000] font-bold">기간별 성과 선택</span>
                   <div className="relative">
@@ -164,7 +233,23 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
                             className="hover:bg-black/5 transition-colors cursor-pointer"
                           >
                             <td className="py-3 px-3 sm:px-6 font-semibold truncate border-r border-r-white" title={etf.name}>
-                              {etf.name}
+                              <div className="flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  onClick={(e) => handleToggleInterest(e, etf.ticker, etf.interest)}
+                                  className="focus:outline-hidden cursor-pointer p-1 hover:bg-black/5 rounded-full transition-colors shrink-0"
+                                  title={etf.interest === 'y' ? "관심종목 해제" : "관심종목 등록"}
+                                >
+                                  <Star
+                                    className={`w-4 h-4 ${
+                                      etf.interest === 'y'
+                                        ? 'fill-[#D4AF37] text-[#D4AF37]'
+                                        : 'text-gray-300 hover:text-gray-400'
+                                    }`}
+                                  />
+                                </button>
+                                <span className="truncate">{etf.name}</span>
+                              </div>
                             </td>
                             <td className={`py-3 px-3 sm:px-6 text-right border-r border-r-white truncate ${getYieldColor(yieldVal)}`}>
                               {formatYield(yieldVal)}

@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronDown, ArrowUpDown, Lock } from 'lucide-react';
+import { ChevronDown, ArrowUpDown, Lock, Star } from 'lucide-react';
 
 export interface StockWithPrice {
   ticker: string;
@@ -26,8 +26,39 @@ interface FilterProps {
 export default function Filter({ initialStocks, isPremium }: FilterProps) {
   const router = useRouter();
 
-  // 필터 상태
-  const [interestFilter, setInterestFilter] = useState<'y' | 'all'>('y');
+  // 주식 목록 상태 관리
+  const [stocks, setStocks] = useState<StockWithPrice[]>(initialStocks);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // 컴포넌트 마운트 시 localStorage에서 관심 종목 티커 로드
+  useEffect(() => {
+    setIsMounted(true);
+    try {
+      const stored = localStorage.getItem('yourpb_interest_tickers_v2');
+      if (stored) {
+        const tickers: string[] = JSON.parse(stored);
+        setStocks((prev) =>
+          prev.map((s) => ({
+            ...s,
+            interest: tickers.includes(s.ticker) ? 'y' : 'n',
+          }))
+        );
+      } else {
+        // 기본적으로 관심종목이 아무것도 없도록 모두 'n'으로 설정
+        setStocks((prev) =>
+          prev.map((s) => ({
+            ...s,
+            interest: 'n',
+          }))
+        );
+      }
+    } catch (e) {
+      console.error('Failed to load interest tickers from localStorage:', e);
+    }
+  }, []);
+
+  // 필터 상태 (디폴트: 유니버스 전체)
+  const [interestFilter, setInterestFilter] = useState<'y' | 'all'>('all');
   const [selectedSector, setSelectedSector] = useState<string>('all');
   const [selectedIndustry, setSelectedIndustry] = useState<string>('all');
   const [selectedPeriod, setSelectedPeriod] = useState<'1w' | '5w' | '20w' | '60w' | '120w'>('1w');
@@ -37,14 +68,44 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
   const [sortColumn, setSortColumn] = useState<keyof StockWithPrice>('yield_1w');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
+  // 관심 종목 등록/해제 핸들러 (localStorage 기반)
+  const handleToggleInterest = (e: React.MouseEvent, ticker: string, currentInterest: string) => {
+    e.stopPropagation(); // 행 클릭 이벤트가 상세 페이지 이동을 유도하는 것 방지
+
+    const nextInterest = currentInterest === 'y' ? 'n' : 'y';
+
+    // 1. UI 상태 즉시 반영
+    setStocks((prev) =>
+      prev.map((s) => (s.ticker === ticker ? { ...s, interest: nextInterest } : s))
+    );
+
+    // 2. localStorage 업데이트
+    try {
+      const stored = localStorage.getItem('yourpb_interest_tickers_v2');
+      let tickers: string[] = stored ? JSON.parse(stored) : [];
+
+      if (nextInterest === 'y') {
+        if (!tickers.includes(ticker)) {
+          tickers.push(ticker);
+        }
+      } else {
+        tickers = tickers.filter((t) => t !== ticker);
+      }
+
+      localStorage.setItem('yourpb_interest_tickers_v2', JSON.stringify(tickers));
+    } catch (err) {
+      console.error('Failed to update localStorage for interest tickers:', err);
+    }
+  };
+
   // 1. 대분류(sector2) 고유 목록 자동 추출 (필터 상태 연동)
   const sectors = useMemo(() => {
     const stocksFilteredByInterest = interestFilter === 'y'
-      ? initialStocks.filter((s) => s.interest === 'y')
-      : initialStocks;
+      ? stocks.filter((s) => s.interest === 'y')
+      : stocks;
     const list = stocksFilteredByInterest.map((s) => s.sector2).filter(Boolean);
     return Array.from(new Set(list)).sort();
-  }, [initialStocks, interestFilter]);
+  }, [stocks, interestFilter]);
 
   // 대분류 선택 시 중분류 초기화
   const handleSectorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -55,8 +116,8 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
   // 2. 선택된 대분류에 대응하는 중분류(industry2) 고유 목록 자동 추출
   const industries = useMemo(() => {
     const stocksFilteredByInterest = interestFilter === 'y'
-      ? initialStocks.filter((s) => s.interest === 'y')
-      : initialStocks;
+      ? stocks.filter((s) => s.interest === 'y')
+      : stocks;
 
     const filteredBySector = selectedSector === 'all'
       ? stocksFilteredByInterest
@@ -64,18 +125,18 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
     
     const list = filteredBySector.map((s) => s.industry2).filter(Boolean);
     return Array.from(new Set(list)).sort();
-  }, [initialStocks, selectedSector, interestFilter]);
+  }, [stocks, selectedSector, interestFilter]);
 
   // 3. 필터링된 주식 목록
   const filteredStocks = useMemo(() => {
-    return initialStocks.filter((stock) => {
+    return stocks.filter((stock) => {
       const matchInterest = interestFilter === 'all' || stock.interest === 'y';
       const matchSector = selectedSector === 'all' || stock.sector2 === selectedSector;
       const matchIndustry = selectedIndustry === 'all' || stock.industry2 === selectedIndustry;
       const matchSearch = !searchTerm.trim() || stock.name.toLowerCase().includes(searchTerm.toLowerCase());
       return matchInterest && matchSector && matchIndustry && matchSearch;
     });
-  }, [initialStocks, selectedSector, selectedIndustry, interestFilter, searchTerm]);
+  }, [stocks, selectedSector, selectedIndustry, interestFilter, searchTerm]);
 
   // 4. 정렬 로직 적용
   const sortedStocks = useMemo(() => {
@@ -160,24 +221,9 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
 
   return (
     <div className="space-y-8">
-      {/* 관심만 vs 유니버스 전체 토글 */}
+      {/* 유니버스 전체 vs 관심만 토글 (순서 교체) */}
       <div className="flex justify-start">
         <div className="inline-flex rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-1 shadow-xs select-none">
-          <button
-            type="button"
-            onClick={() => {
-              setInterestFilter('y');
-              setSelectedSector('all');
-              setSelectedIndustry('all');
-            }}
-            className={`w-28 py-2 text-xs font-bold rounded-none transition-all cursor-pointer ${
-              interestFilter === 'y'
-                ? 'bg-[#000000] text-white shadow-xs'
-                : 'text-gray-500 hover:text-gray-950'
-            }`}
-          >
-            관심만
-          </button>
           <button
             type="button"
             onClick={() => {
@@ -192,6 +238,21 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
             }`}
           >
             유니버스 전체
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setInterestFilter('y');
+              setSelectedSector('all');
+              setSelectedIndustry('all');
+            }}
+            className={`w-28 py-2 text-xs font-bold rounded-none transition-all cursor-pointer ${
+              interestFilter === 'y'
+                ? 'bg-[#000000] text-white shadow-xs'
+                : 'text-gray-500 hover:text-gray-950'
+            }`}
+          >
+            관심만
           </button>
         </div>
       </div>
@@ -267,9 +328,15 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
       {/* 2. 검색 결과 요약 및 표 영역 */}
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-2">
-          <span className="text-xs text-gray-500 font-semibold select-none">
-            검색 결과: <strong className="text-gray-900 text-sm font-extrabold">{sortedStocks.length}</strong>개 종목
-          </span>
+          <div className="flex flex-col space-y-1">
+            <span className="text-xs text-gray-500 font-semibold select-none">
+              검색 결과: <strong className="text-gray-900 text-sm font-extrabold">{sortedStocks.length}</strong>개 종목
+            </span>
+            <span className="text-[11px] text-gray-400 font-medium select-none flex items-center gap-1">
+              <Star className="w-3.5 h-3.5 fill-[#D4AF37] text-[#D4AF37]" />
+              종목명 왼쪽의 별을 클릭하여 나만의 관심 종목을 관리해 보세요.
+            </span>
+          </div>
           <div className="flex items-center gap-3">
             {!isPremium && (
               <span className="inline-flex items-center gap-1 text-[10px] text-gold font-bold bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-full select-none">
@@ -330,7 +397,21 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
                        className="hover:bg-black/5 transition-colors cursor-pointer group divide-x divide-white"
                      >
                        <td className="py-3 px-3 sm:px-6 font-semibold truncate" title={stock.name}>
-                         <div className="flex items-center gap-1.5">
+                         <div className="flex items-center gap-2">
+                           <button
+                             type="button"
+                             onClick={(e) => handleToggleInterest(e, stock.ticker, stock.interest)}
+                             className="focus:outline-hidden cursor-pointer p-1 hover:bg-black/5 rounded-full transition-colors shrink-0"
+                             title={stock.interest === 'y' ? "관심종목 해제" : "관심종목 등록"}
+                           >
+                             <Star
+                               className={`w-4 h-4 ${
+                                 stock.interest === 'y'
+                                   ? 'fill-[#D4AF37] text-[#D4AF37]'
+                                   : 'text-gray-300 hover:text-gray-400'
+                               }`}
+                             />
+                           </button>
                            <span className="truncate">{stock.name}</span>
                            {!isPremium && (
                              <Lock className="w-3 h-3 text-gold/60 shrink-0" />

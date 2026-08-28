@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import WishlistButton from '@/app/components/WishlistButton';
@@ -11,6 +11,7 @@ interface ETF {
   category: string;
   report: string;
   leverage: string | null;
+  interest?: string;
 }
 
 interface FilterProps {
@@ -59,6 +60,7 @@ export default function Filter({
   children 
 }: FilterProps) {
   // 필터 상태 변수
+  const [interestFilter, setInterestFilter] = useState<'y' | 'all'>('all');
   const [leverageFilter, setLeverageFilter] = useState<'exclude' | 'include'>('exclude');
   
   // 가로 스크롤 상태 트래킹을 위한 state와 ref
@@ -82,26 +84,39 @@ export default function Filter({
   // 이미지 로드 에러 트래킹을 위한 상태
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
-  // 1차 필터링: 레버리지 필터 적용
-  const etfsAfterLeverage = initialEtfs.filter(etf => {
-    if (leverageFilter === 'exclude') {
-      return etf.leverage === null;
-    } else {
-      return etf.leverage !== null;
-    }
-  });
+  // 0차 필터링: 관심 필터 적용
+  const etfsFilteredByInterest = useMemo(() => {
+    return initialEtfs.filter((e: ETF) => interestFilter === 'all' || e.interest === 'y');
+  }, [initialEtfs, interestFilter]);
 
-  // 대분류 고유 목록 자동 추출
-  const categories = Array.from(new Set(initialEtfs.map(e => e.category).filter(Boolean)));
+  // 1차 필터링: 레버리지 필터 적용
+  const etfsAfterLeverage = useMemo(() => {
+    return etfsFilteredByInterest.filter((etf: ETF) => {
+      if (leverageFilter === 'exclude') {
+        return etf.leverage === null;
+      } else {
+        return etf.leverage !== null;
+      }
+    });
+  }, [etfsFilteredByInterest, leverageFilter]);
+
+  // 대분류 고유 목록 자동 추출 (관심 및 레버리지 필터링 적용된 후의 데이터 기준)
+  const categories = useMemo(() => {
+    return Array.from(new Set(etfsAfterLeverage.map((e: ETF) => e.category).filter(Boolean)));
+  }, [etfsAfterLeverage]);
 
   // 2차 필터링: 대분류 필터 적용
-  const etfsAfterCategory = etfsAfterLeverage.filter(etf => {
-    if (selectedCategory === 'all') return true;
-    return etf.category === selectedCategory;
-  });
+  const etfsAfterCategory = useMemo(() => {
+    return etfsAfterLeverage.filter((etf: ETF) => {
+      if (selectedCategory === 'all') return true;
+      return etf.category === selectedCategory;
+    });
+  }, [etfsAfterLeverage, selectedCategory]);
 
   // 중분류 고유 목록 자동 추출 (현재 선택된 대분류 및 레버리지 상태에서만 나오는 중분류를 보여줌으로써 다이나믹 연동)
-  const reports = Array.from(new Set(etfsAfterCategory.map(e => e.report).filter(Boolean))).sort();
+  const reports = useMemo(() => {
+    return Array.from(new Set(etfsAfterCategory.map((e: ETF) => e.report).filter(Boolean))).sort();
+  }, [etfsAfterCategory]);
 
   // 대분류 클릭 시 중분류 및 검색어 초기화
   const handleCategoryClick = (category: string) => {
@@ -111,11 +126,13 @@ export default function Filter({
   };
 
   // 최종 필터링: 중분류 및 종목명 검색어 필터 적용
-  const filteredEtfs = etfsAfterCategory.filter(etf => {
-    const matchesReport = selectedReport === 'all' || etf.report === selectedReport;
-    const matchesSearch = !searchTerm || (etf.name || '').toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesReport && matchesSearch;
-  });
+  const filteredEtfs = useMemo(() => {
+    return etfsAfterCategory.filter((etf: ETF) => {
+      const matchesReport = selectedReport === 'all' || etf.report === selectedReport;
+      const matchesSearch = !searchTerm || (etf.name || '').toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesReport && matchesSearch;
+    });
+  }, [etfsAfterCategory, selectedReport, searchTerm]);
 
   // 이미지 에러 핸들러
   const handleImageError = (ticker: string) => {
@@ -141,8 +158,46 @@ export default function Filter({
       {/* 필터 컨트롤 영역 */}
       <div className="bg-box-bg p-6 rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white space-y-6">
         
+        {/* 0단계: 유니버스 전체 vs 관심만 토글 (최상단 배치) */}
+        <div className="flex justify-start">
+          <div className="inline-flex rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-1 shadow-xs select-none">
+            <button
+              type="button"
+              onClick={() => {
+                setInterestFilter('all');
+                setSelectedCategory('all');
+                setSelectedReport('all');
+                setSearchTerm('');
+              }}
+              className={`w-28 py-1.5 text-xs font-bold rounded-none transition-all cursor-pointer ${
+                interestFilter === 'all'
+                  ? 'bg-[#000000] text-white shadow-xs'
+                  : 'text-gray-500 hover:text-gray-950'
+              }`}
+            >
+              유니버스 전체
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setInterestFilter('y');
+                setSelectedCategory('all');
+                setSelectedReport('all');
+                setSearchTerm('');
+              }}
+              className={`w-28 py-1.5 text-xs font-bold rounded-none transition-all cursor-pointer ${
+                interestFilter === 'y'
+                  ? 'bg-[#000000] text-white shadow-xs'
+                  : 'text-gray-500 hover:text-gray-950'
+              }`}
+            >
+              관심만
+            </button>
+          </div>
+        </div>
+
         {/* 1단계: 레버리지 토글 */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 border-t border-[#000000] pt-4">
           <span className="text-xs text-[#000000] font-bold uppercase tracking-wider w-20">레버리지</span>
           <div className="flex gap-2 w-full sm:w-auto">
             <button
