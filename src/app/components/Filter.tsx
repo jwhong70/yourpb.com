@@ -334,7 +334,7 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
             </span>
             <span className="text-[11px] text-gray-400 font-medium select-none flex items-center gap-1">
               <Star className="w-3.5 h-3.5 fill-[#D4AF37] text-[#D4AF37]" />
-              종목명 왼쪽의 별을 클릭하여 나만의 관심 종목을 관리해 보세요.
+              종목명 왼쪽 별을 클릭해 나만의 관심 종목을 관리해 보세요.
             </span>
           </div>
           <div className="flex items-center gap-3">
