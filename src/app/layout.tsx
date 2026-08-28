@@ -10,7 +10,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "YOURPB.COM - ETF 포트폴리오 자산관리 파트너",
+  title: "당신의 피비 - ETF 포트폴리오 자산관리 파트너",
   description: "당신의 PB는 누구입니까? 최적의 ETF 포트폴리오 솔루션 YOURPB",
   manifest: "/manifest.json",
   appleWebApp: {
@@ -20,6 +20,22 @@ export const metadata: Metadata = {
   },
   formatDetection: {
     telephone: false,
+  },
+  openGraph: {
+    title: "당신의 피비",
+    description: "당신의 PB는 누구입니까? 최적의 ETF 포트폴리오 솔루션 YOURPB",
+    url: "https://yourpb.com",
+    siteName: "당신의 피비",
+    images: [
+      {
+        url: "/icon-512x512.png",
+        width: 512,
+        height: 512,
+        alt: "당신의 피비 로고",
+      },
+    ],
+    locale: "ko_KR",
+    type: "website",
   },
 };
 
