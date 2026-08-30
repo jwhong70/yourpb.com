@@ -1,5 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
+import { unstable_cache } from 'next/cache';
+import { supabase as publicSupabase } from '@/lib/supabase';
 import { createClient } from '@/lib/supabase-server';
 import Filter from '@/components/Filter';
 import ModelCarousel from '@/components/ModelCarousel';
@@ -7,6 +9,17 @@ import { getSessionUser } from '@/app/actions/auth';
 import { getWishlist } from '@/app/actions/wishlist';
 import PortfolioPieChart from '@/components/PortfolioPieChart';
 
+const getCachedEtfs = unstable_cache(
+  async () => {
+    const { data } = await publicSupabase
+      .from('etf_list')
+      .select('ticker, name, category, report, leverage')
+      .order('ticker');
+    return data || [];
+  },
+  ['home-etf-list-cache'],
+  { revalidate: 600 }
+);
 
 export default async function Home() {
   const supabase = await createClient();
@@ -14,10 +27,7 @@ export default async function Home() {
   const wishlist = await getWishlist();
   const wishlistTickers = wishlist.map(etf => etf.ticker);
 
-  const { data: etfs } = await supabase
-    .from('etf_list')
-    .select('ticker, name, category, report, leverage')
-    .order('ticker');
+  const etfs = await getCachedEtfs();
 
   // 포트폴리오 비중 정의 (지정 브랜드 색상 반영)
   const portfolioData = [

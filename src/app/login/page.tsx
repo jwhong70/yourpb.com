@@ -3,6 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { Mail, Lock, User, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { signIn, signUp, signInWithGoogle, signInWithKakao } from '../actions/auth';
 
@@ -83,10 +84,13 @@ function LoginContent() {
           
           {/* 카드 상단 데코레이션: 당신의 피비 로고 (동적 필터 적용) */}
           <div className="flex flex-col items-center mb-8">
-            <img
+            <Image
               src="/yourpb-final-logo.png"
               alt="당신의 피비"
+              width={160}
+              height={40}
               className={`h-10 w-auto object-contain select-none mb-2 transition-all duration-500 ${logoFilter}`}
+              priority
             />
             <p className={`text-xs ${descColor} font-extrabold mt-1 uppercase tracking-wider transition-colors duration-500`}>ETF Portfolio 자산관리 파트너</p>
           </div>

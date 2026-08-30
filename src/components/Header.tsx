@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X, LogIn, LogOut, Award } from 'lucide-react';
 import { signOut } from '@/app/actions/auth';
@@ -49,10 +50,13 @@ export default function Header({ initialUser }: HeaderProps) {
           {/* 로고 영역 */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center">
-              <img
+              <Image
                 src="/yourpb-final-logo.png"
                 alt="YOURPB.COM"
+                width={128}
+                height={32}
                 className="h-8 w-auto object-contain select-none"
+                priority
               />
             </Link>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Mail, Instagram, Phone } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getSessionUser } from '@/app/actions/auth';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -82,10 +83,13 @@ export default async function AboutPage() {
 
               {/* 프로필 이미지 */}
               <div className="w-48 h-48 sm:w-56 sm:h-56 shrink-0 rounded-none overflow-hidden border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md bg-inner-bg relative group">
-                <img
+                <Image
                   src="/profile_animation.png"
                   alt="홍선생 프로필"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  fill
+                  sizes="(max-width: 768px) 192px, 224px"
+                  priority
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
 

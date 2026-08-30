@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MacroBarChart, 
@@ -121,6 +121,22 @@ function SignalBadge({ signal, isParentSelected = false }: { signal?: SignalStat
 }
 
 export default function MacroClientPage({ data }: ClientPageProps) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background text-foreground font-sans">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-gold border-t-transparent rounded-full animate-spin" />
+          <span className="text-sm font-semibold text-gray-500">글로벌 거시경제 분석 로딩 중...</span>
+        </div>
+      </div>
+    );
+  }
+
   // 1. 대분류 상태 관리 (1 ~ 4)
   const [activeMain, setActiveMain] = useState<number | null>(null);
 

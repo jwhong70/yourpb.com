@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
 
@@ -29,6 +29,15 @@ const MONO_PALETTE = [
 ];
 
 export default function EtfAllocationCharts({ allocations, source }: EtfAllocationChartsProps) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="h-75 bg-black/5 animate-pulse rounded-md" />;
+  }
+
   // 타입별 데이터 그룹화 및 기타 항목 계산
   const getGroupedData = (type: string) => {
     const filtered = allocations.filter((item) => item.allocation_type === type);

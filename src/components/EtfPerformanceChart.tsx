@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, ReferenceLine, LabelList } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
 
@@ -27,6 +27,15 @@ export default function EtfPerformanceChart({
   yield_120w,
   source,
 }: EtfPerformanceChartProps) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="h-62.5 bg-black/5 animate-pulse rounded-md" />;
+  }
+
   // 1. 유효한 데이터만 맵핑
   const chartData = useMemo(() => {
     return [

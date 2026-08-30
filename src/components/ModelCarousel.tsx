@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import WishlistButton from '@/app/components/WishlistButton';
 
@@ -140,12 +141,14 @@ export default function ModelCarousel({
                   </div>
 
                   {!isError ? (
-                    <img
+                    <Image
                       src={storageUrl}
                       alt={`${etf.ticker} Poster`}
+                      fill
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
                       onError={() => handleImageError(etf.ticker)}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      loading="lazy"
+                      priority={index < 2}
                     />
                   ) : (
                     /* Fallback 글래스모피즘 플레이스홀더 */

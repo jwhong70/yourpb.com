@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 
 interface EtfPosterProps {
   src: string;
@@ -13,10 +14,12 @@ export default function EtfPoster({ src, alt }: EtfPosterProps) {
 
   return (
     <div className="relative max-w-md w-full rounded-2xl overflow-hidden border border-white/10 shadow-lg bg-black/40">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src={imgSrc}
         alt={alt}
+        width={600}
+        height={900}
+        priority
         className="w-full h-auto object-contain hover:scale-[1.02] transition-transform duration-300"
         onError={() => {
           if (!hasError) {

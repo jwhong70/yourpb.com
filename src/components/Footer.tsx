@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   return (
@@ -8,9 +9,11 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <Link href="/" className="flex items-center mb-2">
-              <img
+              <Image
                 src="/yourpb-final-logo.png"
                 alt="YOURPB.COM"
+                width={128}
+                height={32}
                 className="h-8 w-auto object-contain select-none"
               />
             </Link>
