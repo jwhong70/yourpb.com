@@ -135,6 +135,16 @@ function SignalBadge({ signal, isParentSelected = false }: { signal?: SignalStat
 
 export default function MacroClientPage({ data }: ClientPageProps) {
   const [mounted, setMounted] = useState(false);
+
+  // 1. 대분류 상태 관리 (1 ~ 4)
+  const [activeMain, setActiveMain] = useState<number | null>(null);
+
+  // 2. 중분류 상태 관리 (key format: "mainIndex-subIndex")
+  const [activeSub, setActiveSub] = useState<string | null>(null);
+
+  // 3. 소분류 아이템 상태 관리 (key format: "mainIndex-subIndex-itemIndex") - 여러 개 개별 토글 가능하도록 Set 구조 사용
+  const [openCharts, setOpenCharts] = useState<Set<string>>(new Set());
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -149,15 +159,6 @@ export default function MacroClientPage({ data }: ClientPageProps) {
       </div>
     );
   }
-
-  // 1. 대분류 상태 관리 (1 ~ 4)
-  const [activeMain, setActiveMain] = useState<number | null>(null);
-
-  // 2. 중분류 상태 관리 (key format: "mainIndex-subIndex")
-  const [activeSub, setActiveSub] = useState<string | null>(null);
-
-  // 3. 소분류 아이템 상태 관리 (key format: "mainIndex-subIndex-itemIndex") - 여러 개 개별 토글 가능하도록 Set 구조 사용
-  const [openCharts, setOpenCharts] = useState<Set<string>>(new Set());
 
   const toggleChart = (key: string) => {
     const next = new Set(openCharts);

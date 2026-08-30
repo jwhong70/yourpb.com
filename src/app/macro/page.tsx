@@ -11,11 +11,8 @@ export const metadata: Metadata = {
   description: '글로벌 경제사이클, 경기조절자(금리/물가/유동성), 리스크 온/오프 상태 및 마켓사이클 신호를 실시간 모니터링합니다.',
 };
 
-// 로딩 속도 최적화를 위해 조회 기간을 최근 약 1년 전(2025-06-01)으로 단축
-const startDate = '2025-06-01';
-
 const getCachedMacroRawData = unstable_cache(
-  async (dateParam: string) => {
+  async (dateParam: string, startDateQ: string, startYearWeo: number) => {
     const fetchAll = async (query: any) => {
       let allData: any[] = [];
       let page = 0;
@@ -49,7 +46,7 @@ const getCachedMacroRawData = unstable_cache(
         'kor_pcpipch_a', 'kor_ggxcnl_ngdp_a', 'kor_ggxwdg_ngdp_a', 'kor_bca_ngdpd_a',
         'chn_ngdp_rpch_a', 'chn_nid_ngdp_a', 'chn_pcpipch_a', 'chn_ggxcnl_ngdp_a',
         'chn_ggxwdg_ngdp_a', 'chn_bca_ngdpd_a'
-      ]).gte('year', 2021)),
+      ]).gte('year', startYearWeo)),
 
       fetchAll(publicSupabase.from('macro_oecd_cli').select('*').in('ticker', [
         'g20', 'united_states', 'korea', 'china'
@@ -57,7 +54,7 @@ const getCachedMacroRawData = unstable_cache(
 
       fetchAll(publicSupabase.from('macro_fred_q').select('*').in('ticker', [
         'gdpc1', 'pcecc96', 'gpdic1', 'pnfic1', 'prfic1', 'expgsc1', 'impgsc1', 'gcec1', 'ophnfb'
-      ]).gte('date', dateParam)),
+      ]).gte('date', startDateQ)),
 
       fetchAll(publicSupabase.from('macro_fred_w').select('*').in('ticker', [
         'gdpnow', 'ic4wsa', 't10y2y', 't10y3m', 'dfedtaru', 'treast', 'wcurcir',
@@ -99,7 +96,23 @@ const getCachedMacroRawData = unstable_cache(
 
 export default async function MacroPage() {
   const user = await getSessionUser();
-  const rawData = await getCachedMacroRawData(startDate);
+
+  const now = new Date();
+
+  // 1. 주간/월간용 최근 1년 전 날짜
+  const date1YearAgo = new Date();
+  date1YearAgo.setFullYear(now.getFullYear() - 1);
+  const startDate = date1YearAgo.toISOString().split('T')[0];
+
+  // 2. 분기용 최근 5년 전 날짜
+  const date5YearsAgo = new Date();
+  date5YearsAgo.setFullYear(now.getFullYear() - 5);
+  const startDateQ = date5YearsAgo.toISOString().split('T')[0];
+
+  // 3. 연간용 최근 10년 전 연도
+  const startYearWeo = now.getFullYear() - 10;
+
+  const rawData = await getCachedMacroRawData(startDate, startDateQ, startYearWeo);
 
   const weo = rawData.weo;
   const oecd = rawData.oecd;
