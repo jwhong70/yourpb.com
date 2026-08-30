@@ -10,17 +10,17 @@ import {
 
 const MacroBarChart = dynamic(() => import('./MacroCharts').then(mod => mod.MacroBarChart), {
   ssr: false,
-  loading: () => <div className="h-96 bg-black/5 animate-pulse rounded-md" />
+  loading: () => <div className="h-64 md:h-96 bg-black/5 animate-pulse rounded-md" />
 });
 
 const MacroLineChart = dynamic(() => import('./MacroCharts').then(mod => mod.MacroLineChart), {
   ssr: false,
-  loading: () => <div className="h-96 bg-black/5 animate-pulse rounded-md" />
+  loading: () => <div className="h-64 md:h-96 bg-black/5 animate-pulse rounded-md" />
 });
 
 const MacroCandleChart = dynamic(() => import('./MacroCharts').then(mod => mod.MacroCandleChart), {
   ssr: false,
-  loading: () => <div className="h-96 bg-black/5 animate-pulse rounded-md" />
+  loading: () => <div className="h-64 md:h-96 bg-black/5 animate-pulse rounded-md" />
 });
 import { ChevronDown, Download } from 'lucide-react';
 
