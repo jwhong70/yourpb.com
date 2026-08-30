@@ -1,4 +1,5 @@
-import { createClient } from '@/lib/supabase-server';
+import { unstable_cache } from 'next/cache';
+import { supabase as publicSupabase } from '@/lib/supabase';
 import MacroClientPage from '../../components/MacroClientPage';
 import type { Metadata } from 'next';
 import Header from '@/components/Header';
@@ -10,90 +11,104 @@ export const metadata: Metadata = {
   description: '글로벌 경제사이클, 경기조절자(금리/물가/유동성), 리스크 온/오프 상태 및 마켓사이클 신호를 실시간 모니터링합니다.',
 };
 
-export default async function MacroPage() {
-  const supabase = await createClient();
-  const user = await getSessionUser();
+// 로딩 속도 최적화를 위해 조회 기간을 최근 약 1년 전(2025-06-01)으로 단축
+const startDate = '2025-06-01';
 
-  // 로딩 속도 최적화를 위해 조회 기간을 최근 약 2년 전(2024-06-01)으로 단축
-  const startDate = '2024-06-01';
-
-  // Supabase 1000행 한도 페이징 극복을 위한 재귀적 fetchAll 헬퍼 함수
-  const fetchAll = async (query: any) => {
-    let allData: any[] = [];
-    let page = 0;
-    const pageSize = 1000;
-    while (true) {
-      const { data, error } = await query.range(page * pageSize, (page + 1) * pageSize - 1);
-      if (error) {
-        console.error('Error fetching page:', error.message);
-        break;
+const getCachedMacroRawData = unstable_cache(
+  async (dateParam: string) => {
+    const fetchAll = async (query: any) => {
+      let allData: any[] = [];
+      let page = 0;
+      const pageSize = 1000;
+      while (true) {
+        const { data, error } = await query.range(page * pageSize, (page + 1) * pageSize - 1);
+        if (error) {
+          console.error('Error fetching page:', error.message);
+          break;
+        }
+        if (!data || data.length === 0) break;
+        allData = [...allData, ...data];
+        if (data.length < pageSize) break;
+        page++;
       }
-      if (!data || data.length === 0) break;
-      allData = [...allData, ...data];
-      if (data.length < pageSize) break;
-      page++;
-    }
-    return allData;
-  };
+      return allData;
+    };
 
-  // 병렬 쿼리 수행
-  const [
-    weoRaw,
-    oecdRaw,
-    fredQRaw,
-    fredWRaw,
-    fredMRaw,
-    indexRaw,
-    fgRaw,
-    indexListRaw,
-  ] = await Promise.all([
-    fetchAll(supabase.from('macro_weo').select('*').in('ticker', [
-      'g001_ngdp_rpch_a', 'usa_ngdp_rpch_a', 'kor_ngdp_rpch_a', 'kor_nid_ngdp_a',
-      'kor_pcpipch_a', 'kor_ggxcnl_ngdp_a', 'kor_ggxwdg_ngdp_a', 'kor_bca_ngdpd_a',
-      'chn_ngdp_rpch_a', 'chn_nid_ngdp_a', 'chn_pcpipch_a', 'chn_ggxcnl_ngdp_a',
-      'chn_ggxwdg_ngdp_a', 'chn_bca_ngdpd_a'
-    ]).gte('year', 2021)),
+    const [
+      weoRaw,
+      oecdRaw,
+      fredQRaw,
+      fredWRaw,
+      fredMRaw,
+      indexRaw,
+      fgRaw,
+      indexListRaw,
+    ] = await Promise.all([
+      fetchAll(publicSupabase.from('macro_weo').select('*').in('ticker', [
+        'g001_ngdp_rpch_a', 'usa_ngdp_rpch_a', 'kor_ngdp_rpch_a', 'kor_nid_ngdp_a',
+        'kor_pcpipch_a', 'kor_ggxcnl_ngdp_a', 'kor_ggxwdg_ngdp_a', 'kor_bca_ngdpd_a',
+        'chn_ngdp_rpch_a', 'chn_nid_ngdp_a', 'chn_pcpipch_a', 'chn_ggxcnl_ngdp_a',
+        'chn_ggxwdg_ngdp_a', 'chn_bca_ngdpd_a'
+      ]).gte('year', 2021)),
 
-    fetchAll(supabase.from('macro_oecd_cli').select('*').in('ticker', [
-      'g20', 'united_states', 'korea', 'china'
-    ]).gte('date', startDate)),
+      fetchAll(publicSupabase.from('macro_oecd_cli').select('*').in('ticker', [
+        'g20', 'united_states', 'korea', 'china'
+      ]).gte('date', dateParam)),
 
-    fetchAll(supabase.from('macro_fred_q').select('*').in('ticker', [
-      'gdpc1', 'pcecc96', 'gpdic1', 'pnfic1', 'prfic1', 'expgsc1', 'impgsc1', 'gcec1', 'ophnfb'
-    ]).gte('date', startDate)),
+      fetchAll(publicSupabase.from('macro_fred_q').select('*').in('ticker', [
+        'gdpc1', 'pcecc96', 'gpdic1', 'pnfic1', 'prfic1', 'expgsc1', 'impgsc1', 'gcec1', 'ophnfb'
+      ]).gte('date', dateParam)),
 
-    fetchAll(supabase.from('macro_fred_w').select('*').in('ticker', [
-      'gdpnow', 'ic4wsa', 't10y2y', 't10y3m', 'dfedtaru', 'treast', 'wcurcir',
-      'rrpontsyd', 'wtregen', 'baa10y', 'bamlh0a0hym2ey', 'compout', 'wshomcb'
-    ]).gte('date', startDate)),
+      fetchAll(publicSupabase.from('macro_fred_w').select('*').in('ticker', [
+        'gdpnow', 'ic4wsa', 't10y2y', 't10y3m', 'dfedtaru', 'treast', 'wcurcir',
+        'rrpontsyd', 'wtregen', 'baa10y', 'bamlh0a0hym2ey', 'compout', 'wshomcb'
+      ]).gte('date', dateParam)),
 
-    fetchAll(supabase.from('macro_fred_m').select('*').in('ticker', [
-      'jtsjol', 'payems', 'unrate', 'totalsl', 'rsafs', 'pce', 'indpro', 'tcu',
-      'dgorder', 'cpiaucsl', 'cpilfesl', 'pcepi', 'pcepilfe',
-      'ppifis', 'wpsfd49116', 'wm2ns', 'ttlcons', 'permit', 'houst', 'exhoslusm495s',
-      'hsn1f', 'spcs20rsa'
-    ]).gte('date', startDate)),
+      fetchAll(publicSupabase.from('macro_fred_m').select('*').in('ticker', [
+        'jtsjol', 'payems', 'unrate', 'totalsl', 'rsafs', 'pce', 'indpro', 'tcu',
+        'dgorder', 'cpiaucsl', 'cpilfesl', 'pcepi', 'pcepilfe',
+        'ppifis', 'wpsfd49116', 'wm2ns', 'ttlcons', 'permit', 'houst', 'exhoslusm495s',
+        'hsn1f', 'spcs20rsa'
+      ]).gte('date', dateParam)),
 
-    fetchAll(supabase.from('index_prices').select('*').in('ticker', [
-      '^IRX', '^TNX', '^TYX', '^VIX', 'DX-Y.NYB', 'EURUSD=X', 'JPY=X', 'CNY=X',
-      'KRW=X', 'TWD=X', 'GC=F', 'CL=F', 'HG=F', 'ZW=F', 'ZC=F', '^GSPC', '^IXIC',
-      '^RUT', '^STOXX50E', '^N225', '^KS11', '000001.SS', '^HSI'
-    ]).gte('date', startDate)),
+      fetchAll(publicSupabase.from('index_prices').select('*').in('ticker', [
+        '^IRX', '^TNX', '^TYX', '^VIX', 'DX-Y.NYB', 'EURUSD=X', 'JPY=X', 'CNY=X',
+        'KRW=X', 'TWD=X', 'GC=F', 'CL=F', 'HG=F', 'ZW=F', 'ZC=F', '^GSPC', '^IXIC',
+        '^RUT', '^STOXX50E', '^N225', '^KS11', '000001.SS', '^HSI'
+      ]).gte('date', dateParam)),
 
-    fetchAll(supabase.from('fear_greed').select('*').gte('date', startDate)),
+      fetchAll(publicSupabase.from('fear_greed').select('*').gte('date', dateParam)),
 
-    fetchAll(supabase.from('index_list').select('ticker, source')),
-  ]);
+      fetchAll(publicSupabase.from('index_list').select('ticker, source')),
+    ]);
 
-  // 안전장치
-  const weo = weoRaw || [];
-  const oecd = oecdRaw || [];
-  const fredQ = fredQRaw || [];
-  const fredW = fredWRaw || [];
-  const fredM = fredMRaw || [];
-  const indexPrices = indexRaw || [];
-  const fearGreed = fgRaw || [];
-  const indexList = indexListRaw || [];
+    return {
+      weo: weoRaw || [],
+      oecd: oecdRaw || [],
+      fredQ: fredQRaw || [],
+      fredW: fredWRaw || [],
+      fredM: fredMRaw || [],
+      indexPrices: indexRaw || [],
+      fearGreed: fgRaw || [],
+      indexList: indexListRaw || []
+    };
+  },
+  ['macro-raw-data-cache'],
+  { revalidate: 600 }
+);
+
+export default async function MacroPage() {
+  const user = await getSessionUser();
+  const rawData = await getCachedMacroRawData(startDate);
+
+  const weo = rawData.weo;
+  const oecd = rawData.oecd;
+  const fredQ = rawData.fredQ;
+  const fredW = rawData.fredW;
+  const fredM = rawData.fredM;
+  const indexPrices = rawData.indexPrices;
+  const fearGreed = rawData.fearGreed;
+  const indexList = rawData.indexList;
 
 
 

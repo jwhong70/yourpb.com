@@ -1,14 +1,27 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  MacroBarChart, 
-  MacroLineChart, 
-  MacroCandleChart,
   ChartDataPoint,
   downloadSvgAsPng
 } from './MacroCharts';
+
+const MacroBarChart = dynamic(() => import('./MacroCharts').then(mod => mod.MacroBarChart), {
+  ssr: false,
+  loading: () => <div className="h-96 bg-black/5 animate-pulse rounded-md" />
+});
+
+const MacroLineChart = dynamic(() => import('./MacroCharts').then(mod => mod.MacroLineChart), {
+  ssr: false,
+  loading: () => <div className="h-96 bg-black/5 animate-pulse rounded-md" />
+});
+
+const MacroCandleChart = dynamic(() => import('./MacroCharts').then(mod => mod.MacroCandleChart), {
+  ssr: false,
+  loading: () => <div className="h-96 bg-black/5 animate-pulse rounded-md" />
+});
 import { ChevronDown, Download } from 'lucide-react';
 
 interface SignalState {
