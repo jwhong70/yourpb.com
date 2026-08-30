@@ -5,7 +5,11 @@ import {
   ArrowLeft,
   Award,
   Download,
-  Lock
+  Lock,
+  Brain,
+  TrendingUp,
+  TrendingDown,
+  Minus
 } from 'lucide-react';
 
 import { createClient } from '@/lib/supabase-server';
@@ -45,6 +49,7 @@ export default async function StockDetailPage({ params }: PageProps) {
   const stock = stockListRes.data;
 
   let prices: any[] = [];
+  let signals: any[] = [];
   let latestPrice: any = null;
   let closePrice: number | null = null;
   let yield_1w: number | null = null;
@@ -63,6 +68,13 @@ export default async function StockDetailPage({ params }: PageProps) {
       .limit(120);
 
     prices = pricesRes.data || [];
+
+    // 4-2. AI 투자 대가 시그널 조회
+    const signalsRes = await supabase
+      .from('stock_signals')
+      .select('analyst_name, signal, confidence, reasoning')
+      .eq('ticker', ticker);
+    signals = signalsRes.data || [];
     latestPrice = prices.length > 0 ? prices[0] : null;
     closePrice = latestPrice ? Number(latestPrice.close) : null;
     yield_1w = latestPrice ? Number(latestPrice.yield_1w) : null;
@@ -260,6 +272,106 @@ export default async function StockDetailPage({ params }: PageProps) {
                   </button>
                 )}
               </div>
+
+              {/* 대가별 AI 투자 시그널 섹션 */}
+              {isPremium && signals.length > 0 && (
+                <section className="space-y-6 pt-4">
+                  <div className="border-b-2 border-black pb-2">
+                    <h2 className="text-xl sm:text-2xl font-black text-gray-900 flex items-center gap-2">
+                      <Brain className="w-6 h-6 text-black animate-pulse" />
+                      <span>10대 투자 대가 및 AI 종합 분석</span>
+                    </h2>
+                    <p className="text-sm font-semibold text-gray-500 mt-1 leading-relaxed">
+                      전설적인 투자 대가들의 투자원칙과 AI 모델의 투자전략을 적용한 이 종목에 대한 투자 의견 및 세부 판단입니다.<br />
+                      <strong className="text-red-600 font-extrabold">※ 참고용으로만 활용하십시오. 제시되는 투자 의견은 수익률을 보장하는 것이 아닙니다.</strong>
+                    </p>
+                  </div>
+
+                  {/* 상단: 종합 의견 게이지 바 */}
+                  <div className="p-5 bg-box-bg border border-black rounded-none shadow-md space-y-4">
+                    <h3 className="text-base font-extrabold text-gray-900">종합 투자 매력도 의견 분포</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      {/* Bullish */}
+                      <div className="p-3 bg-green-50 border border-green-200 flex items-center justify-between rounded-none">
+                        <div>
+                          <span className="text-sm font-bold text-green-800 block">매수 우세 (Bullish)</span>
+                          <span className="text-2xl font-black text-green-900">{signals.filter(s => s.signal === 'Bullish').length}명</span>
+                        </div>
+                        <TrendingUp className="w-8 h-8 text-green-600 opacity-80" />
+                      </div>
+                      {/* Neutral */}
+                      <div className="p-3 bg-amber-50 border border-amber-200 flex items-center justify-between rounded-none">
+                        <div>
+                          <span className="text-sm font-bold text-amber-800 block">중립 관망 (Neutral)</span>
+                          <span className="text-2xl font-black text-amber-900">{signals.filter(s => s.signal === 'Neutral').length}명</span>
+                        </div>
+                        <Minus className="w-8 h-8 text-amber-600 opacity-80" />
+                      </div>
+                      {/* Bearish */}
+                      <div className="p-3 bg-red-50 border border-red-200 flex items-center justify-between rounded-none">
+                        <div>
+                          <span className="text-sm font-bold text-red-800 block">매도 경계 (Bearish)</span>
+                          <span className="text-2xl font-black text-red-900">{signals.filter(s => s.signal === 'Bearish').length}명</span>
+                        </div>
+                        <TrendingDown className="w-8 h-8 text-red-600 opacity-80" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 하단: 카드 그리드 */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {signals.map((sig, idx) => {
+                      // 시그널별 뱃지 스타일 정의
+                      let badgeBg = 'bg-gray-100 text-gray-800 border-gray-300';
+                      let badgeText = '중립';
+                      if (sig.signal === 'Bullish') {
+                        badgeBg = 'bg-green-100 text-green-800 border-green-300';
+                        badgeText = '매수';
+                      } else if (sig.signal === 'Bearish') {
+                        badgeBg = 'bg-red-100 text-red-800 border-red-300';
+                        badgeText = '매도';
+                      }
+
+                      return (
+                        <div key={idx} className="p-5 bg-box-bg border border-black rounded-none shadow-md flex flex-col justify-between hover:shadow-lg transition-all relative overflow-hidden group">
+                          {/* 탑 헤더 영역 */}
+                          <div>
+                            <div className="flex items-center justify-between mb-3.5">
+                              <span className="text-base font-extrabold text-gray-900 tracking-tight">
+                                {sig.analyst_name}
+                              </span>
+                              <span className={`px-2.5 py-0.5 text-xs font-black border uppercase tracking-wider rounded-none ${badgeBg}`}>
+                                {badgeText}
+                              </span>
+                            </div>
+                            
+                            {/* 신뢰도 게이지 바 */}
+                            <div className="mb-4">
+                              <div className="flex justify-between items-center text-xs font-bold text-gray-500 mb-1">
+                                <span>AI 분석 신뢰도</span>
+                                <span>{sig.confidence}%</span>
+                              </div>
+                              <div className="w-full bg-gray-200 h-1.5 rounded-none overflow-hidden">
+                                <div 
+                                  className={`h-full transition-all duration-500 ${
+                                    sig.signal === 'Bullish' ? 'bg-green-600' : sig.signal === 'Bearish' ? 'bg-red-600' : 'bg-amber-500'
+                                  }`} 
+                                  style={{ width: `${sig.confidence}%` }}
+                                />
+                              </div>
+                            </div>
+
+                            {/* 분석 세부 내용 */}
+                            <p className="text-gray-700 text-sm font-semibold leading-relaxed font-sans whitespace-pre-line italic">
+                              "{sig.reasoning}"
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </section>
+              )}
             </div>
           </div>
         </div>
