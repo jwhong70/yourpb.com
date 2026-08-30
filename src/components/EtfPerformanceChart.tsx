@@ -32,10 +32,6 @@ export default function EtfPerformanceChart({
     setMounted(true);
   }, []);
 
-  if (!mounted) {
-    return <div className="h-62.5 bg-black/5 animate-pulse rounded-md" />;
-  }
-
   // 1. 유효한 데이터만 맵핑
   const chartData = useMemo(() => {
     return [
@@ -46,6 +42,10 @@ export default function EtfPerformanceChart({
       { name: '120주', value: yield_120w !== null ? Number(yield_120w) : null },
     ].filter((item): item is { name: string; value: number } => item.value !== null);
   }, [yield_1w, yield_5w, yield_20w, yield_60w, yield_120w]);
+
+  if (!mounted) {
+    return <div className="h-62.5 bg-black/5 animate-pulse rounded-md" />;
+  }
 
   // 막대 끝 커스텀 레이블 렌더러
   const renderCustomLabel = (props: any) => {

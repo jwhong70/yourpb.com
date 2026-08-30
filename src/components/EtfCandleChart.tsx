@@ -29,10 +29,6 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
     setMounted(true);
   }, []);
 
-  if (!mounted) {
-    return <div className="h-87.5 bg-black/5 animate-pulse rounded-md" />;
-  }
-
   // 1. 데이터를 날짜 오름차순(오래된 날짜 -> 최신 날짜)으로 정렬 및 레인지 데이터 가공
   const chartData = useMemo(() => {
     return [...prices]
@@ -57,6 +53,10 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
       })
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }, [prices]);
+
+  if (!mounted) {
+    return <div className="h-87.5 bg-black/5 animate-pulse rounded-md" />;
+  }
 
   const formatDecimal = (val: number) => {
     return val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
