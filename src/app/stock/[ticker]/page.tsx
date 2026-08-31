@@ -31,7 +31,17 @@ const MASTER_NAME_KO: Record<string, string> = {
   'Michael Burry': '마이클 버리',
   'Aswath Damodaran': '아스워드 다모다란',
   'Technical Analyst': '기술적 분석가',
-  'Benjamin Graham': '벤자민 그레이엄'
+  'Benjamin Graham': '벤자민 그레이엄',
+  'Terry Smith': '테리 스미스',
+  'James O\'Shaughnessy': '제임스 오쇼너시',
+  'Philip Fisher': '필립 피셔',
+  'John Templeton': '존 템플턴',
+  'David Dreman': '데이비드 드레먼',
+  'John Neff': '존 네프',
+  'Pat Dorsey': '팻 도시',
+  'Christopher Browne / Peter Cundill': '브라운/컨딜 (안전마진)',
+  'Michael Mauboussin': '마이클 모부신',
+  'Anthony Bolton': '앤서니 볼튼'
 };
 
 const getKoreanName = (name: string) => MASTER_NAME_KO[name] || name;
@@ -294,7 +304,7 @@ export default async function StockDetailPage({ params }: PageProps) {
                   <div className="border-b-2 border-black pb-2">
                     <h2 className="text-xl sm:text-2xl font-black text-gray-900 flex items-center gap-2">
                       <Brain className="w-6 h-6 text-black animate-pulse" />
-                      <span>10대 투자 대가 및 AI 종합 분석</span>
+                      <span>20대 투자 대가 및 AI 종합 분석</span>
                     </h2>
                     <p className="text-sm font-semibold text-gray-500 mt-1 leading-relaxed">
                       전설적인 투자 대가들의 투자원칙과 AI 모델의 투자전략을 적용한 이 종목에 대한 투자 의견 및 세부 판단입니다.<br />
