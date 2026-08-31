@@ -373,16 +373,16 @@ export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 
               return null;
             }}
           />
-          {/* High-Low Wick */}
+          {/* High-Low Wick: 양봉 #007C1F, 음봉 #D60016 */}
           <Bar
             dataKey="wick"
             barSize={1.5}
           >
             {chartData.map((entry, index) => (
-              <Cell key={`wick-cell-${index}`} fill="#000000" />
+              <Cell key={`wick-cell-${index}`} fill={entry.isBullish ? '#007C1F' : '#D60016'} />
             ))}
           </Bar>
-          {/* Open-Close Body */}
+          {/* Open-Close Body: 양봉 #007C1F, 음봉 #D60016 */}
           <Bar
             dataKey="body"
             barSize={8}
@@ -390,8 +390,8 @@ export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 
             {chartData.map((entry, index) => (
               <Cell 
                 key={`body-cell-${index}`} 
-                fill={entry.isBullish ? '#FFFFFF' : '#000000'} 
-                stroke="#000000"
+                fill={entry.isBullish ? '#007C1F' : '#D60016'} 
+                stroke={entry.isBullish ? '#007C1F' : '#D60016'}
                 strokeWidth={1}
               />
             ))}

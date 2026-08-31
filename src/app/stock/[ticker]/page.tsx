@@ -21,6 +21,21 @@ import PremiumPaywall from '@/components/PremiumPaywall';
 import StockCandleChart from '@/components/StockCandleChart';
 import StockPerformanceChart from '@/components/StockPerformanceChart';
 
+const MASTER_NAME_KO: Record<string, string> = {
+  'Warren Buffett': '워런 버핏',
+  'Cathie Wood': '캐시 우드',
+  'Fundamental Analyst': '기본적 분석가',
+  'Bill Ackman': '빌 애크먼',
+  'Charlie Munger': '찰리 멍거',
+  'Peter Lynch': '피터 린치',
+  'Michael Burry': '마이클 버리',
+  'Aswath Damodaran': '아스워드 다모다란',
+  'Technical Analyst': '기술적 분석가',
+  'Benjamin Graham': '벤자민 그레이엄'
+};
+
+const getKoreanName = (name: string) => MASTER_NAME_KO[name] || name;
+
 interface PageProps {
   params: Promise<{ ticker: string }>;
 }
@@ -338,7 +353,7 @@ export default async function StockDetailPage({ params }: PageProps) {
                           <div>
                             <div className="flex items-center justify-between mb-3.5">
                               <span className="text-base font-extrabold text-gray-900 tracking-tight">
-                                {sig.analyst_name}
+                                {getKoreanName(sig.analyst_name)}
                               </span>
                               <span className={`px-2.5 py-0.5 text-xs font-black border uppercase tracking-wider rounded-none ${badgeBg}`}>
                                 {badgeText}

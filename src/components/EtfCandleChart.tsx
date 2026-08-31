@@ -97,21 +97,27 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
                 tickMargin={8}
                 className="text-[9px] font-medium"
               />
-              {/* 캔들 꼬리선: 얇은 검은색 막대 */}
+              {/* 캔들 꼬리선: 양봉 #007C1F, 음봉 #D60016 */}
               <Bar
                 dataKey="lowHigh"
-                fill="#000000"
                 barSize={1}
                 className="opacity-75"
                 isAnimationActive={false}
-              />
-              {/* 캔들 몸통: 상승(흰색 채움 + 검은 테두리), 하락(검은색 솔리드) */}
+              >
+                {chartData.map((entry, index) => (
+                  <Cell
+                    key={`wick-cell-${index}`}
+                    fill={entry.isBullish ? '#007C1F' : '#D60016'}
+                  />
+                ))}
+              </Bar>
+              {/* 캔들 몸통: 양봉 #007C1F, 음봉 #D60016 */}
               <Bar dataKey="openClose" barSize={8} isAnimationActive={false}>
                 {chartData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
-                    fill={entry.isBullish ? '#ffffff' : '#000000'}
-                    stroke="#000000"
+                    fill={entry.isBullish ? '#007C1F' : '#D60016'}
+                    stroke={entry.isBullish ? '#007C1F' : '#D60016'}
                     strokeWidth={1}
                   />
                 ))}
