@@ -3,6 +3,7 @@ import { unstable_cache } from 'next/cache';
 import { supabase as publicSupabase } from '@/lib/supabase';
 import { createClient } from '@/lib/supabase-server';
 import { getSessionUser } from '@/app/actions/auth';
+import { getStockWishlist } from '@/app/actions/stock_wishlist';
 import Filter from '@/app/components/Filter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -75,6 +76,7 @@ const getCachedStocksData = unstable_cache(
 export default async function StockPage() {
   const user = await getSessionUser();
   const isPremium = user?.membership_status === 'premium';
+  const stockWishlistTickers = await getStockWishlist();
   const mergedStocks = await getCachedStocksData();
 
   return (
@@ -88,7 +90,12 @@ export default async function StockPage() {
                 주식 정보 조회
               </h2>
             </div>
-            <Filter initialStocks={mergedStocks} isPremium={isPremium} />
+            <Filter
+              initialStocks={mergedStocks}
+              initialWishlistTickers={stockWishlistTickers}
+              isLoggedIn={!!user}
+              isPremium={isPremium}
+            />
           </section>
         </div>
       </main>

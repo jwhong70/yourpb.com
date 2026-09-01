@@ -4,6 +4,7 @@ import { supabase as publicSupabase } from '@/lib/supabase';
 import { createClient } from '@/lib/supabase-server';
 import EtfSearchClient from '@/components/EtfSearchClient';
 import { getSessionUser } from '@/app/actions/auth';
+import { getWishlist } from '@/app/actions/wishlist';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -69,6 +70,8 @@ const getCachedEtfsData = unstable_cache(
 
 export default async function EtfPage() {
   const user = await getSessionUser();
+  const wishlist = await getWishlist();
+  const wishlistTickers = wishlist.map((etf) => etf.ticker);
   const mergedEtfs = await getCachedEtfsData();
 
   return (
@@ -82,7 +85,11 @@ export default async function EtfPage() {
                 ETF 정보 조회
               </h2>
             </div>
-            <EtfSearchClient initialEtfs={mergedEtfs} />
+            <EtfSearchClient
+              initialEtfs={mergedEtfs}
+              initialWishlistTickers={wishlistTickers}
+              isLoggedIn={!!user}
+            />
           </section>
         </div>
       </main>

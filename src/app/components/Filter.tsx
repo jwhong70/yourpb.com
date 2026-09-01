@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronDown, ArrowUpDown, Lock, Star } from 'lucide-react';
+import { ChevronDown, ArrowUpDown, Lock, Heart } from 'lucide-react';
+import { toggleStockWishlist } from '@/app/actions/stock_wishlist';
 
 export interface StockWithPrice {
   ticker: string;
@@ -20,42 +21,67 @@ export interface StockWithPrice {
 
 interface FilterProps {
   initialStocks: StockWithPrice[];
+  initialWishlistTickers?: string[];
+  isLoggedIn?: boolean;
   isPremium: boolean;
 }
 
-export default function Filter({ initialStocks, isPremium }: FilterProps) {
+export default function Filter({
+  initialStocks,
+  initialWishlistTickers = [],
+  isLoggedIn = false,
+  isPremium,
+}: FilterProps) {
   const router = useRouter();
+  const [, startTransition] = useTransition();
 
-  // 주식 목록 상태 관리
-  const [stocks, setStocks] = useState<StockWithPrice[]>(initialStocks);
+  // 주식 목록 상태 관리 (초기값: 로그인 시 DB 찜 목록 반영)
+  const [stocks, setStocks] = useState<StockWithPrice[]>(() => {
+    if (isLoggedIn && initialWishlistTickers.length > 0) {
+      return initialStocks.map((s) => ({
+        ...s,
+        interest: initialWishlistTickers.includes(s.ticker) ? 'y' : 'n',
+      }));
+    }
+    return initialStocks;
+  });
   const [isMounted, setIsMounted] = useState(false);
 
-  // 컴포넌트 마운트 시 localStorage에서 관심 종목 티커 로드
+  // 컴포넌트 마운트 시: 로그인 상태면 DB 찜 목록 동기화, 비로그인이면 localStorage에서 로드
   useEffect(() => {
     setIsMounted(true);
     try {
-      const stored = localStorage.getItem('yourpb_interest_tickers_v2');
-      if (stored) {
-        const tickers: string[] = JSON.parse(stored);
+      if (isLoggedIn) {
         setStocks((prev) =>
           prev.map((s) => ({
             ...s,
-            interest: tickers.includes(s.ticker) ? 'y' : 'n',
+            interest: initialWishlistTickers.includes(s.ticker) ? 'y' : 'n',
           }))
         );
+        localStorage.setItem('yourpb_interest_tickers_v2', JSON.stringify(initialWishlistTickers));
       } else {
-        // 기본적으로 관심종목이 아무것도 없도록 모두 'n'으로 설정
-        setStocks((prev) =>
-          prev.map((s) => ({
-            ...s,
-            interest: 'n',
-          }))
-        );
+        const stored = localStorage.getItem('yourpb_interest_tickers_v2');
+        if (stored) {
+          const tickers: string[] = JSON.parse(stored);
+          setStocks((prev) =>
+            prev.map((s) => ({
+              ...s,
+              interest: tickers.includes(s.ticker) ? 'y' : 'n',
+            }))
+          );
+        } else {
+          setStocks((prev) =>
+            prev.map((s) => ({
+              ...s,
+              interest: 'n',
+            }))
+          );
+        }
       }
     } catch (e) {
-      console.error('Failed to load interest tickers from localStorage:', e);
+      console.error('Failed to load stock interest tickers:', e);
     }
-  }, []);
+  }, [isLoggedIn, initialWishlistTickers]);
 
   // 필터 상태 (디폴트: 유니버스 전체)
   const [interestFilter, setInterestFilter] = useState<'y' | 'all'>('all');
@@ -68,13 +94,13 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
   const [sortColumn, setSortColumn] = useState<keyof StockWithPrice>('yield_1w');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
-  // 관심 종목 등록/해제 핸들러 (localStorage 기반)
+  // 관심 종목 등록/해제 핸들러 (하이브리드: 로그인 시 DB + localStorage, 비로그인 시 localStorage)
   const handleToggleInterest = (e: React.MouseEvent, ticker: string, currentInterest: string) => {
     e.stopPropagation(); // 행 클릭 이벤트가 상세 페이지 이동을 유도하는 것 방지
 
     const nextInterest = currentInterest === 'y' ? 'n' : 'y';
 
-    // 1. UI 상태 즉시 반영
+    // 1. UI 상태 즉시 반영 (낙관적 업데이트)
     setStocks((prev) =>
       prev.map((s) => (s.ticker === ticker ? { ...s, interest: nextInterest } : s))
     );
@@ -95,6 +121,20 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
       localStorage.setItem('yourpb_interest_tickers_v2', JSON.stringify(tickers));
     } catch (err) {
       console.error('Failed to update localStorage for interest tickers:', err);
+    }
+
+    // 3. 로그인 상태일 경우 Supabase DB와 비동기 동기화
+    if (isLoggedIn) {
+      startTransition(async () => {
+        try {
+          const result = await toggleStockWishlist(ticker);
+          if (result && result.error) {
+            console.error('Failed to sync stock wishlist on server:', result.error);
+          }
+        } catch (error) {
+          console.error('toggleStockWishlist error:', error);
+        }
+      });
     }
   };
 
@@ -333,8 +373,8 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
               검색 결과: <strong className="text-gray-900 text-sm font-extrabold">{sortedStocks.length}</strong>개 종목
             </span>
             <span className="text-[11px] text-gray-400 font-medium select-none flex items-center gap-1">
-              <Star className="w-3.5 h-3.5 fill-[#D4AF37] text-[#D4AF37]" />
-              종목명 왼쪽 별을 클릭해 나만의 관심 종목을 관리해 보세요.
+              <Heart className="w-3.5 h-3.5 fill-[#dc2626] text-[#dc2626]" />
+              종목명 왼쪽 하트를 클릭해 나만의 찜한 주식을 관리해 보세요.
             </span>
           </div>
           <div className="flex items-center gap-3">
@@ -389,6 +429,7 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
                 {sortedStocks.map((stock) => {
                   const periodYield = stock[`yield_${selectedPeriod}` as keyof StockWithPrice] as number | null;
                   const yieldStyle = getYieldStyle(periodYield);
+                  const isWished = stock.interest === 'y';
 
                   return (
                      <tr
@@ -402,13 +443,13 @@ export default function Filter({ initialStocks, isPremium }: FilterProps) {
                              type="button"
                              onClick={(e) => handleToggleInterest(e, stock.ticker, stock.interest)}
                              className="focus:outline-hidden cursor-pointer p-1 hover:bg-black/5 rounded-full transition-colors shrink-0"
-                             title={stock.interest === 'y' ? "관심종목 해제" : "관심종목 등록"}
+                             title={isWished ? "찜 해제" : "찜하기"}
                            >
-                             <Star
-                               className={`w-4 h-4 ${
-                                 stock.interest === 'y'
-                                   ? 'fill-[#D4AF37] text-[#D4AF37]'
-                                   : 'text-gray-300 hover:text-gray-400'
+                             <Heart
+                               className={`w-4 h-4 transition-colors duration-150 ${
+                                 isWished
+                                   ? 'fill-[#dc2626] text-[#dc2626]'
+                                   : 'text-gray-300 hover:text-[#dc2626]'
                                }`}
                              />
                            </button>

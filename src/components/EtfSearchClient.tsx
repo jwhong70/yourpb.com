@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { Star } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import Filter from './Filter';
+import { toggleWishlist } from '@/app/actions/wishlist';
 
 interface EtfWithPrice {
   ticker: string;
@@ -22,41 +23,67 @@ interface EtfWithPrice {
 
 interface EtfSearchClientProps {
   initialEtfs: EtfWithPrice[];
+  initialWishlistTickers?: string[];
+  isLoggedIn?: boolean;
 }
 
-export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
+export default function EtfSearchClient({
+  initialEtfs,
+  initialWishlistTickers = [],
+  isLoggedIn = false,
+}: EtfSearchClientProps) {
   const router = useRouter();
+  const [, startTransition] = useTransition();
 
-  // ETF 목록 상태 관리
-  const [etfs, setEtfs] = useState<EtfWithPrice[]>(initialEtfs);
+  // ETF 목록 상태 관리 (초기값: 로그인 시 DB 찜 목록 반영)
+  const [etfs, setEtfs] = useState<EtfWithPrice[]>(() => {
+    if (isLoggedIn && initialWishlistTickers.length > 0) {
+      return initialEtfs.map((e) => ({
+        ...e,
+        interest: initialWishlistTickers.includes(e.ticker) ? 'y' : 'n',
+      }));
+    }
+    return initialEtfs;
+  });
   const [isMounted, setIsMounted] = useState(false);
 
-  // 컴포넌트 마운트 시 localStorage에서 관심 ETF 티커 로드
+  // 컴포넌트 마운트 시: 로그인 상태면 DB 찜 목록 동기화, 비로그인이면 localStorage에서 로드
   useEffect(() => {
     setIsMounted(true);
     try {
-      const stored = localStorage.getItem('yourpb_interest_etf_tickers');
-      if (stored) {
-        const tickers: string[] = JSON.parse(stored);
+      if (isLoggedIn) {
+        // 로그인 상태: 서버의 initialWishlistTickers 기준 반영 & localStorage 캐시 갱신
         setEtfs((prev) =>
           prev.map((e) => ({
             ...e,
-            interest: tickers.includes(e.ticker) ? 'y' : 'n',
+            interest: initialWishlistTickers.includes(e.ticker) ? 'y' : 'n',
           }))
         );
+        localStorage.setItem('yourpb_interest_etf_tickers', JSON.stringify(initialWishlistTickers));
       } else {
-        // 기본적으로 관심 ETF 상품은 아무것도 없도록 모두 'n'으로 설정
-        setEtfs((prev) =>
-          prev.map((e) => ({
-            ...e,
-            interest: 'n',
-          }))
-        );
+        // 비로그인 상태: localStorage에서 읽어와서 적용
+        const stored = localStorage.getItem('yourpb_interest_etf_tickers');
+        if (stored) {
+          const tickers: string[] = JSON.parse(stored);
+          setEtfs((prev) =>
+            prev.map((e) => ({
+              ...e,
+              interest: tickers.includes(e.ticker) ? 'y' : 'n',
+            }))
+          );
+        } else {
+          setEtfs((prev) =>
+            prev.map((e) => ({
+              ...e,
+              interest: 'n',
+            }))
+          );
+        }
       }
     } catch (e) {
-      console.error('Failed to load etf interest tickers from localStorage:', e);
+      console.error('Failed to load etf interest/wishlist tickers:', e);
     }
-  }, []);
+  }, [isLoggedIn, initialWishlistTickers]);
   
   // 기간 선택 상태 변수 추가
   const [selectedPeriod, setSelectedPeriod] = useState<'1w' | '5w' | '20w' | '60w' | '120w'>('1w');
@@ -65,13 +92,13 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
   const [sortColumn, setSortColumn] = useState<keyof EtfWithPrice>('yield_1w');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
-  // 관심 종목 등록/해제 핸들러 (localStorage 기반)
+  // 관심/찜 종목 등록/해제 핸들러 (하이브리드: 로그인 시 DB + localStorage, 비로그인 시 localStorage)
   const handleToggleInterest = (e: React.MouseEvent, ticker: string, currentInterest?: string) => {
     e.stopPropagation(); // 행 클릭 시 상세 페이지 이동 전파 차단
 
     const nextInterest = currentInterest === 'y' ? 'n' : 'y';
 
-    // 1. UI 상태 즉시 반영
+    // 1. UI 상태 즉시 반응 (낙관적 업데이트)
     setEtfs((prev) =>
       prev.map((etf) => (etf.ticker === ticker ? { ...etf, interest: nextInterest } : etf))
     );
@@ -92,6 +119,20 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
       localStorage.setItem('yourpb_interest_etf_tickers', JSON.stringify(tickers));
     } catch (err) {
       console.error('Failed to update localStorage for etf interest tickers:', err);
+    }
+
+    // 3. 로그인 상태일 경우 Supabase DB와 비동기 동기화
+    if (isLoggedIn) {
+      startTransition(async () => {
+        try {
+          const result = await toggleWishlist(ticker);
+          if (result && result.error) {
+            console.error('Failed to sync wishlist on server:', result.error);
+          }
+        } catch (error) {
+          console.error('toggleWishlist error:', error);
+        }
+      });
     }
   };
 
@@ -156,7 +197,11 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
   return (
     <div className="space-y-6">
       {/* 3단계 필터 버튼 영역 재사용 */}
-      <Filter initialEtfs={etfs as any}>
+      <Filter
+        initialEtfs={etfs as any}
+        initialWishlistTickers={initialWishlistTickers}
+        isLoggedIn={isLoggedIn}
+      >
         {(filteredEtfs) => {
           const sortedList = getSortedEtfs(filteredEtfs);
 
@@ -169,8 +214,8 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
                     검색 결과: <strong className="text-[#000000] text-sm font-extrabold">{sortedList.length}</strong>개 종목
                   </span>
                   <span className="text-[11px] text-gray-400 font-medium select-none flex items-center gap-1">
-                    <Star className="w-3.5 h-3.5 fill-[#D4AF37] text-[#D4AF37]" />
-                    종목명 왼쪽 별을 클릭해 나만의 관심 종목을 관리해 보세요.
+                    <Heart className="w-3.5 h-3.5 fill-[#dc2626] text-[#dc2626]" />
+                    종목명 왼쪽 하트를 클릭해 나만의 찜한 ETF를 관리해 보세요.
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -226,6 +271,7 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
                     <tbody className="divide-y divide-[#000000] text-xs text-[#000000] font-sans">
                       {sortedList.map((etf) => {
                         const yieldVal = etf[`yield_${selectedPeriod}` as keyof EtfWithPrice] as number | null;
+                        const isWished = etf.interest === 'y';
                         return (
                           <tr
                             key={etf.ticker}
@@ -238,13 +284,13 @@ export default function EtfSearchClient({ initialEtfs }: EtfSearchClientProps) {
                                   type="button"
                                   onClick={(e) => handleToggleInterest(e, etf.ticker, etf.interest)}
                                   className="focus:outline-hidden cursor-pointer p-1 hover:bg-black/5 rounded-full transition-colors shrink-0"
-                                  title={etf.interest === 'y' ? "관심종목 해제" : "관심종목 등록"}
+                                  title={isWished ? "찜 해제" : "찜하기"}
                                 >
-                                  <Star
-                                    className={`w-4 h-4 ${
-                                      etf.interest === 'y'
-                                        ? 'fill-[#D4AF37] text-[#D4AF37]'
-                                        : 'text-gray-300 hover:text-gray-400'
+                                  <Heart
+                                    className={`w-4 h-4 transition-colors duration-150 ${
+                                      isWished
+                                        ? 'fill-[#dc2626] text-[#dc2626]'
+                                        : 'text-gray-300 hover:text-[#dc2626]'
                                     }`}
                                   />
                                 </button>

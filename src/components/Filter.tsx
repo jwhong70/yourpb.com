@@ -85,10 +85,13 @@ export default function Filter({
   // 이미지 로드 에러 트래킹을 위한 상태
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
-  // 0차 필터링: 관심 필터 적용
+  // 0차 필터링: 관심/찜 필터 적용
   const etfsFilteredByInterest = useMemo(() => {
-    return initialEtfs.filter((e: ETF) => interestFilter === 'all' || e.interest === 'y');
-  }, [initialEtfs, interestFilter]);
+    return initialEtfs.filter((e: ETF) => {
+      if (interestFilter === 'all') return true;
+      return e.interest === 'y' || initialWishlistTickers.includes(e.ticker);
+    });
+  }, [initialEtfs, interestFilter, initialWishlistTickers]);
 
   // 1차 필터링: 레버리지 필터 적용
   const etfsAfterLeverage = useMemo(() => {
