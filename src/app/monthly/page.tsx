@@ -390,7 +390,7 @@ export default async function MonthlyBriefPage() {
             <div className="hidden print:flex flex-col gap-1 pt-4 border-t border-black text-xs text-gray-700">
               <div className="flex items-center justify-between font-extrabold text-black text-xs">
                 <span>당신의 피비 | 글로벌 ETF 자산배분 플랫폼</span>
-                <span>웹사이트: https://yourpb.vercel.app | 문의: jwhong70@gmail.com</span>
+                <span>웹사이트: https://yourpb.vercel.app | 문의: jwhong70@gmail.com | 전화: 070-4507-4460</span>
               </div>
               <div className="flex items-center justify-between text-[10px] text-gray-500">
                 <span>본 자료는 투자 판단을 위한 참고용 브리프이며, 최종 투자 판단과 손익에 대한 책임은 투자자 본인에게 있습니다.</span>
