@@ -243,7 +243,7 @@ export default async function MonthlyBriefPage() {
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center p-6 bg-white border border-[#000000] rounded-none shadow-xs">
               {/* 원형 차트 */}
               <div className="md:col-span-5 flex flex-col items-center justify-center">
-                <div className="w-full max-w-[260px]">
+                <div className="w-full max-w-65">
                   <PortfolioPieChart data={PB_MODEL_PORTFOLIO} />
                 </div>
               </div>
@@ -311,7 +311,7 @@ export default async function MonthlyBriefPage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {featuredEtfs.map((item) => {
                 const storageUrl = `https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/poster-etf/${item.ticker}.png`;
 
