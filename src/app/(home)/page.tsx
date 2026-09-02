@@ -8,6 +8,7 @@ import ModelCarousel from '@/components/ModelCarousel';
 import { getSessionUser } from '@/app/actions/auth';
 import { getWishlist } from '@/app/actions/wishlist';
 import PortfolioPieChart from '@/components/PortfolioPieChart';
+import { PB_MODEL_PORTFOLIO } from '@/config/portfolio';
 
 const getCachedEtfs = unstable_cache(
   async () => {
@@ -29,15 +30,8 @@ export default async function Home() {
 
   const etfs = await getCachedEtfs();
 
-  // 포트폴리오 비중 정의 (지정 브랜드 색상 반영)
-  const portfolioData = [
-    { type: '현금', pct: 10, ticker: '', name: '현금 자산(KRW)', color: '#A8A29E' }, // 웜그레이
-    { type: '채권', pct: 0, ticker: '', name: '미지정', color: '#E7E5E4' }, // 오트밀 베이지
-    { type: '시장', pct: 20, ticker: 'MAGS', name: 'Roundhill Magnificent Seven ETF', color: '#2C4027' }, // 다크 올리브그린
-    { type: '섹터', pct: 50, ticker: 'XLE', name: 'Energy Select Sector SPDR Fund', color: '#597350' }, // 미드 올리브그린
-    { type: '테마', pct: 0, ticker: '', name: '미지정', color: '#94A68D' }, // 세이지 그린
-    { type: '대체', pct: 20, ticker: 'UVXY', name: 'ProShares Ultra VIX Short-Term Futures ETF', color: '#9E533F' }, // 테라코타
-  ];
+  // 포트폴리오 비중 정의 (공통 설정 모듈 참조)
+  const portfolioData = PB_MODEL_PORTFOLIO;
 
 
 
