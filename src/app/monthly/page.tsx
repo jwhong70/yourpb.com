@@ -126,117 +126,171 @@ export default async function MonthlyBriefPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-sans selection:bg-black selection:text-white print:bg-white print:text-black">
+      {/* ============================================================ */}
+      {/* 인쇄 전용 정밀 스타일 시트 (A4 딱 2페이지 완성 규격) */}
+      {/* ============================================================ */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            @page {
+              size: A4 portrait;
+              margin: 10mm 12mm;
+            }
+            @media print {
+              html, body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                font-size: 11pt !important;
+                line-height: 1.4 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+              }
+              .page-1-container {
+                page-break-after: always !important;
+                break-after: page !important;
+                height: auto !important;
+                min-height: 98vh !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: flex-start !important;
+              }
+              .page-2-container {
+                page-break-before: always !important;
+                break-before: page !important;
+                height: auto !important;
+                min-height: 98vh !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: flex-start !important;
+              }
+              .print-etf-img {
+                height: 90px !important;
+                object-fit: cover !important;
+              }
+            }
+          `,
+        }}
+      />
+
       <div className="print:hidden">
         <Header initialUser={user} />
       </div>
 
-      <main className="grow pt-24 pb-20 print:pt-4 print:pb-0">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 print:max-w-full print:px-6 print:space-y-6">
+      <main className="grow pt-24 pb-20 print:pt-0 print:pb-0 print:m-0">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 print:max-w-full print:p-0 print:space-y-0">
           
           {/* ============================================================ */}
-          {/* 1. 상단 타이틀 배너 & 호수 (Header & Issue Title) */}
+          {/* [PAGE 1] 헤더 + 1섹션: 월간 금융시장 시황 총평 */}
           {/* ============================================================ */}
-          <header className="space-y-6 text-center sm:text-left pt-4 print:pt-0 print:space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#000000] pb-4 print:pb-2">
-              <span className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest px-3 py-1 bg-[#000000] text-white print:bg-black print:text-white">
-                <Compass className="w-3.5 h-3.5 text-yellow-accent" />
-                Monthly Asset Allocation Brief
-              </span>
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 text-xs font-bold text-gray-600 print:text-black">
-                  <Calendar className="w-3.5 h-3.5 text-black" />
-                  <span>발행일: {brief.published_date}</span>
-                  <span className="text-gray-300 print:text-gray-500">|</span>
-                  <span className="text-black font-extrabold">{brief.edition}</span>
+          <div className="page-1-container space-y-8 print:space-y-3">
+            
+            {/* 1. 상단 타이틀 배너 & 호수 */}
+            <header className="space-y-6 text-center sm:text-left pt-4 print:pt-0 print:space-y-2">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#000000] pb-4 print:pb-1.5">
+                <span className="inline-flex items-center gap-1.5 text-xs print:text-[10px] font-black uppercase tracking-widest px-3 py-1 print:px-2 print:py-0.5 bg-[#000000] text-white">
+                  <Compass className="w-3.5 h-3.5 print:w-3 print:h-3 text-yellow-accent" />
+                  Monthly Asset Allocation Brief
+                </span>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 text-xs print:text-[10px] font-bold text-gray-600 print:text-black">
+                    <Calendar className="w-3.5 h-3.5 print:w-3 print:h-3 text-black" />
+                    <span>발행일: {brief.published_date}</span>
+                    <span className="text-gray-300 print:text-gray-400">|</span>
+                    <span className="text-black font-extrabold">{brief.edition}</span>
+                  </div>
+                  <PrintButton />
                 </div>
-                <PrintButton />
               </div>
-            </div>
 
-            <div className="space-y-2 print:space-y-1">
-              <h1 className="text-2xl sm:text-4xl print:text-2xl font-black text-gray-900 tracking-tight leading-tight">
-                {brief.title}
-              </h1>
-              <p className="text-sm sm:text-base print:text-xs font-bold text-gray-500 print:text-gray-700">
-                {brief.edition} 정기 프라이빗 자산관리 나침반
-              </p>
-            </div>
+              <div className="space-y-2 print:space-y-0.5">
+                <h1 className="text-2xl sm:text-4xl print:text-xl font-black text-gray-900 tracking-tight leading-tight">
+                  {brief.title}
+                </h1>
+                <p className="text-sm sm:text-base print:text-[10px] font-bold text-gray-500 print:text-gray-600">
+                  {brief.edition} 정기 프라이빗 자산관리 나침반
+                </p>
+              </div>
 
-            {/* 핵심 헤드라인 콜아웃 박스 */}
-            <div className="p-5 sm:p-6 print:p-3.5 bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xs space-y-2 print:space-y-1">
-              <span className="text-[11px] print:text-[10px] font-extrabold text-gray-400 print:text-gray-600 uppercase tracking-wider block">
-                Key Market Theme
-              </span>
-              <p className="text-base sm:text-lg print:text-sm font-black text-gray-900 leading-snug">
-                &ldquo;{brief.headline}&rdquo;
-              </p>
-            </div>
-          </header>
+              {/* 핵심 헤드라인 콜아웃 박스 */}
+              <div className="p-5 sm:p-6 print:p-2.5 bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xs space-y-2 print:space-y-0.5">
+                <span className="text-[11px] print:text-[9px] font-extrabold text-gray-400 print:text-gray-600 uppercase tracking-wider block">
+                  Key Market Theme
+                </span>
+                <p className="text-base sm:text-lg print:text-xs font-black text-gray-900 leading-snug">
+                  &ldquo;{brief.headline}&rdquo;
+                </p>
+              </div>
+            </header>
+
+            {/* 2. 섹션 1: 월간 금융시장 시황 총평 (4단 프레임워크) */}
+            <section className="space-y-6 print:space-y-2">
+              <div className="flex items-center gap-2.5 border-b border-[#000000] pb-3 print:pb-1">
+                <span className="w-6 h-6 print:w-4 print:h-4 rounded-full bg-black text-white text-xs print:text-[9px] font-bold flex items-center justify-center">
+                  1
+                </span>
+                <h2 className="text-lg sm:text-xl print:text-sm font-extrabold text-gray-900 tracking-tight">
+                  월간 금융시장 시황 총평
+                </h2>
+              </div>
+
+              <div className="space-y-4 print:space-y-1.5">
+                {/* 1) 매크로 경기 & 물가 */}
+                <article className="p-5 print:p-2.5 bg-white border border-[#000000] rounded-none shadow-xs space-y-2.5 print:space-y-1">
+                  <div className="flex items-center gap-2 text-sm print:text-xs font-extrabold text-gray-900">
+                    <span className="w-2 h-2 print:w-1.5 print:h-1.5 rounded-full bg-blue-primary" />
+                    <h3>1. 글로벌 매크로 & 경기/물가 사이클 진단</h3>
+                  </div>
+                  <p className="text-sm sm:text-base print:text-[10px] text-gray-700 print:text-black leading-relaxed font-normal whitespace-pre-line pl-4 print:pl-2 border-l-2 border-blue-primary/30">
+                    {brief.sections.macro}
+                  </p>
+                </article>
+
+                {/* 2) 금리 & 유동성 리스크 */}
+                <article className="p-5 print:p-2.5 bg-white border border-[#000000] rounded-none shadow-xs space-y-2.5 print:space-y-1">
+                  <div className="flex items-center gap-2 text-sm print:text-xs font-extrabold text-gray-900">
+                    <span className="w-2 h-2 print:w-1.5 print:h-1.5 rounded-full bg-yellow-accent" />
+                    <h3>2. 금리·유동성 및 금융시장 리스크 지형</h3>
+                  </div>
+                  <p className="text-sm sm:text-base print:text-[10px] text-gray-700 print:text-black leading-relaxed font-normal whitespace-pre-line pl-4 print:pl-2 border-l-2 border-yellow-accent/30">
+                    {brief.sections.liquidity}
+                  </p>
+                </article>
+
+                {/* 3) 글로벌 자산군 및 주식 모멘텀 */}
+                <article className="p-5 print:p-2.5 bg-white border border-[#000000] rounded-none shadow-xs space-y-2.5 print:space-y-1">
+                  <div className="flex items-center gap-2 text-sm print:text-xs font-extrabold text-gray-900">
+                    <span className="w-2 h-2 print:w-1.5 print:h-1.5 rounded-full bg-coral" />
+                    <h3>3. 글로벌 자산군 및 주식·섹터·테마 모멘텀</h3>
+                  </div>
+                  <p className="text-sm sm:text-base print:text-[10px] text-gray-700 print:text-black leading-relaxed font-normal whitespace-pre-line pl-4 print:pl-2 border-l-2 border-coral/30">
+                    {brief.sections.momentum}
+                  </p>
+                </article>
+
+                {/* 4) 이달의 자산배분 전략 총평 */}
+                <article className="p-5 print:p-2.5 bg-box-bg print:bg-gray-50 border border-[#000000] rounded-none shadow-xs space-y-2.5 print:space-y-1">
+                  <div className="flex items-center gap-2 text-sm print:text-xs font-extrabold text-gray-900">
+                    <span className="w-2 h-2 print:w-1.5 print:h-1.5 rounded-full bg-green-accent" />
+                    <h3>4. 이달의 당신의 피비 자산배분 전략 총평</h3>
+                  </div>
+                  <p className="text-sm sm:text-base print:text-[10px] text-gray-900 font-semibold leading-relaxed whitespace-pre-line pl-4 print:pl-2 border-l-2 border-green-accent">
+                    {brief.sections.strategy}
+                  </p>
+                </article>
+              </div>
+            </section>
+
+          </div>
 
           {/* ============================================================ */}
-          {/* 2. 섹션 1: 월간 금융시장 시황 총평 (4단 프레임워크) */}
+          {/* [PAGE 2] 2섹션(포트폴리오) + 3섹션(ETF 스포트라이트) + 푸터 */}
           {/* ============================================================ */}
-          <section className="space-y-6">
-            <div className="flex items-center gap-2.5 border-b border-[#000000] pb-3">
-              <span className="w-6 h-6 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center">
-                1
-              </span>
-              <h2 className="text-lg sm:text-xl font-extrabold text-gray-900 tracking-tight">
-                월간 금융시장 시황 총평
-              </h2>
-            </div>
-
-            <div className="space-y-4">
-              {/* 1) 매크로 경기 & 물가 */}
-              <article className="p-5 bg-white border border-[#000000] rounded-none shadow-xs space-y-2.5 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-2 text-sm font-extrabold text-gray-900">
-                  <span className="w-2 h-2 rounded-full bg-blue-primary" />
-                  <h3>1. 글로벌 매크로 & 경기/물가 사이클 진단</h3>
-                </div>
-                <p className="text-sm sm:text-base text-gray-700 leading-relaxed font-normal whitespace-pre-line pl-4 border-l-2 border-blue-primary/30">
-                  {brief.sections.macro}
-                </p>
-              </article>
-
-              {/* 2) 금리 & 유동성 리스크 */}
-              <article className="p-5 bg-white border border-[#000000] rounded-none shadow-xs space-y-2.5 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-2 text-sm font-extrabold text-gray-900">
-                  <span className="w-2 h-2 rounded-full bg-yellow-accent" />
-                  <h3>2. 금리·유동성 및 금융시장 리스크 지형</h3>
-                </div>
-                <p className="text-sm sm:text-base text-gray-700 leading-relaxed font-normal whitespace-pre-line pl-4 border-l-2 border-yellow-accent/30">
-                  {brief.sections.liquidity}
-                </p>
-              </article>
-
-              {/* 3) 글로벌 자산군 및 주식 모멘텀 */}
-              <article className="p-5 bg-white border border-[#000000] rounded-none shadow-xs space-y-2.5 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-2 text-sm font-extrabold text-gray-900">
-                  <span className="w-2 h-2 rounded-full bg-coral" />
-                  <h3>3. 글로벌 자산군 및 주식·섹터·테마 모멘텀</h3>
-                </div>
-                <p className="text-sm sm:text-base text-gray-700 leading-relaxed font-normal whitespace-pre-line pl-4 border-l-2 border-coral/30">
-                  {brief.sections.momentum}
-                </p>
-              </article>
-
-              {/* 4) 이달의 자산배분 전략 총평 */}
-              <article className="p-5 bg-box-bg border border-[#000000] rounded-none shadow-xs space-y-2.5 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-2 text-sm font-extrabold text-gray-900">
-                  <span className="w-2 h-2 rounded-full bg-green-accent" />
-                  <h3>4. 이달의 당신의 피비 자산배분 전략 총평</h3>
-                </div>
-                <p className="text-sm sm:text-base text-gray-900 font-semibold leading-relaxed whitespace-pre-line pl-4 border-l-2 border-green-accent">
-                  {brief.sections.strategy}
-                </p>
-              </article>
-            </div>
-          </section>
+          <div className="page-2-container space-y-8 print:space-y-3 print:pt-1">
 
           {/* ============================================================ */}
           {/* 3. 섹션 2: 당신의 피비 추천 포트폴리오 비중 현황 */}
           {/* ============================================================ */}
-          <section className="space-y-6 print:space-y-3 print:break-before-page">
+          <section className="space-y-6 print:space-y-3">
             <div className="flex items-center gap-2.5 border-b border-[#000000] pb-3 print:pb-1.5">
               <span className="w-6 h-6 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center">
                 2
@@ -448,6 +502,7 @@ export default async function MonthlyBriefPage() {
             </p>
           </div>
 
+          </div>
         </div>
       </main>
 
