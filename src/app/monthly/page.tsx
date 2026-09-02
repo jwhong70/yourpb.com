@@ -181,7 +181,7 @@ export default async function MonthlyBriefPage() {
                 <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#000000] pb-4 print:pb-2">
                   <span className="inline-flex items-center gap-1.5 text-xs print:text-[11px] font-black uppercase tracking-widest px-3 py-1 print:px-2.5 print:py-1 bg-[#000000] text-white">
                     <Compass className="w-3.5 h-3.5 text-yellow-accent" />
-                    Monthly Asset Allocation Brief
+                    월간 자산배분 브리프
                   </span>
                   <div className="flex items-center gap-3">
                     <div className="flex items-center gap-2 text-xs print:text-[11px] font-bold text-gray-600 print:text-black">
@@ -206,7 +206,7 @@ export default async function MonthlyBriefPage() {
                 {/* 핵심 헤드라인 콜아웃 박스 */}
                 <div className="p-5 sm:p-6 print:p-3.5 bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xs space-y-2 print:space-y-1">
                   <span className="text-[11px] print:text-[10px] font-extrabold text-gray-400 print:text-gray-600 uppercase tracking-wider block">
-                    Key Market Theme
+                    한줄 시장 테마
                   </span>
                   <p className="text-base sm:text-lg print:text-sm font-black text-gray-900 leading-snug">
                     &ldquo;{brief.headline}&rdquo;
@@ -275,8 +275,8 @@ export default async function MonthlyBriefPage() {
 
             {/* 1페이지 하단 인쇄 푸터 */}
             <div className="hidden print:flex items-center justify-between pt-2 border-t border-gray-300 text-[9px] text-gray-500">
-              <span>당신의 피비 (YOURPB) | 월간 자산배분 브리프 - {brief.edition}</span>
-              <span>Page 1 of 2</span>
+              <span>당신의 피비 | 월간 자산배분 브리프 - {brief.edition}</span>
+              <span>1 / 2 페이지</span>
             </div>
           </div>
 
@@ -289,7 +289,7 @@ export default async function MonthlyBriefPage() {
               {/* 2페이지 상단 헤더 */}
               <div className="hidden print:flex items-center justify-between border-b border-[#000000] pb-2">
                 <span className="text-xs font-black uppercase tracking-widest text-black">
-                  YOURPB Portfolio Strategy | {brief.edition}
+                  당신의 피비 포트폴리오 전략 | {brief.edition}
                 </span>
                 <span className="text-[10px] font-bold text-gray-600">
                   {brief.published_date} 기준
@@ -389,12 +389,12 @@ export default async function MonthlyBriefPage() {
             {/* 2페이지 하단 공식 리서치 서명 푸터 */}
             <div className="hidden print:flex flex-col gap-1 pt-4 border-t border-black text-xs text-gray-700">
               <div className="flex items-center justify-between font-extrabold text-black text-xs">
-                <span>당신의 피비 (YOURPB) | 글로벌 ETF 자산배분 플랫폼</span>
-                <span>웹사이트: https://yourpb.com | 문의: support@yourpb.com</span>
+                <span>당신의 피비 | 글로벌 ETF 자산배분 플랫폼</span>
+                <span>웹사이트: https://yourpb.vercel.app | 문의: jwhong70@gmail.com</span>
               </div>
               <div className="flex items-center justify-between text-[10px] text-gray-500">
                 <span>본 자료는 투자 판단을 위한 참고용 브리프이며, 최종 투자 판단과 손익에 대한 책임은 투자자 본인에게 있습니다.</span>
-                <span>Page 2 of 2</span>
+                <span>2 / 2 페이지</span>
               </div>
             </div>
           </div>
