@@ -299,10 +299,9 @@ export default async function EtfDetailPage({ params }: PageProps) {
                           <table className="w-full text-left border-collapse text-base">
                             <thead>
                               <tr className="bg-[#000000] text-white font-semibold text-base uppercase select-none">
-                                <th className="py-2 px-2 text-white font-semibold">순위</th>
-                                <th className="py-2 px-2 text-white font-semibold">티커</th>
+                                <th className="py-2 px-2 text-white font-semibold w-12 text-center">순위</th>
                                 <th className="py-2 px-2 text-white font-semibold">종목명</th>
-                                <th className="py-2 px-2 text-right text-white font-semibold">비중</th>
+                                <th className="py-2 px-2 text-center text-white font-semibold w-24">비중</th>
                               </tr>
                             </thead>
                             <tbody className="divide-y divide-[#000000] text-base font-semibold text-gray-900">
@@ -311,10 +310,9 @@ export default async function EtfDetailPage({ params }: PageProps) {
                                   key={idx}
                                   className="hover:bg-black/5 transition-colors cursor-pointer"
                                 >
-                                  <td className="py-2.5 px-2 font-semibold text-gray-500">{idx + 1}</td>
-                                  <td className="py-2.5 px-2 text-gray-900 uppercase font-semibold">{h.holding_symbol}</td>
-                                  <td className="py-2.5 px-2 truncate max-w-20 sm:max-w-30 font-semibold">{h.holding_name || '-'}</td>
-                                  <td className="py-2.5 px-2 text-right font-semibold text-gray-900">{isPremium ? formatPercent(h.allocation_pct) : '•.••%'}</td>
+                                  <td className="py-2.5 px-2 font-semibold text-gray-500 text-center">{idx + 1}</td>
+                                  <td className="py-2.5 px-2 truncate max-w-44 sm:max-w-64 font-semibold">{h.holding_name || '-'}</td>
+                                  <td className="py-2.5 px-2 text-center font-semibold text-gray-900">{isPremium ? formatPercent(h.allocation_pct) : '•.••%'}</td>
                                 </tr>
                               ))}
                             </tbody>
