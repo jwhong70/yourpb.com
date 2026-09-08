@@ -306,47 +306,54 @@ export default async function MonthlyBriefPage() {
                 </h2>
               </div>
 
-              {/* 포트폴리오 메인 대시보드 (차트 + 비중 표) */}
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 print:gap-5 items-center p-6 print:p-5 bg-white border border-[#000000] rounded-none shadow-xs">
+              {/* 포트폴리오 메인 대시보드 (차트 + 비중 표) - 웹사이트 디자인과 통일 */}
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 print:gap-5 items-center p-6 print:p-4 bg-white border border-[#000000] rounded-none shadow-xs">
                 {/* 원형 차트 */}
-                <div className="md:col-span-5 flex flex-col items-center justify-center">
-                  <div className="w-full max-w-65 print:max-w-52">
+                <div className="md:col-span-5 flex flex-col items-center justify-center p-2 print:p-0">
+                  <div className="w-full max-w-[300px] print:max-w-48 flex items-center justify-center">
                     <PortfolioPieChart data={PB_MODEL_PORTFOLIO} />
                   </div>
                 </div>
 
-                {/* 비중 리스트 */}
-                <div className="md:col-span-7 flex flex-col gap-2.5 print:gap-2">
+                {/* 비중 리스트 (웹사이트 카드 스태킹 디자인 적용) */}
+                <div className="md:col-span-7 flex flex-col gap-3 print:gap-2">
                   {PB_MODEL_PORTFOLIO.map((row) => {
                     const isZero = row.pct === 0;
                     return (
                       <div
                         key={row.type}
-                        className={`flex items-center justify-between p-3 print:p-2.5 border border-[#000000] rounded-none transition-all ${
-                          isZero ? 'opacity-30 bg-gray-50' : 'bg-white hover:bg-gray-50'
+                        className={`flex items-center justify-between p-3.5 print:p-2 bg-white border border-[#000000] rounded-none transition-all duration-200 ${
+                          isZero ? 'opacity-30 bg-gray-50' : 'hover:bg-gray-50'
                         }`}
                       >
-                        <div className="flex items-center gap-3 print:gap-2">
+                        {/* 좌측: 컬러칩 + 자산 유형 + 구분선 + 자산 설명 */}
+                        <div className="flex items-center gap-3 print:gap-2 text-base print:text-xs font-bold text-[#000000]">
                           <span
-                            className="w-3.5 h-3.5 print:w-3 print:h-3 rounded-full shrink-0"
+                            className="w-3.5 h-3.5 print:w-2.5 print:h-2.5 rounded-full shrink-0"
                             style={{ backgroundColor: row.color }}
                           />
-                          <span className="font-bold text-sm print:text-xs text-black min-w-10 print:min-w-8">
-                            {row.type}
-                          </span>
+                          <span className="min-w-9 print:min-w-7">{row.type}</span>
                           <span className="text-gray-300 font-normal">|</span>
-                          <span className="text-xs print:text-[11px] font-semibold text-gray-700 truncate max-w-36 sm:max-w-48 print:max-w-56">
+                          <span className="text-sm print:text-[11px] font-semibold text-[#000000] truncate max-w-40 sm:max-w-56 print:max-w-48">
                             {row.name}
                           </span>
                         </div>
 
-                        <div className="flex items-center gap-3 print:gap-2">
-                          {row.ticker && (
-                            <span className="px-1.5 py-0.5 border border-black text-[11px] print:text-[10px] font-mono font-bold">
+                        {/* 우측: 티커 링크/뱃지 + 비중 퍼센트 */}
+                        <div className="flex items-center gap-4 print:gap-2">
+                          {row.ticker ? (
+                            <Link
+                              href={`/etf/${row.ticker}`}
+                              className="px-2 py-0.5 print:px-1.5 print:py-0 border border-black text-[#000000] text-xs print:text-[10px] font-bold font-mono rounded-none hover:bg-black hover:text-white transition-colors"
+                            >
                               {row.ticker}
+                            </Link>
+                          ) : (
+                            <span className="text-[10px] print:text-[9px] text-[#000000]/30 select-none uppercase tracking-wider">
+                              no ticker
                             </span>
                           )}
-                          <span className="text-base print:text-sm font-extrabold font-mono text-black min-w-10 print:min-w-8 text-right">
+                          <span className="text-lg print:text-sm font-extrabold font-mono text-[#000000] min-w-10 print:min-w-8 text-right">
                             {row.pct}%
                           </span>
                         </div>
@@ -387,14 +394,45 @@ export default async function MonthlyBriefPage() {
             </div>
 
             {/* 2페이지 하단 공식 리서치 서명 푸터 */}
-            <div className="hidden print:flex flex-col gap-1 pt-4 border-t border-black text-xs text-gray-700">
-              <div className="flex items-center justify-between font-extrabold text-black text-xs">
-                <span>당신의 피비 | 글로벌 ETF 자산배분 플랫폼</span>
-                <span>웹사이트: https://yourpb.vercel.app | 문의: jwhong70@gmail.com | 전화: 070-4507-4460</span>
+            <div className="hidden print:flex items-center justify-between pt-3 border-t border-black">
+              <div className="flex flex-col gap-1 text-gray-700">
+                {/* 1행: 상호 및 서비스 */}
+                <div className="flex items-center gap-2 font-black text-black text-xs">
+                  <span>당신의 피비</span>
+                  <span className="text-gray-300 font-normal">|</span>
+                  <span>글로벌 ETF 자산배분 플랫폼</span>
+                </div>
+
+                {/* 2행: 웹사이트, 문의처, 고객센터 번호 */}
+                <div className="flex items-center gap-2 text-[10.5px] font-semibold text-gray-700">
+                  <span>웹사이트: https://yourpb.vercel.app</span>
+                  <span className="text-gray-300 font-normal">|</span>
+                  <span>문의: jwhong70@gmail.com</span>
+                  <span className="text-gray-300 font-normal">|</span>
+                  <span>고객센터: 070-4507-4460</span>
+                </div>
+
+                {/* 면책 조항 및 페이지 번호 */}
+                <div className="flex items-center gap-2 text-[9px] text-gray-500 pt-0.5">
+                  <span>본 자료는 투자 판단을 위한 참고용 브리프이며, 최종 투자 판단과 손익에 대한 책임은 투자자 본인에게 있습니다.</span>
+                  <span className="text-gray-300">|</span>
+                  <span className="font-bold text-gray-700">2 / 2 페이지</span>
+                </div>
               </div>
-              <div className="flex items-center justify-between text-[10px] text-gray-500">
-                <span>본 자료는 투자 판단을 위한 참고용 브리프이며, 최종 투자 판단과 손익에 대한 책임은 투자자 본인에게 있습니다.</span>
-                <span>2 / 2 페이지</span>
+
+              {/* 우측 QR 코드 (당신의피비.png) */}
+              <div className="flex flex-col items-center justify-center shrink-0 pl-4 border-l border-gray-200">
+                <div className="relative w-11 h-11 bg-white p-0.5 border border-gray-300">
+                  <Image
+                    src="/당신의피비.png"
+                    alt="당신의 피비 QR코드"
+                    width={44}
+                    height={44}
+                    className="w-full h-full object-contain"
+                    unoptimized
+                  />
+                </div>
+                <span className="text-[7.5px] font-bold text-gray-500 mt-0.5 tracking-tighter">모바일 바로가기</span>
               </div>
             </div>
           </div>
@@ -501,7 +539,7 @@ export default async function MonthlyBriefPage() {
             </div>
 
             <p className="text-[11px] text-gray-500 text-center font-medium">
-              💡 편입 ETF의 실시간 보유종목 비중과 2페이지 정밀 PDF 리포트는 YOURPB 플랫폼에서 열람하실 수 있습니다.
+              💡 편입 ETF의 실시간 보유종목 비중과 2페이지 정밀 PDF 리포트는 당신의 피비 플랫폼에서 열람하실 수 있습니다.
             </p>
           </section>
 
