@@ -60,7 +60,7 @@ export default function PortfolioPieChart({ data }: PortfolioPieChartProps) {
   })
 
   return (
-    <div className="relative w-full aspect-square max-w-[260px] print:max-w-[180px] mx-auto flex items-center justify-center select-none">
+    <div className="relative w-full aspect-square max-w-65 print:max-w-45 mx-auto flex items-center justify-center select-none">
       <svg
         viewBox="0 0 300 300"
         className="w-full h-full block"
