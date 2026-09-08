@@ -309,10 +309,8 @@ export default async function MonthlyBriefPage() {
               {/* 포트폴리오 메인 대시보드 (차트 + 비중 표) - 웹 및 인쇄 모두 좌측 차트, 우측 비중 카드 배치 */}
               <div className="grid grid-cols-1 md:grid-cols-12 print:grid-cols-12 gap-6 print:gap-4 items-center p-6 print:p-3 bg-white border border-[#000000] rounded-none shadow-xs">
                 {/* 원형 차트 (좌측 5컬럼) */}
-                <div className="col-span-1 md:col-span-5 print:col-span-5 flex items-center justify-center p-2 print:p-0 w-full overflow-hidden">
-                  <div className="w-full max-w-60 print:max-w-40 aspect-square flex items-center justify-center">
-                    <PortfolioPieChart data={PB_MODEL_PORTFOLIO} />
-                  </div>
+                <div className="col-span-1 md:col-span-5 print:col-span-5 flex items-center justify-center p-2 print:p-0">
+                  <PortfolioPieChart data={PB_MODEL_PORTFOLIO} />
                 </div>
 
                 {/* 비중 리스트 (우측 7컬럼 - 웹사이트 카드 스태킹 디자인 적용) */}

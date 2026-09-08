@@ -1,12 +1,6 @@
 "use client"
 
-import React from "react"
-import { Pie, PieChart, Cell, LabelList } from "recharts"
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart"
+import React, { useState } from "react"
 
 export interface PortfolioItem {
   type: string
@@ -21,71 +15,94 @@ interface PortfolioPieChartProps {
 }
 
 export default function PortfolioPieChart({ data }: PortfolioPieChartProps) {
+  const [hoveredItem, setHoveredItem] = useState<PortfolioItem | null>(null)
+
   // 비중이 0보다 큰 자산만 선별
-  const chartItems = data.filter(item => item.pct > 0)
+  const chartItems = data.filter((item) => item.pct > 0)
 
-  // shadcn/ui 차트 설정 구성
-  const chartConfig = React.useMemo(() => {
-    const config: Record<string, { label: string; color: string }> = {}
-    chartItems.forEach((item) => {
-      config[item.type] = {
-        label: item.type,
-        color: item.color,
-      }
-    })
-    return config
-  }, [chartItems])
+  // SVG 파이 조각 계산
+  const cx = 150
+  const cy = 150
+  const r = 130
 
-  // Recharts용 데이터 포맷
-  const chartData = React.useMemo(() => {
-    return chartItems.map((item) => ({
-      name: item.type,
-      value: item.pct,
-      fill: item.color,
-    }))
-  }, [chartItems])
+  let currentAngle = -90 // 12시 방향부터 시작
+
+  const slices = chartItems.map((item) => {
+    const angle = (item.pct / 100) * 360
+    const startAngle = currentAngle
+    const endAngle = currentAngle + angle
+    currentAngle += angle
+
+    const startRad = (Math.PI / 180) * startAngle
+    const endRad = (Math.PI / 180) * endAngle
+
+    const x1 = cx + r * Math.cos(startRad)
+    const y1 = cy + r * Math.sin(startRad)
+    const x2 = cx + r * Math.cos(endRad)
+    const y2 = cy + r * Math.sin(endRad)
+
+    const largeArcFlag = angle > 180 ? 1 : 0
+    const d = `M ${cx} ${cy} L ${x1.toFixed(2)} ${y1.toFixed(2)} A ${r} ${r} 0 ${largeArcFlag} 1 ${x2.toFixed(2)} ${y2.toFixed(2)} Z`
+
+    // 텍스트 위치 (파이 조각 중심)
+    const midRad = (Math.PI / 180) * (startAngle + angle / 2)
+    const textRadius = r * 0.62
+    const tx = cx + textRadius * Math.cos(midRad)
+    const ty = cy + textRadius * Math.sin(midRad)
+
+    return {
+      ...item,
+      d,
+      tx: Number(tx.toFixed(2)),
+      ty: Number(ty.toFixed(2)),
+      angle,
+    }
+  })
 
   return (
-    <div className="w-full h-full aspect-square flex items-center justify-center overflow-hidden">
-      <ChartContainer
-        config={chartConfig}
-        className="w-full h-full !aspect-square max-w-56 max-h-56 flex items-center justify-center"
+    <div className="relative w-full aspect-square max-w-[260px] print:max-w-[180px] mx-auto flex items-center justify-center select-none">
+      <svg
+        viewBox="0 0 300 300"
+        className="w-full h-full block"
       >
-        <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-          <ChartTooltip
-            cursor={false}
-            content={<ChartTooltipContent hideLabel nameKey="name" />}
-          />
-          <Pie
-            data={chartData}
-            dataKey="value"
-            nameKey="name"
-            cx="50%"
-            cy="50%"
-            innerRadius={0}
-            outerRadius="75%"
-            stroke="#000000"
-            strokeWidth={1}
+        {slices.map((slice) => (
+          <g
+            key={slice.type}
+            className="cursor-pointer"
+            onMouseEnter={() => setHoveredItem(slice)}
+            onMouseLeave={() => setHoveredItem(null)}
           >
-            {chartData.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={entry.fill} className="hover:opacity-90 transition-opacity duration-200 cursor-pointer" />
-            ))}
-            {/* 파이 내부에 조각 이름 + 비율 텍스트 표시 */}
-            <LabelList
-              dataKey="name"
-              position="inside"
-              fill="#ffffff"
-              className="font-bold text-[11px] print:text-[9.5px] pointer-events-none fill-white font-serif drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]"
-              formatter={(value: any) => {
-                if (value === undefined || value === null) return "";
-                const valueStr = String(value);
-                const item = chartItems.find(i => i.type === valueStr);
-                return item ? `${item.type} ${item.pct}%` : valueStr;
-              }}
+            <path
+              d={slice.d}
+              fill={slice.color}
+              stroke="#000000"
+              strokeWidth="1.5"
+              className="transition-opacity duration-200 hover:opacity-90"
             />
-          </Pie>
-        </PieChart>
-      </ChartContainer>
+            <text
+              x={slice.tx}
+              y={slice.ty}
+              textAnchor="middle"
+              dominantBaseline="central"
+              fill="#ffffff"
+              className="font-bold text-[13.5px] font-sans pointer-events-none fill-white"
+              style={{
+                textShadow: '0 1px 3px rgba(0,0,0,0.9)',
+                filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.85))',
+              }}
+            >
+              {slice.type} {slice.pct}%
+            </text>
+          </g>
+        ))}
+      </svg>
+
+      {/* 마우스 호버 툴팁 */}
+      {hoveredItem && (
+        <div className="absolute -top-9 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2.5 py-1 font-bold shadow-lg pointer-events-none whitespace-nowrap z-20">
+          {hoveredItem.name} ({hoveredItem.pct}%)
+        </div>
+      )}
     </div>
   )
 }
