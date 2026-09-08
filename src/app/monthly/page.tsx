@@ -310,7 +310,7 @@ export default async function MonthlyBriefPage() {
               <div className="grid grid-cols-1 md:grid-cols-12 print:grid-cols-12 gap-6 print:gap-4 items-center p-6 print:p-3 bg-white border border-[#000000] rounded-none shadow-xs">
                 {/* 원형 차트 (좌측 5컬럼) */}
                 <div className="col-span-1 md:col-span-5 print:col-span-5 flex flex-col items-center justify-center p-2 print:p-0">
-                  <div className="w-full max-w-[300px] print:max-w-[185px] flex items-center justify-center">
+                  <div className="w-full max-w-75 print:max-w-46.25 flex items-center justify-center">
                     <PortfolioPieChart data={PB_MODEL_PORTFOLIO} />
                   </div>
                 </div>
