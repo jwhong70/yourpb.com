@@ -48,9 +48,9 @@ export default function PortfolioPieChart({ data }: PortfolioPieChartProps) {
   return (
     <ChartContainer
       config={chartConfig}
-      className="mx-auto aspect-square max-h-75 w-full"
+      className="mx-auto aspect-square w-full h-full max-w-65 max-h-65 flex items-center justify-center"
     >
-      <PieChart>
+      <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
         <ChartTooltip
           cursor={false}
           content={<ChartTooltipContent hideLabel nameKey="name" />}
@@ -59,8 +59,10 @@ export default function PortfolioPieChart({ data }: PortfolioPieChartProps) {
           data={chartData}
           dataKey="value"
           nameKey="name"
+          cx="50%"
+          cy="50%"
           innerRadius={0}
-          outerRadius="90%"
+          outerRadius="82%"
           stroke="#000000"
           strokeWidth={1}
         >
