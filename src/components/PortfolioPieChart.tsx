@@ -46,44 +46,46 @@ export default function PortfolioPieChart({ data }: PortfolioPieChartProps) {
   }, [chartItems])
 
   return (
-    <ChartContainer
-      config={chartConfig}
-      className="mx-auto aspect-square w-full h-full max-w-65 max-h-65 flex items-center justify-center"
-    >
-      <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-        <ChartTooltip
-          cursor={false}
-          content={<ChartTooltipContent hideLabel nameKey="name" />}
-        />
-        <Pie
-          data={chartData}
-          dataKey="value"
-          nameKey="name"
-          cx="50%"
-          cy="50%"
-          innerRadius={0}
-          outerRadius="82%"
-          stroke="#000000"
-          strokeWidth={1}
-        >
-          {chartData.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={entry.fill} className="hover:opacity-90 transition-opacity duration-200 cursor-pointer" />
-          ))}
-          {/* 파이 내부에 조각 이름 + 비율 텍스트 표시 */}
-          <LabelList
-            dataKey="name"
-            position="inside"
-            fill="#ffffff"
-            className="font-bold text-[13px] pointer-events-none fill-white font-serif drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]"
-            formatter={(value: any) => {
-              if (value === undefined || value === null) return "";
-              const valueStr = String(value);
-              const item = chartItems.find(i => i.type === valueStr);
-              return item ? `${item.type} ${item.pct}%` : valueStr;
-            }}
+    <div className="w-full h-full aspect-square flex items-center justify-center overflow-hidden">
+      <ChartContainer
+        config={chartConfig}
+        className="w-full h-full !aspect-square max-w-56 max-h-56 flex items-center justify-center"
+      >
+        <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
+          <ChartTooltip
+            cursor={false}
+            content={<ChartTooltipContent hideLabel nameKey="name" />}
           />
-        </Pie>
-      </PieChart>
-    </ChartContainer>
+          <Pie
+            data={chartData}
+            dataKey="value"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            innerRadius={0}
+            outerRadius="75%"
+            stroke="#000000"
+            strokeWidth={1}
+          >
+            {chartData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={entry.fill} className="hover:opacity-90 transition-opacity duration-200 cursor-pointer" />
+            ))}
+            {/* 파이 내부에 조각 이름 + 비율 텍스트 표시 */}
+            <LabelList
+              dataKey="name"
+              position="inside"
+              fill="#ffffff"
+              className="font-bold text-[11px] print:text-[9.5px] pointer-events-none fill-white font-serif drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]"
+              formatter={(value: any) => {
+                if (value === undefined || value === null) return "";
+                const valueStr = String(value);
+                const item = chartItems.find(i => i.type === valueStr);
+                return item ? `${item.type} ${item.pct}%` : valueStr;
+              }}
+            />
+          </Pie>
+        </PieChart>
+      </ChartContainer>
+    </div>
   )
 }
