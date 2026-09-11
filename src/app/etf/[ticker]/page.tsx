@@ -16,58 +16,79 @@ import {
   Lock
 } from 'lucide-react';
 
+import dynamic from 'next/dynamic';
+import { unstable_cache } from 'next/cache';
+import { supabase as publicSupabase } from '@/lib/supabase';
 import { createClient } from '@/lib/supabase-server';
 import { getSessionUser } from '@/app/actions/auth';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-
 import PremiumPaywall from '@/components/PremiumPaywall';
-import EtfAllocationCharts from '@/components/EtfAllocationCharts';
-import EtfCandleChart from '@/components/EtfCandleChart';
-import EtfPerformanceChart from '@/components/EtfPerformanceChart';
-import EtfPoster from '@/components/EtfPoster';
+
+// 차트 컴포넌트 Dynamic Import (모바일 초기 렌더링 최적화)
+const EtfAllocationCharts = dynamic(() => import('@/components/EtfAllocationCharts'), {
+  ssr: true,
+  loading: () => <div className="h-64 bg-box-bg border border-black animate-pulse" />
+});
+const EtfCandleChart = dynamic(() => import('@/components/EtfCandleChart'), {
+  ssr: true,
+  loading: () => <div className="h-64 bg-box-bg border border-black animate-pulse" />
+});
+const EtfPerformanceChart = dynamic(() => import('@/components/EtfPerformanceChart'), {
+  ssr: true,
+  loading: () => <div className="h-64 bg-box-bg border border-black animate-pulse" />
+});
 
 interface PageProps {
   params: Promise<{ ticker: string }>;
 }
 
-export default async function EtfDetailPage({ params }: PageProps) {
-  const supabase = await createClient();
+const getCachedEtfDetail = unstable_cache(
+  async (ticker: string) => {
+    const [
+      etfListRes,
+      etfInfoRes,
+      allocationsRes,
+      holdingsRes,
+      pricesRes
+    ] = await Promise.all([
+      publicSupabase.from('etf_list').select('*').eq('ticker', ticker).single(),
+      publicSupabase.from('etf_info').select('*').eq('ticker', ticker).maybeSingle(),
+      publicSupabase.from('etf_allocations').select('*').eq('ticker', ticker),
+      publicSupabase.from('etf_holdings').select('*').eq('ticker', ticker).order('allocation_pct', { ascending: false }).limit(10),
+      publicSupabase.from('etf_prices').select('*').eq('ticker', ticker).order('date', { ascending: false }),
+    ]);
 
+    return {
+      etfList: etfListRes.data || null,
+      etfInfo: etfInfoRes.data || null,
+      allocations: allocationsRes.data || [],
+      holdings: holdingsRes.data || [],
+      prices: pricesRes.data || [],
+      isNotFound: !etfListRes.data,
+    };
+  },
+  ['etf-detail-page-cache'],
+  { revalidate: 600 }
+);
+
+export default async function EtfDetailPage({ params }: PageProps) {
   // 1. URL 매개변수 디코딩 및 티커 대문자화
   const { ticker: rawTicker } = await params;
   const ticker = decodeURIComponent(rawTicker).toUpperCase();
 
-  // 2. 로그인 세션 및 프리미엄 구독 상태 조회
-  const user = await getSessionUser();
-  const isLoggedIn = !!user;
-  const isPremium = user?.membership_status === 'premium';
-
-  // 3. DB 데이터 병렬 조회 (etf_list, etf_info, etf_allocations, etf_holdings, etf_prices)
-  const [
-    etfListRes,
-    etfInfoRes,
-    allocationsRes,
-    holdingsRes,
-    pricesRes
-  ] = await Promise.all([
-    supabase.from('etf_list').select('*').eq('ticker', ticker).single(),
-    supabase.from('etf_info').select('*').eq('ticker', ticker).maybeSingle(),
-    supabase.from('etf_allocations').select('*').eq('ticker', ticker),
-    supabase.from('etf_holdings').select('*').eq('ticker', ticker).order('allocation_pct', { ascending: false }).limit(10),
-    supabase.from('etf_prices').select('*').eq('ticker', ticker).order('date', { ascending: false }),
-  ]);
+  // 2. 캐시된 ETF 상세 데이터 조회
+  const { etfList, etfInfo, allocations, holdings, prices, isNotFound } = await getCachedEtfDetail(ticker);
 
   // etf_list 정보가 없다면 유효하지 않은 티커이므로 404 처리
-  if (etfListRes.error || !etfListRes.data) {
+  if (isNotFound || !etfList) {
     return notFound();
   }
 
-  const etfList = etfListRes.data;
-  const etfInfo = etfInfoRes.data || null;
-  const allocations = allocationsRes.data || [];
-  const holdings = holdingsRes.data || [];
-  const prices = pricesRes.data || [];
+  // 3. 로그인 세션 및 프리미엄 구독 상태 조회
+  const user = await getSessionUser();
+  const isLoggedIn = !!user;
+  const isPremium = user?.membership_status === 'premium';
 
   // 4. 성과 최근 지표 가공 (etf_prices의 최신 행)
   const latestPrice = prices.length > 0 ? prices[0] : null;
@@ -78,8 +99,8 @@ export default async function EtfDetailPage({ params }: PageProps) {
   const yield_120w = latestPrice ? Number(latestPrice.yield_120w) : null;
 
   // 5. Storage Public URL 획득 (poster-etf: png 이미지 포맷, report-etf: pdf 리포트 포맷)
-  const posterUrl = supabase.storage.from('upload').getPublicUrl(`poster-etf/${ticker}.png`).data.publicUrl;
-  const reportUrl = supabase.storage.from('upload').getPublicUrl(`report-etf/${ticker}.pdf`).data.publicUrl;
+  const posterUrl = publicSupabase.storage.from('upload').getPublicUrl(`poster-etf/${ticker}.png`).data.publicUrl;
+  const reportUrl = publicSupabase.storage.from('upload').getPublicUrl(`report-etf/${ticker}.pdf`).data.publicUrl;
 
   // 포맷 헬퍼 함수
   const formatNum = (val: any, suffix = '') => {

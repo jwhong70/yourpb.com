@@ -8,6 +8,16 @@ export async function middleware(request: NextRequest) {
     },
   });
 
+  // 1. 요청 쿠키 검사: Supabase 관련 인증 쿠키가 없으면 원격 호출을 우회하여 응답 지연을 방지합니다.
+  const allCookies = request.cookies.getAll();
+  const hasAuthCookie = allCookies.some(
+    (c) => c.name.startsWith('sb-') || c.name.includes('auth-token')
+  );
+
+  if (!hasAuthCookie) {
+    return response;
+  }
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -33,7 +43,7 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  // 유저 세션을 복구하고 토큰이 만료되었으면 새로 고칩니다.
+  // 인증 토큰이 존재할 때만 세션을 복구하고 만료 시 토큰을 새로 고칩니다.
   await supabase.auth.getUser();
 
   return response;

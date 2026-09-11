@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 
 const pretendard = localFont({
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="ko"
@@ -54,6 +55,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans" suppressHydrationWarning>
+        <NextTopLoader
+          color="#D4AF37"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={3}
+          crawl={true}
+          showSpinner={false}
+          easing="ease"
+          speed={200}
+          shadow="0 0 10px #D4AF37,0 0 5px #D4AF37"
+        />
         {children}
       </body>
     </html>

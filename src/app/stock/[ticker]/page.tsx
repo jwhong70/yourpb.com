@@ -12,14 +12,23 @@ import {
   Minus
 } from 'lucide-react';
 
-import { createClient } from '@/lib/supabase-server';
+import dynamic from 'next/dynamic';
+import { unstable_cache } from 'next/cache';
+import { supabase as publicSupabase } from '@/lib/supabase';
 import { getSessionUser } from '@/app/actions/auth';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-
 import PremiumPaywall from '@/components/PremiumPaywall';
-import StockCandleChart from '@/components/StockCandleChart';
-import StockPerformanceChart from '@/components/StockPerformanceChart';
+
+// 차트 컴포넌트 Dynamic Import (초기 렌더링 최적화)
+const StockCandleChart = dynamic(() => import('@/components/StockCandleChart'), {
+  ssr: true,
+  loading: () => <div className="h-64 bg-box-bg border border-black animate-pulse" />
+});
+const StockPerformanceChart = dynamic(() => import('@/components/StockPerformanceChart'), {
+  ssr: true,
+  loading: () => <div className="h-64 bg-box-bg border border-black animate-pulse" />
+});
 
 const MASTER_NAME_KO: Record<string, string> = {
   'Warren Buffett': '워런 버핏',
@@ -50,28 +59,50 @@ interface PageProps {
   params: Promise<{ ticker: string }>;
 }
 
-export default async function StockDetailPage({ params }: PageProps) {
-  const supabase = await createClient();
+const getCachedStockDetail = unstable_cache(
+  async (ticker: string) => {
+    const [stockListRes, pricesRes, signalsRes] = await Promise.all([
+      publicSupabase.from('stock_list').select('*').eq('ticker', ticker).single(),
+      publicSupabase
+        .from('stock_prices')
+        .select('date, open, high, low, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
+        .eq('ticker', ticker)
+        .order('date', { ascending: false })
+        .limit(120),
+      publicSupabase
+        .from('stock_signals')
+        .select('analyst_name, signal, confidence, reasoning')
+        .eq('ticker', ticker)
+    ]);
 
+    return {
+      stock: stockListRes.data || null,
+      rawPrices: pricesRes.data || [],
+      rawSignals: signalsRes.data || [],
+      isNotFound: !stockListRes.data
+    };
+  },
+  ['stock-detail-page-cache'],
+  { revalidate: 600 }
+);
+
+export default async function StockDetailPage({ params }: PageProps) {
   // 1. URL 매개변수 디코딩 및 티커 대문자화
   const { ticker: rawTicker } = await params;
   const ticker = decodeURIComponent(rawTicker).toUpperCase();
 
-  // 2. 로그인 세션 및 프리미엄 구독 상태 조회
-  const user = await getSessionUser();
-  const isLoggedIn = !!user;
-  const isPremium = user?.membership_status === 'premium';
-
-  // 3. DB 데이터 조회
-  // - stock_list는 존재 여부 검사(404 판정)를 위해 로그인 상태에 관계없이 항시 조회
-  const stockListRes = await supabase.from('stock_list').select('*').eq('ticker', ticker).single();
+  // 2. 캐시된 주식 상세 데이터 조회
+  const { stock, rawPrices, rawSignals, isNotFound } = await getCachedStockDetail(ticker);
 
   // stock_list 정보가 없다면 유효하지 않은 티커이므로 404 처리
-  if (stockListRes.error || !stockListRes.data) {
+  if (isNotFound || !stock) {
     return notFound();
   }
 
-  const stock = stockListRes.data;
+  // 3. 로그인 세션 및 프리미엄 구독 상태 조회
+  const user = await getSessionUser();
+  const isLoggedIn = !!user;
+  const isPremium = user?.membership_status === 'premium';
 
   let prices: any[] = [];
   let signals: any[] = [];
@@ -84,22 +115,9 @@ export default async function StockDetailPage({ params }: PageProps) {
   let yield_120w: number | null = null;
 
   if (isPremium) {
-    // 4. 프리미엄 회원의 경우 실제 DB 주가 데이터 및 수익률 조회
-    const pricesRes = await supabase
-      .from('stock_prices')
-      .select('date, open, high, low, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
-      .eq('ticker', ticker)
-      .order('date', { ascending: false })
-      .limit(120);
-
-    prices = pricesRes.data || [];
-
-    // 4-2. AI 투자 대가 시그널 조회
-    const signalsRes = await supabase
-      .from('stock_signals')
-      .select('analyst_name, signal, confidence, reasoning')
-      .eq('ticker', ticker);
-    signals = signalsRes.data || [];
+    // 4. 프리미엄 회원의 경우 실제 캐시된 주가 데이터 및 시그널 제공
+    prices = rawPrices;
+    signals = rawSignals;
     latestPrice = prices.length > 0 ? prices[0] : null;
     closePrice = latestPrice ? Number(latestPrice.close) : null;
     yield_1w = latestPrice ? Number(latestPrice.yield_1w) : null;
@@ -140,7 +158,7 @@ export default async function StockDetailPage({ params }: PageProps) {
 
   // 5. Storage Public URL 획득 (유료회원에게만 제공하고 일반 회원은 공백 처리하여 URL 접근 차단)
   const reportUrl = isPremium
-    ? supabase.storage.from('upload').getPublicUrl(`report-stock/${ticker}.pdf`).data.publicUrl
+    ? publicSupabase.storage.from('upload').getPublicUrl(`report-stock/${ticker}.pdf`).data.publicUrl
     : '';
 
   // 포맷 헬퍼 함수
