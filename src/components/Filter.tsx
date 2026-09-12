@@ -98,9 +98,8 @@ export default function Filter({
     return etfsFilteredByInterest.filter((etf: ETF) => {
       if (leverageFilter === 'exclude') {
         return etf.leverage === null;
-      } else {
-        return etf.leverage !== null;
       }
+      return true; // 'include' 선택 시 레버리지 및 비레버리지 종목 전체 조회
     });
   }, [etfsFilteredByInterest, leverageFilter]);
 
