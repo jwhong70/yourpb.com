@@ -10,38 +10,42 @@ import Footer from '@/components/Footer';
 
 const getCachedEtfsData = unstable_cache(
   async () => {
-    // 1. etf_list 조회
+    // 1. etf_list 전체 종목 조회
     const { data: etfs, error: etfError } = await publicSupabase
       .from('etf_list')
       .select('ticker, name, category, report, leverage')
-      .order('ticker');
+      .order('ticker')
+      .limit(1000);
 
     if (etfError) {
       console.error('Error fetching etfs:', etfError);
       return [];
     }
 
-    // 2. 가장 최근 날짜(max date) 구하기
-    const { data: latestDateData, error: dateError } = await publicSupabase
+    // 2. 가장 최근 날짜 목록(max dates) 구하기
+    const { data: latestDateRows } = await publicSupabase
       .from('etf_prices')
       .select('date')
       .order('date', { ascending: false })
-      .limit(1);
+      .limit(20);
 
     let pricesMap: Record<string, any> = {};
+    const uniqueDates = Array.from(new Set((latestDateRows || []).map((r) => r.date))).slice(0, 3);
 
-    if (!dateError && latestDateData && latestDateData.length > 0) {
-      const maxDate = latestDateData[0].date;
-
-      // 3. 해당 날짜의 etf_prices 조회
+    if (uniqueDates.length > 0) {
+      // 3. 최근 날짜 범위의 etf_prices 조회
       const { data: prices, error: priceError } = await publicSupabase
         .from('etf_prices')
-        .select('ticker, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
-        .eq('date', maxDate);
+        .select('ticker, date, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
+        .in('date', uniqueDates)
+        .order('date', { ascending: false })
+        .limit(1500);
 
       if (!priceError && prices) {
         prices.forEach((p) => {
-          pricesMap[p.ticker] = p;
+          if (!pricesMap[p.ticker]) {
+            pricesMap[p.ticker] = p;
+          }
         });
       }
     }

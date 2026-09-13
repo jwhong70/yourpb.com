@@ -216,9 +216,12 @@ export default async function StockDetailPage({ params }: PageProps) {
     yield_120w = 52.1;
   }
 
-  // 5. Storage Public URL 획득 (유료회원에게만 제공하고 일반 회원은 공백 처리하여 URL 접근 차단)
-  const reportUrl = isPremium
+  // 5. Storage Public URL 획득 (캐시 버스팅 쿼리 파라미터 적용하여 브라우저 이전 캐시 방지)
+  const rawReportUrl = isPremium
     ? publicSupabase.storage.from('upload').getPublicUrl(`report-stock/${ticker}.pdf`).data.publicUrl
+    : '';
+  const reportUrl = rawReportUrl
+    ? `${rawReportUrl}?t=${new Date(stock.updated_at || Date.now()).getTime()}`
     : '';
 
   // 포맷 헬퍼 함수

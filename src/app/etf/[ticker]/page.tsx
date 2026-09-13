@@ -98,9 +98,10 @@ export default async function EtfDetailPage({ params }: PageProps) {
   const yield_60w = latestPrice ? Number(latestPrice.yield_60w) : null;
   const yield_120w = latestPrice ? Number(latestPrice.yield_120w) : null;
 
-  // 5. Storage Public URL 획득 (poster-etf: png 이미지 포맷, report-etf: pdf 리포트 포맷)
-  const posterUrl = publicSupabase.storage.from('upload').getPublicUrl(`poster-etf/${ticker}.png`).data.publicUrl;
-  const reportUrl = publicSupabase.storage.from('upload').getPublicUrl(`report-etf/${ticker}.pdf`).data.publicUrl;
+  // 5. Storage Public URL 획득 (캐시 버스팅 적용으로 브라우저 이전 캐시 방지)
+  const cacheKey = new Date(etfList.updated_at || Date.now()).getTime();
+  const posterUrl = `${publicSupabase.storage.from('upload').getPublicUrl(`poster-etf/${ticker}.png`).data.publicUrl}?t=${cacheKey}`;
+  const reportUrl = `${publicSupabase.storage.from('upload').getPublicUrl(`report-etf/${ticker}.pdf`).data.publicUrl}?t=${cacheKey}`;
 
   // 포맷 헬퍼 함수
   const formatNum = (val: any, suffix = '') => {

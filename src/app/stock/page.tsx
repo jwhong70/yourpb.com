@@ -15,38 +15,44 @@ export const metadata = {
 
 const getCachedStocksData = unstable_cache(
   async () => {
-    // 1. stock_list 전체 종목 조회
+    // 1. stock_list 전체 종목 조회 (1,000건 제한 방지를 위해 limit(2000) 명시)
     const { data: stocks, error: stockError } = await publicSupabase
       .from('stock_list')
       .select('ticker, name, sector2, industry2, interest')
-      .order('ticker');
+      .order('ticker')
+      .limit(2000);
 
     if (stockError) {
       console.error('Error fetching stock list:', stockError);
       return [];
     }
 
-    // 2. stock_prices 에서 가장 최근의 날짜(max date) 구하기
-    const { data: latestDateData, error: dateError } = await publicSupabase
+    // 2. stock_prices 에서 최근 2주차 날짜(max dates) 구하기 (거래소별 휴장일/기준일 차이 대응)
+    const { data: latestDateRows } = await publicSupabase
       .from('stock_prices')
       .select('date')
       .order('date', { ascending: false })
-      .limit(1);
+      .limit(30);
 
     let pricesMap: Record<string, any> = {};
 
-    if (!dateError && latestDateData && latestDateData.length > 0) {
-      const maxDate = latestDateData[0].date;
+    const uniqueDates = Array.from(new Set((latestDateRows || []).map((r) => r.date))).slice(0, 3);
 
-      // 3. 해당 최근 날짜의 stock_prices 데이터 조회
+    if (uniqueDates.length > 0) {
+      // 3. 최근 날짜 범위의 stock_prices 데이터 조회 (1000건 이상 커버를 위해 limit(3000) 명시)
       const { data: prices, error: priceError } = await publicSupabase
         .from('stock_prices')
-        .select('ticker, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
-        .eq('date', maxDate);
+        .select('ticker, date, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
+        .in('date', uniqueDates)
+        .order('date', { ascending: false })
+        .limit(3000);
 
       if (!priceError && prices) {
         prices.forEach((p) => {
-          pricesMap[p.ticker] = p;
+          // 최신 날짜 데이터가 우선적으로 맵에 기록되도록 처리
+          if (!pricesMap[p.ticker]) {
+            pricesMap[p.ticker] = p;
+          }
         });
       }
     }
@@ -69,8 +75,8 @@ const getCachedStocksData = unstable_cache(
       };
     });
   },
-  ['stock-page-data-cache'],
-  { revalidate: 600 }
+  ['stock-page-data-cache-v2'],
+  { revalidate: 60, tags: ['stock-page'] }
 );
 
 export default async function StockPage() {
