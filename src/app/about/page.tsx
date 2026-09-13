@@ -7,7 +7,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export const metadata = {
-  title: '당신의 PB, 홍선생 프로필 | YOURPB',
+  title: '당신의 피비, 홍선생 프로필 | YOURPB',
   description: '20년 이상의 금융 포트폴리오 자산관리 전문가, 홍선생의 상세 약력과 전문성을 소개합니다.',
 };
 

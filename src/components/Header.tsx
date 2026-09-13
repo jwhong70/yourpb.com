@@ -38,7 +38,7 @@ export default function Header({ initialUser }: HeaderProps) {
     { name: '매크로', href: '/macro' },
     { name: '주식', href: '/stock' },
     { name: '찜 목록', href: '/wishlist' },
-    { name: '당신의 PB는?', href: '/about' },
+    { name: '당신의 피비는?', href: '/about' },
   ];
 
   return (
