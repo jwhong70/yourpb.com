@@ -44,46 +44,108 @@ interface PageProps {
 }
 
 const getCachedEtfDetail = unstable_cache(
-  async (ticker: string) => {
+  async (tickerInput: string) => {
+    const cleanTicker = tickerInput.trim();
+    let etf: any = null;
+
+    // 1. 정확한 티커 일치 조회 (.maybeSingle()로 PGRST116 예외 방지)
+    const exactRes = await publicSupabase
+      .from('etf_list')
+      .select('*')
+      .eq('ticker', cleanTicker)
+      .maybeSingle();
+
+    if (exactRes.data) {
+      etf = exactRes.data;
+    }
+
+    // 2. 한국 주식/ETF 6자리 숫자 코드 처리 (.KS / .KQ 자동 폴백)
+    if (!etf && /^\d{6}$/.test(cleanTicker)) {
+      const ksRes = await publicSupabase
+        .from('etf_list')
+        .select('*')
+        .eq('ticker', `${cleanTicker}.KS`)
+        .maybeSingle();
+      if (ksRes.data) {
+        etf = ksRes.data;
+      } else {
+        const kqRes = await publicSupabase
+          .from('etf_list')
+          .select('*')
+          .eq('ticker', `${cleanTicker}.KQ`)
+          .maybeSingle();
+        if (kqRes.data) {
+          etf = kqRes.data;
+        }
+      }
+    }
+
+    // 3. 대소문자 차이 ilike 매칭
+    if (!etf) {
+      const ilikeRes = await publicSupabase
+        .from('etf_list')
+        .select('*')
+        .ilike('ticker', cleanTicker)
+        .maybeSingle();
+      if (ilikeRes.data) {
+        etf = ilikeRes.data;
+      }
+    }
+
+    if (!etf) {
+      return {
+        etfList: null,
+        etfInfo: null,
+        allocations: [],
+        holdings: [],
+        prices: [],
+        isNotFound: true,
+        actualTicker: cleanTicker
+      };
+    }
+
+    const actualTicker = etf.ticker;
+
     const [
-      etfListRes,
       etfInfoRes,
       allocationsRes,
       holdingsRes,
       pricesRes
     ] = await Promise.all([
-      publicSupabase.from('etf_list').select('*').eq('ticker', ticker).single(),
-      publicSupabase.from('etf_info').select('*').eq('ticker', ticker).maybeSingle(),
-      publicSupabase.from('etf_allocations').select('*').eq('ticker', ticker),
-      publicSupabase.from('etf_holdings').select('*').eq('ticker', ticker).order('allocation_pct', { ascending: false }).limit(10),
-      publicSupabase.from('etf_prices').select('*').eq('ticker', ticker).order('date', { ascending: false }),
+      publicSupabase.from('etf_info').select('*').eq('ticker', actualTicker).maybeSingle(),
+      publicSupabase.from('etf_allocations').select('*').eq('ticker', actualTicker),
+      publicSupabase.from('etf_holdings').select('*').eq('ticker', actualTicker).order('allocation_pct', { ascending: false }).limit(10),
+      publicSupabase.from('etf_prices').select('*').eq('ticker', actualTicker).order('date', { ascending: false }),
     ]);
 
     return {
-      etfList: etfListRes.data || null,
+      etfList: etf,
       etfInfo: etfInfoRes.data || null,
       allocations: allocationsRes.data || [],
       holdings: holdingsRes.data || [],
       prices: pricesRes.data || [],
-      isNotFound: !etfListRes.data,
+      isNotFound: false,
+      actualTicker
     };
   },
-  ['etf-detail-page-cache'],
-  { revalidate: 600 }
+  ['etf-detail-page-cache-v2'],
+  { revalidate: 60 }
 );
 
 export default async function EtfDetailPage({ params }: PageProps) {
-  // 1. URL 매개변수 디코딩 및 티커 대문자화
+  // 1. URL 매개변수 디코딩 및 티커 정제
   const { ticker: rawTicker } = await params;
-  const ticker = decodeURIComponent(rawTicker).toUpperCase();
+  const tickerInput = decodeURIComponent(rawTicker || '').trim();
 
   // 2. 캐시된 ETF 상세 데이터 조회
-  const { etfList, etfInfo, allocations, holdings, prices, isNotFound } = await getCachedEtfDetail(ticker);
+  const { etfList, etfInfo, allocations, holdings, prices, isNotFound, actualTicker } = await getCachedEtfDetail(tickerInput);
 
   // etf_list 정보가 없다면 유효하지 않은 티커이므로 404 처리
   if (isNotFound || !etfList) {
     return notFound();
   }
+
+  const ticker = actualTicker;
 
   // 3. 로그인 세션 및 프리미엄 구독 상태 조회
   const user = await getSessionUser();
@@ -101,7 +163,10 @@ export default async function EtfDetailPage({ params }: PageProps) {
   // 5. Storage Public URL 획득 (캐시 버스팅 적용으로 브라우저 이전 캐시 방지)
   const cacheKey = new Date(etfList.updated_at || Date.now()).getTime();
   const posterUrl = `${publicSupabase.storage.from('upload').getPublicUrl(`poster-etf/${ticker}.png`).data.publicUrl}?t=${cacheKey}`;
-  const reportUrl = `${publicSupabase.storage.from('upload').getPublicUrl(`report-etf/${ticker}.pdf`).data.publicUrl}?t=${cacheKey}`;
+  const rawReportUrl = isPremium
+    ? publicSupabase.storage.from('upload').getPublicUrl(`report-etf/${ticker}.pdf`).data.publicUrl
+    : '';
+  const reportUrl = rawReportUrl ? `${rawReportUrl}?t=${cacheKey}` : '';
 
   // 포맷 헬퍼 함수
   const formatNum = (val: any, suffix = '') => {
