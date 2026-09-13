@@ -59,45 +59,105 @@ interface PageProps {
   params: Promise<{ ticker: string }>;
 }
 
-const getCachedStockDetail = unstable_cache(
-  async (ticker: string) => {
-    const [stockListRes, pricesRes, signalsRes] = await Promise.all([
-      publicSupabase.from('stock_list').select('*').eq('ticker', ticker).single(),
-      publicSupabase
-        .from('stock_prices')
-        .select('date, open, high, low, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
-        .eq('ticker', ticker)
-        .order('date', { ascending: false })
-        .limit(120),
-      publicSupabase
-        .from('stock_signals')
-        .select('analyst_name, signal, confidence, reasoning')
-        .eq('ticker', ticker)
-    ]);
+async function fetchStockDetailFromDb(tickerInput: string) {
+  const cleanTicker = tickerInput.trim().toUpperCase();
 
+  // 1. 원본 티커로 직접 조회 (maybeSingle 사용으로 PGRST116 에러 방지)
+  let { data: stock } = await publicSupabase
+    .from('stock_list')
+    .select('*')
+    .eq('ticker', cleanTicker)
+    .maybeSingle();
+
+  // 2. 만약 없고 6자리 한국 종목코드인 경우 .KS / .KQ 자동 매칭 시도
+  if (!stock && /^\d{6}$/.test(cleanTicker)) {
+    const ksRes = await publicSupabase
+      .from('stock_list')
+      .select('*')
+      .eq('ticker', `${cleanTicker}.KS`)
+      .maybeSingle();
+    if (ksRes.data) {
+      stock = ksRes.data;
+    } else {
+      const kqRes = await publicSupabase
+        .from('stock_list')
+        .select('*')
+        .eq('ticker', `${cleanTicker}.KQ`)
+        .maybeSingle();
+      if (kqRes.data) {
+        stock = kqRes.data;
+      }
+    }
+  }
+
+  // 3. 만약 대소문자나 점(.) 표기 차이 등을 위해 ilike 매칭 시도
+  if (!stock) {
+    const ilikeRes = await publicSupabase
+      .from('stock_list')
+      .select('*')
+      .ilike('ticker', cleanTicker)
+      .maybeSingle();
+    if (ilikeRes.data) {
+      stock = ilikeRes.data;
+    }
+  }
+
+  // 매칭된 종목이 없으면 404 반환
+  if (!stock) {
     return {
-      stock: stockListRes.data || null,
-      rawPrices: pricesRes.data || [],
-      rawSignals: signalsRes.data || [],
-      isNotFound: !stockListRes.data
+      stock: null,
+      rawPrices: [],
+      rawSignals: [],
+      isNotFound: true,
+      actualTicker: cleanTicker
     };
-  },
-  ['stock-detail-page-cache'],
-  { revalidate: 600 }
+  }
+
+  const actualTicker = stock.ticker;
+
+  // 4. 실제 DB 매칭 티커로 가격 데이터 및 시그널 병렬 조회
+  const [pricesRes, signalsRes] = await Promise.all([
+    publicSupabase
+      .from('stock_prices')
+      .select('date, open, high, low, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
+      .eq('ticker', actualTicker)
+      .order('date', { ascending: false })
+      .limit(120),
+    publicSupabase
+      .from('stock_signals')
+      .select('analyst_name, signal, confidence, reasoning')
+      .eq('ticker', actualTicker)
+  ]);
+
+  return {
+    stock,
+    rawPrices: pricesRes.data || [],
+    rawSignals: signalsRes.data || [],
+    isNotFound: false,
+    actualTicker
+  };
+}
+
+const getCachedStockDetail = unstable_cache(
+  fetchStockDetailFromDb,
+  ['stock-detail-page-cache-v2'],
+  { revalidate: 600, tags: ['stock-detail'] }
 );
 
 export default async function StockDetailPage({ params }: PageProps) {
   // 1. URL 매개변수 디코딩 및 티커 대문자화
   const { ticker: rawTicker } = await params;
-  const ticker = decodeURIComponent(rawTicker).toUpperCase();
+  const tickerInput = decodeURIComponent(rawTicker || '').trim();
 
-  // 2. 캐시된 주식 상세 데이터 조회
-  const { stock, rawPrices, rawSignals, isNotFound } = await getCachedStockDetail(ticker);
+  // 2. 캐시된 주식 상세 데이터 조회 (스마트 폴백 적용)
+  const { stock, rawPrices, rawSignals, isNotFound, actualTicker } = await getCachedStockDetail(tickerInput);
 
   // stock_list 정보가 없다면 유효하지 않은 티커이므로 404 처리
   if (isNotFound || !stock) {
     return notFound();
   }
+
+  const ticker = actualTicker;
 
   // 3. 로그인 세션 및 프리미엄 구독 상태 조회
   const user = await getSessionUser();
