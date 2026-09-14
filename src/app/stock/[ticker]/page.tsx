@@ -138,11 +138,14 @@ async function fetchStockDetailFromDb(tickerInput: string) {
   };
 }
 
-const getCachedStockDetail = unstable_cache(
-  fetchStockDetailFromDb,
-  ['stock-detail-page-cache-v2'],
-  { revalidate: 600, tags: ['stock-detail'] }
-);
+const getCachedStockDetail = (ticker: string) => {
+  const cleanTicker = ticker.trim().toUpperCase();
+  return unstable_cache(
+    () => fetchStockDetailFromDb(cleanTicker),
+    ['stock-detail-page-v3', cleanTicker],
+    { revalidate: 3600, tags: [`stock-${cleanTicker}`] }
+  )();
+};
 
 export default async function StockDetailPage({ params }: PageProps) {
   // 1. URL 매개변수 디코딩 및 티커 대문자화

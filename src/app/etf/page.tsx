@@ -68,15 +68,17 @@ const getCachedEtfsData = unstable_cache(
       };
     });
   },
-  ['etf-page-data-cache'],
-  { revalidate: 600 }
+  ['etf-page-data-cache-v2'],
+  { revalidate: 3600, tags: ['etf-page'] }
 );
 
 export default async function EtfPage() {
-  const user = await getSessionUser();
-  const wishlist = await getWishlist();
+  const [user, wishlist, mergedEtfs] = await Promise.all([
+    getSessionUser(),
+    getWishlist(),
+    getCachedEtfsData(),
+  ]);
   const wishlistTickers = wishlist.map((etf) => etf.ticker);
-  const mergedEtfs = await getCachedEtfsData();
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">

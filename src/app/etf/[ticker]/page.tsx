@@ -111,10 +111,27 @@ async function fetchEtfDetailFromDb(tickerInput: string) {
     holdingsRes,
     pricesRes
   ] = await Promise.all([
-    publicSupabase.from('etf_info').select('*').eq('ticker', actualTicker).maybeSingle(),
-    publicSupabase.from('etf_allocations').select('*').eq('ticker', actualTicker),
-    publicSupabase.from('etf_holdings').select('*').eq('ticker', actualTicker).order('allocation_pct', { ascending: false }).limit(10),
-    publicSupabase.from('etf_prices').select('*').eq('ticker', actualTicker).order('date', { ascending: false }),
+    publicSupabase
+      .from('etf_info')
+      .select('ticker, pe_ratio, pb_ratio, distribution_yield, yield_to_maturity')
+      .eq('ticker', actualTicker)
+      .maybeSingle(),
+    publicSupabase
+      .from('etf_allocations')
+      .select('allocation_type, category_name, allocation_pct')
+      .eq('ticker', actualTicker),
+    publicSupabase
+      .from('etf_holdings')
+      .select('holding_symbol, holding_name, allocation_pct')
+      .eq('ticker', actualTicker)
+      .order('allocation_pct', { ascending: false })
+      .limit(10),
+    publicSupabase
+      .from('etf_prices')
+      .select('date, open, high, low, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
+      .eq('ticker', actualTicker)
+      .order('date', { ascending: false })
+      .limit(120),
   ]);
 
   return {
@@ -133,7 +150,7 @@ const getCachedEtfDetail = (ticker: string) => {
   return unstable_cache(
     () => fetchEtfDetailFromDb(cleanTicker),
     ['etf-detail-page-v3', cleanTicker],
-    { revalidate: 60, tags: [`etf-${cleanTicker}`] }
+    { revalidate: 3600, tags: [`etf-${cleanTicker}`] }
   )();
 };
 

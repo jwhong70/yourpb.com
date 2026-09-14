@@ -18,17 +18,17 @@ const getCachedEtfs = unstable_cache(
       .order('ticker');
     return data || [];
   },
-  ['home-etf-list-cache'],
-  { revalidate: 600 }
+  ['home-etf-list-cache-v2'],
+  { revalidate: 3600, tags: ['home-page'] }
 );
 
 export default async function Home() {
-  const supabase = await createClient();
-  const user = await getSessionUser();
-  const wishlist = await getWishlist();
+  const [user, wishlist, etfs] = await Promise.all([
+    getSessionUser(),
+    getWishlist(),
+    getCachedEtfs(),
+  ]);
   const wishlistTickers = wishlist.map(etf => etf.ticker);
-
-  const etfs = await getCachedEtfs();
 
   // 포트폴리오 비중 정의 (공통 설정 모듈 참조)
   const portfolioData = PB_MODEL_PORTFOLIO;

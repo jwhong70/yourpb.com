@@ -90,8 +90,8 @@ const getCachedMacroRawData = unstable_cache(
       indexList: indexListRaw || []
     };
   },
-  ['macro-raw-data-cache'],
-  { revalidate: 600 }
+  ['macro-raw-data-cache-v2'],
+  { revalidate: 3600, tags: ['macro-page'] }
 );
 
 export default async function MacroPage() {

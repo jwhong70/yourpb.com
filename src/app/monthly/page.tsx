@@ -51,68 +51,76 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+import { unstable_cache } from 'next/cache';
+
+const getCachedMonthlyData = unstable_cache(
+  async () => {
+    const activeEtfTickers = PB_MODEL_PORTFOLIO.map((p) => p.ticker).filter(Boolean);
+
+    const [etfListRes, latestPriceDateRes] = await Promise.all([
+      publicSupabase
+        .from('etf_list')
+        .select('ticker, name, category, report, leverage, description')
+        .in('ticker', activeEtfTickers),
+      publicSupabase
+        .from('etf_prices')
+        .select('date')
+        .order('date', { ascending: false })
+        .limit(1),
+    ]);
+
+    let priceMap: Record<string, any> = {};
+    if (latestPriceDateRes.data && latestPriceDateRes.data.length > 0) {
+      const latestDate = latestPriceDateRes.data[0].date;
+      const { data: prices } = await publicSupabase
+        .from('etf_prices')
+        .select('ticker, close, yield_1w, yield_5w, yield_20w')
+        .eq('date', latestDate)
+        .in('ticker', activeEtfTickers);
+
+      if (prices) {
+        prices.forEach((p) => {
+          priceMap[p.ticker] = p;
+        });
+      }
+    }
+
+    const etfMap: Record<string, any> = {};
+    if (etfListRes.data) {
+      etfListRes.data.forEach((e) => {
+        etfMap[e.ticker] = e;
+      });
+    }
+
+    const featuredEtfs = PB_MODEL_PORTFOLIO.filter((p) => p.ticker).map((p) => {
+      const etf = etfMap[p.ticker] || {};
+      const price = priceMap[p.ticker] || {};
+      return {
+        type: p.type,
+        pct: p.pct,
+        color: p.color,
+        ticker: p.ticker,
+        name: etf.name || p.name,
+        category: etf.category || p.type,
+        leverage: etf.leverage || null,
+        yield_1w: price.yield_1w !== undefined && price.yield_1w !== null ? Number(price.yield_1w) : null,
+        yield_5w: price.yield_5w !== undefined && price.yield_5w !== null ? Number(price.yield_5w) : null,
+        description: etf.description || '',
+      };
+    });
+
+    return { featuredEtfs };
+  },
+  ['monthly-page-etf-data-v1'],
+  { revalidate: 3600, tags: ['monthly-brief'] }
+);
+
 export default async function MonthlyBriefPage() {
   const user = await getSessionUser();
   const isPremium = user?.membership_status === 'premium';
   const brief = getMonthlyBrief();
 
-  // 1. 포트폴리오에 편입된 ETF 티커 목록 추출
-  const activeEtfTickers = PB_MODEL_PORTFOLIO.map((p) => p.ticker).filter(Boolean);
-
-  // 2. 편입 ETF들의 기본 정보 및 최신 수익률 조회
-  const [etfListRes, latestPriceDateRes] = await Promise.all([
-    publicSupabase
-      .from('etf_list')
-      .select('ticker, name, category, report, leverage, description')
-      .in('ticker', activeEtfTickers),
-    publicSupabase
-      .from('etf_prices')
-      .select('date')
-      .order('date', { ascending: false })
-      .limit(1),
-  ]);
-
-  let priceMap: Record<string, any> = {};
-  if (latestPriceDateRes.data && latestPriceDateRes.data.length > 0) {
-    const latestDate = latestPriceDateRes.data[0].date;
-    const { data: prices } = await publicSupabase
-      .from('etf_prices')
-      .select('ticker, close, yield_1w, yield_5w, yield_20w')
-      .eq('date', latestDate)
-      .in('ticker', activeEtfTickers);
-
-    if (prices) {
-      prices.forEach((p) => {
-        priceMap[p.ticker] = p;
-      });
-    }
-  }
-
-  // ETF 정보 매핑
-  const etfMap: Record<string, any> = {};
-  if (etfListRes.data) {
-    etfListRes.data.forEach((e) => {
-      etfMap[e.ticker] = e;
-    });
-  }
-
-  // 편입 ETF 상세 목록 데이터 구성
-  const featuredEtfs = PB_MODEL_PORTFOLIO.filter((p) => p.ticker).map((p) => {
-    const etf = etfMap[p.ticker] || {};
-    const price = priceMap[p.ticker] || {};
-    return {
-      type: p.type,
-      pct: p.pct,
-      color: p.color,
-      ticker: p.ticker,
-      name: etf.name || p.name,
-      category: etf.category || p.type,
-      leverage: etf.leverage || null,
-      yield_1w: price.yield_1w !== undefined && price.yield_1w !== null ? Number(price.yield_1w) : null,
-      yield_5w: price.yield_5w !== undefined && price.yield_5w !== null ? Number(price.yield_5w) : null,
-      description: etf.description || '',
-    };
-  });
+  const { featuredEtfs } = await getCachedMonthlyData();
 
   const formatYield = (val: number | null) => {
     if (val === null || val === undefined) return '-';

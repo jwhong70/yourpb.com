@@ -98,15 +98,17 @@ const getCachedStocksData = unstable_cache(
       };
     });
   },
-  ['stock-page-data-cache-v3'],
-  { revalidate: 60, tags: ['stock-page'] }
+  ['stock-page-data-cache-v4'],
+  { revalidate: 3600, tags: ['stock-page'] }
 );
 
 export default async function StockPage() {
-  const user = await getSessionUser();
+  const [user, stockWishlistTickers, mergedStocks] = await Promise.all([
+    getSessionUser(),
+    getStockWishlist(),
+    getCachedStocksData(),
+  ]);
   const isPremium = user?.membership_status === 'premium';
-  const stockWishlistTickers = await getStockWishlist();
-  const mergedStocks = await getCachedStocksData();
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
