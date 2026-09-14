@@ -13,20 +13,20 @@ interface PremiumPaywallProps {
 export default function PremiumPaywall({ isLoggedIn, returnUrl = '/' }: PremiumPaywallProps) {
   const benefits = [
     {
-      title: '120주 주봉 캔들 차트',
-      desc: '장기 추세와 가격 흐름을 한눈에 파악하는 주봉 캔들 차트 제공',
+      title: '투자 대가 20인 AI 분석 시그널',
+      desc: '워런 버핏, 피터 린치 등 전설적인 투자 대가 20인의 철학으로 진단한 종목별 매매 신호 및 적정가치 공개',
     },
     {
-      title: '3차원 자산배분 비중(Allocation)',
-      desc: '국가별, 섹터별, 종목별 실시간 비중 도넛 차트 및 데이터 제공',
+      title: '1,000대 글로벌 주식 정밀 분석 & 120주 차트',
+      desc: '국내외 핵심 우량주 1,000종목의 재무 펀더멘털 지표, 밸류에이션 및 120주 주봉 캔들 차트 전면 해금',
     },
     {
-      title: 'ETF 상세 재무 지표(Info Premium)',
-      desc: 'PER, PBR, 분배율 및 만기수익률(YTM) 등 자산운용에 핵심적인 가치평가 지표 공개',
+      title: 'ETF & 주식 2p 정밀 리서치 PDF 무제한 다운로드',
+      desc: '자체 발행되는 2페이지 전문 분석 리서치 보고서 고화질 원본 PDF 무제한 다운로드',
     },
     {
-      title: 'ETF 및 종목 분석 PDF 다운로드',
-      desc: '자체 발행되는 ETF 및 종목 분석 보고서 원본 PDF 즉시 제공',
+      title: 'VIP 거시경제 & 자산배분 모델',
+      desc: '글로벌 매크로 나침반과 경기 국면별 최적화된 포트폴리오 자산배분 전략 제공',
     },
   ];
 
@@ -64,7 +64,7 @@ export default function PremiumPaywall({ isLoggedIn, returnUrl = '/' }: PremiumP
         이 정보는 <span className="bg-linear-to-r from-gold via-yellow-accent to-pink-light bg-clip-text text-transparent">Premium 회원</span> 전용입니다.
       </h3>
       <p className="text-white/60 text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed">
-        당신의 피비의 자산 분석 솔루션으로 현명한 투자 결정을 내려보세요. 프리미엄 멤버십에 가입하시면 국내외 ETF 및 종목 조건 검색, 상세 자산비중, 장기 가격 차트, 리서치 PDF 다운로드를 제한 없이 이용하실 수 있습니다.
+        전설적인 투자 대가 20인의 AI 매매 시그널과 1,000대 글로벌 주식의 상세 분석, 자체 발행되는 2페이지 원본 리서치 보고서 PDF를 무제한으로 열람해 보세요.
       </p>
 
       {/* 핵심 혜택 리스트 */}

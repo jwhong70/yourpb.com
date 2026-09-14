@@ -98,9 +98,9 @@ export default function EtfPdfDownloadButton({
 
               {/* 설명 */}
               <p className="text-sm text-gray-300 leading-relaxed mb-6 font-normal">
-                <strong>{ticker}</strong>의 2페이지 심층 분석 원본 PDF 다운로드는 프리미엄 회원에게만 제공됩니다.
+                <strong>{ticker}</strong>의 2페이지 심층 분석 원본 PDF 다운로드는 프리미엄 회원 전용입니다.
                 <br className="hidden sm:inline" />
-                로그인 후 프리미엄 멤버십을 이용해 보세요.
+                프리미엄 구독 시 <strong className="text-white">투자 대가 20인의 AI 주식 분석 시그널</strong>과 <strong className="text-white">1,000대 글로벌 주식 정밀 분석</strong>, 그리고 <strong className="text-[#D4AF37]">모든 ETF/주식 리포트 PDF를 무제한 다운로드</strong>할 수 있습니다.
               </p>
 
               {/* 액션 버튼 */}
@@ -112,7 +112,7 @@ export default function EtfPdfDownloadButton({
                       className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 bg-[#D4AF37] hover:bg-[#c29d2f] active:scale-95 text-black font-black rounded-none text-sm transition-all cursor-pointer"
                     >
                       <Sparkles className="w-4 h-4 text-black" />
-                      <span>프리미엄 구독하고 PDF 받기</span>
+                      <span>프리미엄 구독하고 PDF 무제한 받기</span>
                       <ArrowRight className="w-4 h-4 text-black" />
                     </Link>
                     <Link
@@ -128,7 +128,7 @@ export default function EtfPdfDownloadButton({
                     className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 bg-linear-to-r from-gold to-yellow-accent hover:from-amber-600 hover:to-amber-500 active:scale-95 text-navy font-black rounded-none text-sm shadow-md transition-all cursor-pointer"
                   >
                     <Sparkles className="w-4 h-4 text-navy" />
-                    <span>프리미엄 멤버십 구독하기</span>
+                    <span>프리미엄 구독하고 PDF 무제한 받기</span>
                     <ArrowRight className="w-4 h-4 text-navy" />
                   </Link>
                 )}

@@ -159,11 +159,27 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
-                  <span className="text-sm sm:text-base text-gray-300">ETF/주식 상세 리뷰 무제한 조회</span>
+                  <span className="text-sm sm:text-base text-gray-300">
+                    <strong className="text-white font-bold">[주식]</strong> 투자 대가 20인 AI 매매 시그널 & 적정가치 분석
+                  </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
-                  <span className="text-sm sm:text-base text-gray-300">ETF/주식 리포트 무제한 다운로드</span>
+                  <span className="text-sm sm:text-base text-gray-300">
+                    <strong className="text-white font-bold">[주식]</strong> 1,000대 글로벌 주식 정밀 분석 (120주 주봉 캔들)
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
+                  <span className="text-sm sm:text-base text-gray-300">
+                    <strong className="text-white font-bold">[다운로드]</strong> ETF & 주식 2p 정밀 PDF 리포트 무제한 다운로드
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
+                  <span className="text-sm sm:text-base text-gray-300">
+                    <strong className="text-white font-bold">[매크로]</strong> VIP 거시경제 지표 및 자산배분 모델 조회
+                  </span>
                 </li>
               </ul>
             </div>
@@ -203,7 +219,7 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
                 <span className="text-4xl lg:text-5xl font-black tracking-tight text-white">₩25,000</span>
                 <span className="ml-2 text-sm font-semibold text-gray-500">/ 6개월</span>
               </div>
-              <p className="mt-2 text-xs text-gray-400">정가 ₩30,000 ➡️ ₩25,000 (추천 상품)</p>
+              <p className="mt-2 text-xs text-gray-400">정가 ₩30,000 ➡️ ₩25,000 (월 ₩4,166 상당 / 추천 상품)</p>
             </div>
 
             {/* 혜택 리스트 */}
@@ -211,11 +227,21 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
-                  <span className="text-sm sm:text-base text-gray-300 font-semibold">1개월 혜택 모두 포함</span>
+                  <span className="text-sm sm:text-base text-gray-300 font-semibold">
+                    1개월 멤버십의 모든 주식 분석 & PDF 다운로드 혜택 포함
+                  </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
-                  <span className="text-sm sm:text-base text-gray-300">이메일 자산분석 1회 무료 제공</span>
+                  <span className="text-sm sm:text-base text-gray-300">
+                    <strong className="text-white font-bold">[1:1 케어]</strong> 이메일 맞춤형 자산배분·포트폴리오 진단 1회 무료
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
+                  <span className="text-sm sm:text-base text-gray-300">
+                    <strong className="text-white font-bold">[VIP 특전]</strong> 월간 시황 브리프 및 모델 포트폴리오 리밸런싱 우선 제공
+                  </span>
                 </li>
               </ul>
             </div>

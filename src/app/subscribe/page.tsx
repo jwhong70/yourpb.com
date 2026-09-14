@@ -6,7 +6,7 @@ import SubscribeClient from './SubscribeClient';
 
 export const metadata = {
   title: '프리미엄 멤버십 구독 플랜 | YOURPB',
-  description: '당신의 피비 프리미엄 멤버십으로 ETF/주식 상세 리뷰 무제한 조회 및 리포트 무제한 다운로드 혜택을 이용해 보세요.',
+  description: '워런 버핏 등 투자 대가 20인의 AI 주식 분석 시그널, 1,000대 글로벌 주식 정밀 분석 및 ETF/주식 2페이지 원본 리서치 PDF 무제한 다운로드 혜택을 이용해 보세요.',
 };
 
 export default async function SubscribePage() {
@@ -24,9 +24,9 @@ export default async function SubscribePage() {
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white select-none">
               프리미엄으로 업그레이드
             </h1>
-            <p className="text-base sm:text-lg text-gray-400 font-medium">
-              최고의 글로벌 자산배분 전략과 실시간 마이크로/매크로 ETF·주식 리포트 다운로드 혜택을 통해<br className="hidden sm:inline" />
-              당신만의 견고한 자산 포트폴리오를 설계해 보세요.
+            <p className="text-base sm:text-lg text-gray-400 font-medium leading-relaxed">
+              워런 버핏 등 <strong className="text-white font-bold">투자 대가 20인의 AI 주식 시그널</strong>과 <strong className="text-white font-bold">1,000대 글로벌 주식 정밀 분석</strong>,<br className="hidden sm:inline" />
+              그리고 <strong className="text-[#D4AF37] font-bold">ETF 및 주식 2페이지 정밀 리서치 보고서 원본 PDF 다운로드</strong> 혜택을 무제한으로 누려보세요.
             </p>
           </div>
 
