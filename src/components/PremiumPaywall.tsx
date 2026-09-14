@@ -95,26 +95,28 @@ export default function PremiumPaywall({ isLoggedIn, returnUrl = '/' }: PremiumP
         {!isLoggedIn ? (
           <>
             <Link
-              href={loginUrl}
+              href={`/login?redirectTo=${encodeURIComponent(`/subscribe?returnUrl=${encodeURIComponent(returnUrl)}`)}`}
               className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 bg-[#D4AF37] hover:bg-[#c29d2f] active:scale-95 text-black font-black rounded-none shadow-lg shadow-[#D4AF37]/10 transition-all cursor-pointer text-base whitespace-nowrap"
             >
-              <span>로그인하기</span>
+              <Sparkles className="w-4.5 h-4.5 text-black" />
+              <span>프리미엄 구독 시작하기</span>
               <ArrowRight className="w-4.5 h-4.5 text-black" />
             </Link>
             <Link
-              href={signupUrl}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 border border-white/20 hover:bg-white/10 text-white font-bold rounded-none transition-all cursor-pointer text-base whitespace-nowrap"
+              href={loginUrl}
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 border border-white/20 hover:bg-white/10 text-white font-bold rounded-none transition-all cursor-pointer text-sm whitespace-nowrap"
             >
-              <span>무료 회원가입</span>
+              <span>기존 회원 로그인</span>
             </Link>
           </>
         ) : (
           <Link
-            href="/subscribe"
-            className="w-full sm:w-auto flex items-center justify-center gap-2.5 px-10 py-4 bg-linear-to-r from-gold to-yellow-accent hover:from-amber-600 hover:to-amber-500 active:scale-95 text-navy font-black rounded-2xl shadow-xl shadow-gold/20 transition-all cursor-pointer text-lg"
+            href={`/subscribe?returnUrl=${encodeURIComponent(returnUrl)}`}
+            className="w-full sm:w-auto flex items-center justify-center gap-2.5 px-10 py-4 bg-linear-to-r from-gold to-yellow-accent hover:from-amber-600 hover:to-amber-500 active:scale-95 text-navy font-black rounded-none shadow-xl shadow-gold/20 transition-all cursor-pointer text-lg"
           >
             <Sparkles className="w-5 h-5 text-navy" />
             <span>프리미엄 멤버십 구독하기</span>
+            <ArrowRight className="w-5 h-5 text-navy" />
           </Link>
         )}
       </div>

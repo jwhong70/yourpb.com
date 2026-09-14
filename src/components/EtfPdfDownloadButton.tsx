@@ -108,29 +108,28 @@ export default function EtfPdfDownloadButton({
                 {!isLoggedIn ? (
                   <>
                     <Link
-                      href={loginUrl}
+                      href={`/login?redirectTo=${encodeURIComponent(`/subscribe?returnUrl=${encodeURIComponent(returnUrl)}`)}`}
                       className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 bg-[#D4AF37] hover:bg-[#c29d2f] active:scale-95 text-black font-black rounded-none text-sm transition-all cursor-pointer"
                     >
-                      <span>로그인하고 PDF 받기</span>
-                      <ArrowRight className="w-4 h-4" />
+                      <Sparkles className="w-4 h-4 text-black" />
+                      <span>프리미엄 구독하고 PDF 받기</span>
+                      <ArrowRight className="w-4 h-4 text-black" />
                     </Link>
-                    <button
-                      onClick={() => {
-                        alert('프리미엄 멤버십 가입은 관리자에게 문의해 주세요. (support@yourpb.com)');
-                      }}
+                    <Link
+                      href={loginUrl}
                       className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3.5 border border-white/20 hover:bg-white/10 text-white font-bold rounded-none text-sm transition-all cursor-pointer"
                     >
-                      <ShieldCheck className="w-4 h-4 text-[#D4AF37]" />
-                      <span>구독 신청 안내</span>
-                    </button>
+                      <span>기존 회원 로그인</span>
+                    </Link>
                   </>
                 ) : (
                   <Link
-                    href="/subscribe"
+                    href={`/subscribe?returnUrl=${encodeURIComponent(returnUrl)}`}
                     className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 bg-linear-to-r from-gold to-yellow-accent hover:from-amber-600 hover:to-amber-500 active:scale-95 text-navy font-black rounded-none text-sm shadow-md transition-all cursor-pointer"
                   >
                     <Sparkles className="w-4 h-4 text-navy" />
                     <span>프리미엄 멤버십 구독하기</span>
+                    <ArrowRight className="w-4 h-4 text-navy" />
                   </Link>
                 )}
               </div>
