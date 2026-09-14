@@ -4,26 +4,15 @@ import Link from 'next/link';
 import {
   ArrowLeft,
   Award,
-  HelpCircle,
-  Download,
-  TrendingUp,
-  Info,
-  Database,
-  PieChart,
-  LayoutGrid,
-  FileSpreadsheet,
-  FileText,
-  Lock
 } from 'lucide-react';
 
 import dynamic from 'next/dynamic';
 import { unstable_cache } from 'next/cache';
 import { supabase as publicSupabase } from '@/lib/supabase';
-import { createClient } from '@/lib/supabase-server';
 import { getSessionUser } from '@/app/actions/auth';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import PremiumPaywall from '@/components/PremiumPaywall';
+import EtfPdfDownloadButton from '@/components/EtfPdfDownloadButton';
 
 // 차트 컴포넌트 Dynamic Import (모바일 초기 렌더링 최적화)
 const EtfAllocationCharts = dynamic(() => import('@/components/EtfAllocationCharts'), {
@@ -187,11 +176,7 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
 
   // 5. Storage Public URL 획득 (캐시 버스팅 적용으로 브라우저 이전 캐시 방지)
   const cacheKey = new Date(etfList.updated_at || Date.now()).getTime();
-  const posterUrl = `${publicSupabase.storage.from('upload').getPublicUrl(`poster-etf/${ticker}.png`).data.publicUrl}?t=${cacheKey}`;
-  const rawReportUrl = isPremium
-    ? publicSupabase.storage.from('upload').getPublicUrl(`report-etf/${ticker}.pdf`).data.publicUrl
-    : '';
-  const reportUrl = rawReportUrl ? `${rawReportUrl}?t=${cacheKey}` : '';
+  const reportUrl = `${publicSupabase.storage.from('upload').getPublicUrl(`report-etf/${ticker}.pdf`).data.publicUrl}?t=${cacheKey}`;
 
   // 포맷 헬퍼 함수
   const formatNum = (val: any, suffix = '') => {
@@ -217,10 +202,14 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
                 <span>{isFromMonthly ? '월간 브리프로 복귀' : '목록으로 복귀'}</span>
               </Link>
 
-              {isPremium && (
+              {isPremium ? (
                 <span className="flex items-center gap-1.5 text-xs font-bold text-black bg-yellow-accent border border-yellow-accent/40 px-3 py-1 rounded-full shadow-lg select-none">
                   <Award className="w-4 h-4 text-black" />
                   Premium Access
+                </span>
+              ) : (
+                <span className="flex items-center gap-1.5 text-xs font-bold text-gray-500 bg-gray-100 border border-gray-300 px-3 py-1 rounded-full select-none">
+                  Free Access
                 </span>
               )}
             </div>
@@ -242,236 +231,194 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
             </div>
           </div>
 
-          {/* 3. PREMIUM CONTENT AREA */}
-          <div className="relative">
+          {/* 3. ETF 대시보드 메인 영역 (비회원/회원 모두에게 오픈) */}
+          <div className="space-y-8">
 
-            {/* 일반 회원의 경우 블러 효과 및 상단 즉각 노출 자물쇠 가림막 적용 */}
-            {!isPremium && (
-              <div className="absolute inset-0 z-20 flex items-start justify-center p-4 pt-6 sm:pt-10 bg-background/20 backdrop-blur-md overflow-hidden">
-                <div className="w-full max-w-4xl mx-auto shadow-2xl">
-                  <PremiumPaywall
-                    isLoggedIn={isLoggedIn}
-                    returnUrl={`/etf/${ticker}${isFromMonthly ? '?from=monthly' : ''}`}
-                  />
-                </div>
-              </div>
-            )}
+            {/* 분류체계 박스, 개요, 가치평가지표를 반응형 3단 그리드로 웹(가로)/앱(세로) 배치 */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-            {/* 프리미엄 전용 대시보드 뷰포트 (비구독자에게는 백그라운드 블러 및 고정 Mock 수치 노출) */}
-            <div className={`space-y-8 select-none transition-all duration-500 ${!isPremium ? 'blur-md pointer-events-none opacity-40 select-none' : ''}`}>
-
-              {/* 분류체계 박스, 개요, 가치평가지표를 반응형 3단 그리드로 웹(가로)/앱(세로) 배치 */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-                {/* 1단: ETF 분류 체계 박스 (기존 BASIC INFO 영역) */}
-                <section className="p-4 sm:p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md flex flex-col justify-between relative overflow-hidden">
-                  <div className="absolute -right-20 -top-20 w-60 h-60 rounded-full bg-navy/20 blur-[60px] pointer-events-none" />
-                  <div>
-                    <div className="text-[#000000]/60 text-sm uppercase tracking-wider mb-2.5">
-                      <span>ETF 분류 체계</span>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="p-2.5 rounded-none bg-[#F9F8F6]">
-                        <span className="text-base font-semibold text-gray-500 block mb-0.5">대분류</span>
-                        <span className="text-base font-semibold text-gray-900 truncate block">
-                          {etfList.category || '-'}
-                        </span>
-                      </div>
-                      <div className="p-2.5 rounded-none bg-[#F9F8F6]">
-                        <span className="text-base font-semibold text-gray-500 block mb-0.5">중분류</span>
-                        <span className="text-base font-semibold text-gray-900 truncate block">
-                          {etfList.report || '-'}
-                        </span>
-                      </div>
-                      <div className="p-2.5 rounded-none bg-[#F9F8F6]">
-                        <span className="text-base font-semibold text-gray-500 block mb-0.5">세분류</span>
-                        <span className="text-base font-semibold text-gray-900 truncate block">
-                          {etfList.focus2 || '-'}
-                        </span>
-                      </div>
-                      <div className="p-2.5 rounded-none bg-[#F9F8F6]">
-                        <span className="text-base font-semibold text-gray-500 block mb-0.5">세세분류</span>
-                        <span className="text-base font-semibold text-gray-900 truncate block">
-                          {etfList.focus3 || '-'}
-                        </span>
-                      </div>
-                    </div>
+              {/* 1단: ETF 분류 체계 박스 (기존 BASIC INFO 영역) */}
+              <section className="p-4 sm:p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md flex flex-col justify-between relative overflow-hidden">
+                <div className="absolute -right-20 -top-20 w-60 h-60 rounded-full bg-navy/20 blur-[60px] pointer-events-none" />
+                <div>
+                  <div className="text-[#000000]/60 text-sm uppercase tracking-wider mb-2.5">
+                    <span>ETF 분류 체계</span>
                   </div>
-
-                  <div className="mt-3 p-2.5 rounded-none bg-[#F9F8F6] flex flex-col justify-between gap-0.5">
-                    <span className="text-base font-semibold text-gray-500">벤치마크 지수 (Index Tracked)</span>
-                    <span className="text-base font-semibold text-gray-900 truncate">
-                      {etfList.index_tracked || '해당사항 없음'}
-                    </span>
-                  </div>
-                </section>
-
-                {/* 2단: 개요 (Description) */}
-                <div className="p-4 sm:p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md flex flex-col justify-between">
-                  <div>
-                    <div className="text-[#000000]/60 text-sm uppercase tracking-wider mb-2.5">
-                      <span>ETF 개요 및 투자 포인트</span>
-                    </div>
-                    <h3 className="text-xl font-extrabold text-gray-900 mb-2.5 select-none">펀드 분석 요약</h3>
-                    <p className="text-gray-900 text-base font-semibold leading-relaxed whitespace-pre-line font-sans">
-                      {etfList.description || '이 펀드에 대한 상세 리서치 요약 정보가 아직 등록되지 않았습니다.'}
-                    </p>
-                  </div>
-                </div>
-
-                {/* 3단: Premium Info 수치 */}
-                <div className="p-4 sm:p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md space-y-4">
-                  <div className="text-[#000000]/60 text-sm uppercase tracking-wider mb-2">
-                    <span>펀드 핵심 평가지표 (Premium)</span>
-                  </div>
-                  <h3 className="text-xl font-extrabold text-gray-900 select-none">가치 평가 & 분배 지표</h3>
-
-                  <div className="space-y-2.5 pt-1.5">
-                    <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
-                      <span className="text-base font-semibold text-gray-500">PER (주가수익비율)</span>
-                      <span className="text-base font-semibold text-gray-900">
-                        {isPremium ? formatNum(etfInfo?.pe_ratio) : '**.*'}
+                  <div className="space-y-2">
+                    <div className="p-2.5 rounded-none bg-[#F9F8F6]">
+                      <span className="text-base font-semibold text-gray-500 block mb-0.5">대분류</span>
+                      <span className="text-base font-semibold text-gray-900 truncate block">
+                        {etfList.category || '-'}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
-                      <span className="text-base font-semibold text-gray-500">PBR (주가순자산비율)</span>
-                      <span className="text-base font-semibold text-gray-900">
-                        {isPremium ? formatNum(etfInfo?.pb_ratio) : '**.*'}
+                    <div className="p-2.5 rounded-none bg-[#F9F8F6]">
+                      <span className="text-base font-semibold text-gray-500 block mb-0.5">중분류</span>
+                      <span className="text-base font-semibold text-gray-900 truncate block">
+                        {etfList.report || '-'}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
-                      <span className="text-base font-semibold text-gray-500">분배율 (Distribution Yield)</span>
-                      <span className="text-base font-semibold text-gray-900">
-                        {isPremium ? formatPercent(etfInfo?.distribution_yield) : '**.*%'}
+                    <div className="p-2.5 rounded-none bg-[#F9F8F6]">
+                      <span className="text-base font-semibold text-gray-500 block mb-0.5">세분류</span>
+                      <span className="text-base font-semibold text-gray-900 truncate block">
+                        {etfList.focus2 || '-'}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-base font-semibold text-gray-500">만기수익률 (YTM)</span>
-                      <span className="text-base font-semibold text-gray-900">
-                        {isPremium ? formatPercent(etfInfo?.yield_to_maturity) : '**.*%'}
+                    <div className="p-2.5 rounded-none bg-[#F9F8F6]">
+                      <span className="text-base font-semibold text-gray-500 block mb-0.5">세세분류</span>
+                      <span className="text-base font-semibold text-gray-900 truncate block">
+                        {etfList.focus3 || '-'}
                       </span>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* 리서치 보고서 PDF 다운로드 (포스터 제외 및 버튼 단독 노출) */}
-              <div className="flex justify-center py-4">
-                {isPremium ? (
-                  <a
-                    href={reportUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full max-w-md flex items-center justify-center gap-2.5 px-6 py-4.5 bg-[#000000] hover:bg-gray-900 active:scale-95 text-white font-black rounded-none shadow-lg transition-all cursor-pointer text-base"
-                  >
-                    <Download className="w-5 h-5" />
-                    <span>보고서 PDF 다운로드</span>
-                  </a>
-                ) : (
-                  <button
-                    disabled
-                    className="w-full max-w-md flex items-center justify-center gap-2.5 px-6 py-4.5 bg-gray-100 text-gray-400 font-extrabold rounded-none cursor-not-allowed text-base border border-gray-200"
-                  >
-                    <Download className="w-5 h-5" />
-                    <span>보고서 다운로드 (구독 회원 전용)</span>
-                  </button>
-                )}
-              </div>
-
-              {/* 자산 비중 분석 및 보유 10종목 그리드 배치 */}
-              <section className="pt-2">
-                {/* 웹은 가로로 3박스 배치, 앱은 세로로 3박스 배치 */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-                  {/* 1열 & 2열: 자산배분 차트 (개발단계별 비중, 국가별 비중) */}
-                  <div className="lg:col-span-2 space-y-4">
-                    <EtfAllocationCharts
-                      allocations={isPremium ? allocations : [
-                        { allocation_type: '국가', category_name: '미국', allocation_pct: 65 },
-                        { allocation_type: '국가', category_name: '한국', allocation_pct: 20 },
-                        { allocation_type: '섹터', category_name: '기술', allocation_pct: 50 },
-                        { allocation_type: '섹터', category_name: '금융', allocation_pct: 30 },
-                      ]}
-                      source="yfinance"
-                    />
-                  </div>
-
-                  {/* 3열: 보유 비중 상위 10종목 (Table) */}
-                  <div className="lg:h-115 p-6 sm:p-8 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md space-y-4 flex flex-col justify-between">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between pb-3">
-                        <div>
-                          <h3 className="text-xl font-extrabold text-gray-900 tracking-tight select-none">보유 비중 상위 10종목</h3>
-                        </div>
-                      </div>
-
-                      {holdings.length === 0 ? (
-                        <div className="flex items-center justify-center h-30 text-gray-400 text-base">
-                          보유종목 편입 정보가 없습니다.
-                        </div>
-                      ) : (
-                        <div className="overflow-y-auto overflow-x-hidden max-h-75 scrollbar-thin rounded-none border-t border-b border-t-white/10 border-b-white/10 border-l-0 border-r-0 bg-[#F9F8F6]">
-                          <table className="w-full table-fixed text-left border-collapse text-base">
-                            <thead>
-                              <tr className="bg-[#000000] text-white font-semibold text-base uppercase select-none">
-                                <th className="py-2 px-2 text-white font-semibold w-12 text-center">순위</th>
-                                <th className="py-2 px-2 text-white font-semibold">종목명</th>
-                                <th className="py-2 px-2 text-center text-white font-semibold w-20">비중</th>
-                              </tr>
-                            </thead>
-                            <tbody className="divide-y divide-[#000000] text-base font-semibold text-gray-900">
-                              {(isPremium ? holdings : holdings.slice(0, 10).map((h, i) => ({ ...h, holding_symbol: '••••', holding_name: 'Premium Lock' }))).map((h, idx) => (
-                                <tr
-                                  key={idx}
-                                  className="hover:bg-black/5 transition-colors cursor-pointer"
-                                >
-                                  <td className="py-2.5 px-2 font-semibold text-gray-500 text-center">{idx + 1}</td>
-                                  <td className="py-2.5 px-2 truncate font-semibold" title={h.holding_name}>
-                                    {h.holding_name || '-'}
-                                  </td>
-                                  <td className="py-2.5 px-2 text-center font-semibold text-gray-900 whitespace-nowrap">
-                                    {isPremium ? formatPercent(h.allocation_pct) : '•.••%'}
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="pt-2 text-sm text-gray-500 flex justify-between items-center select-none">
-                      <span>기준: 순자산 대비 편입 비중</span>
-                      <span className="font-mono text-[10px]">source: yfinance</span>
-                    </div>
-                  </div>
-
+                <div className="mt-3 p-2.5 rounded-none bg-[#F9F8F6] flex flex-col justify-between gap-0.5">
+                  <span className="text-base font-semibold text-gray-500">벤치마크 지수 (Index Tracked)</span>
+                  <span className="text-base font-semibold text-gray-900 truncate">
+                    {etfList.index_tracked || '해당사항 없음'}
+                  </span>
                 </div>
               </section>
 
-              {/* 주가 추이 및 수익률 성과 지표 반응형 그리드 배치 (웹: 가로, 앱: 세로) */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <EtfCandleChart
-                  prices={isPremium ? prices : prices.map((p) => ({
-                    ...p,
-                    open: 100,
-                    high: 105,
-                    low: 95,
-                    close: 102
-                  }))}
-                  source="yfinance"
-                />
-                <EtfPerformanceChart
-                  yield_1w={isPremium ? yield_1w : 1.2}
-                  yield_5w={isPremium ? yield_5w : 3.5}
-                  yield_20w={isPremium ? yield_20w : 12.4}
-                  yield_60w={isPremium ? yield_60w : 24.8}
-                  yield_120w={isPremium ? yield_120w : 52.1}
-                  source="yfinance"
-                />
+              {/* 2단: 개요 (Description) */}
+              <div className="p-4 sm:p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md flex flex-col justify-between">
+                <div>
+                  <div className="text-[#000000]/60 text-sm uppercase tracking-wider mb-2.5">
+                    <span>ETF 개요 및 투자 포인트</span>
+                  </div>
+                  <h3 className="text-xl font-extrabold text-gray-900 mb-2.5 select-none">펀드 분석 요약</h3>
+                  <p className="text-gray-900 text-base font-semibold leading-relaxed whitespace-pre-line font-sans">
+                    {etfList.description || '이 펀드에 대한 상세 리서치 요약 정보가 아직 등록되지 않았습니다.'}
+                  </p>
+                </div>
               </div>
 
+              {/* 3단: 핵심 평가지표 수치 (모두에게 공개) */}
+              <div className="p-4 sm:p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md space-y-4">
+                <div className="text-[#000000]/60 text-sm uppercase tracking-wider mb-2">
+                  <span>펀드 핵심 평가지표</span>
+                </div>
+                <h3 className="text-xl font-extrabold text-gray-900 select-none">가치 평가 & 분배 지표</h3>
+
+                <div className="space-y-2.5 pt-1.5">
+                  <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
+                    <span className="text-base font-semibold text-gray-500">PER (주가수익비율)</span>
+                    <span className="text-base font-semibold text-gray-900">
+                      {formatNum(etfInfo?.pe_ratio)}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
+                    <span className="text-base font-semibold text-gray-500">PBR (주가순자산비율)</span>
+                    <span className="text-base font-semibold text-gray-900">
+                      {formatNum(etfInfo?.pb_ratio)}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
+                    <span className="text-base font-semibold text-gray-500">분배율 (Distribution Yield)</span>
+                    <span className="text-base font-semibold text-gray-900">
+                      {formatPercent(etfInfo?.distribution_yield)}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-base font-semibold text-gray-500">만기수익률 (YTM)</span>
+                    <span className="text-base font-semibold text-gray-900">
+                      {formatPercent(etfInfo?.yield_to_maturity)}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            {/* 리서치 보고서 PDF 다운로드 버튼 (비회원/무료회원은 클릭 시 프리미엄 안내 모달) */}
+            <EtfPdfDownloadButton
+              ticker={ticker}
+              reportUrl={reportUrl}
+              isPremium={isPremium}
+              isLoggedIn={isLoggedIn}
+              returnUrl={`/etf/${ticker}${isFromMonthly ? '?from=monthly' : ''}`}
+            />
+
+            {/* 자산 비중 분석 및 보유 10종목 그리드 배치 */}
+            <section className="pt-2">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                {/* 1열 & 2열: 자산배분 차트 (개발단계별 비중, 국가별 비중) */}
+                <div className="lg:col-span-2 space-y-4">
+                  <EtfAllocationCharts
+                    allocations={allocations}
+                    source="yfinance"
+                  />
+                </div>
+
+                {/* 3열: 보유 비중 상위 10종목 (Table) */}
+                <div className="lg:h-115 p-6 sm:p-8 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md space-y-4 flex flex-col justify-between">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between pb-3">
+                      <div>
+                        <h3 className="text-xl font-extrabold text-gray-900 tracking-tight select-none">보유 비중 상위 10종목</h3>
+                      </div>
+                    </div>
+
+                    {holdings.length === 0 ? (
+                      <div className="flex items-center justify-center h-30 text-gray-400 text-base">
+                        보유종목 편입 정보가 없습니다.
+                      </div>
+                    ) : (
+                      <div className="overflow-y-auto overflow-x-hidden max-h-75 scrollbar-thin rounded-none border-t border-b border-t-white/10 border-b-white/10 border-l-0 border-r-0 bg-[#F9F8F6]">
+                        <table className="w-full table-fixed text-left border-collapse text-base">
+                          <thead>
+                            <tr className="bg-[#000000] text-white font-semibold text-base uppercase select-none">
+                              <th className="py-2 px-2 text-white font-semibold w-12 text-center">순위</th>
+                              <th className="py-2 px-2 text-white font-semibold">종목명</th>
+                              <th className="py-2 px-2 text-center text-white font-semibold w-20">비중</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-[#000000] text-base font-semibold text-gray-900">
+                            {holdings.map((h: any, idx: number) => (
+                              <tr
+                                key={idx}
+                                className="hover:bg-black/5 transition-colors cursor-pointer"
+                              >
+                                <td className="py-2.5 px-2 font-semibold text-gray-500 text-center">{idx + 1}</td>
+                                <td className="py-2.5 px-2 truncate font-semibold" title={h.holding_name}>
+                                  {h.holding_name || '-'}
+                                </td>
+                                <td className="py-2.5 px-2 text-center font-semibold text-gray-900 whitespace-nowrap">
+                                  {formatPercent(h.allocation_pct)}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="pt-2 text-sm text-gray-500 flex justify-between items-center select-none">
+                    <span>기준: 순자산 대비 편입 비중</span>
+                    <span className="font-mono text-[10px]">source: yfinance</span>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+
+            {/* 주가 추이 및 수익률 성과 지표 반응형 그리드 배치 (웹: 가로, 앱: 세로) */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <EtfCandleChart
+                prices={prices}
+                source="yfinance"
+              />
+              <EtfPerformanceChart
+                yield_1w={yield_1w}
+                yield_5w={yield_5w}
+                yield_20w={yield_20w}
+                yield_60w={yield_60w}
+                yield_120w={yield_120w}
+                source="yfinance"
+              />
+            </div>
+
           </div>
         </div>
       </main>
