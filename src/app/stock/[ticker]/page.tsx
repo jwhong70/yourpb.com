@@ -279,11 +279,14 @@ export default async function StockDetailPage({ params }: PageProps) {
           {/* 3. PREMIUM CONTENT AREA */}
           <div className="relative">
 
-            {/* 일반 회원의 경우 블러 효과 및 자물쇠 가림막 적용 */}
+            {/* 일반 회원의 경우 블러 효과 및 상단 즉각 노출 자물쇠 가림막 적용 */}
             {!isPremium && (
-              <div className="absolute inset-0 z-20 flex items-center justify-center p-4 sm:p-6 bg-background/20 backdrop-blur-md rounded-3xl overflow-hidden">
+              <div className="absolute inset-0 z-20 flex items-start justify-center p-4 pt-6 sm:pt-10 bg-background/20 backdrop-blur-md overflow-hidden">
                 <div className="w-full max-w-4xl mx-auto shadow-2xl">
-                  <PremiumPaywall isLoggedIn={isLoggedIn} />
+                  <PremiumPaywall
+                    isLoggedIn={isLoggedIn}
+                    returnUrl={`/stock/${ticker}`}
+                  />
                 </div>
               </div>
             )}

@@ -114,7 +114,7 @@ export default function Header({ initialUser }: HeaderProps) {
               </div>
             ) : (
               <Link
-                href="/login"
+                href={`/login?redirectTo=${encodeURIComponent(pathname)}`}
                 className="flex items-center gap-1.5 px-4.5 py-1.5 bg-[#D4AF37] hover:opacity-90 active:scale-95 text-black text-sm font-black rounded-xl shadow-xs transition-all cursor-pointer"
               >
                 <LogIn className="w-3.5 h-3.5" />
@@ -189,7 +189,7 @@ export default function Header({ initialUser }: HeaderProps) {
                 </div>
               ) : (
                 <Link
-                  href="/login"
+                  href={`/login?redirectTo=${encodeURIComponent(pathname)}`}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#D4AF37] hover:opacity-90 text-black rounded-xl text-sm font-black shadow-md transition-colors cursor-pointer"
                 >

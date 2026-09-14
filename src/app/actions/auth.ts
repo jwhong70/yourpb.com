@@ -13,6 +13,7 @@ export interface SignUpParams {
 export interface SignInParams {
   email: string;
   password: string;
+  redirectTo?: string;
 }
 
 /**
@@ -50,11 +51,11 @@ export async function signUp(params: SignUpParams) {
 /**
  * 로그인 Action
  * - 이메일과 비밀번호로 로그인 처리합니다.
- * - 성공 시 홈('/')으로 리다이렉트합니다.
+ * - 성공 시 지정된 redirectTo 또는 홈('/')으로 리다이렉트합니다.
  */
 export async function signIn(params: SignInParams) {
   const supabase = await createClient();
-  const { email, password } = params;
+  const { email, password, redirectTo } = params;
 
   if (!email || !password) {
     return { error: '이메일과 비밀번호를 입력해 주세요.' };
@@ -74,7 +75,8 @@ export async function signIn(params: SignInParams) {
   cookieStore.set('demo_user', '', { expires: new Date(0), path: '/' });
   cookieStore.set('demo_membership_status', '', { expires: new Date(0), path: '/' });
 
-  redirect('/');
+  const targetUrl = redirectTo && redirectTo.startsWith('/') ? redirectTo : '/';
+  redirect(targetUrl);
 }
 
 /**
@@ -151,7 +153,7 @@ export async function getSessionUser() {
 /**
  * 구글 소셜 로그인 Action
  */
-export async function signInWithGoogle() {
+export async function signInWithGoogle(redirectTo?: string) {
   const supabase = await createClient();
 
   const { headers } = await import('next/headers');
@@ -162,10 +164,13 @@ export async function signInWithGoogle() {
   const protocol = isLocal ? 'http' : (forwardedProto || 'https');
   const origin = process.env.NEXT_PUBLIC_SITE_URL || `${protocol}://${host}`;
 
+  const nextPath = redirectTo && redirectTo.startsWith('/') ? redirectTo : '/';
+  const callbackUrl = `${origin}/auth/callback?next=${encodeURIComponent(nextPath)}`;
+
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${origin}/auth/callback`,
+      redirectTo: callbackUrl,
     },
   });
 
@@ -181,7 +186,7 @@ export async function signInWithGoogle() {
 /**
  * 카카오 소셜 로그인 Action
  */
-export async function signInWithKakao() {
+export async function signInWithKakao(redirectTo?: string) {
   const supabase = await createClient();
 
   const { headers } = await import('next/headers');
@@ -192,10 +197,13 @@ export async function signInWithKakao() {
   const protocol = isLocal ? 'http' : (forwardedProto || 'https');
   const origin = process.env.NEXT_PUBLIC_SITE_URL || `${protocol}://${host}`;
 
+  const nextPath = redirectTo && redirectTo.startsWith('/') ? redirectTo : '/';
+  const callbackUrl = `${origin}/auth/callback?next=${encodeURIComponent(nextPath)}`;
+
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'kakao',
     options: {
-      redirectTo: `${origin}/auth/callback`,
+      redirectTo: callbackUrl,
     },
   });
 

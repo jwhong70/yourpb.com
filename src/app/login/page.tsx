@@ -22,6 +22,7 @@ function LoginContent() {
 
   const searchParams = useSearchParams();
   const urlError = searchParams.get('error');
+  const redirectTo = searchParams.get('redirectTo') || searchParams.get('next') || '/';
 
   useEffect(() => {
     if (urlError) {
@@ -37,7 +38,7 @@ function LoginContent() {
 
     try {
       if (activeTab === 'login') {
-        const result = await signIn({ email, password });
+        const result = await signIn({ email, password, redirectTo });
         if (result && result.error) {
           setError(result.error);
         }
@@ -239,7 +240,7 @@ function LoginContent() {
                   setIsLoading(true);
                   setError(null);
                   try {
-                    await signInWithGoogle();
+                    await signInWithGoogle(redirectTo);
                   } catch (err: any) {
                     setError(err.message || '구글 로그인 중 오류가 발생했습니다.');
                   } finally {
@@ -265,7 +266,7 @@ function LoginContent() {
                   setIsLoading(true);
                   setError(null);
                   try {
-                    await signInWithKakao();
+                    await signInWithKakao(redirectTo);
                   } catch (err: any) {
                     setError(err.message || '카카오 로그인 중 오류가 발생했습니다.');
                   } finally {

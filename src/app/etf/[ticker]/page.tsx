@@ -41,6 +41,7 @@ const EtfPerformanceChart = dynamic(() => import('@/components/EtfPerformanceCha
 
 interface PageProps {
   params: Promise<{ ticker: string }>;
+  searchParams: Promise<{ from?: string }>;
 }
 
 async function fetchEtfDetailFromDb(tickerInput: string) {
@@ -154,9 +155,11 @@ const getCachedEtfDetail = (ticker: string) => {
   )();
 };
 
-export default async function EtfDetailPage({ params }: PageProps) {
+export default async function EtfDetailPage({ params, searchParams }: PageProps) {
   // 1. URL 매개변수 디코딩 및 티커 정제
   const { ticker: rawTicker } = await params;
+  const { from } = (await searchParams) || {};
+  const isFromMonthly = from === 'monthly';
   const tickerInput = decodeURIComponent(rawTicker || '').trim();
 
   // 2. 캐시된 ETF 상세 데이터 조회
@@ -207,11 +210,11 @@ export default async function EtfDetailPage({ params }: PageProps) {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <Link
-                href="/etf"
+                href={isFromMonthly ? '/monthly' : '/etf'}
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#000000] hover:bg-gray-900 active:scale-95 text-white font-bold rounded-none shadow-md transition-all cursor-pointer group text-base"
               >
                 <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                <span>목록으로 복귀</span>
+                <span>{isFromMonthly ? '월간 브리프로 복귀' : '목록으로 복귀'}</span>
               </Link>
 
               {isPremium && (
@@ -242,11 +245,14 @@ export default async function EtfDetailPage({ params }: PageProps) {
           {/* 3. PREMIUM CONTENT AREA */}
           <div className="relative">
 
-            {/* 일반 회원의 경우 블러 효과 및 자물쇠 가림막 적용 */}
+            {/* 일반 회원의 경우 블러 효과 및 상단 즉각 노출 자물쇠 가림막 적용 */}
             {!isPremium && (
-              <div className="absolute inset-0 z-20 flex items-center justify-center p-4 sm:p-6 bg-background/20 backdrop-blur-md rounded-3xl overflow-hidden">
+              <div className="absolute inset-0 z-20 flex items-start justify-center p-4 pt-6 sm:pt-10 bg-background/20 backdrop-blur-md overflow-hidden">
                 <div className="w-full max-w-4xl mx-auto shadow-2xl">
-                  <PremiumPaywall isLoggedIn={isLoggedIn} />
+                  <PremiumPaywall
+                    isLoggedIn={isLoggedIn}
+                    returnUrl={`/etf/${ticker}${isFromMonthly ? '?from=monthly' : ''}`}
+                  />
                 </div>
               </div>
             )}

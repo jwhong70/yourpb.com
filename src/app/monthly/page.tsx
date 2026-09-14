@@ -57,32 +57,26 @@ const getCachedMonthlyData = unstable_cache(
   async () => {
     const activeEtfTickers = PB_MODEL_PORTFOLIO.map((p) => p.ticker).filter(Boolean);
 
-    const [etfListRes, latestPriceDateRes] = await Promise.all([
+    const [etfListRes, pricesRes] = await Promise.all([
       publicSupabase
         .from('etf_list')
         .select('ticker, name, category, report, leverage, description')
         .in('ticker', activeEtfTickers),
       publicSupabase
         .from('etf_prices')
-        .select('date')
-        .order('date', { ascending: false })
-        .limit(1),
+        .select('ticker, date, close, yield_1w, yield_5w, yield_20w')
+        .in('ticker', activeEtfTickers)
+        .order('date', { ascending: false }),
     ]);
 
     let priceMap: Record<string, any> = {};
-    if (latestPriceDateRes.data && latestPriceDateRes.data.length > 0) {
-      const latestDate = latestPriceDateRes.data[0].date;
-      const { data: prices } = await publicSupabase
-        .from('etf_prices')
-        .select('ticker, close, yield_1w, yield_5w, yield_20w')
-        .eq('date', latestDate)
-        .in('ticker', activeEtfTickers);
-
-      if (prices) {
-        prices.forEach((p) => {
+    if (pricesRes.data) {
+      pricesRes.data.forEach((p) => {
+        // ticker별 가장 최근 날짜의 레코드 1건만 최초 매핑
+        if (!priceMap[p.ticker]) {
           priceMap[p.ticker] = p;
-        });
-      }
+        }
+      });
     }
 
     const etfMap: Record<string, any> = {};
@@ -111,7 +105,7 @@ const getCachedMonthlyData = unstable_cache(
 
     return { featuredEtfs };
   },
-  ['monthly-page-etf-data-v1'],
+  ['monthly-page-etf-data-v2'],
   { revalidate: 3600, tags: ['monthly-brief'] }
 );
 
@@ -349,7 +343,7 @@ export default async function MonthlyBriefPage() {
                         <div className="flex items-center gap-4 print:gap-1.5">
                           {row.ticker ? (
                             <Link
-                              href={`/etf/${row.ticker}`}
+                              href={`/etf/${row.ticker}?from=monthly`}
                               className="px-2 py-0.5 print:px-1.5 print:py-0 border border-black text-[#000000] text-xs print:text-[9.5px] font-bold font-mono rounded-none hover:bg-black hover:text-white transition-colors"
                             >
                               {row.ticker}
@@ -476,7 +470,7 @@ export default async function MonthlyBriefPage() {
                     <div>
                       {/* 포스터 이미지 & 비중 뱃지 */}
                       <Link
-                        href={`/etf/${item.ticker}`}
+                        href={`/etf/${item.ticker}?from=monthly`}
                         className="block relative aspect-2/3 w-full bg-navy/60 overflow-hidden"
                       >
                         <div className="absolute top-2 left-2 z-10 flex items-center gap-1.5">
@@ -504,7 +498,7 @@ export default async function MonthlyBriefPage() {
                               </span>
                             )}
                           </div>
-                          <Link href={`/etf/${item.ticker}`}>
+                          <Link href={`/etf/${item.ticker}?from=monthly`}>
                             <h3 className="text-base font-extrabold text-black group-hover:text-blue-primary transition-colors line-clamp-1">
                               {item.name} ({item.ticker})
                             </h3>
@@ -532,7 +526,7 @@ export default async function MonthlyBriefPage() {
                     {/* 상세 리포트 열람 버튼 */}
                     <div className="p-4 pt-0">
                       <Link
-                        href={`/etf/${item.ticker}`}
+                        href={`/etf/${item.ticker}?from=monthly`}
                         className="w-full py-2.5 px-3 bg-black hover:bg-gray-900 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs"
                       >
                         <span>정밀 리포트 분석 열람</span>
