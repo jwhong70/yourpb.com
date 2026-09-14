@@ -12,7 +12,22 @@ export const metadata: Metadata = {
 };
 
 const getCachedMacroRawData = unstable_cache(
-  async (dateParam: string, startDateQ: string, startYearWeo: number) => {
+  async () => {
+    const now = new Date();
+
+    // 1. 주간/월간용 최근 1.5년 전 날짜 (안전 여유분)
+    const date1YearAgo = new Date();
+    date1YearAgo.setMonth(now.getMonth() - 18);
+    const dateParam = date1YearAgo.toISOString().split('T')[0];
+
+    // 2. 분기용 최근 6년 전 날짜
+    const date5YearsAgo = new Date();
+    date5YearsAgo.setFullYear(now.getFullYear() - 6);
+    const startDateQ = date5YearsAgo.toISOString().split('T')[0];
+
+    // 3. 연간용 최근 11년 전 연도
+    const startYearWeo = now.getFullYear() - 11;
+
     const fetchAll = async (query: any) => {
       let allData: any[] = [];
       let page = 0;
@@ -90,29 +105,15 @@ const getCachedMacroRawData = unstable_cache(
       indexList: indexListRaw || []
     };
   },
-  ['macro-raw-data-cache-v2'],
+  ['macro-raw-data-cache-v4'],
   { revalidate: 3600, tags: ['macro-page'] }
 );
 
 export default async function MacroPage() {
-  const user = await getSessionUser();
-
-  const now = new Date();
-
-  // 1. 주간/월간용 최근 1년 전 날짜
-  const date1YearAgo = new Date();
-  date1YearAgo.setFullYear(now.getFullYear() - 1);
-  const startDate = date1YearAgo.toISOString().split('T')[0];
-
-  // 2. 분기용 최근 5년 전 날짜
-  const date5YearsAgo = new Date();
-  date5YearsAgo.setFullYear(now.getFullYear() - 5);
-  const startDateQ = date5YearsAgo.toISOString().split('T')[0];
-
-  // 3. 연간용 최근 10년 전 연도
-  const startYearWeo = now.getFullYear() - 10;
-
-  const rawData = await getCachedMacroRawData(startDate, startDateQ, startYearWeo);
+  const [user, rawData] = await Promise.all([
+    getSessionUser(),
+    getCachedMacroRawData(),
+  ]);
 
   const weo = rawData.weo;
   const oecd = rawData.oecd;
