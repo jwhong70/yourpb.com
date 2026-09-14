@@ -8,7 +8,12 @@ import { useSearchParams } from 'next/navigation';
 import { signIn, signUp, signInWithGoogle, signInWithKakao } from '../actions/auth';
 
 function LoginContent() {
-  const [activeTab, setActiveTab] = useState<'login' | 'signup'>('login');
+  const searchParams = useSearchParams();
+  const urlError = searchParams.get('error');
+  const redirectTo = searchParams.get('redirectTo') || searchParams.get('next') || '/';
+  const initialTab = searchParams.get('tab') === 'signup' ? 'signup' : 'login';
+
+  const [activeTab, setActiveTab] = useState<'login' | 'signup'>(initialTab);
 
   // Form states
   const [name, setName] = useState('');
@@ -19,10 +24,6 @@ function LoginContent() {
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  const searchParams = useSearchParams();
-  const urlError = searchParams.get('error');
-  const redirectTo = searchParams.get('redirectTo') || searchParams.get('next') || '/';
 
   useEffect(() => {
     if (urlError) {

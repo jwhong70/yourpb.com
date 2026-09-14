@@ -31,6 +31,7 @@ export default function PremiumPaywall({ isLoggedIn, returnUrl = '/' }: PremiumP
   ];
 
   const loginUrl = `/login?redirectTo=${encodeURIComponent(returnUrl)}`;
+  const signupUrl = `/login?tab=signup&redirectTo=${encodeURIComponent(returnUrl)}`;
 
   return (
     <div className="relative overflow-hidden rounded-none bg-[#000000] border border-white/15 py-12 px-6 sm:px-12 lg:px-16 text-center shadow-2xl">
@@ -97,17 +98,15 @@ export default function PremiumPaywall({ isLoggedIn, returnUrl = '/' }: PremiumP
               href={loginUrl}
               className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 bg-[#D4AF37] hover:bg-[#c29d2f] active:scale-95 text-black font-black rounded-none shadow-lg shadow-[#D4AF37]/10 transition-all cursor-pointer text-base whitespace-nowrap"
             >
-              로그인하고 시작하기
+              <span>로그인하기</span>
               <ArrowRight className="w-4.5 h-4.5 text-black" />
             </Link>
-            <span className="text-white/40 text-sm sm:text-base">또는</span>
-            <button
-              onClick={() => alert('프리미엄 멤버십 가입은 관리자에게 문의해 주세요. (support@yourpb.com)')}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 border border-white/20 hover:bg-white/5 hover:text-white text-white/80 font-black rounded-none transition-all cursor-pointer text-base whitespace-nowrap"
+            <Link
+              href={signupUrl}
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 border border-white/20 hover:bg-white/10 text-white font-bold rounded-none transition-all cursor-pointer text-base whitespace-nowrap"
             >
-              <ShieldCheck className="w-5 h-5 text-[#D4AF37]" />
-              <span>구독 신청 안내</span>
-            </button>
+              <span>무료 회원가입</span>
+            </Link>
           </>
         ) : (
           <Link

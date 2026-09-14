@@ -250,13 +250,9 @@ export default function Filter({
       : val.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   };
 
-  // 행 클릭 시 상세 페이지 이동 제어
+  // 행 클릭 시 상세 페이지 이동 제어 (비회원/무료회원도 상세 페이지의 안내 뷰포트로 이동)
   const handleRowClick = (ticker: string) => {
-    if (isPremium) {
-      router.push(`/stock/${ticker}`);
-    } else {
-      alert('상세 조회는 Premium 회원만 이용 가능합니다. 프리미엄 멤버십 가입은 관리자에게 문의해 주세요. (support@yourpb.com)');
-    }
+    router.push(`/stock/${ticker}`);
   };
 
   return (
