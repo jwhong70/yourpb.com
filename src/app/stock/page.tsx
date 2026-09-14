@@ -15,50 +15,73 @@ export const metadata = {
 
 const getCachedStocksData = unstable_cache(
   async () => {
-    // 1. stock_list 전체 종목 조회 (1,000건 제한 방지를 위해 limit(2000) 명시)
-    const { data: stocks, error: stockError } = await publicSupabase
-      .from('stock_list')
-      .select('ticker, name, sector2, industry2, interest')
-      .order('ticker')
-      .limit(2000);
+    // 1. stock_list 전체 종목 조회 (PostgREST 1000건 제한 방지를 위해 병렬 range 조회)
+    const [page1, page2] = await Promise.all([
+      publicSupabase
+        .from('stock_list')
+        .select('ticker, name, sector2, industry2, interest')
+        .order('ticker')
+        .range(0, 999),
+      publicSupabase
+        .from('stock_list')
+        .select('ticker, name, sector2, industry2, interest')
+        .order('ticker')
+        .range(1000, 1999),
+    ]);
 
-    if (stockError) {
-      console.error('Error fetching stock list:', stockError);
+    const stocks = [...(page1.data || []), ...(page2.data || [])];
+
+    if (stocks.length === 0 && page1.error) {
+      console.error('Error fetching stock list:', page1.error);
       return [];
     }
 
-    // 2. stock_prices 에서 최근 2주차 날짜(max dates) 구하기 (거래소별 휴장일/기준일 차이 대응)
-    const { data: latestDateRows } = await publicSupabase
-      .from('stock_prices')
-      .select('date')
-      .order('date', { ascending: false })
-      .limit(30);
-
-    let pricesMap: Record<string, any> = {};
-
-    const uniqueDates = Array.from(new Set((latestDateRows || []).map((r) => r.date))).slice(0, 3);
-
-    if (uniqueDates.length > 0) {
-      // 3. 최근 날짜 범위의 stock_prices 데이터 조회 (1000건 이상 커버를 위해 limit(3000) 명시)
-      const { data: prices, error: priceError } = await publicSupabase
+    // 2. stock_prices 에서 최신 주간 가격 및 수익률 데이터 병렬 조회 (최근 5,000건 확보로 모든 종목 최신가 보장)
+    const [pricePage1, pricePage2, pricePage3, pricePage4, pricePage5] = await Promise.all([
+      publicSupabase
         .from('stock_prices')
         .select('ticker, date, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
-        .in('date', uniqueDates)
         .order('date', { ascending: false })
-        .limit(3000);
+        .range(0, 999),
+      publicSupabase
+        .from('stock_prices')
+        .select('ticker, date, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
+        .order('date', { ascending: false })
+        .range(1000, 1999),
+      publicSupabase
+        .from('stock_prices')
+        .select('ticker, date, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
+        .order('date', { ascending: false })
+        .range(2000, 2999),
+      publicSupabase
+        .from('stock_prices')
+        .select('ticker, date, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
+        .order('date', { ascending: false })
+        .range(3000, 3999),
+      publicSupabase
+        .from('stock_prices')
+        .select('ticker, date, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
+        .order('date', { ascending: false })
+        .range(4000, 4999),
+    ]);
 
-      if (!priceError && prices) {
-        prices.forEach((p) => {
-          // 최신 날짜 데이터가 우선적으로 맵에 기록되도록 처리
-          if (!pricesMap[p.ticker]) {
-            pricesMap[p.ticker] = p;
-          }
-        });
+    const allPrices = [
+      ...(pricePage1.data || []),
+      ...(pricePage2.data || []),
+      ...(pricePage3.data || []),
+      ...(pricePage4.data || []),
+      ...(pricePage5.data || []),
+    ];
+
+    const pricesMap: Record<string, any> = {};
+    for (const p of allPrices) {
+      if (!pricesMap[p.ticker]) {
+        pricesMap[p.ticker] = p;
       }
     }
 
-    // 4. 주식 정보와 가격 데이터 병합
-    return (stocks || []).map((stock) => {
+    // 3. 주식 정보와 가격 데이터 병합
+    return stocks.map((stock) => {
       const priceInfo = pricesMap[stock.ticker] || {};
       return {
         ticker: stock.ticker,
@@ -75,7 +98,7 @@ const getCachedStocksData = unstable_cache(
       };
     });
   },
-  ['stock-page-data-cache-v2'],
+  ['stock-page-data-cache-v3'],
   { revalidate: 60, tags: ['stock-page'] }
 );
 
