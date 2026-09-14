@@ -43,94 +43,99 @@ interface PageProps {
   params: Promise<{ ticker: string }>;
 }
 
-const getCachedEtfDetail = unstable_cache(
-  async (tickerInput: string) => {
-    const cleanTicker = tickerInput.trim();
-    let etf: any = null;
+async function fetchEtfDetailFromDb(tickerInput: string) {
+  const cleanTicker = tickerInput.trim().toUpperCase();
+  let etf: any = null;
 
-    // 1. 정확한 티커 일치 조회 (.maybeSingle()로 PGRST116 예외 방지)
-    const exactRes = await publicSupabase
+  // 1. 정확한 티커 일치 조회 (.maybeSingle()로 PGRST116 예외 방지)
+  const exactRes = await publicSupabase
+    .from('etf_list')
+    .select('*')
+    .eq('ticker', cleanTicker)
+    .maybeSingle();
+
+  if (exactRes.data) {
+    etf = exactRes.data;
+  }
+
+  // 2. 한국 주식/ETF 6자리 숫자 코드 처리 (.KS / .KQ 자동 폴백)
+  if (!etf && /^\d{6}$/.test(cleanTicker)) {
+    const ksRes = await publicSupabase
       .from('etf_list')
       .select('*')
-      .eq('ticker', cleanTicker)
+      .eq('ticker', `${cleanTicker}.KS`)
       .maybeSingle();
-
-    if (exactRes.data) {
-      etf = exactRes.data;
-    }
-
-    // 2. 한국 주식/ETF 6자리 숫자 코드 처리 (.KS / .KQ 자동 폴백)
-    if (!etf && /^\d{6}$/.test(cleanTicker)) {
-      const ksRes = await publicSupabase
+    if (ksRes.data) {
+      etf = ksRes.data;
+    } else {
+      const kqRes = await publicSupabase
         .from('etf_list')
         .select('*')
-        .eq('ticker', `${cleanTicker}.KS`)
+        .eq('ticker', `${cleanTicker}.KQ`)
         .maybeSingle();
-      if (ksRes.data) {
-        etf = ksRes.data;
-      } else {
-        const kqRes = await publicSupabase
-          .from('etf_list')
-          .select('*')
-          .eq('ticker', `${cleanTicker}.KQ`)
-          .maybeSingle();
-        if (kqRes.data) {
-          etf = kqRes.data;
-        }
+      if (kqRes.data) {
+        etf = kqRes.data;
       }
     }
+  }
 
-    // 3. 대소문자 차이 ilike 매칭
-    if (!etf) {
-      const ilikeRes = await publicSupabase
-        .from('etf_list')
-        .select('*')
-        .ilike('ticker', cleanTicker)
-        .maybeSingle();
-      if (ilikeRes.data) {
-        etf = ilikeRes.data;
-      }
+  // 3. 대소문자 차이 ilike 매칭
+  if (!etf) {
+    const ilikeRes = await publicSupabase
+      .from('etf_list')
+      .select('*')
+      .ilike('ticker', cleanTicker)
+      .maybeSingle();
+    if (ilikeRes.data) {
+      etf = ilikeRes.data;
     }
+  }
 
-    if (!etf) {
-      return {
-        etfList: null,
-        etfInfo: null,
-        allocations: [],
-        holdings: [],
-        prices: [],
-        isNotFound: true,
-        actualTicker: cleanTicker
-      };
-    }
-
-    const actualTicker = etf.ticker;
-
-    const [
-      etfInfoRes,
-      allocationsRes,
-      holdingsRes,
-      pricesRes
-    ] = await Promise.all([
-      publicSupabase.from('etf_info').select('*').eq('ticker', actualTicker).maybeSingle(),
-      publicSupabase.from('etf_allocations').select('*').eq('ticker', actualTicker),
-      publicSupabase.from('etf_holdings').select('*').eq('ticker', actualTicker).order('allocation_pct', { ascending: false }).limit(10),
-      publicSupabase.from('etf_prices').select('*').eq('ticker', actualTicker).order('date', { ascending: false }),
-    ]);
-
+  if (!etf) {
     return {
-      etfList: etf,
-      etfInfo: etfInfoRes.data || null,
-      allocations: allocationsRes.data || [],
-      holdings: holdingsRes.data || [],
-      prices: pricesRes.data || [],
-      isNotFound: false,
-      actualTicker
+      etfList: null,
+      etfInfo: null,
+      allocations: [],
+      holdings: [],
+      prices: [],
+      isNotFound: true,
+      actualTicker: cleanTicker
     };
-  },
-  ['etf-detail-page-cache-v2'],
-  { revalidate: 60 }
-);
+  }
+
+  const actualTicker = etf.ticker;
+
+  const [
+    etfInfoRes,
+    allocationsRes,
+    holdingsRes,
+    pricesRes
+  ] = await Promise.all([
+    publicSupabase.from('etf_info').select('*').eq('ticker', actualTicker).maybeSingle(),
+    publicSupabase.from('etf_allocations').select('*').eq('ticker', actualTicker),
+    publicSupabase.from('etf_holdings').select('*').eq('ticker', actualTicker).order('allocation_pct', { ascending: false }).limit(10),
+    publicSupabase.from('etf_prices').select('*').eq('ticker', actualTicker).order('date', { ascending: false }),
+  ]);
+
+  return {
+    etfList: etf,
+    etfInfo: etfInfoRes.data || null,
+    allocations: allocationsRes.data || [],
+    holdings: holdingsRes.data || [],
+    prices: pricesRes.data || [],
+    isNotFound: false,
+    actualTicker
+  };
+}
+
+const getCachedEtfDetail = (ticker: string) => {
+  const cleanTicker = ticker.trim().toUpperCase();
+  return unstable_cache(
+    () => fetchEtfDetailFromDb(cleanTicker),
+    ['etf-detail-page-v3', cleanTicker],
+    { revalidate: 60, tags: [`etf-${cleanTicker}`] }
+  )();
+};
 
 export default async function EtfDetailPage({ params }: PageProps) {
   // 1. URL 매개변수 디코딩 및 티커 정제
