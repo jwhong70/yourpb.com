@@ -21,8 +21,8 @@ export default function PremiumPaywall({ isLoggedIn, returnUrl = '/' }: PremiumP
       desc: '국내외 핵심 우량주 1,000종목의 재무 펀더멘털 지표, 밸류에이션 및 120주 주봉 캔들 차트 전면 해금',
     },
     {
-      title: 'ETF & 주식 2p 정밀 리서치 PDF 무제한 다운로드',
-      desc: '자체 발행되는 2페이지 전문 분석 리서치 보고서 고화질 원본 PDF 무제한 다운로드',
+      title: 'ETF & 주식 정밀 리서치 PDF 무제한 다운로드',
+      desc: '자체 발행되는 전문 분석 리서치 보고서 고화질 원본 PDF 무제한 다운로드',
     },
     {
       title: 'VIP 거시경제 & 자산배분 모델',
@@ -64,7 +64,7 @@ export default function PremiumPaywall({ isLoggedIn, returnUrl = '/' }: PremiumP
         이 정보는 <span className="bg-linear-to-r from-gold via-yellow-accent to-pink-light bg-clip-text text-transparent">Premium 회원</span> 전용입니다.
       </h3>
       <p className="text-white/60 text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed">
-        전설적인 투자 대가 20인의 AI 매매 시그널과 1,000대 글로벌 주식의 상세 분석, 자체 발행되는 2페이지 원본 리서치 보고서 PDF를 무제한으로 열람해 보세요.
+        전설적인 투자 대가 20인의 AI 매매 시그널과 1,000대 글로벌 주식의 상세 분석, 자체 발행되는 원본 리서치 보고서 PDF를 무제한으로 열람해 보세요.
       </p>
 
       {/* 핵심 혜택 리스트 */}

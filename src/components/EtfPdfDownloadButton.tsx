@@ -57,9 +57,6 @@ export default function EtfPdfDownloadButton({
             </span>
           </button>
         )}
-        <span className="text-xs text-gray-500 mt-2 font-medium">
-          {isPremium ? '💡 PDF 형식의 2페이지 정밀 리포트를 다운로드합니다.' : '💡 정밀 2페이지 분석 PDF 다운로드는 프리미엄 회원 전용입니다.'}
-        </span>
       </div>
 
       {/* 프리미엄 안내 모달 */}
@@ -98,7 +95,7 @@ export default function EtfPdfDownloadButton({
 
               {/* 설명 */}
               <p className="text-sm text-gray-300 leading-relaxed mb-6 font-normal">
-                <strong>{ticker}</strong>의 2페이지 심층 분석 원본 PDF 다운로드는 프리미엄 회원 전용입니다.
+                <strong>{ticker}</strong>의 심층 분석 원본 PDF 다운로드는 프리미엄 회원 전용입니다.
                 <br className="hidden sm:inline" />
                 프리미엄 구독 시 <strong className="text-white">투자 대가 20인의 AI 주식 분석 시그널</strong>과 <strong className="text-white">1,000대 글로벌 주식 정밀 분석</strong>, 그리고 <strong className="text-[#D4AF37]">모든 ETF/주식 리포트 PDF를 무제한 다운로드</strong>할 수 있습니다.
               </p>
