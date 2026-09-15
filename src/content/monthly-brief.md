@@ -1,7 +1,7 @@
 ---
 title: 당신의 피비 월간 자산배분 브리프
 edition: 2026년 9월호
-published_date: 2026.09.12
+published_date: 2026.09.15
 headline: 글로벌 경기 완만한 확장 속 실물 원자재 중심 차별화 장세와 변동성 방어 전략
 ---
 
