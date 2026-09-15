@@ -64,12 +64,11 @@ export default function Header({ initialUser }: HeaderProps) {
             <nav className="hidden lg:flex items-center gap-8">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
-                const isHome = link.name === '홈';
-                const isEtf = link.name === 'ETF';
                 return (
                   <Link
                     key={link.name}
                     href={link.href}
+                    prefetch={true}
                     className={`text-base font-black transition-colors duration-200 px-3 h-14 flex items-center relative rounded-none ${isActive
                       ? 'text-white'
                       : 'text-[#9E9E9E] hover:text-white'
@@ -141,11 +140,11 @@ export default function Header({ initialUser }: HeaderProps) {
           <div className="px-4 pt-3 pb-8 space-y-4">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
-              const isHome = link.name === '홈';
               return (
                 <Link
                   key={link.name}
                   href={link.href}
+                  prefetch={true}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`block px-4 py-3 rounded-none text-base font-black transition-colors duration-200 ${isActive
                     ? 'text-white'

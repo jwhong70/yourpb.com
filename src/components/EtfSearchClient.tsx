@@ -276,6 +276,7 @@ export default function EtfSearchClient({
                           <tr
                             key={etf.ticker}
                             onClick={() => router.push(`/etf/${etf.ticker}`)}
+                            onMouseEnter={() => router.prefetch(`/etf/${etf.ticker}`)}
                             className="hover:bg-black/5 transition-colors cursor-pointer"
                           >
                             <td className="py-3 px-3 sm:px-6 font-semibold truncate border-r border-r-white" title={etf.name}>

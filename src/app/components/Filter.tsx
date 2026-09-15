@@ -427,12 +427,13 @@ export default function Filter({
                   const yieldStyle = getYieldStyle(periodYield);
                   const isWished = stock.interest === 'y';
 
-                  return (
-                     <tr
-                       key={stock.ticker}
-                       onClick={() => handleRowClick(stock.ticker)}
-                       className="hover:bg-black/5 transition-colors cursor-pointer group divide-x divide-white"
-                     >
+                   return (
+                      <tr
+                        key={stock.ticker}
+                        onClick={() => handleRowClick(stock.ticker)}
+                        onMouseEnter={() => router.prefetch(`/stock/${stock.ticker}`)}
+                        className="hover:bg-black/5 transition-colors cursor-pointer group divide-x divide-white"
+                      >
                        <td className="py-3 px-3 sm:px-6 font-semibold truncate" title={stock.name}>
                          <div className="flex items-center gap-2">
                            <button
