@@ -72,7 +72,7 @@ const getCachedMacroRawData = unstable_cache(
       ]).gte('date', startDateQ)),
 
       fetchAll(publicSupabase.from('macro_fred_w').select('*').in('ticker', [
-        'gdpnow', 'ic4wsa', 't10y2y', 't10y3m', 'dfedtaru', 'treast', 'wcurcir',
+        'ic4wsa', 't10y2y', 't10y3m', 'dfedtaru', 'treast', 'wcurcir',
         'rrpontsyd', 'wtregen', 'baa10y', 'bamlh0a0hym2ey', 'compout', 'wshomcb'
       ]).gte('date', dateParam)),
 
@@ -176,9 +176,35 @@ export default async function MacroPage() {
   // 각 지표별 신호 및 차트 데이터 가공
   // ----------------------------------------------------
 
+  // OECD CLI 신호 연산 Helper (최근월 전월대비 MoM 및 전년동월대비 YoY)
+  const calcOecdSignal = (list: any[]) => {
+    const validList = sortData(list).filter((item) => item.value !== null && item.value !== undefined);
+    if (validList.length < 2) return { prev: null, yoy: null };
+    
+    const latest = validList[validList.length - 1];
+    const prev = validList[validList.length - 2];
+    const momChange = latest.value - prev.value;
+    
+    // 12개월 전 (전년 동월) 데이터 비교
+    let yoyChange = momChange;
+    if (validList.length >= 13) {
+      const yoyItem = validList[validList.length - 13];
+      yoyChange = latest.value - yoyItem.value;
+    } else {
+      const firstItem = validList[0];
+      yoyChange = latest.value - firstItem.value;
+    }
+    
+    return {
+      prev: momChange >= 0 ? 1 : -1,
+      yoy: yoyChange >= 0 ? 1 : -1,
+    };
+  };
+
   // 1.1.1. 세계 GDP
   const w_gdp_imf = sortData(weoGroups['g001_ngdp_rpch_a'] || []);
   const w_gdp_oecd = sortData(oecdGroups['g20'] || []);
+  const w_gdp_oecd_sig = calcOecdSignal(w_gdp_oecd);
 
   // 1.1.2. 미국 GDP
   const us_gdp_imf = sortData(weoGroups['usa_ngdp_rpch_a'] || []);
@@ -220,15 +246,7 @@ export default async function MacroPage() {
   const us_prod_q_sig = us_prod_q_val ? (us_prod_q_val.yoy_pct >= 0 ? 1 : -1) : null;
 
   const us_gdp_oecd = sortData(oecdGroups['united_states'] || []);
-
-  const gdpnow = sortData(fredWGroups['gdpnow'] || []);
-  const gdpnow_val = getLastValid(gdpnow, ['yield_4w', 'yield_52w']);
-  const gdpnow_sig = gdpnow_val
-    ? {
-      prev: gdpnow_val.yield_4w >= 0 ? 1 : -1,
-      yoy: gdpnow_val.yield_52w >= 0 ? 1 : -1,
-    }
-    : { prev: null, yoy: null };
+  const us_gdp_oecd_sig = calcOecdSignal(us_gdp_oecd);
 
   // 1.1.3. 한국 GDP
   const kr_gdp_imf = sortData(weoGroups['kor_ngdp_rpch_a'] || []);
@@ -238,6 +256,7 @@ export default async function MacroPage() {
   const kr_debt_imf = sortData(weoGroups['kor_ggxwdg_ngdp_a'] || []);
   const kr_ca_imf = sortData(weoGroups['kor_bca_ngdpd_a'] || []);
   const kr_gdp_oecd = sortData(oecdGroups['korea'] || []);
+  const kr_gdp_oecd_sig = calcOecdSignal(kr_gdp_oecd);
 
   // 1.1.4. 중국 GDP
   const cn_gdp_imf = sortData(weoGroups['chn_ngdp_rpch_a'] || []);
@@ -247,6 +266,7 @@ export default async function MacroPage() {
   const cn_debt_imf = sortData(weoGroups['chn_ggxwdg_ngdp_a'] || []);
   const cn_ca_imf = sortData(weoGroups['chn_bca_ngdpd_a'] || []);
   const cn_gdp_oecd = sortData(oecdGroups['china'] || []);
+  const cn_gdp_oecd_sig = calcOecdSignal(cn_gdp_oecd);
 
   // ------------------ 1.2. 소비 ------------------
   // 1.2.1. 신규 실업수당 청구건수(4주평균)
@@ -877,8 +897,13 @@ export default async function MacroPage() {
     };
   };
 
-  // 1.1. GDP 신호 = 미국 GDP 신호
-  const sub_gdp_sig = { ...gdpnow_sig };
+  // 1.1. GDP 신호 = 세계/미국/한국/중국 4개국 OECD 경기선행지수 신호 결합 (MoM / YoY)
+  const sub_gdp_sig = calcCombined([
+    w_gdp_oecd_sig,
+    us_gdp_oecd_sig,
+    kr_gdp_oecd_sig,
+    cn_gdp_oecd_sig,
+  ]);
 
   // 1.2. 소비 신호
   const sub_cons_sig = calcCombined([
@@ -998,11 +1023,12 @@ export default async function MacroPage() {
       gdp: {
         signal: sub_gdp_sig,
         world_gdp: {
+          signal: w_gdp_oecd_sig,
           imf: w_gdp_imf,
           oecd: w_gdp_oecd,
         },
         us_gdp: {
-          signal: sub_gdp_sig,
+          signal: us_gdp_oecd_sig,
           imf: us_gdp_imf,
           gdp_q: us_gdp_q,
           pce_q: us_pce_q,
@@ -1014,9 +1040,9 @@ export default async function MacroPage() {
           gov_q: us_gov_q,
           prod_q: us_prod_q,
           oecd: us_gdp_oecd,
-          gdpnow: { data: gdpnow, signal: gdpnow_sig },
         },
         kr_gdp: {
+          signal: kr_gdp_oecd_sig,
           imf: kr_gdp_imf,
           inv: kr_inv_imf,
           cpi: kr_cpi_imf,
@@ -1026,6 +1052,7 @@ export default async function MacroPage() {
           oecd: kr_gdp_oecd,
         },
         cn_gdp: {
+          signal: cn_gdp_oecd_sig,
           imf: cn_gdp_imf,
           inv: cn_inv_imf,
           cpi: cn_cpi_imf,

@@ -228,7 +228,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
       case '1-1':
         return [
           { title: '1.1.1. 세계 GDP - 실질 GDP성장률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.world_gdp.imf, theme: 0, ticker: 'g001_ngdp_rpch_a' },
-          { title: '1.1.1. 세계 GDP - OECD 경기선행지수', chartType: 'line', data: data.economic.gdp.world_gdp.oecd, theme: 1, ticker: 'g20' },
+          { title: '1.1.1. 세계 GDP - OECD 경기선행지수', chartType: 'line', data: data.economic.gdp.world_gdp.oecd, signal: data.economic.gdp.world_gdp.signal, theme: 1, ticker: 'g20' },
           { title: '1.1.2. 미국 GDP - 실질 GDP성장률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.us_gdp.imf, theme: 0, ticker: 'usa_ngdp_rpch_a' },
           { title: '1.1.2. 미국 GDP - 실질 GDP성장률(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.gdp_q, valKey: 'yoy_pct', theme: 2, ticker: 'gdpc1' },
           { title: '1.1.2. 미국 GDP - 실질 개인소비지출(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.pce_q, valKey: 'yoy_pct', theme: 3, ticker: 'pcecc96' },
@@ -239,8 +239,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
           { title: '1.1.2. 미국 GDP - 실질 재화/서비스 수입(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.imp_q, valKey: 'yoy_pct', theme: 2, ticker: 'impgsc1' },
           { title: '1.1.2. 미국 GDP - 실질 정부 소비지출/총투자(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.gov_q, valKey: 'yoy_pct', theme: 3, ticker: 'gcec1' },
           { title: '1.1.2. 미국 GDP - 비농업 부문 시간당 노동생산성', chartType: 'bar', data: data.economic.gdp.us_gdp.prod_q, valKey: 'yoy_pct', theme: 4, ticker: 'ophnfb' },
-          { title: '1.1.2. 미국 GDP - OECD 경기선행지수', chartType: 'line', data: data.economic.gdp.us_gdp.oecd, theme: 1, ticker: 'united_states' },
-          { title: '1.1.2. 미국 GDP - GDPNow 실질 GDP 추정치', chartType: 'line', data: data.economic.gdp.us_gdp.gdpnow.data, signal: data.economic.gdp.us_gdp.gdpnow.signal, theme: 5, ticker: 'gdpnow' },
+          { title: '1.1.2. 미국 GDP - OECD 경기선행지수', chartType: 'line', data: data.economic.gdp.us_gdp.oecd, signal: data.economic.gdp.us_gdp.signal, theme: 1, ticker: 'united_states' },
           
           { title: '1.1.3. 한국 GDP - 실질 GDP성장률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.imf, theme: 0, ticker: 'kor_ngdp_rpch_a' },
           { title: '1.1.3. 한국 GDP - 총투자비율(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.inv, theme: 1, ticker: 'kor_nid_ngdp_a' },
@@ -248,7 +247,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
           { title: '1.1.3. 한국 GDP - 재정수지(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.bal, theme: 3, ticker: 'kor_ggxcnl_ngdp_a' },
           { title: '1.1.3. 한국 GDP - 정부총채무(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.debt, theme: 4, ticker: 'kor_ggxwdg_ngdp_a' },
           { title: '1.1.3. 한국 GDP - 경상수지비율(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.ca, theme: 5, ticker: 'kor_bca_ngdpd_a' },
-          { title: '1.1.3. 한국 GDP - OECD 경기선행지수', chartType: 'line', data: data.economic.gdp.kr_gdp.oecd, theme: 1, ticker: 'korea' },
+          { title: '1.1.3. 한국 GDP - OECD 경기선행지수', chartType: 'line', data: data.economic.gdp.kr_gdp.oecd, signal: data.economic.gdp.kr_gdp.signal, theme: 1, ticker: 'korea' },
 
           { title: '1.1.4. 중국 GDP - 실질 GDP성장률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.cn_gdp.imf, theme: 0, ticker: 'chn_ngdp_rpch_a' },
           { title: '1.1.4. 중국 GDP - 총투자비율(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.cn_gdp.inv, theme: 1, ticker: 'chn_nid_ngdp_a' },
@@ -256,7 +255,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
           { title: '1.1.4. 중국 GDP - 재정수지(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.cn_gdp.bal, theme: 3, ticker: 'chn_ggxcnl_ngdp_a' },
           { title: '1.1.4. 중국 GDP - 정부총채무(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.cn_gdp.debt, theme: 4, ticker: 'chn_ggxwdg_ngdp_a' },
           { title: '1.1.4. 중국 GDP - 경상수지비율(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.cn_gdp.ca, theme: 5, ticker: 'chn_bca_ngdpd_a' },
-          { title: '1.1.4. 중국 GDP - OECD 경기선행지수', chartType: 'line', data: data.economic.gdp.cn_gdp.oecd, theme: 1, ticker: 'china' },
+          { title: '1.1.4. 중국 GDP - OECD 경기선행지수', chartType: 'line', data: data.economic.gdp.cn_gdp.oecd, signal: data.economic.gdp.cn_gdp.signal, theme: 1, ticker: 'china' },
         ];
 
       // 1.2. 소비 하위 지표들
