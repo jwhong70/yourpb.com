@@ -580,7 +580,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                       >
                         <span className="flex items-center gap-2">
                           <ShieldCheck className="w-4 h-4 text-gold" />
-                          <span>💡 {currentQ.name}의 핵심 특징 & 5대 극복 처방전 확인</span>
+                          <span>💡 {currentQ.name}의 핵심 특징 & 맞춤 극복 처방전 확인</span>
                         </span>
                         {expandedSolutions[currentQ.id] ? (
                           <ChevronUp className="w-4 h-4 text-gray-600" />
