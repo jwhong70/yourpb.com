@@ -198,7 +198,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
         {/* 상단 히어로 배너 */}
         <section className="relative overflow-hidden bg-white border-b border-black/10 pt-28 pb-14 select-none shadow-xs">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#D4AF37]/15 border border-[#D4AF37]/40 text-[#987956] text-xs font-bold uppercase tracking-widest">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#D4AF37]/15 border border-[#D4AF37]/40 text-gold text-xs font-bold uppercase tracking-widest">
               <Sparkles className="w-3.5 h-3.5" />
               <span>행동재무학 기반 실전 진단 솔루션</span>
             </div>
@@ -427,7 +427,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                         className="w-full p-4 flex items-center justify-between text-left text-xs sm:text-sm font-bold bg-box-bg hover:bg-gray-100 text-gray-900 transition-colors cursor-pointer"
                       >
                         <span className="flex items-center gap-2">
-                          <ShieldCheck className="w-4 h-4 text-[#987956]" />
+                          <ShieldCheck className="w-4 h-4 text-gold" />
                           <span>💡 {currentQ.name}의 핵심 특징 & 5대 극복 처방전 확인</span>
                         </span>
                         {expandedSolutions[currentQ.id] ? (
@@ -518,7 +518,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
             {/* 결과 종합 헤더 카드 */}
             <div className="bg-white border border-black p-6 sm:p-8 space-y-6 shadow-xl relative overflow-hidden">
               <div className="space-y-2 text-center sm:text-left">
-                <span className="text-xs font-bold text-[#987956] uppercase tracking-widest flex items-center justify-center sm:justify-start gap-1.5">
+                <span className="text-xs font-bold text-gold uppercase tracking-widest flex items-center justify-center sm:justify-start gap-1.5">
                   <Sparkles className="w-3.5 h-3.5" />
                   진단 완료 리포트
                 </span>
@@ -655,7 +655,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
             {/* 전체 19개 편향 점검 매트릭스 표 */}
             <div className="bg-white border border-black p-5 sm:p-6 space-y-4 shadow-md">
               <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
-                <Brain className="w-4 h-4 text-[#987956]" />
+                <Brain className="w-4 h-4 text-gold" />
                 <span>19개 행동 편향 종합 진단 현황표</span>
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs">
@@ -736,12 +736,12 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
               <X className="w-5 h-5" />
             </button>
 
-            <div className="w-12 h-12 bg-amber-50 border border-[#D4AF37] flex items-center justify-center mx-auto text-[#987956]">
+            <div className="w-12 h-12 bg-amber-50 border border-[#D4AF37] flex items-center justify-center mx-auto text-gold">
               <Lock className="w-6 h-6" />
             </div>
 
             <div className="text-center space-y-2">
-              <span className="text-xs font-bold text-[#987956] uppercase tracking-widest">
+              <span className="text-xs font-bold text-gold uppercase tracking-widest">
                 프리미엄 멤버십 전용 혜택
               </span>
               <h3 className="text-xl font-black text-gray-900">
@@ -754,7 +754,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
 
             <div className="p-3.5 bg-box-bg border border-gray-300 space-y-2 text-xs text-gray-700">
               <div className="flex items-center gap-2 font-bold text-gray-900">
-                <Sparkles className="w-3.5 h-3.5 text-[#987956]" />
+                <Sparkles className="w-3.5 h-3.5 text-gold" />
                 <span>프리미엄 회원 제공 혜택</span>
               </div>
               <ul className="space-y-1 text-gray-600 pl-4 list-disc">
