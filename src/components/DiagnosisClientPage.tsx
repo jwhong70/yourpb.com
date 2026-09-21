@@ -18,6 +18,11 @@ import {
   ChevronUp,
   ShieldCheck,
   Award,
+  Calendar,
+  TrendingUp,
+  Compass,
+  Lightbulb,
+  FileText,
   X,
 } from 'lucide-react';
 import { BIAS_QUESTIONS, BiasQuestion } from '@/lib/biases-data';
@@ -39,6 +44,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
   const [submittedSteps, setSubmittedSteps] = useState<Record<number, boolean>>({}); // questionId -> isSubmitted
   const [isStarted, setIsStarted] = useState<boolean>(false);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
+  const [completedDate, setCompletedDate] = useState<string | null>(null);
   const [expandedSolutions, setExpandedSolutions] = useState<Record<number, boolean>>({});
   const [showPremiumModal, setShowPremiumModal] = useState<boolean>(false);
 
@@ -54,17 +60,51 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
     try {
       const savedAnswers = localStorage.getItem('yourpb_diagnosis_answers');
       const savedSubmitted = localStorage.getItem('yourpb_diagnosis_submitted');
+      const savedCompleted = localStorage.getItem('yourpb_diagnosis_completed');
+      const savedCompletedDate = localStorage.getItem('yourpb_diagnosis_completed_date');
+      const savedStep = localStorage.getItem('yourpb_diagnosis_current_step');
+
       if (savedAnswers) setAnswers(JSON.parse(savedAnswers));
       if (savedSubmitted) setSubmittedSteps(JSON.parse(savedSubmitted));
+      if (savedCompletedDate) setCompletedDate(savedCompletedDate);
+
+      if (savedCompleted === 'true') {
+        setIsCompleted(true);
+        setIsStarted(false);
+      } else if (savedAnswers || savedSubmitted) {
+        setIsStarted(true);
+        if (savedStep) {
+          const stepNum = parseInt(savedStep, 10);
+          if (!isNaN(stepNum) && stepNum >= 0 && stepNum < BIAS_QUESTIONS.length) {
+            setCurrentStep(stepNum);
+          }
+        }
+      }
     } catch {
       // 무시
     }
   }, []);
 
-  const saveToStorage = (newAnswers: Record<number, number>, newSubmitted: Record<number, boolean>) => {
+  const saveToStorage = (
+    newAnswers: Record<number, number>,
+    newSubmitted: Record<number, boolean>,
+    newStep?: number,
+    isDone?: boolean
+  ) => {
     try {
       localStorage.setItem('yourpb_diagnosis_answers', JSON.stringify(newAnswers));
       localStorage.setItem('yourpb_diagnosis_submitted', JSON.stringify(newSubmitted));
+      if (newStep !== undefined) {
+        localStorage.setItem('yourpb_diagnosis_current_step', newStep.toString());
+      }
+      if (isDone !== undefined) {
+        localStorage.setItem('yourpb_diagnosis_completed', isDone ? 'true' : 'false');
+        if (isDone) {
+          const nowIso = new Date().toISOString();
+          localStorage.setItem('yourpb_diagnosis_completed_date', nowIso);
+          setCompletedDate(nowIso);
+        }
+      }
     } catch {
       // 무시
     }
@@ -81,28 +121,60 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
 
     const newSubmitted = { ...submittedSteps, [q.id]: true };
     setSubmittedSteps(newSubmitted);
-    saveToStorage(answers, newSubmitted);
+    saveToStorage(answers, newSubmitted, currentStep, false);
   };
 
   const handleNext = () => {
     if (currentStep < BIAS_QUESTIONS.length - 1) {
-      setCurrentStep((prev) => prev + 1);
+      const nextStep = currentStep + 1;
+      setCurrentStep(nextStep);
+      saveToStorage(answers, submittedSteps, nextStep, false);
       if (cardRef.current) {
         cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     } else {
       setIsCompleted(true);
+      setIsStarted(false);
+      saveToStorage(answers, submittedSteps, currentStep, true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   const handlePrev = () => {
     if (currentStep > 0) {
-      setCurrentStep((prev) => prev - 1);
+      const prevStep = currentStep - 1;
+      setCurrentStep(prevStep);
+      saveToStorage(answers, submittedSteps, prevStep, false);
       if (cardRef.current) {
         cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
+  };
+
+  // 새로 다시 진단하기 (초기화 후 1번부터 시작)
+  const handleStartNewDiagnosis = () => {
+    if (
+      isCompleted &&
+      !window.confirm(
+        '새롭게 진단을 시작하시겠습니까?\n(기존 진단 기록을 초기화하고 1번 문항부터 새로 진행합니다.)'
+      )
+    ) {
+      return;
+    }
+    setAnswers({});
+    setSubmittedSteps({});
+    setCurrentStep(0);
+    setIsStarted(true);
+    setIsCompleted(false);
+    saveToStorage({}, {}, 0, false);
+    try {
+      localStorage.removeItem('yourpb_diagnosis_completed');
+    } catch {
+      // 무시
+    }
+    setTimeout(() => {
+      cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
   };
 
   const handleReset = () => {
@@ -115,6 +187,9 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
       try {
         localStorage.removeItem('yourpb_diagnosis_answers');
         localStorage.removeItem('yourpb_diagnosis_submitted');
+        localStorage.removeItem('yourpb_diagnosis_completed');
+        localStorage.removeItem('yourpb_diagnosis_completed_date');
+        localStorage.removeItem('yourpb_diagnosis_current_step');
       } catch {
         // 무시
       }
@@ -167,6 +242,15 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
 
   const progressPercent = Math.round(((currentStep + 1) / BIAS_QUESTIONS.length) * 100);
 
+  // 최근 진단 날짜 포맷 (예: 2026.09.21)
+  const formattedCompletedDate = completedDate
+    ? new Date(completedDate).toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      })
+    : null;
+
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-black selection:text-white">
       {/* ============================================================ */}
@@ -218,8 +302,104 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
               <span className="px-3 py-1 bg-box-bg border border-gray-300">🎁 진단 및 해설 100% 무료</span>
             </div>
 
+            {/* 진단 완료 고객 전용 요약 스냅샷 배너 */}
+            {isCompleted && (
+              <div className="max-w-xl mx-auto mt-4 p-3.5 bg-box-bg border border-black/20 text-xs text-gray-800 flex flex-wrap items-center justify-between gap-3 shadow-xs">
+                <div className="flex items-center gap-2 font-bold">
+                  <Award className="w-4 h-4 text-gold" />
+                  <span>
+                    최근 진단: <span className="text-black font-extrabold">{formattedCompletedDate || '완료'}</span>
+                  </span>
+                  <span className="text-gray-300">|</span>
+                  <span>주의 편향: <span className="text-rose-600 font-black">{totalBiasedCount}개</span></span>
+                </div>
+                <div>
+                  <span className={`px-2 py-0.5 font-black border text-[11px] ${riskGrade.badge}`}>
+                    {riskGrade.label}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* 히어로 CTA 버튼 영역 */}
             <div className="pt-6 flex flex-wrap items-center justify-center gap-3">
-              {!isStarted && !isCompleted ? (
+              {/* CASE 1: 진단 완료 고객 (결과 확인하기 + 다시 진단하기 둘 다 활성화) */}
+              {isCompleted ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.currentTarget.blur();
+                      if (typeof window !== 'undefined') {
+                        window.getSelection()?.removeAllRanges();
+                      }
+                      resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }}
+                    className="px-6 sm:px-8 py-4 bg-black hover:bg-gray-900 text-white text-sm sm:text-base font-black flex items-center justify-center gap-2 transition-all shadow-lg hover:scale-105 cursor-pointer select-none"
+                  >
+                    <Sparkles className="w-5 h-5 text-yellow-accent" />
+                    <span>진단 종합 결과 확인하기</span>
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleStartNewDiagnosis}
+                    className="px-6 sm:px-7 py-4 bg-white hover:bg-gray-50 text-gray-900 text-sm sm:text-base font-bold flex items-center justify-center gap-2 border-2 border-black transition-all shadow-md hover:scale-105 cursor-pointer select-none"
+                  >
+                    <Brain className="w-5 h-5 text-gold" />
+                    <span>새롭게 다시 진단하기</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handlePrintPdf}
+                    className="px-5 py-4 bg-[#D4AF37]/15 hover:bg-[#D4AF37]/25 text-gray-900 text-sm font-bold flex items-center justify-center gap-2 border border-[#D4AF37] transition-all cursor-pointer select-none"
+                  >
+                    <Printer className="w-4 h-4 text-gold" />
+                    <span>처방전 출력 (PDF)</span>
+                  </button>
+                </>
+              ) : isStarted ? (
+                /* CASE 2: 진단 진행 중 고객 (이어하기 + 종합 결과 확인 + 처음부터 풀기) */
+                <>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      cardRef.current?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="px-6 sm:px-8 py-4 bg-black hover:bg-gray-900 text-white text-sm sm:text-base font-black flex items-center justify-center gap-2 transition-all shadow-lg hover:scale-105 cursor-pointer select-none"
+                  >
+                    <Brain className="w-5 h-5" />
+                    <span>진단 이어하기 (Q{currentStep + 1})</span>
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsCompleted(true);
+                      setTimeout(() => {
+                        resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }, 100);
+                    }}
+                    className="px-5 sm:px-6 py-4 bg-white hover:bg-gray-50 text-gray-900 text-sm font-bold flex items-center justify-center gap-2 border border-black transition-all shadow-xs cursor-pointer select-none"
+                  >
+                    <Sparkles className="w-4 h-4 text-gold" />
+                    <span>진단 종합 결과 확인하기</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleReset}
+                    className="px-4 py-4 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold flex items-center justify-center gap-1.5 border border-gray-300 transition-all cursor-pointer select-none"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>처음부터</span>
+                  </button>
+                </>
+              ) : (
+                /* CASE 3: 신규 방문 고객 (진단 시작하기) */
                 <button
                   type="button"
                   onClick={() => {
@@ -232,34 +412,6 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                 >
                   <Brain className="w-5 h-5" />
                   <span>진단 시작하기</span>
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-              ) : isStarted && !isCompleted ? (
-                <button
-                  type="button"
-                  onClick={() => {
-                    cardRef.current?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="px-8 py-4 bg-black hover:bg-gray-900 text-white text-base font-black flex items-center justify-center gap-2 transition-all shadow-lg hover:scale-105 cursor-pointer select-none"
-                >
-                  <Brain className="w-5 h-5" />
-                  <span>진단 이어하기 (Q{currentStep + 1})</span>
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.currentTarget.blur();
-                    if (typeof window !== 'undefined') {
-                      window.getSelection()?.removeAllRanges();
-                    }
-                    resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  }}
-                  className="px-8 py-4 bg-black hover:bg-gray-900 text-white text-base font-black flex items-center justify-center gap-2 transition-all shadow-lg hover:scale-105 cursor-pointer select-none"
-                >
-                  <Sparkles className="w-5 h-5 text-yellow-accent" />
-                  <span>진단 종합 결과 확인하기</span>
                   <ArrowRight className="w-5 h-5" />
                 </button>
               )}
@@ -680,6 +832,85 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                     </span>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            {/* 진단 완료 고객 전용: 4단계 심리 극복 & 자산관리 연계 로드맵 (CX 향상) */}
+            <div className="bg-white border border-black p-6 sm:p-8 space-y-6 shadow-xl">
+              <div className="space-y-1.5 border-b border-gray-200 pb-4">
+                <span className="text-xs font-bold text-gold uppercase tracking-widest flex items-center gap-1.5">
+                  <Compass className="w-4 h-4 text-gold" />
+                  당신의 피비 Action Roadmap
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black text-gray-900">
+                  진단 완료 후, 어떻게 나의 투자 수익률을 지킬 수 있을까요?
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-600 font-normal">
+                  행동 편향을 인지하는 것은 첫걸음일 뿐입니다. 시스템과 알고리즘을 통해 감정을 통제하는 실천 단계로 나아가세요.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* 1. 정기 재진단 */}
+                <div className="p-5 bg-box-bg border border-gray-300 space-y-2.5">
+                  <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-black text-xs">
+                    01
+                  </div>
+                  <h4 className="text-sm font-black text-gray-900 flex items-center gap-1.5">
+                    <Calendar className="w-4 h-4 text-gold" />
+                    <span>분기별 심리 정기 리체크</span>
+                  </h4>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    강세장에서는 과신 편향이, 약세장에서는 손실회피 편향이 극대화됩니다. 시장 국면 전환기마다 재진단을 통해 심리 상태를 점검하세요.
+                  </p>
+                </div>
+
+                {/* 2. 감정 배제 무감정 퀀트 자산배분 */}
+                <div className="p-5 bg-box-bg border border-gray-300 space-y-2.5">
+                  <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-black text-xs">
+                    02
+                  </div>
+                  <h4 className="text-sm font-black text-gray-900 flex items-center gap-1.5">
+                    <TrendingUp className="w-4 h-4 text-emerald-700" />
+                    <span>무감정 HRP 분산투자</span>
+                  </h4>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    감정적 매매를 원천 차단하는 가장 확실한 방법은 기계적 분산입니다. YOURPB의 월간 계층적 리스크 패리티 모델을 확인하세요.
+                  </p>
+                  <div className="pt-1">
+                    <Link
+                      href="/monthly"
+                      className="inline-flex items-center gap-1 text-xs font-bold text-black hover:underline"
+                    >
+                      <span>이달의 모델 포트폴리오 보기</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                </div>
+
+                {/* 3. 맞춤 처방전 소장 & PB 상담 */}
+                <div className="p-5 bg-box-bg border border-gray-300 space-y-2.5">
+                  <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-black text-xs">
+                    03
+                  </div>
+                  <h4 className="text-sm font-black text-gray-900 flex items-center gap-1.5">
+                    <FileText className="w-4 h-4 text-blue-700" />
+                    <span>처방전 출력 및 상담 연계</span>
+                  </h4>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    PDF로 발급된 2페이지 맞춤 처방전을 매매 전 항상 곁에 두시고, 나의 편향을 보완하는 1:1 자산배분 솔루션을 요청하세요.
+                  </p>
+                  <div className="pt-1">
+                    <button
+                      type="button"
+                      onClick={handlePrintPdf}
+                      className="inline-flex items-center gap-1 text-xs font-bold text-gold hover:underline cursor-pointer"
+                    >
+                      <span>처방전 PDF 다운로드</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
