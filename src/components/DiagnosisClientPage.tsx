@@ -42,15 +42,13 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
   const [isStarted, setIsStarted] = useState<boolean>(false);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
   const [expandedSolutions, setExpandedSolutions] = useState<Record<number, boolean>>({});
-  const [showVipModal, setShowVipModal] = useState<boolean>(false);
+  const [showPremiumModal, setShowPremiumModal] = useState<boolean>(false);
 
   const cardRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
 
-  const isVipUser =
-    initialUser?.membership_status === 'vip' ||
-    initialUser?.membership_status === 'pro' ||
-    initialUser?.membership_status === 'demo_admin' ||
+  const isPremium =
+    initialUser?.membership_status === 'premium' ||
     initialUser?.email?.includes('admin');
 
   // 로컬스토리지 복원
@@ -153,10 +151,10 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
   const riskGrade = getRiskGrade(totalBiasedCount);
 
   const handlePrintPdf = () => {
-    if (isVipUser) {
+    if (isPremium) {
       window.print();
     } else {
-      setShowVipModal(true);
+      setShowPremiumModal(true);
     }
   };
 
@@ -546,9 +544,9 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                 >
                   <Printer className="w-4 h-4" />
                   <span>📄 맞춤형 행동편향 컨설팅 처방전 다운로드 (PDF)</span>
-                  {!isVipUser && (
+                  {!isPremium && (
                     <span className="ml-1 px-1.5 py-0.5 bg-black/80 text-yellow-accent text-[10px] font-extrabold">
-                      VIP
+                      PREMIUM
                     </span>
                   )}
                 </button>
@@ -695,14 +693,14 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
       </div>
 
       {/* ============================================================ */}
-      {/* 5. VIP 유료 혜택 안내 모달 (무료 회원 클릭 시) */}
+      {/* 5. 프리미엄 유료 혜택 안내 모달 (무료 회원 클릭 시) */}
       {/* ============================================================ */}
-      {showVipModal && (
+      {showPremiumModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 print:hidden animate-in fade-in duration-200">
           <div className="bg-[#111114] border border-yellow-accent/40 max-w-md w-full p-6 sm:p-8 space-y-5 shadow-2xl relative">
             <button
-              onClick={() => setShowVipModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+              onClick={() => setShowPremiumModal(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -713,23 +711,24 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
 
             <div className="text-center space-y-2">
               <span className="text-xs font-bold text-yellow-accent uppercase tracking-widest">
-                VIP 전용 프리미엄 혜택
+                프리미엄 멤버십 전용 혜택
               </span>
               <h3 className="text-xl font-black text-white">
                 정밀 컨설팅 처방전 PDF 출력
               </h3>
               <p className="text-xs text-gray-300 leading-relaxed font-normal">
-                고객 맞춤형 3페이지 정밀 행동편향 분석 및 영구 보관용 PDF 리포트 출력은 <strong>정회원(VIP)</strong> 전용 서비스입니다.
+                고객 맞춤형 3페이지 정밀 행동편향 분석 및 영구 보관용 PDF 리포트 출력은 <strong className="text-yellow-accent font-bold">프리미엄 회원</strong> 전용 서비스입니다.
               </p>
             </div>
 
             <div className="p-3.5 bg-white/5 border border-white/10 space-y-2 text-xs text-gray-300">
               <div className="flex items-center gap-2 font-bold text-yellow-accent">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>VIP 회원 제공 혜택</span>
+                <span>프리미엄 회원 제공 혜택</span>
               </div>
               <ul className="space-y-1 text-gray-400 pl-4 list-disc">
-                <li>3페이지 고해상도 행동편향 맞춤 처방전 PDF 무제한 인쇄</li>
+                <li>3페이지 고해상도 행동편향 맞춤 처방전 PDF 무제한 인쇄 및 소장</li>
+                <li>1,000대 글로벌 주식 & ETF 원본 리서치 보고서 무제한 다운로드</li>
                 <li>HRP 기반 글로벌 모델 포트폴리오 비중 실시간 열람</li>
                 <li>1:1 프라이빗 뱅커(PB) 자산배분 유선 상담 우선 배정</li>
               </ul>
@@ -737,15 +736,15 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
 
             <div className="space-y-2 pt-2">
               <Link
-                href="/support"
+                href="/subscribe"
                 className="w-full py-3.5 bg-yellow-accent hover:bg-yellow-400 text-black font-black text-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
-                <span>VIP 멤버십 가입 & 1:1 상담 신청</span>
+                <span>프리미엄 멤버십 업그레이드</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <button
-                onClick={() => setShowVipModal(false)}
-                className="w-full py-2.5 text-xs text-gray-400 hover:text-white font-medium transition-colors"
+                onClick={() => setShowPremiumModal(false)}
+                className="w-full py-2.5 text-xs text-gray-400 hover:text-white font-medium transition-colors cursor-pointer"
               >
                 닫기
               </button>
