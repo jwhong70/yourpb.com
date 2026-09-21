@@ -32,7 +32,7 @@ export default async function DiagnosisPage() {
   const sessionUser = await getSessionUser();
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#000000] text-gray-100 font-sans">
+    <div className="flex flex-col min-h-screen bg-background text-foreground font-sans selection:bg-black selection:text-white">
       <div className="print:hidden">
         <Header initialUser={sessionUser} />
       </div>
