@@ -166,13 +166,13 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
   const progressPercent = Math.round(((currentStep + 1) / BIAS_QUESTIONS.length) * 100);
 
   return (
-    <div className="min-h-screen bg-[#000000] text-gray-100 selection:bg-yellow-accent selection:text-black">
+    <div className="min-h-screen bg-[#000000] text-gray-100">
       {/* ============================================================ */}
       {/* 1. 화면 전용 (Web View) 컨테이너 */}
       {/* ============================================================ */}
       <div className="print:hidden">
         {/* 상단 히어로 배너 */}
-        <section className="relative overflow-hidden bg-linear-to-b from-[#111111] via-[#080808] to-[#000000] border-b border-white/10 pt-28 pb-14">
+        <section className="relative overflow-hidden bg-linear-to-b from-[#111111] via-[#080808] to-[#000000] border-b border-white/10 pt-28 pb-14 select-none">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-yellow-accent/10 border border-yellow-accent/30 text-yellow-accent text-xs font-bold uppercase tracking-widest">
               <Sparkles className="w-3.5 h-3.5" />
@@ -197,13 +197,14 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
             <div className="pt-6 flex flex-wrap items-center justify-center gap-3">
               {!isStarted && !isCompleted ? (
                 <button
+                  type="button"
                   onClick={() => {
                     setIsStarted(true);
                     setTimeout(() => {
                       cardRef.current?.scrollIntoView({ behavior: 'smooth' });
                     }, 100);
                   }}
-                  className="px-8 py-4 bg-yellow-accent hover:bg-yellow-400 text-black text-base font-black flex items-center justify-center gap-2 transition-all shadow-[0_0_30px_rgba(255,215,0,0.25)] hover:scale-105 cursor-pointer"
+                  className="px-8 py-4 bg-yellow-accent hover:bg-yellow-400 text-black text-base font-black flex items-center justify-center gap-2 transition-all shadow-[0_0_30px_rgba(255,215,0,0.25)] hover:scale-105 cursor-pointer select-none"
                 >
                   <Brain className="w-5 h-5" />
                   <span>진단 시작하기</span>
@@ -211,10 +212,11 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                 </button>
               ) : isStarted && !isCompleted ? (
                 <button
+                  type="button"
                   onClick={() => {
                     cardRef.current?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="px-8 py-4 bg-yellow-accent hover:bg-yellow-400 text-black text-base font-black flex items-center justify-center gap-2 transition-all shadow-[0_0_30px_rgba(255,215,0,0.25)] hover:scale-105 cursor-pointer"
+                  className="px-8 py-4 bg-yellow-accent hover:bg-yellow-400 text-black text-base font-black flex items-center justify-center gap-2 transition-all shadow-[0_0_30px_rgba(255,215,0,0.25)] hover:scale-105 cursor-pointer select-none"
                 >
                   <Brain className="w-5 h-5" />
                   <span>진단 이어하기 (Q{currentStep + 1})</span>
@@ -222,10 +224,15 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                 </button>
               ) : (
                 <button
-                  onClick={() => {
-                    resultRef.current?.scrollIntoView({ behavior: 'smooth' });
+                  type="button"
+                  onClick={(e) => {
+                    e.currentTarget.blur();
+                    if (typeof window !== 'undefined') {
+                      window.getSelection()?.removeAllRanges();
+                    }
+                    resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }}
-                  className="px-8 py-4 bg-yellow-accent hover:bg-yellow-400 text-black text-base font-black flex items-center justify-center gap-2 transition-all shadow-[0_0_30px_rgba(255,215,0,0.25)] hover:scale-105 cursor-pointer"
+                  className="px-8 py-4 bg-yellow-accent hover:bg-yellow-400 text-black text-base font-black flex items-center justify-center gap-2 transition-all shadow-[0_0_30px_rgba(255,215,0,0.25)] hover:scale-105 cursor-pointer select-none"
                 >
                   <Sparkles className="w-5 h-5" />
                   <span>진단 종합 결과 확인하기</span>
@@ -756,131 +763,122 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
       {/* ============================================================ */}
       {/* 6. [PRINT ONLY] 고해상도 A4 PDF 인쇄 전용 레이아웃 */}
       {/* ============================================================ */}
-      <div className="hidden print:block text-black bg-white p-8 max-w-[210mm] mx-auto font-sans leading-normal">
-        {/* 인쇄 1페이지: 표지 및 종합 진단 요약 */}
-        <div className="space-y-6 min-h-[280mm] flex flex-col justify-between">
-          <div className="space-y-6">
-            {/* 리포트 상단 헤더 */}
-            <div className="border-b-2 border-black pb-4 flex items-end justify-between">
-              <div>
-                <div className="text-xs font-bold tracking-widest text-gray-600 uppercase">
-                  YOURPB BEHAVIORAL FINANCE CONSULTING REPORT
-                </div>
-                <h1 className="text-2xl font-black text-black pt-1">
-                  투자 행동 편향 정밀 진단 및 행동 교정 처방전
-                </h1>
+      <div className="hidden print:block text-black bg-white max-w-[210mm] mx-auto font-sans leading-normal">
+        {/* 인쇄 1페이지: 표지 및 19개 종합 진단 현황표 */}
+        <div className="space-y-3">
+          {/* 리포트 상단 헤더 */}
+          <div className="border-b-2 border-black pb-2 flex items-end justify-between">
+            <div>
+              <div className="text-[10px] font-bold tracking-widest text-gray-600 uppercase">
+                YOURPB BEHAVIORAL FINANCE CONSULTING REPORT
               </div>
-              <div className="text-right text-xs text-gray-600 space-y-0.5">
-                <div>발행일자: {new Date().toLocaleDateString('ko-KR')}</div>
-                <div>고객명: <strong>{initialUser?.name || 'VIP 고객'}</strong> 님</div>
-              </div>
+              <h1 className="text-xl font-black text-black pt-0.5">
+                투자 행동 편향 정밀 진단 및 행동 교정 처방전
+              </h1>
             </div>
-
-            {/* 인트로 총평 박스 */}
-            <div className="p-4 bg-gray-50 border border-gray-300 space-y-2 text-xs leading-relaxed">
-              <div className="font-bold text-sm text-black">
-                📌 행동재무학 진단 종합 총평
-              </div>
-              <p className="text-gray-700">
-                본 보고서는 고객님의 무의식적 투자 심리 및 인지적 오류를 교정하기 위해 작성된 맞춤형 컨설팅 처방전입니다.
-                진단 결과, 총 19개 핵심 편향 중 <strong>{totalBiasedCount}개</strong>의 심리 편향에 주의가 필요한 것으로 분석되었습니다.
-              </p>
-            </div>
-
-            {/* 19개 편향 매트릭스 표 */}
-            <div className="space-y-2">
-              <div className="text-xs font-bold text-black uppercase tracking-wider">
-                1. 19개 투자 편향 종합 진단 현황표
-              </div>
-              <table className="w-full text-[10px] border-collapse border border-gray-300">
-                <thead>
-                  <tr className="bg-gray-100 text-gray-800">
-                    <th className="border border-gray-300 p-1.5 text-center w-10">No</th>
-                    <th className="border border-gray-300 p-1.5 text-left">편향 명칭</th>
-                    <th className="border border-gray-300 p-1.5 text-center w-20">구분</th>
-                    <th className="border border-gray-300 p-1.5 text-center w-20">진단 결과</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {evaluatedQuestions.map((q) => (
-                    <tr key={q.id} className={q.isBiased ? 'bg-red-50/50' : ''}>
-                      <td className="border border-gray-300 p-1 text-center font-bold">{q.id}</td>
-                      <td className="border border-gray-300 p-1 font-medium">{q.name} ({q.englishName})</td>
-                      <td className="border border-gray-300 p-1 text-center text-gray-600">{q.categoryLabel}</td>
-                      <td className="border border-gray-300 p-1 text-center font-bold">
-                        {q.isBiased ? (
-                          <span className="text-red-600">⚠️ 주의 판정</span>
-                        ) : (
-                          <span className="text-emerald-700">✅ 정상</span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="text-right text-[10px] text-gray-600 space-y-0.5">
+              <div>발행일자: {new Date().toLocaleDateString('ko-KR')}</div>
+              <div>고객명: <strong>{initialUser?.name || '고객'}</strong> 님</div>
             </div>
           </div>
 
+          {/* 인트로 총평 박스 */}
+          <div className="p-2.5 bg-gray-50 border border-gray-300 space-y-1 text-[11px] leading-relaxed">
+            <div className="font-bold text-xs text-black">
+              📌 투자 행동 편향 정밀 진단 종합 총평
+            </div>
+            <p className="text-gray-700">
+              본 보고서는 고객님의 무의식적 투자 심리 및 인지적 오류를 교정하기 위해 작성된 맞춤형 컨설팅 처방전입니다.
+              진단 결과, 총 19개 핵심 편향 중 <strong>{totalBiasedCount}개</strong>의 심리 편향에 주의가 필요한 것으로 분석되었습니다.
+            </p>
+          </div>
+
+          {/* 19개 편향 매트릭스 표 (현황표 소제목 생략) */}
+          <table className="w-full text-[9px] border-collapse border border-gray-300">
+            <thead>
+              <tr className="bg-gray-100 text-gray-800">
+                <th className="border border-gray-300 py-1 px-1.5 text-center w-8">No</th>
+                <th className="border border-gray-300 py-1 px-1.5 text-left">편향 명칭</th>
+                <th className="border border-gray-300 py-1 px-1.5 text-center w-16">구분</th>
+                <th className="border border-gray-300 py-1 px-1.5 text-center w-20">진단 결과</th>
+              </tr>
+            </thead>
+            <tbody>
+              {evaluatedQuestions.map((q) => (
+                <tr key={q.id} className={q.isBiased ? 'bg-red-50/60' : ''}>
+                  <td className="border border-gray-300 py-0.5 px-1 text-center font-bold">{q.id}</td>
+                  <td className="border border-gray-300 py-0.5 px-1.5 font-medium">{q.name} ({q.englishName})</td>
+                  <td className="border border-gray-300 py-0.5 px-1 text-center text-gray-600">{q.categoryLabel}</td>
+                  <td className="border border-gray-300 py-0.5 px-1 text-center font-bold">
+                    {q.isBiased ? (
+                      <span className="text-red-600">⚠️ 주의 판정</span>
+                    ) : (
+                      <span className="text-emerald-700">✅ 정상</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
           {/* 1페이지 하단 푸터 */}
-          <div className="border-t border-gray-300 pt-3 flex items-center justify-between text-[10px] text-gray-500">
+          <div className="border-t border-gray-300 pt-2 mt-2 flex items-center justify-between text-[9px] text-gray-500">
             <span>당신의 피비 글로벌 리서치 & 행동재무학 컨설팅 센터</span>
             <span>Page 1 / 2</span>
           </div>
         </div>
 
         {/* 인쇄 2페이지: 취약 편향별 맞춤 실천 솔루션 */}
-        <div className="space-y-6 pt-10 min-h-[280mm] flex flex-col justify-between break-before-page">
-          <div className="space-y-6">
-            <div className="border-b-2 border-black pb-2">
-              <h2 className="text-xl font-black text-black">
-                2. 취약 행동 편향 집중 처방 강령 (Action Plans)
-              </h2>
-              <p className="text-xs text-gray-600 pt-0.5">
-                아래 항목들은 고객님의 장기 복리 수익률을 훼손할 수 있는 핵심 심리 약점입니다. 매매 실행 전 반드시 상기하십시오.
-              </p>
-            </div>
-
-            {biasedList.length === 0 ? (
-              <div className="p-8 border border-gray-300 text-center space-y-2">
-                <div className="text-sm font-bold text-emerald-800">우수한 심리 통제력 유지 중</div>
-                <p className="text-xs text-gray-600">
-                  주의 판정을 받은 편향이 없습니다. 현재의 룰 기반 분산투자 원칙을 꾸준히 고수하십시오.
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {biasedList.map((q) => (
-                  <div key={q.id} className="p-3.5 border border-gray-300 bg-gray-50/50 space-y-2">
-                    <div className="flex items-center justify-between border-b border-gray-200 pb-1.5">
-                      <span className="font-black text-xs text-black">
-                        #{q.id}. {q.name} ({q.categoryLabel})
-                      </span>
-                      <span className="text-[10px] text-red-600 font-bold">⚠️ 집중 관리</span>
-                    </div>
-                    <p className="text-[11px] text-gray-700 leading-relaxed">
-                      <strong>본질:</strong> {q.concept.definition}
-                    </p>
-                    <div className="space-y-1 pt-1">
-                      <div className="text-[10px] font-bold text-black uppercase">
-                        🛡️ 실천 극복 행동 체크리스트:
-                      </div>
-                      <div className="grid grid-cols-1 gap-1 text-[10px] text-gray-800 pl-2">
-                        {q.actionPlans.map((plan, i) => (
-                          <div key={i} className="flex items-start gap-1.5">
-                            <span className="text-emerald-700 font-bold shrink-0">✓</span>
-                            <span>{plan}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+        <div className="space-y-3 pt-6 break-before-page">
+          <div className="border-b-2 border-black pb-2">
+            <h2 className="text-lg font-black text-black">
+              취약 행동 편향 집중 처방 강령 (Action Plans)
+            </h2>
+            <p className="text-[10px] text-gray-600 pt-0.5">
+              아래 항목들은 고객님의 장기 복리 수익률을 훼손할 수 있는 핵심 심리 약점입니다. 매매 실행 전 반드시 상기하십시오.
+            </p>
           </div>
 
+          {biasedList.length === 0 ? (
+            <div className="p-8 border border-gray-300 text-center space-y-2">
+              <div className="text-sm font-bold text-emerald-800">우수한 심리 통제력 유지 중</div>
+              <p className="text-xs text-gray-600">
+                주의 판정을 받은 편향이 없습니다. 현재의 룰 기반 분산투자 원칙을 꾸준히 고수하십시오.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-2.5">
+              {biasedList.map((q) => (
+                <div key={q.id} className="p-2.5 border border-gray-300 bg-gray-50/50 space-y-1 break-inside-avoid">
+                  <div className="flex items-center justify-between border-b border-gray-200 pb-1">
+                    <span className="font-black text-xs text-black">
+                      #{q.id}. {q.name} ({q.categoryLabel})
+                    </span>
+                    <span className="text-[10px] text-red-600 font-bold">⚠️ 집중 관리</span>
+                  </div>
+                  <p className="text-[10px] text-gray-700 leading-snug">
+                    <strong>본질:</strong> {q.concept.definition}
+                  </p>
+                  <div className="space-y-0.5 pt-0.5">
+                    <div className="text-[9.5px] font-bold text-black uppercase">
+                      🛡️ 실천 극복 행동 체크리스트:
+                    </div>
+                    <div className="grid grid-cols-1 gap-0.5 text-[9.5px] text-gray-800 pl-2">
+                      {q.actionPlans.map((plan, i) => (
+                        <div key={i} className="flex items-start gap-1">
+                          <span className="text-emerald-700 font-bold shrink-0">✓</span>
+                          <span>{plan}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
           {/* 2페이지 하단 푸터 */}
-          <div className="border-t border-gray-300 pt-3 flex items-center justify-between text-[10px] text-gray-500">
+          <div className="border-t border-gray-300 pt-2 mt-3 flex items-center justify-between text-[9px] text-gray-500">
             <span>YOURPB.COM  |  CONFIDENTIAL & PROPRIETARY</span>
             <span>Page 2 / 2</span>
           </div>
