@@ -45,6 +45,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
   const [showVipModal, setShowVipModal] = useState<boolean>(false);
 
   const cardRef = useRef<HTMLDivElement>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
 
   const isVipUser =
     initialUser?.membership_status === 'vip' ||
@@ -195,8 +196,8 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
               <span className="px-3 py-1 bg-white/5 border border-white/10">🎁 진단 및 해설 100% 무료</span>
             </div>
 
-            {!isStarted && !isCompleted && (
-              <div className="pt-6">
+            <div className="pt-6 flex flex-wrap items-center justify-center gap-3">
+              {!isStarted && !isCompleted ? (
                 <button
                   onClick={() => {
                     setIsStarted(true);
@@ -204,14 +205,36 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                       cardRef.current?.scrollIntoView({ behavior: 'smooth' });
                     }, 100);
                   }}
-                  className="px-8 py-4 bg-yellow-accent hover:bg-yellow-400 text-black text-base font-black flex items-center justify-center gap-2 mx-auto transition-all shadow-[0_0_30px_rgba(255,215,0,0.25)] hover:scale-105 cursor-pointer"
+                  className="px-8 py-4 bg-yellow-accent hover:bg-yellow-400 text-black text-base font-black flex items-center justify-center gap-2 transition-all shadow-[0_0_30px_rgba(255,215,0,0.25)] hover:scale-105 cursor-pointer"
                 >
                   <Brain className="w-5 h-5" />
                   <span>진단 시작하기</span>
                   <ArrowRight className="w-5 h-5" />
                 </button>
-              </div>
-            )}
+              ) : isStarted && !isCompleted ? (
+                <button
+                  onClick={() => {
+                    cardRef.current?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="px-8 py-4 bg-yellow-accent hover:bg-yellow-400 text-black text-base font-black flex items-center justify-center gap-2 transition-all shadow-[0_0_30px_rgba(255,215,0,0.25)] hover:scale-105 cursor-pointer"
+                >
+                  <Brain className="w-5 h-5" />
+                  <span>진단 이어하기 (Q{currentStep + 1})</span>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    resultRef.current?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="px-8 py-4 bg-yellow-accent hover:bg-yellow-400 text-black text-base font-black flex items-center justify-center gap-2 transition-all shadow-[0_0_30px_rgba(255,215,0,0.25)] hover:scale-105 cursor-pointer"
+                >
+                  <Sparkles className="w-5 h-5" />
+                  <span>진단 종합 결과 확인하기</span>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              )}
+            </div>
           </div>
         </section>
 
@@ -250,16 +273,18 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                 </div>
 
                 {/* 문항 헤더 */}
-                <div className="space-y-1.5 pt-2">
-                  <div className="text-xs font-bold text-gray-400">
-                    편향 #{currentQ.id} · {currentQ.englishName}
+                <div className="pt-2 border-b border-white/10 pb-3">
+                  <div className="space-y-1">
+                    <div className="text-xs font-bold text-gray-400">
+                      편향 #{currentQ.id} · {currentQ.englishName}
+                    </div>
+                    <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                      {currentQ.name}
+                    </h2>
+                    <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
+                      {currentQ.shortDesc}
+                    </p>
                   </div>
-                  <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                    {currentQ.name}
-                  </h2>
-                  <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
-                    {currentQ.shortDesc}
-                  </p>
                 </div>
 
                 {/* 질문 박스 */}
@@ -460,7 +485,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
         {/* 3. 종합 결과 대시보드 (19문항 모두 완료 시) */}
         {/* ============================================================ */}
         {isCompleted && (
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+          <div ref={resultRef} className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
             {/* 결과 종합 헤더 카드 */}
             <div className="bg-[#0f0f12] border border-white/15 p-6 sm:p-8 space-y-6 shadow-2xl relative overflow-hidden">
               <div className="space-y-2 text-center sm:text-left">
