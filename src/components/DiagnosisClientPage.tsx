@@ -292,7 +292,9 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                         type="button"
                         disabled={isSubmitted}
                         onClick={() => handleSelectOption(currentQ.id, idx)}
-                        className={`w-full text-left p-4 sm:p-4.5 border transition-all flex items-start gap-3.5 cursor-pointer disabled:cursor-default ${borderClass}`}
+                        className={`w-full text-left p-4 sm:p-4.5 border transition-all flex items-start gap-3.5 ${
+                          isSubmitted ? 'cursor-default' : 'cursor-pointer'
+                        } ${borderClass}`}
                       >
                         <span
                           className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-black border ${
@@ -322,7 +324,11 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                       type="button"
                       disabled={currentSelectedIdx === undefined}
                       onClick={handleSubmitCurrentStep}
-                      className="w-full py-4 bg-yellow-accent hover:bg-yellow-400 disabled:bg-white/10 disabled:text-gray-500 disabled:cursor-not-allowed text-black font-black text-sm sm:text-base flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer"
+                      className={`w-full py-4 font-black text-sm sm:text-base flex items-center justify-center gap-2 transition-all shadow-md ${
+                        currentSelectedIdx === undefined
+                          ? 'bg-white/10 text-gray-500 cursor-not-allowed'
+                          : 'bg-yellow-accent hover:bg-yellow-400 text-black cursor-pointer'
+                      }`}
                     >
                       <Brain className="w-4 h-4" />
                       <span>선택 완료 및 진단 판정하기</span>
@@ -422,7 +428,9 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                         type="button"
                         disabled={currentStep === 0}
                         onClick={handlePrev}
-                        className="px-5 py-3 bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-bold text-gray-300 flex items-center gap-2 border border-white/10 cursor-pointer"
+                        className={`px-5 py-3 bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-300 flex items-center gap-2 border border-white/10 ${
+                          currentStep === 0 ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'
+                        }`}
                       >
                         <ArrowLeft className="w-3.5 h-3.5" />
                         <span>이전 문항</span>
@@ -606,7 +614,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                         : 'bg-white/5 border-white/10 text-gray-300'
                     }`}
                   >
-                    <span className="font-medium truncate max-w-[180px]">
+                    <span className="font-medium truncate max-w-45">
                       {q.id}. {q.name}
                     </span>
                     <span
