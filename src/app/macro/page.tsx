@@ -25,8 +25,8 @@ const getCachedMacroRawData = unstable_cache(
     date5YearsAgo.setFullYear(now.getFullYear() - 6);
     const startDateQ = date5YearsAgo.toISOString().split('T')[0];
 
-    // 3. 연간용 최근 11년 전 연도
-    const startYearWeo = now.getFullYear() - 11;
+    // 3. 연간용 최근 5년 전 연도
+    const startYearWeo = now.getFullYear() - 5;
 
     const fetchAll = async (query: any) => {
       let allData: any[] = [];

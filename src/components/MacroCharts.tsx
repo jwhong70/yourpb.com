@@ -138,8 +138,10 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title 
     );
   }
 
+  const currentYear = useMemo(() => new Date().getFullYear(), []);
+
   return (
-    <div className="flex flex-col p-2 bg-[#F9F8F6] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-sm">
+    <div className="flex flex-col p-2 bg-[#F9F8F6] border-b border-b-[#000000]/60 shadow-sm">
       <ChartContainer config={chartConfig} className="w-full h-64 md:h-96 aspect-auto">
         <BarChart
           data={chartData}
@@ -168,7 +170,9 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title 
             radius={[2, 2, 0, 0]}
           >
             {chartData.map((entry, index) => {
-              const fill = entry.displayVal >= 0 ? '#333333' : '#9E9E9E';
+              const fill = entry.year === currentYear
+                ? '#D4AF37'
+                : (entry.displayVal >= 0 ? '#333333' : '#9E9E9E');
               return <Cell key={`cell-${index}`} fill={fill} />;
             })}
           </Bar>
@@ -220,7 +224,7 @@ export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value', title
   }
 
   return (
-    <div className="flex flex-col p-2 bg-[#F9F8F6] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-sm">
+    <div className="flex flex-col p-2 bg-[#F9F8F6] border-b border-b-[#000000]/60 shadow-sm">
       <ChartContainer config={chartConfig} className="w-full h-64 md:h-96 aspect-auto">
         <AreaChart
           data={chartData}
@@ -334,7 +338,7 @@ export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 
   }
 
   return (
-    <div className="flex flex-col p-2 bg-[#F9F8F6] border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-sm">
+    <div className="flex flex-col p-2 bg-[#F9F8F6] border-b border-b-[#000000]/60 shadow-sm">
       <ChartContainer config={chartConfig} className="w-full h-64 md:h-96 aspect-auto">
         <ComposedChart
           data={chartData}
