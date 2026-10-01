@@ -107,7 +107,7 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
     try {
       const amount = selectedPlan === '1month' ? 5000 : 25000;
       const orderName = selectedPlan === '1month' ? '당신의피비 프리미엄 멤버십 1개월' : '당신의피비 프리미엄 멤버십 6개월';
-      const orderId = `order-${randomId()}`;
+      const orderId = `order_${initialUser.id}_${randomId()}`;
 
       // 토스페이먼츠 결제 요청 실행 (결제 인증 리다이렉트)
       await widgets.requestPayment({
