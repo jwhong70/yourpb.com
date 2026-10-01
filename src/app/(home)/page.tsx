@@ -1,14 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
 import { unstable_cache } from 'next/cache';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import { supabase as publicSupabase } from '@/lib/supabase';
-import { createClient } from '@/lib/supabase-server';
 import Filter from '@/components/Filter';
 import ModelCarousel from '@/components/ModelCarousel';
 import { getSessionUser } from '@/app/actions/auth';
 import { getWishlist } from '@/app/actions/wishlist';
 import PortfolioPieChart from '@/components/PortfolioPieChart';
 import { PB_MODEL_PORTFOLIO } from '@/config/portfolio';
+import { getMonthlyBrief } from '@/lib/monthly-brief';
 
 const getCachedEtfs = unstable_cache(
   async () => {
@@ -30,10 +31,11 @@ export default async function Home() {
   ]);
   const wishlistTickers = wishlist.map(etf => etf.ticker);
 
+  // 월간 브리프 데이터 로드 (monthly-brief.md 연동)
+  const brief = getMonthlyBrief();
+
   // 포트폴리오 비중 정의 (공통 설정 모듈 참조)
   const portfolioData = PB_MODEL_PORTFOLIO;
-
-
 
   // 포트폴리오에 지정된 대표 ETF 티커 리스트 추출 (실시간 변경 반영)
   const modelPortfolioTickers = portfolioData
@@ -53,7 +55,84 @@ export default async function Home() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-8 space-y-16">
 
-      {/* 1. 당신의 피비 포트폴리오 섹션 */}
+      {/* 1. 당신의 피비 월간 금융시장 전망 섹션 (monthly 변경 시 자동 동기화) */}
+      <section className="space-y-6">
+        <div className="flex items-center justify-between border-b border-black/10 pb-4">
+          <div className="flex items-center gap-3">
+            <h2 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
+              당신의 피비 월간 금융시장 전망
+            </h2>
+            <span className="text-xs font-bold text-white bg-black px-2.5 py-1 rounded-none font-mono">
+              {brief.edition}
+            </span>
+          </div>
+          <Link
+            href="/monthly"
+            className="group flex items-center gap-1.5 text-xs sm:text-sm font-bold text-gray-600 hover:text-black transition-colors"
+          >
+            <span>월간 리포트 전문 보기</span>
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          </Link>
+        </div>
+
+        {/* 한줄 시장 테마 헤드라인 (제목 없이 삽입) */}
+        <div className="p-5 sm:p-6 bg-linear-to-r from-gray-900 via-black to-gray-900 text-white border-l-4 border-[#D4AF37] shadow-md">
+          <p className="text-base sm:text-lg lg:text-xl font-bold leading-relaxed tracking-tight text-white/95">
+            {brief.headline}
+          </p>
+        </div>
+
+        {/* 월간 금융시장 시황 총평 4대 항목 (제목 없이 내용 삽입) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          
+          {/* 1. 글로벌 매크로 & 경기/물가 사이클 */}
+          <div className="p-6 bg-white border border-black shadow-xs space-y-3">
+            <h3 className="text-base font-extrabold text-black flex items-center gap-2 border-b border-gray-100 pb-2.5">
+              <span className="w-2 h-2 bg-[#D4AF37] rounded-full shrink-0" />
+              1. 글로벌 매크로 & 경기/물가 사이클
+            </h3>
+            <p className="text-sm sm:text-base text-gray-700 leading-relaxed font-normal">
+              * {brief.sections.macro}
+            </p>
+          </div>
+
+          {/* 2. 금리·유동성 및 금융시장 리스크 */}
+          <div className="p-6 bg-white border border-black shadow-xs space-y-3">
+            <h3 className="text-base font-extrabold text-black flex items-center gap-2 border-b border-gray-100 pb-2.5">
+              <span className="w-2 h-2 bg-[#D4AF37] rounded-full shrink-0" />
+              2. 금리·유동성 및 금융시장 리스크
+            </h3>
+            <p className="text-sm sm:text-base text-gray-700 leading-relaxed font-normal">
+              * {brief.sections.liquidity}
+            </p>
+          </div>
+
+          {/* 3. 글로벌 자산군 및 주식·섹터·테마 모멘텀 */}
+          <div className="p-6 bg-white border border-black shadow-xs space-y-3">
+            <h3 className="text-base font-extrabold text-black flex items-center gap-2 border-b border-gray-100 pb-2.5">
+              <span className="w-2 h-2 bg-[#D4AF37] rounded-full shrink-0" />
+              3. 글로벌 자산군 및 주식·섹터·테마 모멘텀
+            </h3>
+            <p className="text-sm sm:text-base text-gray-700 leading-relaxed font-normal">
+              * {brief.sections.momentum}
+            </p>
+          </div>
+
+          {/* 4. 당신의 피비의 자산배분 전략 */}
+          <div className="p-6 bg-white border border-black shadow-xs space-y-3">
+            <h3 className="text-base font-extrabold text-black flex items-center gap-2 border-b border-gray-100 pb-2.5">
+              <span className="w-2 h-2 bg-[#D4AF37] rounded-full shrink-0" />
+              4. 당신의 피비의 자산배분 전략
+            </h3>
+            <p className="text-sm sm:text-base text-gray-700 leading-relaxed font-normal">
+              * {brief.sections.strategy}
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 2. 당신의 피비 포트폴리오 섹션 */}
       <section className="space-y-6">
         <div className="flex items-center">
           <h2 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
@@ -114,7 +193,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 2. 구성 ETF 캐러셀 섹션 */}
+      {/* 3. 구성 ETF 캐러셀 섹션 */}
       <section>
         <ModelCarousel
           etfs={modelPortfolioEtfs}
@@ -123,7 +202,7 @@ export default async function Home() {
         />
       </section>
 
-      {/* 3. 관심 ETF 그리드 섹션 */}
+      {/* 4. 관심 ETF 그리드 섹션 */}
       <section className="space-y-6">
         <div className="flex items-center">
           <h2 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
