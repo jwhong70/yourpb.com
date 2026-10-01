@@ -216,3 +216,43 @@ export async function signInWithKakao(redirectTo?: string) {
   }
 }
 
+/**
+ * 회원 탈퇴 Action
+ * - 현재 로그인된 사용자의 Auth 계정 및 DB 프로필 데이터를 영구 삭제합니다.
+ */
+export async function deleteAccount() {
+  try {
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return { success: false, error: '로그인이 필요합니다.' };
+    }
+
+    // 1. Admin 클라이언트를 통해 Supabase Auth 계정 영구 삭제
+    const { createAdminClient } = await import('@/lib/supabase-admin');
+    const adminSupabase = createAdminClient();
+
+    // 2. users 테이블 데이터 삭제
+    await adminSupabase.from('users').delete().eq('id', user.id);
+
+    // 3. auth.users 삭제
+    const { error: deleteError } = await adminSupabase.auth.admin.deleteUser(user.id);
+    if (deleteError) {
+      console.error('Failed to delete auth user:', deleteError);
+    }
+
+    // 4. 세션 및 쿠키 전체 초기화
+    await supabase.auth.signOut();
+    const cookieStore = await cookies();
+    cookieStore.set('demo_user', '', { expires: new Date(0), path: '/' });
+    cookieStore.set('demo_membership_status', '', { expires: new Date(0), path: '/' });
+
+    return { success: true };
+  } catch (err: any) {
+    console.error('deleteAccount execution failure:', err);
+    return { success: false, error: err.message || '회원 탈퇴 처리 중 오류가 발생했습니다.' };
+  }
+}
+
+

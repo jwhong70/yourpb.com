@@ -88,9 +88,13 @@ export default function Header({ initialUser }: HeaderProps) {
           {/* 오른쪽 로그인/로그아웃 버튼 */}
           <div className="hidden lg:flex items-center gap-4">
             {user ? (
-              <div className="flex items-center gap-6">
-                <div className="flex items-center gap-3 border-r border-white/10 pr-4">
-                  <span className="text-base font-black text-white">
+              <div className="flex items-center gap-4">
+                <Link
+                  href="/mypage"
+                  className="flex items-center gap-3 border-r border-white/10 pr-4 hover:opacity-80 transition-opacity cursor-pointer group"
+                  title="내 정보 및 멤버십 관리"
+                >
+                  <span className="text-base font-black text-white group-hover:text-[#D4AF37] transition-colors">
                     {user.name}
                   </span>
                   {user.membership_status === 'premium' ? (
@@ -99,11 +103,17 @@ export default function Header({ initialUser }: HeaderProps) {
                       Premium
                     </span>
                   ) : (
-                    <span className="text-xs font-semibold text-white/50 bg-white/10 px-3 py-1 rounded-full select-none">
+                    <span className="text-xs font-semibold text-white/50 bg-white/10 px-3 py-1 rounded-full select-none group-hover:border-white/30 transition-colors">
                       Free
                     </span>
                   )}
-                </div>
+                </Link>
+                <Link
+                  href="/mypage"
+                  className="text-xs font-bold text-gray-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/15 px-2.5 py-1.5 transition-colors"
+                >
+                  내 정보
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="flex items-center gap-1 text-sm font-black text-white/80 hover:text-white transition-colors cursor-pointer"
@@ -161,21 +171,28 @@ export default function Header({ initialUser }: HeaderProps) {
             <div className="pt-6 border-t border-white/10">
               {user ? (
                 <div className="px-4 space-y-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-lg font-black text-white">
-                      {user.name}
-                    </span>
-                    {user.membership_status === 'premium' ? (
-                      <span className="flex items-center gap-1 text-sm font-black text-black bg-yellow-accent border border-yellow-accent/40 px-3 py-1 rounded-full animate-badge-glow">
-                        <Award className="w-3.5 h-3.5 text-black" />
-                        Premium
+                  <Link
+                    href="/mypage"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center justify-between p-3 bg-white/5 border border-white/10 hover:border-[#D4AF37] transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-lg font-black text-white">
+                        {user.name}
                       </span>
-                    ) : (
-                      <span className="text-sm font-semibold text-white/50 bg-white/10 px-3 py-1 rounded-full">
-                        Free
-                      </span>
-                    )}
-                  </div>
+                      {user.membership_status === 'premium' ? (
+                        <span className="flex items-center gap-1 text-xs font-black text-black bg-yellow-accent border border-yellow-accent/40 px-2.5 py-0.5 rounded-full animate-badge-glow">
+                          <Award className="w-3 h-3 text-black" />
+                          Premium
+                        </span>
+                      ) : (
+                        <span className="text-xs font-semibold text-white/50 bg-white/10 px-2.5 py-0.5 rounded-full">
+                          Free
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-xs font-bold text-[#D4AF37]">내 정보 관리 &gt;</span>
+                  </Link>
                   <button
                     onClick={() => {
                       setIsMobileMenuOpen(false);
