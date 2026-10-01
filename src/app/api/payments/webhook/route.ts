@@ -3,13 +3,13 @@ import { createAdminClient } from '@/lib/supabase-admin';
 
 /**
  * 토스페이먼츠 웹훅(Webhook) 수신 엔드포인트
- * - 결제 취소/환불(CANCELED, PARTIAL_CANCELED) 이벤트 발생 시 회원 등급을 자동으로 'free'로 갱신합니다.
+ * - 결제 취소/환불(CANCELED, PARTIAL_CANCELED) 이벤트 발생 시 회원 등급을 자동으로 'free'로 동기화합니다.
  * - 결제 상태 변경(PAYMENT_STATUS_CHANGED)을 실시간으로 추적합니다.
  */
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    console.log('[Toss Webhook] Received webhook event:', JSON.stringify(body, null, 2));
+    console.log('[Toss Webhook] Received raw webhook payload:', JSON.stringify(body, null, 2));
 
     const { eventType, data } = body;
 
@@ -17,21 +17,43 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'No data payload found' }, { status: 400 });
     }
 
-    const { status, orderId, paymentKey, totalAmount } = data;
-    console.log(`[Toss Webhook] EventType: ${eventType}, Status: ${status}, OrderId: ${orderId}, PaymentKey: ${paymentKey}`);
-
-    // orderId 파싱: "order_${userId}_${randomId}" 형식에서 userId 추출
-    let userId: string | null = null;
-    if (orderId && typeof orderId === 'string') {
-      const parts = orderId.split('_');
-      if (parts.length >= 3 && parts[0] === 'order') {
-        userId = parts[1];
-      }
-    }
+    const { status, orderId, paymentKey, totalAmount, customerKey, customerEmail } = data;
+    console.log(`[Toss Webhook] EventType: ${eventType}, Status: ${status}, OrderId: ${orderId}, CustomerKey: ${customerKey}, Email: ${customerEmail}`);
 
     const supabase = createAdminClient();
 
-    // 1. 결제 취소 / 환불 / 만료 / 중단 이벤트 처리
+    // 1. 유저 식별자(userId) 찾기 (3중 폴백 전략)
+    let targetUserId: string | null = null;
+    const uuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+
+    // 전략 1: customerKey가 UUID인 경우
+    if (customerKey && uuidRegex.test(customerKey)) {
+      targetUserId = customerKey;
+    }
+
+    // 전략 2: orderId 안에 UUID가 포함되어 있는 경우 (예: order_UUID_timestamp)
+    if (!targetUserId && orderId && typeof orderId === 'string') {
+      const match = orderId.match(uuidRegex);
+      if (match) {
+        targetUserId = match[0];
+      }
+    }
+
+    // 전략 3: customerEmail로 users 테이블 조회
+    if (!targetUserId && customerEmail) {
+      const { data: userByEmail } = await supabase
+        .from('users')
+        .select('id')
+        .eq('email', customerEmail)
+        .maybeSingle();
+      if (userByEmail) {
+        targetUserId = userByEmail.id;
+      }
+    }
+
+    console.log(`[Toss Webhook] Identified targetUserId: ${targetUserId || 'NOT_FOUND'}`);
+
+    // 2. 결제 취소 / 환불 / 만료 / 중단 이벤트 처리
     if (
       status === 'CANCELED' ||
       status === 'PARTIAL_CANCELED' ||
@@ -40,44 +62,46 @@ export async function POST(req: NextRequest) {
     ) {
       console.log(`[Toss Webhook] Processing cancellation for order: ${orderId}, status: ${status}`);
 
-      if (userId) {
+      if (targetUserId) {
         // userId가 확인되면 즉시 회원 등급을 'free'로 강등 및 만료일 초기화
-        const { error: updateError } = await supabase
+        const { data: updatedData, error: updateError } = await supabase
           .from('users')
           .update({
             membership_status: 'free',
             subscription_end_date: null,
           })
-          .eq('id', userId);
+          .eq('id', targetUserId)
+          .select();
 
         if (updateError) {
           console.error('[Toss Webhook] Failed to downgrade user membership:', updateError);
         } else {
-          console.log(`[Toss Webhook] Successfully downgraded user (${userId}) to free membership.`);
+          console.log(`[Toss Webhook] Successfully downgraded user (${targetUserId}) to free membership. Result:`, updatedData);
         }
       } else {
-        console.warn(`[Toss Webhook] Could not extract userId directly from orderId: ${orderId}`);
+        console.warn(`[Toss Webhook] Could not identify target user from payload (orderId: ${orderId}, customerKey: ${customerKey}, email: ${customerEmail}). If this was a Toss developer console test dispatch, this is expected.`);
       }
     }
 
-    // 2. 결제 완료(DONE) 이벤트 처리 (프론트엔드 리다이렉트 유실 시 백업 보장)
+    // 3. 결제 완료(DONE) 이벤트 처리 (웹훅을 통한 백업)
     else if (status === 'DONE') {
       console.log(`[Toss Webhook] Payment confirmed (DONE) for order: ${orderId}, amount: ${totalAmount}`);
     }
 
-    // 토스페이먼츠 웹훅은 200 OK 응답을 받아야 재전송을 중단합니다.
+    // 토스페이먼츠 웹훅 규격: 200 OK 응답 반환
     return NextResponse.json({ 
       success: true, 
       message: 'Webhook processed successfully',
       event: eventType,
       orderId,
+      targetUserId,
       paymentStatus: status 
     });
 
   } catch (err: any) {
     console.error('[Toss Webhook] Error processing webhook:', err);
     return NextResponse.json(
-      { status: 'error', message: err.message || 'Internal webhook error' },
+      { success: false, message: err.message || 'Internal webhook error' },
       { status: 500 }
     );
   }

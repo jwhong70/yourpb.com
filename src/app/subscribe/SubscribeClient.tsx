@@ -115,6 +115,8 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
         orderName,
         successUrl: `${window.location.origin}/subscribe/success?plan=${selectedPlan}`,
         failUrl: `${window.location.origin}/subscribe/fail`,
+        customerEmail: initialUser.email || undefined,
+        customerName: initialUser.name || undefined,
       });
     } catch (err: any) {
       console.error('Payment request failed:', err);
