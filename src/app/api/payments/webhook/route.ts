@@ -6,6 +6,25 @@ import { createAdminClient } from '@/lib/supabase-admin';
  * - 결제 취소/환불(CANCELED, PARTIAL_CANCELED) 이벤트 발생 시 회원 등급을 자동으로 'free'로 동기화합니다.
  * - 결제 상태 변경(PAYMENT_STATUS_CHANGED)을 실시간으로 추적합니다.
  */
+export async function GET() {
+  const hasServiceRoleKey = !!process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const hasSupabaseUrl = !!process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const hasTossSecret = !!process.env.TOSS_SECRET_KEY;
+
+  return NextResponse.json({
+    status: 'online',
+    service: 'YourPB Toss Webhook Handler',
+    envCheck: {
+      NEXT_PUBLIC_SUPABASE_URL: hasSupabaseUrl,
+      SUPABASE_SERVICE_ROLE_KEY: hasServiceRoleKey,
+      TOSS_SECRET_KEY: hasTossSecret,
+    },
+    message: hasServiceRoleKey 
+      ? 'Webhook is ready and configured properly.' 
+      : 'WARNING: SUPABASE_SERVICE_ROLE_KEY is missing in environment variables!'
+  });
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -54,12 +73,14 @@ export async function POST(req: NextRequest) {
     console.log(`[Toss Webhook] Identified targetUserId: ${targetUserId || 'NOT_FOUND'}`);
 
     // 2. 결제 취소 / 환불 / 만료 / 중단 이벤트 처리
-    if (
+    const isCancelled = 
       status === 'CANCELED' ||
       status === 'PARTIAL_CANCELED' ||
       status === 'ABORTED' ||
-      status === 'EXPIRED'
-    ) {
+      status === 'EXPIRED' ||
+      (Array.isArray(data.cancels) && data.cancels.length > 0);
+
+    if (isCancelled) {
       console.log(`[Toss Webhook] Processing cancellation for order: ${orderId}, status: ${status}`);
 
       if (targetUserId) {
@@ -74,12 +95,12 @@ export async function POST(req: NextRequest) {
           .select();
 
         if (updateError) {
-          console.error('[Toss Webhook] Failed to downgrade user membership:', updateError);
+          console.error('[Toss Webhook] Failed to downgrade user membership in DB:', updateError);
         } else {
           console.log(`[Toss Webhook] Successfully downgraded user (${targetUserId}) to free membership. Result:`, updatedData);
         }
       } else {
-        console.warn(`[Toss Webhook] Could not identify target user from payload (orderId: ${orderId}, customerKey: ${customerKey}, email: ${customerEmail}). If this was a Toss developer console test dispatch, this is expected.`);
+        console.warn(`[Toss Webhook] Could not identify target user from payload (orderId: ${orderId}, customerKey: ${customerKey}, email: ${customerEmail}).`);
       }
     }
 
