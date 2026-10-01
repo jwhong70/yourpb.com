@@ -86,44 +86,44 @@ export default async function Home() {
         {/* 월간 금융시장 시황 총평 4대 항목 (제목 없이 내용 삽입) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
           
-          {/* 1. 글로벌 매크로 & 경기/물가 사이클 */}
+          {/* 글로벌 매크로 & 경기/물가 사이클 */}
           <div className="p-6 bg-white border border-black shadow-xs space-y-3">
             <h3 className="text-base font-extrabold text-black flex items-center gap-2 border-b border-gray-100 pb-2.5">
               <span className="w-2 h-2 bg-[#D4AF37] rounded-full shrink-0" />
-              1. 글로벌 매크로 & 경기/물가 사이클
+              글로벌 매크로 & 경기/물가 사이클
             </h3>
             <p className="text-sm sm:text-base text-gray-700 leading-relaxed font-normal">
               * {brief.sections.macro}
             </p>
           </div>
 
-          {/* 2. 금리·유동성 및 금융시장 리스크 */}
+          {/* 금리·유동성 및 금융시장 리스크 */}
           <div className="p-6 bg-white border border-black shadow-xs space-y-3">
             <h3 className="text-base font-extrabold text-black flex items-center gap-2 border-b border-gray-100 pb-2.5">
               <span className="w-2 h-2 bg-[#D4AF37] rounded-full shrink-0" />
-              2. 금리·유동성 및 금융시장 리스크
+              금리·유동성 및 금융시장 리스크
             </h3>
             <p className="text-sm sm:text-base text-gray-700 leading-relaxed font-normal">
               * {brief.sections.liquidity}
             </p>
           </div>
 
-          {/* 3. 글로벌 자산군 및 주식·섹터·테마 모멘텀 */}
+          {/* 자산군 및 주식·섹터·테마 모멘텀 */}
           <div className="p-6 bg-white border border-black shadow-xs space-y-3">
             <h3 className="text-base font-extrabold text-black flex items-center gap-2 border-b border-gray-100 pb-2.5">
               <span className="w-2 h-2 bg-[#D4AF37] rounded-full shrink-0" />
-              3. 글로벌 자산군 및 주식·섹터·테마 모멘텀
+              자산군 및 주식·섹터·테마 모멘텀
             </h3>
             <p className="text-sm sm:text-base text-gray-700 leading-relaxed font-normal">
               * {brief.sections.momentum}
             </p>
           </div>
 
-          {/* 4. 당신의 피비의 자산배분 전략 */}
+          {/* 당신의 피비의 자산배분 전략 */}
           <div className="p-6 bg-white border border-black shadow-xs space-y-3">
             <h3 className="text-base font-extrabold text-black flex items-center gap-2 border-b border-gray-100 pb-2.5">
               <span className="w-2 h-2 bg-[#D4AF37] rounded-full shrink-0" />
-              4. 당신의 피비의 자산배분 전략
+              당신의 피비의 자산배분 전략
             </h3>
             <p className="text-sm sm:text-base text-gray-700 leading-relaxed font-normal">
               * {brief.sections.strategy}

@@ -246,7 +246,7 @@ export default async function MonthlyBriefPage() {
                   <article className="p-5 print:p-3 bg-white border border-[#000000] rounded-none shadow-xs space-y-2 print:space-y-1">
                     <div className="flex items-center gap-2 text-sm print:text-[11.5px] font-extrabold text-gray-900">
                       <span className="w-2 h-2 rounded-full bg-blue-primary" />
-                      <h3>1. 글로벌 매크로 & 경기/물가 사이클 진단</h3>
+                      <h3>글로벌 매크로 & 경기/물가 사이클 진단</h3>
                     </div>
                     <p className="text-sm sm:text-base print:text-[10.5px] text-gray-700 print:text-black leading-relaxed print:leading-[1.6] font-normal whitespace-pre-line pl-4 print:pl-2.5 border-l-2 border-blue-primary/30">
                       {brief.sections.macro}
@@ -257,18 +257,18 @@ export default async function MonthlyBriefPage() {
                   <article className="p-5 print:p-3 bg-white border border-[#000000] rounded-none shadow-xs space-y-2 print:space-y-1">
                     <div className="flex items-center gap-2 text-sm print:text-[11.5px] font-extrabold text-gray-900">
                       <span className="w-2 h-2 rounded-full bg-yellow-accent" />
-                      <h3>2. 금리·유동성 및 금융시장 리스크 지형</h3>
+                      <h3>금리·유동성 및 금융시장 리스크 지형</h3>
                     </div>
                     <p className="text-sm sm:text-base print:text-[10.5px] text-gray-700 print:text-black leading-relaxed print:leading-[1.6] font-normal whitespace-pre-line pl-4 print:pl-2.5 border-l-2 border-yellow-accent/30">
                       {brief.sections.liquidity}
                     </p>
                   </article>
 
-                  {/* 3) 글로벌 자산군 및 주식 모멘텀 */}
+                  {/* 3) 자산군 및 주식 모멘텀 */}
                   <article className="p-5 print:p-3 bg-white border border-[#000000] rounded-none shadow-xs space-y-2 print:space-y-1">
                     <div className="flex items-center gap-2 text-sm print:text-[11.5px] font-extrabold text-gray-900">
                       <span className="w-2 h-2 rounded-full bg-coral" />
-                      <h3>3. 글로벌 자산군 및 주식·섹터·테마 모멘텀</h3>
+                      <h3>자산군 및 주식·섹터·테마 모멘텀</h3>
                     </div>
                     <p className="text-sm sm:text-base print:text-[10.5px] text-gray-700 print:text-black leading-relaxed print:leading-[1.6] font-normal whitespace-pre-line pl-4 print:pl-2.5 border-l-2 border-coral/30">
                       {brief.sections.momentum}
@@ -279,7 +279,7 @@ export default async function MonthlyBriefPage() {
                   <article className="p-5 print:p-3 bg-box-bg print:bg-gray-50 border border-[#000000] rounded-none shadow-xs space-y-2 print:space-y-1">
                     <div className="flex items-center gap-2 text-sm print:text-[11.5px] font-extrabold text-gray-900">
                       <span className="w-2 h-2 rounded-full bg-green-accent" />
-                      <h3>4. 이달의 당신의 피비 자산배분 전략 총평</h3>
+                      <h3>이달의 당신의 피비 자산배분 전략 총평</h3>
                     </div>
                     <p className="text-sm sm:text-base print:text-[10.5px] text-gray-900 font-semibold leading-relaxed print:leading-[1.6] whitespace-pre-line pl-4 print:pl-2.5 border-l-2 border-green-accent">
                       {brief.sections.strategy}
@@ -452,7 +452,7 @@ export default async function MonthlyBriefPage() {
           </div>
 
           {/* ============================================================ */}
-          {/* [WEB ONLY] 섹션 3: 이달의 편입 ETF 스포트라이트 (웹 전용) */}
+          {/* [WEB ONLY] 섹션 3: 이달의 편입 ETF (웹 전용) */}
           {/* ============================================================ */}
           <section className="print:hidden space-y-6">
             <div className="flex items-center justify-between border-b border-[#000000] pb-3">
@@ -461,15 +461,9 @@ export default async function MonthlyBriefPage() {
                   3
                 </span>
                 <h2 className="text-lg sm:text-xl font-extrabold text-gray-900 tracking-tight">
-                  이달의 핵심 편입 ETF 스포트라이트
+                  이달의 핵심 편입 ETF
                 </h2>
               </div>
-              <Link
-                href="/etf"
-                className="text-xs font-bold text-gray-600 hover:text-black flex items-center gap-1"
-              >
-                전체 유니버스 시세 <ArrowRight className="w-3 h-3" />
-              </Link>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
