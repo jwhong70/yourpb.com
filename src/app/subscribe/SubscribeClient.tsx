@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Check } from 'lucide-react';
+import { Check, Award, AlertCircle, ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 import { loadTossPayments } from '@tosspayments/tosspayments-sdk';
+import { cancelSubscription } from '@/app/actions/subscription';
 
 interface User {
   id: string;
@@ -21,10 +23,16 @@ const TOSS_CLIENT_KEY = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY || 'test_gck_doc
 
 export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
   const router = useRouter();
+  const [user, setUser] = useState<User | null>(initialUser);
   const [selectedPlan, setSelectedPlan] = useState<'1month' | '6months'>('6months');
   const [widgets, setWidgets] = useState<any>(null);
   const [isWidgetLoading, setIsWidgetLoading] = useState(true);
   const [isPending, setIsPending] = useState<string | null>(null);
+  const [isCanceling, setIsCanceling] = useState(false);
+
+  useEffect(() => {
+    setUser(initialUser);
+  }, [initialUser]);
 
   // 주문 ID용 무작위 난수 문자열 생성 함수
   function randomId() {
@@ -33,14 +41,16 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
       .join('');
   }
 
-  // 1. 토스페이먼츠 위젯 SDK 로드 및 초기화
+  // 1. 토스페이먼츠 위젯 SDK 로드 및 초기화 (무료 회원일 때만 로드)
   useEffect(() => {
     async function initTossPayments() {
-      if (!initialUser) return;
+      if (!user || user.membership_status === 'premium') {
+        setIsWidgetLoading(false);
+        return;
+      }
       try {
         const tossPayments = await loadTossPayments(TOSS_CLIENT_KEY);
-        // 고유 customerKey 사용 (비회원은 ANONYMOUS)
-        const customerKey = initialUser.id || 'ANONYMOUS';
+        const customerKey = user.id || 'ANONYMOUS';
         const widgetsInstance = tossPayments.widgets({ customerKey });
 
         const amount = selectedPlan === '1month' ? 5000 : 25000;
@@ -69,30 +79,28 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
     }
 
     initTossPayments();
-  }, [initialUser]);
+  }, [user]);
 
   // 2. 선택 요금제(plan) 변경 시 결제위젯 금액 업데이트
   useEffect(() => {
-    if (widgets) {
+    if (widgets && user?.membership_status !== 'premium') {
       const amount = selectedPlan === '1month' ? 5000 : 25000;
       widgets.setAmount({
         currency: 'KRW',
         value: amount,
       });
     }
-  }, [selectedPlan, widgets]);
+  }, [selectedPlan, widgets, user]);
 
   // 3. 결제 진행 핸들러
   const handlePaymentSubmit = async () => {
-    // 비로그인 유저 예외 처리
-    if (!initialUser) {
+    if (!user) {
       alert('구독 플랜을 시작하려면 로그인이 필요합니다. 로그인 페이지로 이동합니다.');
       router.push('/login');
       return;
     }
 
-    // 이미 프리미엄 상태인 유저 체크
-    if (initialUser.membership_status === 'premium') {
+    if (user.membership_status === 'premium') {
       alert('이미 프리미엄 멤버십 구독을 이용 중이십니다.');
       return;
     }
@@ -107,7 +115,7 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
     try {
       const amount = selectedPlan === '1month' ? 5000 : 25000;
       const orderName = selectedPlan === '1month' ? '당신의피비 프리미엄 멤버십 1개월' : '당신의피비 프리미엄 멤버십 6개월';
-      const orderId = `order_${initialUser.id}_${randomId()}`;
+      const orderId = `order_${user.id}_${randomId()}`;
 
       // 토스페이먼츠 결제 요청 실행 (결제 인증 리다이렉트)
       await widgets.requestPayment({
@@ -115,8 +123,8 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
         orderName,
         successUrl: `${window.location.origin}/subscribe/success?plan=${selectedPlan}`,
         failUrl: `${window.location.origin}/subscribe/fail`,
-        customerEmail: initialUser.email || undefined,
-        customerName: initialUser.name || undefined,
+        customerEmail: user.email || undefined,
+        customerName: user.name || undefined,
       });
     } catch (err: any) {
       console.error('Payment request failed:', err);
@@ -124,6 +132,84 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
       setIsPending(null);
     }
   };
+
+  // 4. 구독 해지 / 환불 핸들러
+  const handleCancelSubscription = async () => {
+    const confirmed = window.confirm(
+      '정말 프리미엄 멤버십 구독을 해지하시겠습니까?\n해지 시 프리미엄 리포트 및 VIP 분석 혜택이 즉시 종료되고 무료 회원으로 전환됩니다.'
+    );
+
+    if (!confirmed) return;
+
+    setIsCanceling(true);
+    try {
+      const result = await cancelSubscription('사용자 직접 구독 해지');
+      if (result.success) {
+        alert('구독이 성공적으로 해지되었습니다. 무료 회원으로 전환되었습니다.');
+        setUser(prev => prev ? { ...prev, membership_status: 'free', subscription_end_date: null } : null);
+        router.refresh();
+      } else {
+        alert(`해지 처리 중 오류가 발생했습니다: ${result.error}`);
+      }
+    } catch (err: any) {
+      alert(`해지 처리 실패: ${err.message || err}`);
+    } finally {
+      setIsCanceling(false);
+    }
+  };
+
+  // 프리미엄 이용 중인 사용자의 경우 전용 관리 화면 렌더링
+  if (user && user.membership_status === 'premium') {
+    return (
+      <div className="max-w-2xl mx-auto space-y-8 pt-6">
+        <div className="bg-black border-2 border-[#D4AF37] p-8 sm:p-10 shadow-2xl space-y-6 text-white text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37] mb-2">
+            <Award className="w-8 h-8 text-[#D4AF37]" />
+          </div>
+
+          <div className="space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+              프리미엄 멤버십 이용 중
+            </h2>
+            <p className="text-sm text-gray-400">
+              <strong className="text-white">{user.name}</strong> 님은 현재 당신의피비 VIP 프리미엄 혜택을 이용하고 계십니다.
+            </p>
+          </div>
+
+          {user.subscription_end_date && (
+            <div className="bg-white/5 border border-white/10 p-4 inline-block mx-auto">
+              <span className="text-xs text-gray-400 block mb-1">구독 만료 예정일</span>
+              <span className="text-lg font-mono font-black text-[#D4AF37]">
+                {user.subscription_end_date.split('T')[0]}
+              </span>
+            </div>
+          )}
+
+          <div className="border-t border-white/10 pt-6 space-y-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="/"
+                className="w-full sm:w-auto px-6 py-3 bg-[#D4AF37] text-black font-extrabold hover:bg-[#c29d2f] transition-all text-sm"
+              >
+                홈으로 이동하여 리포트 열람
+              </Link>
+              <button
+                onClick={handleCancelSubscription}
+                disabled={isCanceling}
+                className="w-full sm:w-auto px-6 py-3 border border-red-500/40 hover:bg-red-500/10 text-red-400 font-bold transition-all text-sm disabled:opacity-50 cursor-pointer"
+              >
+                {isCanceling ? '해지 처리 중...' : '구독 해지 / 환불 신청'}
+              </button>
+            </div>
+            <p className="text-xs text-gray-500 flex items-center justify-center gap-1">
+              <AlertCircle className="w-3.5 h-3.5" />
+              해지 버튼 클릭 시 즉시 무료 회원으로 전환되며 구독이 종료됩니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-10 pt-4">
@@ -252,7 +338,7 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
       </div>
 
       {/* 3. 토스페이먼츠 결제위젯 통합 결제 영역 */}
-      {initialUser && (
+      {user && (
         <div className="bg-white p-6 sm:p-8 border border-black shadow-lg space-y-6">
           <h4 className="text-base font-extrabold text-black border-l-4 border-black pl-3 select-none leading-none">
             결제 수단 선택 및 동의
@@ -278,7 +364,7 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
       <div className="pt-4 flex justify-center">
         <button
           onClick={handlePaymentSubmit}
-          disabled={isPending !== null || (!!initialUser && isWidgetLoading)}
+          disabled={isPending !== null || (!!user && isWidgetLoading)}
           type="button"
           className="w-full max-w-md py-4 px-6 bg-[#D4AF37] hover:bg-[#c29d2f] active:scale-98 text-black font-black rounded-none shadow-xl shadow-[#D4AF37]/10 transition-all text-lg tracking-wide disabled:opacity-50 select-none cursor-pointer text-center"
         >

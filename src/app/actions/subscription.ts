@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase-server';
+import { createAdminClient } from '@/lib/supabase-admin';
 
 /**
  * 사용자의 멤버십 상태를 Premium으로 업그레이드하는 서버 액션
@@ -106,5 +107,77 @@ export async function confirmTossPayment(
   } catch (err: any) {
     console.error('Toss Payments confirmTossPayment execution error:', err);
     return { success: false, error: err.message || '결제 승인 처리 중 예상치 못한 오류가 발생했습니다.' };
+  }
+}
+
+/**
+ * 회원의 프리미엄 구독을 즉시 해지하고 무료(Free) 회원으로 다운그레이드하는 서버 액션
+ * @param cancelReason 취소 사유
+ */
+export async function cancelSubscription(cancelReason: string = '사용자 요청 구독 취소') {
+  try {
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return { success: false, error: '로그인이 필요합니다.' };
+    }
+
+    // users 테이블의 membership_status를 free로 리셋
+    const { error: dbError } = await supabase
+      .from('users')
+      .update({
+        membership_status: 'free',
+        subscription_end_date: null
+      })
+      .eq('id', user.id);
+
+    if (dbError) {
+      console.error('Database update error during cancelSubscription:', dbError);
+      return { success: false, error: '회원 등급 변경에 실패했습니다.' };
+    }
+
+    // 데모 쿠키 초기화
+    const cookieStore = await cookies();
+    cookieStore.set('demo_membership_status', '', { expires: new Date(0), path: '/' });
+
+    // 캐시 갱신
+    revalidatePath('/');
+    revalidatePath('/subscribe');
+    revalidatePath('/wishlist');
+
+    return { success: true, message: '구독이 성공적으로 해지되었습니다.' };
+  } catch (err: any) {
+    console.error('cancelSubscription execution failure:', err);
+    return { success: false, error: err.message || '구독 해지 처리 중 오류가 발생했습니다.' };
+  }
+}
+
+/**
+ * 관리자용: 고객의 이메일로 즉시 멤버십을 Free로 리셋하는 서버 액션
+ * (상점관리자에서 환불 후 Supabase를 직접 열지 않고 원클릭으로 초기화 가능)
+ */
+export async function adminResetUserMembership(email: string) {
+  try {
+    const adminSupabase = createAdminClient();
+    const { data, error } = await adminSupabase
+      .from('users')
+      .update({
+        membership_status: 'free',
+        subscription_end_date: null,
+      })
+      .eq('email', email)
+      .select();
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    revalidatePath('/');
+    revalidatePath('/subscribe');
+
+    return { success: true, user: data?.[0] };
+  } catch (err: any) {
+    return { success: false, error: err.message };
   }
 }
