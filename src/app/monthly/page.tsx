@@ -9,6 +9,7 @@ import {
   Shield,
   Layers,
   ArrowRight,
+  ArrowLeft,
   MessageCircle,
   PhoneCall,
   ExternalLink,
@@ -173,21 +174,34 @@ export default async function MonthlyBriefPage() {
       <main className="grow pt-24 pb-20 print:pt-0 print:pb-0 print:m-0">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 print:max-w-full print:p-0 print:space-y-0">
           
+          {/* 웹 전용 상단 뒤로가기 링크 */}
+          <div className="print:hidden">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-extrabold text-gray-700 hover:text-black bg-white hover:bg-gray-50 border border-black/20 hover:border-black px-4 py-2 transition-all shadow-xs group cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+              <span>당신의 피비 홈으로 돌아가기</span>
+            </Link>
+          </div>
+
           {/* ============================================================ */}
           {/* [PAGE 1] 헤더 + 1섹션: 월간 금융시장 시황 총평 (A4 1장 꽉 채움) */}
           {/* ============================================================ */}
           <div className="print-page-1 space-y-8 print:space-y-0">
             <div>
               {/* 1. 상단 타이틀 배너 & 호수 */}
-              <header className="space-y-6 text-center sm:text-left pt-4 print:pt-0 print:space-y-3">
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#000000] pb-4 print:pb-2">
-                  <span className="inline-flex items-center gap-1.5 text-xs print:text-[11px] font-black uppercase tracking-widest px-3 py-1 print:px-2.5 print:py-1 bg-[#000000] text-white">
-                    <Compass className="w-3.5 h-3.5 text-yellow-accent" />
-                    월간 자산배분 브리프
-                  </span>
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-2 text-xs print:text-[11px] font-bold text-gray-600 print:text-black">
-                      <Calendar className="w-3.5 h-3.5 text-black" />
+              <header className="space-y-6 text-left pt-2 print:pt-0 print:space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#000000] pb-4 print:pb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5 text-xs print:text-[11px] font-black uppercase tracking-widest px-3 py-1 print:px-2.5 print:py-1 bg-[#000000] text-white shrink-0">
+                      <Compass className="w-3.5 h-3.5 text-yellow-accent" />
+                      월간 자산배분 브리프
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-between sm:justify-end gap-3 shrink-0">
+                    <div className="flex items-center gap-2 text-xs print:text-[11px] font-bold text-gray-700 print:text-black whitespace-nowrap">
+                      <Calendar className="w-3.5 h-3.5 text-black shrink-0" />
                       <span>발행일: {brief.published_date}</span>
                       <span className="text-gray-300 print:text-gray-400">|</span>
                       <span className="text-black font-extrabold">{brief.edition}</span>
@@ -216,8 +230,8 @@ export default async function MonthlyBriefPage() {
                 </div>
               </header>
 
-              {/* 2. 섹션 1: 월간 금융시장 시황 총평 (4단 프레임워크) */}
-              <section className="space-y-6 print:space-y-3 print:mt-4">
+              {/* 2. 섹션 1: 월간 금융시장 시황 총평 (4단 프레임워크 - 한줄 테마 박스와 충분한 여백 확보) */}
+              <section className="space-y-6 print:space-y-3 mt-8 sm:mt-10 print:mt-4">
                 <div className="flex items-center gap-2.5 border-b border-[#000000] pb-3 print:pb-1.5">
                   <span className="w-6 h-6 print:w-5 print:h-5 rounded-full bg-black text-white text-xs print:text-[10px] font-bold flex items-center justify-center">
                     1
@@ -322,25 +336,25 @@ export default async function MonthlyBriefPage() {
                     return (
                       <div
                         key={row.type}
-                        className={`flex items-center justify-between p-3.5 print:p-1.5 bg-white border border-[#000000] rounded-none transition-all duration-200 ${
+                        className={`flex flex-col sm:flex-row print:flex-row sm:items-center print:items-center justify-between p-3.5 print:p-1.5 bg-white border border-[#000000] rounded-none gap-2 sm:gap-3 print:gap-1.5 transition-all duration-200 ${
                           isZero ? 'opacity-30 bg-gray-50' : 'hover:bg-gray-50'
                         }`}
                       >
-                        {/* 좌측: 컬러칩 + 자산 유형 + 구분선 + 자산 설명 */}
-                        <div className="flex items-center gap-3 print:gap-1.5 text-base print:text-[11px] font-bold text-[#000000]">
+                        {/* 1행(모바일) / 좌측(데스크톱·인쇄): 컬러칩 + 자산 유형 + 구분선 + 자산 설명 */}
+                        <div className="flex items-center gap-2.5 print:gap-1.5 text-sm sm:text-base print:text-[11px] font-bold text-[#000000] min-w-0">
                           <span
                             className="w-3.5 h-3.5 print:w-2.5 print:h-2.5 rounded-full shrink-0"
                             style={{ backgroundColor: row.color }}
                           />
-                          <span className="min-w-9 print:min-w-6">{row.type}</span>
-                          <span className="text-gray-300 font-normal">|</span>
-                          <span className="text-sm print:text-[10.5px] font-semibold text-[#000000] truncate max-w-40 sm:max-w-56 print:max-w-48">
+                          <span className="min-w-8 print:min-w-6 shrink-0">{row.type}</span>
+                          <span className="text-gray-300 font-normal shrink-0">|</span>
+                          <span className="text-xs sm:text-sm print:text-[10.5px] font-semibold text-[#000000] truncate">
                             {row.name}
                           </span>
                         </div>
 
-                        {/* 우측: 티커 링크/뱃지 + 비중 퍼센트 */}
-                        <div className="flex items-center gap-4 print:gap-1.5">
+                        {/* 2행(모바일) / 우측(데스크톱·인쇄): 티커 링크/뱃지 + 비중 퍼센트 */}
+                        <div className="flex items-center justify-between sm:justify-end print:justify-end gap-3 print:gap-1.5 shrink-0 border-t border-gray-100 sm:border-0 print:border-0 pt-2 sm:pt-0 print:pt-0">
                           {row.ticker ? (
                             <Link
                               href={`/etf/${row.ticker}?from=monthly`}
@@ -353,7 +367,7 @@ export default async function MonthlyBriefPage() {
                               no ticker
                             </span>
                           )}
-                          <span className="text-lg print:text-[13px] font-extrabold font-mono text-[#000000] min-w-10 print:min-w-7 text-right">
+                          <span className="text-base sm:text-lg print:text-[13px] font-extrabold font-mono text-[#000000] min-w-10 print:min-w-7 text-right">
                             {row.pct}%
                           </span>
                         </div>

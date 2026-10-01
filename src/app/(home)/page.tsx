@@ -57,22 +57,23 @@ export default async function Home() {
 
       {/* 1. 당신의 피비 월간 금융시장 전망 섹션 (monthly 변경 시 자동 동기화) */}
       <section className="space-y-6">
-        <div className="flex items-center justify-between border-b border-black/10 pb-4">
-          <div className="flex items-center gap-3">
-            <h2 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
-              당신의 피비 월간 금융시장 전망
-            </h2>
-            <span className="text-xs font-bold text-white bg-black px-2.5 py-1 rounded-none font-mono">
+        <div className="space-y-2.5 border-b border-black/10 pb-4">
+          <h2 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
+            당신의 피비 월간 금융시장 전망
+          </h2>
+          <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm">
+            <span className="font-bold text-gray-900 bg-gray-100 px-2.5 py-0.5 border border-black/10 font-mono shrink-0">
               {brief.edition}
             </span>
+            <span className="text-gray-300 shrink-0">|</span>
+            <Link
+              href="/monthly"
+              className="group inline-flex items-center gap-1 font-bold text-gray-700 hover:text-black transition-colors whitespace-nowrap"
+            >
+              <span>월간 리포트 전문 보기</span>
+              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+            </Link>
           </div>
-          <Link
-            href="/monthly"
-            className="group flex items-center gap-1.5 text-xs sm:text-sm font-bold text-gray-600 hover:text-black transition-colors"
-          >
-            <span>월간 리포트 전문 보기</span>
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </Link>
         </div>
 
         {/* 한줄 시장 테마 헤드라인 (제목 없이 삽입) */}
