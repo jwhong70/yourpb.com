@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import MyPageClient from './MyPageClient';
+import MyPageClient from '@/app/mypage/MyPageClient';
 import { getSessionUser } from '@/app/actions/auth';
 
 export const metadata: Metadata = {
