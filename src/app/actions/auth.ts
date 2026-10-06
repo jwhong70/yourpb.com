@@ -151,7 +151,7 @@ export async function getSessionUser() {
 }
 
 /**
- * 구글 소셜 로그인 Action
+ * 구글 소셜 로그인(sign in with Google) Action
  */
 export async function signInWithGoogle(redirectTo?: string) {
   const supabase = await createClient();
@@ -184,7 +184,7 @@ export async function signInWithGoogle(redirectTo?: string) {
 }
 
 /**
- * 카카오 소셜 로그인 Action
+ * 카카오 소셜 로그인(sign in with kakao) Action
  */
 export async function signInWithKakao(redirectTo?: string) {
   const supabase = await createClient();
