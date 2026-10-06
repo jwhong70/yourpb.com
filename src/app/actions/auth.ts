@@ -17,7 +17,7 @@ export interface SignInParams {
 }
 
 /**
- * 회원가입 Action
+ * 회원가입(sign up) Action
  * - Supabase Auth에 사용자 정보를 전달해 계정을 생성합니다.
  * - 이메일 인증이 활성화된 상태여야 이메일 인증 완료 후 실제 로그인이 가능합니다.
  * - raw_user_meta_data에 이름을 전달하여 DB handle_new_user 트리거가 동작하게 합니다.
@@ -42,14 +42,14 @@ export async function signUp(params: SignUpParams) {
     return { error: error.message };
   }
 
-  return { 
-    success: true, 
-    message: '회원가입 인증 메일이 발송되었습니다. 가입을 완료하려면 메일함에서 링크를 클릭해 주세요.' 
+  return {
+    success: true,
+    message: '회원가입 인증 메일이 발송되었습니다. 가입을 완료하려면 메일함에서 링크를 클릭해 주세요.'
   };
 }
 
 /**
- * 로그인 Action
+ * 로그인(sign in) Action
  * - 이메일과 비밀번호로 로그인 처리합니다.
  * - 성공 시 지정된 redirectTo 또는 홈('/')으로 리다이렉트합니다.
  */
@@ -80,7 +80,7 @@ export async function signIn(params: SignInParams) {
 }
 
 /**
- * 로그아웃 Action
+ * 로그아웃(sign out) Action
  * - 세션을 종료하고 홈('/')으로 리다이렉트합니다.
  */
 export async function signOut() {
@@ -96,7 +96,7 @@ export async function signOut() {
 }
 
 /**
- * 현재 로그인 세션 사용자 조회 Action
+ * 현재 로그인 세션 사용자 조회(get session user) Action
  * - 현재 세션의 인증 사용자 및 DB 연동 프로필(멤버십 정보 포함)을 조회합니다.
  * - 비로그인 시 null을 반환합니다.
  */
