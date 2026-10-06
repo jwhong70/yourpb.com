@@ -105,7 +105,9 @@ interface BaseChartProps {
 // ----------------------------------------------------
 // 1. 세로 막대 차트 (MacroBarChart)
 // ----------------------------------------------------
-export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title = '세로막대 차트', chartKey, barSize = 32, source }: BaseChartProps) {
+export function MacroBarChart({ data, valueKey = 'value', title = '세로막대 차트', chartKey, barSize = 32, source }: BaseChartProps) {
+  const currentYear = useMemo(() => new Date().getFullYear(), []);
+
   const chartData = useMemo(() => {
     return data
       .filter((d) => d.year !== undefined || d.date !== undefined)
@@ -137,8 +139,6 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title 
       </div>
     );
   }
-
-  const currentYear = useMemo(() => new Date().getFullYear(), []);
 
   return (
     <div className="flex flex-col p-2 bg-[#F9F8F6] border-b border-b-[#000000]/60 shadow-sm">
@@ -190,7 +190,7 @@ export function MacroBarChart({ data, themeIndex = 0, valueKey = 'value', title 
 // ----------------------------------------------------
 // 2. 선 차트 (MacroLineChart)
 // ----------------------------------------------------
-export function MacroLineChart({ data, themeIndex = 0, valueKey = 'value', title = '선 차트', chartKey, source }: BaseChartProps) {
+export function MacroLineChart({ data, valueKey = 'value', title = '선 차트', chartKey, source }: BaseChartProps) {
   const chartData = useMemo(() => {
     return data
       .filter((d) => d.year !== undefined || d.date !== undefined)
@@ -288,7 +288,7 @@ interface CandlePoint {
 // ----------------------------------------------------
 // 3. 캔들 차트 (MacroCandleChart)
 // ----------------------------------------------------
-export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 캔들차트', chartKey, source }: BaseChartProps) {
+export function MacroCandleChart({ data, chartKey, source }: BaseChartProps) {
   const chartData = useMemo(() => {
     return data
       .filter((d) => d.date !== undefined)
@@ -316,8 +316,8 @@ export function MacroCandleChart({ data, themeIndex = 0, title = '주식/선물 
           fill: '#000000',
         };
       })
-      .filter(Boolean)
-      .sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime()) as CandlePoint[];
+      .filter((p): p is CandlePoint => p !== null)
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }, [data]);
 
   const chartConfig = useMemo(() => {

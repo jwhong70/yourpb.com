@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, ReferenceLine, LabelList } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
+import { useIsMounted } from '@/hooks/useIsMounted';
 
 interface EtfPerformanceChartProps {
   yield_1w: number | null;
@@ -27,10 +28,7 @@ export default function EtfPerformanceChart({
   yield_120w,
   source,
 }: EtfPerformanceChartProps) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useIsMounted();
 
   // 1. 유효한 데이터만 맵핑
   const chartData = useMemo(() => {
@@ -48,21 +46,23 @@ export default function EtfPerformanceChart({
   }
 
   // 막대 끝 커스텀 레이블 렌더러
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderCustomLabel = (props: any) => {
-    const { x, y, width, value } = props;
+    const { x = 0, y = 0, width = 0, value } = props;
     if (value === undefined || value === null) return null;
-    const isPositive = value >= 0;
+    const numVal = Number(value);
+    const isPositive = numVal >= 0;
     const offset = isPositive ? -8 : 14;
     return (
       <text
-        x={x + width / 2}
-        y={y + offset}
+        x={Number(x) + Number(width) / 2}
+        y={Number(y) + offset}
         fill="#000000"
         textAnchor="middle"
         className="text-[10px] font-extrabold font-mono"
       >
-        {value > 0 ? '+' : ''}
-        {value.toFixed(1)}%
+        {numVal > 0 ? '+' : ''}
+        {numVal.toFixed(1)}%
       </text>
     );
   };

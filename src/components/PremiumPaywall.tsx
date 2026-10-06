@@ -2,15 +2,15 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Lock, Sparkles, CheckCircle2, ArrowRight, ShieldCheck, Mail } from 'lucide-react';
+import { Lock, Sparkles, CheckCircle2, ArrowRight, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface PremiumPaywallProps {
-  isLoggedIn: boolean;
+  isLoggedIn?: boolean;
   returnUrl?: string;
 }
 
-export default function PremiumPaywall({ isLoggedIn, returnUrl = '/' }: PremiumPaywallProps) {
+export default function PremiumPaywall({ isLoggedIn = false, returnUrl = '/' }: PremiumPaywallProps) {
   const benefits = [
     {
       title: '투자 대가 20인 AI 분석 시그널',
@@ -31,7 +31,6 @@ export default function PremiumPaywall({ isLoggedIn, returnUrl = '/' }: PremiumP
   ];
 
   const loginUrl = `/login?redirectTo=${encodeURIComponent(returnUrl)}`;
-  const signupUrl = `/login?tab=signup&redirectTo=${encodeURIComponent(returnUrl)}`;
 
   return (
     <div className="relative overflow-hidden rounded-none bg-[#000000] border border-white/15 py-12 px-6 sm:px-12 lg:px-16 text-center shadow-2xl">

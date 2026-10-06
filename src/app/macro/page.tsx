@@ -28,8 +28,8 @@ const getCachedMacroRawData = unstable_cache(
     // 3. 연간용 최근 3년 전 연도
     const startYearWeo = now.getFullYear() - 3;
 
-    const fetchAll = async (query: any) => {
-      let allData: any[] = [];
+    const fetchAll = async <T,>(query: { range: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }> }): Promise<T[]> => {
+      let allData: T[] = [];
       let page = 0;
       const pageSize = 1000;
       while (true) {
@@ -157,7 +157,7 @@ export default async function MacroPage() {
   };
 
   // null이 아닌 최근 유효 데이터 찾기 Helper
-  const getLastValid = <T extends Record<string, any>>(
+  const getLastValid = <T extends Record<string, unknown>>(
     list: T[],
     keys: (keyof T)[]
   ): T | null => {
@@ -177,8 +177,8 @@ export default async function MacroPage() {
   // ----------------------------------------------------
 
   // OECD CLI 신호 연산 Helper (최근월 전월대비 MoM 및 전년동월대비 YoY)
-  const calcOecdSignal = (list: any[]) => {
-    const validList = sortData(list).filter((item) => item.value !== null && item.value !== undefined);
+  const calcOecdSignal = (list: Array<{ date?: string; year?: number; value?: number | null }>) => {
+    const validList = sortData(list).filter((item): item is { date?: string; year?: number; value: number } => item.value !== null && item.value !== undefined);
     if (validList.length < 2) return { prev: null, yoy: null };
     
     const latest = validList[validList.length - 1];
@@ -208,42 +208,15 @@ export default async function MacroPage() {
 
   // 1.1.2. 미국 GDP
   const us_gdp_imf = sortData(weoGroups['usa_ngdp_rpch_a'] || []);
-
   const us_gdp_q = sortData(fredQGroups['gdpc1'] || []);
-  const us_gdp_q_val = getLastValid(us_gdp_q, ['yoy_pct']);
-  const us_gdp_q_sig = us_gdp_q_val ? (us_gdp_q_val.yoy_pct >= 0 ? 1 : -1) : null;
-
   const us_pce_q = sortData(fredQGroups['pcecc96'] || []);
-  const us_pce_q_val = getLastValid(us_pce_q, ['yoy_pct']);
-  const us_pce_q_sig = us_pce_q_val ? (us_pce_q_val.yoy_pct >= 0 ? 1 : -1) : null;
-
   const us_gpdi_q = sortData(fredQGroups['gpdic1'] || []);
-  const us_gpdi_q_val = getLastValid(us_gpdi_q, ['yoy_pct']);
-  const us_gpdi_q_sig = us_gpdi_q_val ? (us_gpdi_q_val.yoy_pct >= 0 ? 1 : -1) : null;
-
   const us_pnfi_q = sortData(fredQGroups['pnfic1'] || []);
-  const us_pnfi_q_val = getLastValid(us_pnfi_q, ['yoy_pct']);
-  const us_pnfi_q_sig = us_pnfi_q_val ? (us_pnfi_q_val.yoy_pct >= 0 ? 1 : -1) : null;
-
   const us_prfi_q = sortData(fredQGroups['prfic1'] || []);
-  const us_prfi_q_val = getLastValid(us_prfi_q, ['yoy_pct']);
-  const us_prfi_q_sig = us_prfi_q_val ? (us_prfi_q_val.yoy_pct >= 0 ? 1 : -1) : null;
-
   const us_exp_q = sortData(fredQGroups['expgsc1'] || []);
-  const us_exp_q_val = getLastValid(us_exp_q, ['yoy_pct']);
-  const us_exp_q_sig = us_exp_q_val ? (us_exp_q_val.yoy_pct >= 0 ? 1 : -1) : null;
-
   const us_imp_q = sortData(fredQGroups['impgsc1'] || []);
-  const us_imp_q_val = getLastValid(us_imp_q, ['yoy_pct']);
-  const us_imp_q_sig = us_imp_q_val ? (us_imp_q_val.yoy_pct <= 0 ? 1 : -1) : null; // 수입은 감소가 호재
-
   const us_gov_q = sortData(fredQGroups['gcec1'] || []);
-  const us_gov_q_val = getLastValid(us_gov_q, ['yoy_pct']);
-  const us_gov_q_sig = us_gov_q_val ? (us_gov_q_val.yoy_pct >= 0 ? 1 : -1) : null;
-
   const us_prod_q = sortData(fredQGroups['ophnfb'] || []);
-  const us_prod_q_val = getLastValid(us_prod_q, ['yoy_pct']);
-  const us_prod_q_sig = us_prod_q_val ? (us_prod_q_val.yoy_pct >= 0 ? 1 : -1) : null;
 
   const us_gdp_oecd = sortData(oecdGroups['united_states'] || []);
   const us_gdp_oecd_sig = calcOecdSignal(us_gdp_oecd);
@@ -533,35 +506,6 @@ export default async function MacroPage() {
   // 3.1.1. CNN 공포/탐욕지수 (fear_greed)
   const fgSorted = sortData(fearGreed);
   const fg_val = fgSorted.length > 0 ? fgSorted[fgSorted.length - 1] : null;
-
-  // 1년전 데이터 찾기
-  let fg_1y_prev = null;
-  if (fg_val) {
-    const targetDate = new Date(fg_val.date);
-    targetDate.setFullYear(targetDate.getFullYear() - 1);
-    // 가장 가까운 날짜 찾기
-    let minDist = Infinity;
-    for (const d of fgSorted) {
-      const dist = Math.abs(new Date(d.date).getTime() - targetDate.getTime());
-      if (dist < minDist) {
-        minDist = dist;
-        fg_1y_prev = d;
-      }
-    }
-    // 30일 이내 오차 범위만 인정, 아니면 null
-    if (minDist > 30 * 24 * 60 * 60 * 1000) {
-      fg_1y_prev = null;
-    }
-  }
-
-  // rating 등급 판별: greed, neutral, fear 등 소문자 비교
-  const getRatingSignal = (ratingStr: string | null): number => {
-    if (!ratingStr) return 0;
-    const r = ratingStr.toLowerCase();
-    if (r.includes('greed')) return 1;
-    if (r.includes('fear')) return -1;
-    return 0;
-  };
 
   const fg_sig = fg_val
     ? {

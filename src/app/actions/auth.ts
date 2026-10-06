@@ -30,7 +30,7 @@ export async function signUp(params: SignUpParams) {
     return { error: '이름, 이메일, 비밀번호를 모두 입력해 주세요.' };
   }
 
-  const { data, error } = await supabase.auth.signUp({
+  const { error } = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -249,9 +249,10 @@ export async function deleteAccount() {
     cookieStore.set('demo_membership_status', '', { expires: new Date(0), path: '/' });
 
     return { success: true };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('deleteAccount execution failure:', err);
-    return { success: false, error: err.message || '회원 탈퇴 처리 중 오류가 발생했습니다.' };
+    const message = err instanceof Error ? err.message : '회원 탈퇴 처리 중 오류가 발생했습니다.';
+    return { success: false, error: message };
   }
 }
 

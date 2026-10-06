@@ -26,7 +26,7 @@ export default async function TermsPage() {
                 제 1 조 (목적)
               </h2>
               <p className="text-sm leading-relaxed text-gray-700 pl-4">
-                본 약관은 "당신의 피비"(이하 "회사")가 제공하는 글로벌 자산관리 리서치 및 ETF 포트폴리오 분석 서비스(이하 "서비스")를 이용함에 있어, 회사와 회원의 권리, 의무 및 책임 사항을 규정함을 목적으로 합니다.
+                본 약관은 &quot;당신의 피비&quot;(이하 &quot;회사&quot;)가 제공하는 글로벌 자산관리 리서치 및 ETF 포트폴리오 분석 서비스(이하 &quot;서비스&quot;)를 이용함에 있어, 회사와 회원의 권리, 의무 및 책임 사항을 규정함을 목적으로 합니다.
               </p>
             </section>
 
@@ -35,8 +35,8 @@ export default async function TermsPage() {
                 제 2 조 (정의)
               </h2>
               <ul className="text-sm leading-relaxed text-gray-700 pl-8 list-disc space-y-1">
-                <li>"회원"이란 회사와 서비스 이용 계약을 체결하고 회원 아이디를 부여받아 서비스를 이용하는 자를 의미합니다.</li>
-                <li>"프리미엄 멤버십"이란 회원이 유료 결제를 통해 고급 리서치 리포트 및 대시보드 조회 등 추가 혜택을 이용할 수 있는 유료 서비스를 의미합니다.</li>
+                <li>&quot;회원&quot;이란 회사와 서비스 이용 계약을 체결하고 회원 아이디를 부여받아 서비스를 이용하는 자를 의미합니다.</li>
+                <li>&quot;프리미엄 멤버십&quot;이란 회원이 유료 결제를 통해 고급 리서치 리포트 및 대시보드 조회 등 추가 혜택을 이용할 수 있는 유료 서비스를 의미합니다.</li>
               </ul>
             </section>
 

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Check, Award, AlertCircle, ArrowLeft } from 'lucide-react';
+import { Check, Award, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { loadTossPayments } from '@tosspayments/tosspayments-sdk';
 import { cancelSubscription } from '@/app/actions/subscription';
@@ -23,16 +23,19 @@ const TOSS_CLIENT_KEY = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY || 'test_gck_doc
 
 export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
   const router = useRouter();
+  const [prevInitialUser, setPrevInitialUser] = useState(initialUser);
   const [user, setUser] = useState<User | null>(initialUser);
   const [selectedPlan, setSelectedPlan] = useState<'1month' | '6months'>('6months');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [widgets, setWidgets] = useState<any>(null);
   const [isWidgetLoading, setIsWidgetLoading] = useState(true);
   const [isPending, setIsPending] = useState<string | null>(null);
   const [isCanceling, setIsCanceling] = useState(false);
 
-  useEffect(() => {
+  if (prevInitialUser !== initialUser) {
+    setPrevInitialUser(initialUser);
     setUser(initialUser);
-  }, [initialUser]);
+  }
 
   // 주문 ID용 무작위 난수 문자열 생성 함수
   function randomId() {
@@ -79,7 +82,7 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
     }
 
     initTossPayments();
-  }, [user]);
+  }, [user, selectedPlan]);
 
   // 2. 선택 요금제(plan) 변경 시 결제위젯 금액 업데이트
   useEffect(() => {
@@ -113,7 +116,6 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
     setIsPending(selectedPlan);
 
     try {
-      const amount = selectedPlan === '1month' ? 5000 : 25000;
       const orderName = selectedPlan === '1month' ? '당신의피비 프리미엄 멤버십 1개월' : '당신의피비 프리미엄 멤버십 6개월';
       const orderId = `order_${user.id}_${randomId()}`;
 
@@ -126,9 +128,10 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
         customerEmail: user.email || undefined,
         customerName: user.name || undefined,
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Payment request failed:', err);
-      alert(`결제 처리 중 에러가 발생했습니다: ${err.message || err}`);
+      const message = err instanceof Error ? err.message : String(err);
+      alert(`결제 처리 중 에러가 발생했습니다: ${message}`);
       setIsPending(null);
     }
   };
@@ -151,8 +154,9 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
       } else {
         alert(`해지 처리 중 오류가 발생했습니다: ${result.error}`);
       }
-    } catch (err: any) {
-      alert(`해지 처리 실패: ${err.message || err}`);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      alert(`해지 처리 실패: ${message}`);
     } finally {
       setIsCanceling(false);
     }

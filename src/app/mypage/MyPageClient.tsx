@@ -7,17 +7,12 @@ import {
   User as UserIcon, 
   Mail, 
   Award, 
-  Calendar, 
   ArrowRight, 
   ShieldAlert, 
-  Sparkles, 
   Check, 
-  AlertTriangle,
-  RotateCcw,
-  LogOut
 } from 'lucide-react';
 import { cancelSubscription } from '@/app/actions/subscription';
-import { deleteAccount, signOut } from '@/app/actions/auth';
+import { deleteAccount } from '@/app/actions/auth';
 
 interface User {
   id: string;
@@ -62,8 +57,9 @@ export default function MyPageClient({ initialUser }: MyPageClientProps) {
       } else {
         alert(`해지 처리 실패: ${result.error}`);
       }
-    } catch (err: any) {
-      alert(`오류 발생: ${err.message || err}`);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      alert(`오류 발생: ${message}`);
     } finally {
       setIsCanceling(false);
     }
@@ -76,13 +72,14 @@ export default function MyPageClient({ initialUser }: MyPageClientProps) {
       const result = await deleteAccount();
       if (result.success) {
         alert('회원 탈퇴가 완료되었습니다. 그동안 당신의 피비를 이용해 주셔서 감사합니다.');
-        window.location.href = '/';
+        router.replace('/');
       } else {
         alert(`회원 탈퇴 실패: ${result.error}`);
         setIsDeleting(false);
       }
-    } catch (err: any) {
-      alert(`오류 발생: ${err.message || err}`);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      alert(`오류 발생: ${message}`);
       setIsDeleting(false);
     }
   };

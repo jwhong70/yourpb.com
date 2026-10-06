@@ -59,7 +59,7 @@ export function getMonthlyBrief(): MonthlyBriefData {
     let headline = fallbackData.headline;
 
     let inFrontmatter = false;
-    let contentLines: string[] = [];
+    const contentLines: string[] = [];
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();

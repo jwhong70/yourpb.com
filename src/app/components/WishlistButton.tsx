@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useTransition, useEffect } from 'react';
+import React, { useState, useTransition } from 'react';
 import { Heart } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toggleWishlist } from '@/app/actions/wishlist';
@@ -18,13 +18,14 @@ export default function WishlistButton({
   isLoggedIn,
 }: WishlistButtonProps) {
   const router = useRouter();
+  const [prevInitial, setPrevInitial] = useState(initialIsWished);
   const [isWished, setIsWished] = useState(initialIsWished);
   const [isPending, startTransition] = useTransition();
 
-  // 부모 컴포넌트에서 전달한 상태가 변경될 시 동기화 (예: 다른 곳에서 토글되거나 리밸리데이션 시)
-  useEffect(() => {
+  if (prevInitial !== initialIsWished) {
+    setPrevInitial(initialIsWished);
     setIsWished(initialIsWished);
-  }, [initialIsWished]);
+  }
 
   const handleToggle = async (e: React.MouseEvent) => {
     e.preventDefault();

@@ -5,7 +5,6 @@ import {
   ArrowLeft,
   Award,
   Download,
-  Lock,
   Brain,
   TrendingUp,
   TrendingDown,
@@ -167,9 +166,9 @@ export default async function StockDetailPage({ params }: PageProps) {
   const isLoggedIn = !!user;
   const isPremium = user?.membership_status === 'premium';
 
-  let prices: any[] = [];
-  let signals: any[] = [];
-  let latestPrice: any = null;
+  let prices = isPremium ? rawPrices : [];
+  let signals = isPremium ? rawSignals : [];
+  let latestPrice = prices.length > 0 ? prices[0] : null;
   let closePrice: number | null = null;
   let yield_1w: number | null = null;
   let yield_5w: number | null = null;
@@ -224,7 +223,7 @@ export default async function StockDetailPage({ params }: PageProps) {
     ? publicSupabase.storage.from('upload').getPublicUrl(`report-stock/${ticker}.pdf`).data.publicUrl
     : '';
   const reportUrl = rawReportUrl
-    ? `${rawReportUrl}?t=${new Date(stock.updated_at || Date.now()).getTime()}`
+    ? `${rawReportUrl}?t=${new Date(stock.updated_at || '1970-01-01').getTime()}`
     : '';
 
   // 포맷 헬퍼 함수
@@ -475,7 +474,7 @@ export default async function StockDetailPage({ params }: PageProps) {
 
                             {/* 분석 세부 내용 */}
                             <p className="text-gray-700 text-sm font-semibold leading-relaxed font-sans whitespace-pre-line italic">
-                              "{sig.reasoning}"
+                              &ldquo;{sig.reasoning}&rdquo;
                             </p>
                           </div>
                         </div>

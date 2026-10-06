@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Cell } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
+import { useIsMounted } from '@/hooks/useIsMounted';
 
 export interface PriceItem {
   date: string;
@@ -24,10 +25,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function StockCandleChart({ prices, source }: StockCandleChartProps) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useIsMounted();
 
   // 1. 데이터를 날짜 오름차순(오래된 날짜 -> 최신 날짜)으로 정렬 및 레인지 데이터 가공
   const chartData = useMemo(() => {

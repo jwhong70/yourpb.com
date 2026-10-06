@@ -27,7 +27,7 @@ export default async function PrivacyPage() {
               </h2>
               <div className="text-sm leading-relaxed text-gray-700 space-y-2 pl-4">
                 <p>
-                  "당신의 피비"(이하 "회사")는 회원에게 맞춤형 자산배분 분석 정보 및 프리미엄 유료 서비스를 제공하기 위해 아래와 같은 목적으로 개인정보를 수집합니다.
+                  &quot;당신의 피비&quot;(이하 &quot;회사&quot;)는 회원에게 맞춤형 자산배분 분석 정보 및 프리미엄 유료 서비스를 제공하기 위해 아래와 같은 목적으로 개인정보를 수집합니다.
                 </p>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>서비스 가입 의사 확인, 회원제 서비스 제공에 따른 회원 식별 및 가입 관리</li>

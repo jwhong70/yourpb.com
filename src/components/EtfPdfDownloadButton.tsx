@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Download, Lock, Sparkles, X, ArrowRight, ShieldCheck, FileText } from 'lucide-react';
+import { Download, Lock, Sparkles, X, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface EtfPdfDownloadButtonProps {

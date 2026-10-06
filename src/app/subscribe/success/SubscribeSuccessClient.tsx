@@ -33,9 +33,10 @@ export default function SubscribeSuccessClient({
           setErrorMsg(result.error || '결제 승인 처리 중 에러가 발생했습니다.');
           setStatus('fail');
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('Toss Payments confirmation client error:', err);
-        setErrorMsg(err.message || '승인 요청 중 예상치 못한 오류가 발생했습니다.');
+        const message = err instanceof Error ? err.message : '승인 요청 중 예상치 못한 오류가 발생했습니다.';
+        setErrorMsg(message);
         setStatus('fail');
       }
     }

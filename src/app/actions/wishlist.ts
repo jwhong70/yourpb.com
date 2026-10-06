@@ -68,11 +68,20 @@ export async function toggleWishlist(ticker: string) {
   }
 }
 
+export interface WishlistEtf {
+  ticker: string;
+  name: string;
+  category: string;
+  report: string;
+  leverage: string | null;
+  interest?: string;
+}
+
 /**
  * 현재 로그인한 사용자의 찜한 ETF 목록 조회
  * - ETF 정보를 함께 조인하여 반환합니다.
  */
-export async function getWishlist() {
+export async function getWishlist(): Promise<WishlistEtf[]> {
   const supabase = await createClient();
   const user = await getSessionUser();
 
@@ -103,9 +112,9 @@ export async function getWishlist() {
     if (!data) return [];
 
     // 관계 데이터 flattening 및 유효 데이터 필터링
-    return data
-      .map((item: any) => item.etf_list)
-      .filter((etf: any) => etf !== null);
+    return (data as unknown as Array<{ etf_list: WishlistEtf | WishlistEtf[] | null }>)
+      .map((item) => (Array.isArray(item.etf_list) ? item.etf_list[0] : item.etf_list))
+      .filter((etf): etf is WishlistEtf => Boolean(etf && etf.ticker));
   } catch (error) {
     console.error('getWishlist exception:', error);
     return [];

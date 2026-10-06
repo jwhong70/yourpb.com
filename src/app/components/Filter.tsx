@@ -45,42 +45,42 @@ export default function Filter({
     }
     return initialStocks;
   });
-  const [isMounted, setIsMounted] = useState(false);
 
-  // 컴포넌트 마운트 시: 로그인 상태면 DB 찜 목록 동기화, 비로그인이면 localStorage에서 로드
+  // 컴포넌트 마운트 시: 비로그인이면 localStorage에서 로드, 로그인 시 서버 찜 목록 반영
   useEffect(() => {
-    setIsMounted(true);
-    try {
-      if (isLoggedIn) {
-        setStocks((prev) =>
-          prev.map((s) => ({
-            ...s,
-            interest: initialWishlistTickers.includes(s.ticker) ? 'y' : 'n',
-          }))
-        );
-        localStorage.setItem('yourpb_interest_tickers_v2', JSON.stringify(initialWishlistTickers));
-      } else {
-        const stored = localStorage.getItem('yourpb_interest_tickers_v2');
-        if (stored) {
-          const tickers: string[] = JSON.parse(stored);
+    queueMicrotask(() => {
+      try {
+        if (isLoggedIn) {
           setStocks((prev) =>
             prev.map((s) => ({
               ...s,
-              interest: tickers.includes(s.ticker) ? 'y' : 'n',
+              interest: initialWishlistTickers.includes(s.ticker) ? 'y' : 'n',
             }))
           );
+          localStorage.setItem('yourpb_interest_tickers_v2', JSON.stringify(initialWishlistTickers));
         } else {
-          setStocks((prev) =>
-            prev.map((s) => ({
-              ...s,
-              interest: 'n',
-            }))
-          );
+          const stored = localStorage.getItem('yourpb_interest_tickers_v2');
+          if (stored) {
+            const tickers: string[] = JSON.parse(stored);
+            setStocks((prev) =>
+              prev.map((s) => ({
+                ...s,
+                interest: tickers.includes(s.ticker) ? 'y' : 'n',
+              }))
+            );
+          } else {
+            setStocks((prev) =>
+              prev.map((s) => ({
+                ...s,
+                interest: 'n',
+              }))
+            );
+          }
         }
+      } catch (e) {
+        console.error('Failed to load stock interest tickers:', e);
       }
-    } catch (e) {
-      console.error('Failed to load stock interest tickers:', e);
-    }
+    });
   }, [isLoggedIn, initialWishlistTickers]);
 
   // 필터 상태 (디폴트: 유니버스 전체)
@@ -242,14 +242,6 @@ export default function Filter({
     return { colorClass: 'text-gray-900', text: formatted };
   };
 
-  // 현재가 포맷팅 (소수점이 있는 경우 소수점 한자리)
-  const formatPrice = (val: number | null) => {
-    if (val === null || val === undefined) return '-';
-    return val % 1 === 0
-      ? val.toLocaleString(undefined, { maximumFractionDigits: 0 })
-      : val.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-  };
-
   // 행 클릭 시 상세 페이지 이동 제어 (비회원/무료회원도 상세 페이지의 안내 뷰포트로 이동)
   const handleRowClick = (ticker: string) => {
     router.push(`/stock/${ticker}`);
@@ -387,7 +379,7 @@ export default function Filter({
               <div className="relative">
                 <select
                   value={selectedPeriod}
-                  onChange={(e) => handlePeriodChange(e.target.value as any)}
+                  onChange={(e) => handlePeriodChange(e.target.value as '1w' | '5w' | '20w' | '60w' | '120w')}
                   className="appearance-none bg-white text-gray-800 border border-[#000000] rounded-none py-1.5 px-3 pr-8 text-xs font-bold focus:outline-hidden focus:ring-1 focus:ring-black cursor-pointer shadow-xs select-none"
                 >
                   <option value="1w">1주</option>
@@ -414,10 +406,10 @@ export default function Filter({
                     종목명 {renderSortIcon('name')}
                   </th>
                   <th
-                    onClick={() => handleSort(`yield_${selectedPeriod}` as any)}
+                    onClick={() => handleSort(`yield_${selectedPeriod}` as keyof StockWithPrice)}
                     className="py-3 px-3 sm:px-6 text-right cursor-pointer hover:bg-gray-900 transition-colors w-24 sm:w-32"
                   >
-                    수익률 {renderSortIcon(`yield_${selectedPeriod}` as any)}
+                    수익률 {renderSortIcon(`yield_${selectedPeriod}` as keyof StockWithPrice)}
                   </th>
                 </tr>
               </thead>

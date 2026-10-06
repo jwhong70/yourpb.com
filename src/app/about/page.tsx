@@ -1,6 +1,5 @@
 import React from 'react';
 import { Mail, Instagram, Phone } from 'lucide-react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { getSessionUser } from '@/app/actions/auth';
 import Header from '@/components/Header';
@@ -102,7 +101,7 @@ export default async function AboutPage() {
                 </div>
 
                 <p className="text-base font-bold text-gray-700 leading-relaxed max-w-2xl">
-                  "20년 이상의 현업 금융 지식과 포트폴리오 관리 성과를 바탕으로, 당신을 위한 맞춤형 포트폴리오를 제공합니다."
+                  &ldquo;20년 이상의 현업 금융 지식과 포트폴리오 관리 성과를 바탕으로, 당신을 위한 맞춤형 포트폴리오를 제공합니다.&rdquo;
                 </p>
 
                 <p className="text-base text-gray-500 leading-relaxed">

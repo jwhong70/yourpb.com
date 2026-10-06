@@ -45,44 +45,44 @@ export default function EtfSearchClient({
     }
     return initialEtfs;
   });
-  const [isMounted, setIsMounted] = useState(false);
 
   // 컴포넌트 마운트 시: 로그인 상태면 DB 찜 목록 동기화, 비로그인이면 localStorage에서 로드
   useEffect(() => {
-    setIsMounted(true);
-    try {
-      if (isLoggedIn) {
-        // 로그인 상태: 서버의 initialWishlistTickers 기준 반영 & localStorage 캐시 갱신
-        setEtfs((prev) =>
-          prev.map((e) => ({
-            ...e,
-            interest: initialWishlistTickers.includes(e.ticker) ? 'y' : 'n',
-          }))
-        );
-        localStorage.setItem('yourpb_interest_etf_tickers', JSON.stringify(initialWishlistTickers));
-      } else {
-        // 비로그인 상태: localStorage에서 읽어와서 적용
-        const stored = localStorage.getItem('yourpb_interest_etf_tickers');
-        if (stored) {
-          const tickers: string[] = JSON.parse(stored);
+    queueMicrotask(() => {
+      try {
+        if (isLoggedIn) {
+          // 로그인 상태: 서버의 initialWishlistTickers 기준 반영 & localStorage 캐시 갱신
           setEtfs((prev) =>
             prev.map((e) => ({
               ...e,
-              interest: tickers.includes(e.ticker) ? 'y' : 'n',
+              interest: initialWishlistTickers.includes(e.ticker) ? 'y' : 'n',
             }))
           );
+          localStorage.setItem('yourpb_interest_etf_tickers', JSON.stringify(initialWishlistTickers));
         } else {
-          setEtfs((prev) =>
-            prev.map((e) => ({
-              ...e,
-              interest: 'n',
-            }))
-          );
+          // 비로그인 상태: localStorage에서 읽어와서 적용
+          const stored = localStorage.getItem('yourpb_interest_etf_tickers');
+          if (stored) {
+            const tickers: string[] = JSON.parse(stored);
+            setEtfs((prev) =>
+              prev.map((e) => ({
+                ...e,
+                interest: tickers.includes(e.ticker) ? 'y' : 'n',
+              }))
+            );
+          } else {
+            setEtfs((prev) =>
+              prev.map((e) => ({
+                ...e,
+                interest: 'n',
+              }))
+            );
+          }
         }
+      } catch (e) {
+        console.error('Failed to load etf interest/wishlist tickers:', e);
       }
-    } catch (e) {
-      console.error('Failed to load etf interest/wishlist tickers:', e);
-    }
+    });
   }, [isLoggedIn, initialWishlistTickers]);
   
   // 기간 선택 상태 변수 추가
@@ -169,6 +169,7 @@ export default function EtfSearchClient({
   };
 
   // 현재 필터링 결과를 받아서 정렬 가동
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getSortedEtfs = (filteredList: any[]) => {
     const listCopy = [...filteredList] as EtfWithPrice[];
     listCopy.sort((a, b) => {
@@ -198,7 +199,7 @@ export default function EtfSearchClient({
     <div className="space-y-6">
       {/* 3단계 필터 버튼 영역 재사용 */}
       <Filter
-        initialEtfs={etfs as any}
+        initialEtfs={etfs}
         initialWishlistTickers={initialWishlistTickers}
         isLoggedIn={isLoggedIn}
       >
@@ -224,10 +225,10 @@ export default function EtfSearchClient({
                     <select
                       value={selectedPeriod}
                       onChange={(e) => {
-                        const val = e.target.value as any;
+                        const val = e.target.value as '1w' | '5w' | '20w' | '60w' | '120w';
                         setSelectedPeriod(val);
                         // 기간이 변경되면 기본적으로 해당 기간의 내림차순(desc)으로 정렬 컬럼 변경
-                        setSortColumn(`yield_${val}` as any);
+                        setSortColumn(`yield_${val}` as keyof EtfWithPrice);
                         setSortDirection('desc');
                       }}
                       className="px-4 py-2 pr-8 text-xs font-bold bg-white text-gray-800 border border-black/20 rounded-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-black appearance-none"
@@ -261,10 +262,10 @@ export default function EtfSearchClient({
                           이름 {renderSortIcon('name')}
                         </th>
                         <th
-                          onClick={() => handleSort(`yield_${selectedPeriod}` as any)}
+                          onClick={() => handleSort(`yield_${selectedPeriod}` as keyof EtfWithPrice)}
                           className="py-3 px-3 sm:px-6 text-right cursor-pointer hover:bg-gray-900 transition-colors w-24 sm:w-32"
                         >
-                          수익률 {renderSortIcon(`yield_${selectedPeriod}` as any)}
+                          수익률 {renderSortIcon(`yield_${selectedPeriod}` as keyof EtfWithPrice)}
                         </th>
                       </tr>
                     </thead>

@@ -90,7 +90,7 @@ export async function getStockWishlist(): Promise<string[]> {
 
     if (!data) return [];
 
-    return data.map((item: any) => item.stock_ticker).filter(Boolean);
+    return data.map((item: { stock_ticker: string }) => item.stock_ticker).filter(Boolean);
   } catch (error) {
     console.error('getStockWishlist exception:', error);
     return [];

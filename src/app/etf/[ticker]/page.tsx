@@ -35,6 +35,7 @@ interface PageProps {
 
 async function fetchEtfDetailFromDb(tickerInput: string) {
   const cleanTicker = tickerInput.trim().toUpperCase();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let etf: any = null;
 
   // 1. 정확한 티커 일치 조회 (.maybeSingle()로 PGRST116 예외 방지)
@@ -175,16 +176,16 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
   const yield_120w = latestPrice ? Number(latestPrice.yield_120w) : null;
 
   // 5. Storage Public URL 획득 (캐시 버스팅 적용으로 브라우저 이전 캐시 방지)
-  const cacheKey = new Date(etfList.updated_at || Date.now()).getTime();
+  const cacheKey = new Date(etfList.updated_at || '1970-01-01').getTime();
   const reportUrl = `${publicSupabase.storage.from('upload').getPublicUrl(`report-etf/${ticker}.pdf`).data.publicUrl}?t=${cacheKey}`;
 
   // 포맷 헬퍼 함수
-  const formatNum = (val: any, suffix = '') => {
+  const formatNum = (val: number | string | null | undefined, suffix = '') => {
     if (val === null || val === undefined || isNaN(Number(val))) return '-';
     return Number(val).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + suffix;
   };
 
-  const formatPercent = (val: any) => formatNum(val, '%');
+  const formatPercent = (val: number | string | null | undefined) => formatNum(val, '%');
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
@@ -374,7 +375,7 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-[#000000] text-base font-semibold text-gray-900">
-                            {holdings.map((h: any, idx: number) => (
+                            {holdings.map((h: { holding_name?: string; holding_pct?: number | string | null }, idx: number) => (
                               <tr
                                 key={idx}
                                 className="hover:bg-black/5 transition-colors cursor-pointer"
@@ -384,7 +385,7 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
                                   {h.holding_name || '-'}
                                 </td>
                                 <td className="py-2.5 px-2 text-center font-semibold text-gray-900 whitespace-nowrap">
-                                  {formatPercent(h.allocation_pct)}
+                                  {formatPercent(h.holding_pct)}
                                 </td>
                               </tr>
                             ))}

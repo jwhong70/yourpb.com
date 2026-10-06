@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { PieChart, Pie, Cell } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
+import { useIsMounted } from '@/hooks/useIsMounted';
 
 export interface AllocationItem {
   allocation_type: string;
@@ -29,10 +30,7 @@ const MONO_PALETTE = [
 ];
 
 export default function EtfAllocationCharts({ allocations, source }: EtfAllocationChartsProps) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useIsMounted();
 
   if (!mounted) {
     return <div className="h-75 bg-black/5 animate-pulse rounded-md" />;
@@ -45,7 +43,7 @@ export default function EtfAllocationCharts({ allocations, source }: EtfAllocati
     // 비중 합계 계산
     const sum = filtered.reduce((acc, curr) => acc + curr.allocation_pct, 0);
     
-    let result = filtered.map((item) => ({
+    const result = filtered.map((item) => ({
       name: item.category_name,
       value: item.allocation_pct,
     }));

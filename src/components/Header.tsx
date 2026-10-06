@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -18,13 +18,8 @@ interface HeaderProps {
 
 export default function Header({ initialUser }: HeaderProps) {
   const pathname = usePathname();
-  const [user, setUser] = useState(initialUser);
+  const user = initialUser;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  // 이메일이나 유저 세션이 바뀔 때 업데이트
-  useEffect(() => {
-    setUser(initialUser);
-  }, [initialUser]);
 
   const handleLogout = async () => {
     document.cookie = "demo_user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";

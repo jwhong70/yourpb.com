@@ -4,19 +4,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import {
   Compass,
-  TrendingUp,
-  PieChart as PieIcon,
   Shield,
   Layers,
   ArrowRight,
   ArrowLeft,
   MessageCircle,
-  PhoneCall,
-  ExternalLink,
   Calendar,
   Sparkles,
-  Lock,
-  CheckCircle2,
 } from 'lucide-react';
 
 import Header from '@/components/Header';
@@ -70,7 +64,7 @@ const getCachedMonthlyData = unstable_cache(
         .order('date', { ascending: false }),
     ]);
 
-    let priceMap: Record<string, any> = {};
+    const priceMap: Record<string, { ticker: string; date: string; close: number; yield_1w: number; yield_5w: number; yield_20w: number }> = {};
     if (pricesRes.data) {
       pricesRes.data.forEach((p) => {
         // ticker별 가장 최근 날짜의 레코드 1건만 최초 매핑
@@ -80,7 +74,7 @@ const getCachedMonthlyData = unstable_cache(
       });
     }
 
-    const etfMap: Record<string, any> = {};
+    const etfMap: Record<string, { ticker: string; name: string; category: string; report: string; leverage: number; description: string }> = {};
     if (etfListRes.data) {
       etfListRes.data.forEach((e) => {
         etfMap[e.ticker] = e;
@@ -112,7 +106,6 @@ const getCachedMonthlyData = unstable_cache(
 
 export default async function MonthlyBriefPage() {
   const user = await getSessionUser();
-  const isPremium = user?.membership_status === 'premium';
   const brief = getMonthlyBrief();
 
   const { featuredEtfs } = await getCachedMonthlyData();

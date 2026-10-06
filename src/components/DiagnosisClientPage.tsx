@@ -21,11 +21,10 @@ import {
   Calendar,
   TrendingUp,
   Compass,
-  Lightbulb,
   FileText,
   X,
 } from 'lucide-react';
-import { BIAS_QUESTIONS, BiasQuestion } from '@/lib/biases-data';
+import { BIAS_QUESTIONS } from '@/lib/biases-data';
 
 interface UserSession {
   id: string;
@@ -64,22 +63,24 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
       const savedCompletedDate = localStorage.getItem('yourpb_diagnosis_completed_date');
       const savedStep = localStorage.getItem('yourpb_diagnosis_current_step');
 
-      if (savedAnswers) setAnswers(JSON.parse(savedAnswers));
-      if (savedSubmitted) setSubmittedSteps(JSON.parse(savedSubmitted));
-      if (savedCompletedDate) setCompletedDate(savedCompletedDate);
+      queueMicrotask(() => {
+        if (savedAnswers) setAnswers(JSON.parse(savedAnswers));
+        if (savedSubmitted) setSubmittedSteps(JSON.parse(savedSubmitted));
+        if (savedCompletedDate) setCompletedDate(savedCompletedDate);
 
-      if (savedCompleted === 'true') {
-        setIsCompleted(true);
-        setIsStarted(false);
-      } else if (savedAnswers || savedSubmitted) {
-        setIsStarted(true);
-        if (savedStep) {
-          const stepNum = parseInt(savedStep, 10);
-          if (!isNaN(stepNum) && stepNum >= 0 && stepNum < BIAS_QUESTIONS.length) {
-            setCurrentStep(stepNum);
+        if (savedCompleted === 'true') {
+          setIsCompleted(true);
+          setIsStarted(false);
+        } else if (savedAnswers || savedSubmitted) {
+          setIsStarted(true);
+          if (savedStep) {
+            const stepNum = parseInt(savedStep, 10);
+            if (!isNaN(stepNum) && stepNum >= 0 && stepNum < BIAS_QUESTIONS.length) {
+              setCurrentStep(stepNum);
+            }
           }
         }
-      }
+      });
     } catch {
       // 무시
     }

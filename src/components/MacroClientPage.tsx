@@ -1,12 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  ChartDataPoint,
-  downloadSvgAsPng
-} from './MacroCharts';
+import { downloadSvgAsPng } from './MacroCharts';
+import { useIsMounted } from '@/hooks/useIsMounted';
 
 const MacroBarChart = dynamic(() => import('./MacroCharts').then(mod => mod.MacroBarChart), {
   ssr: false,
@@ -35,6 +33,7 @@ interface SignalState {
 interface SubCategoryItem {
   title: string;
   chartType: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
   valKey?: string;
   signal?: SignalState;
@@ -43,6 +42,7 @@ interface SubCategoryItem {
 }
 
 interface ClientPageProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any; // page.tsx에서 내려주는 dashboardData의 타입 구조
 }
 
@@ -96,20 +96,16 @@ function SignalBadge({ signal, isParentSelected = false }: { signal?: SignalStat
 
     const ratingLower = rating.toLowerCase();
     let textColor = isParentSelected ? 'text-[#000000]/80' : 'text-white/80';
-    let borderColor = isParentSelected ? 'border-[#000000]/10' : 'border-white/10';
     let bgColor = 'bg-transparent';
 
     if (ratingLower.includes('greed')) {
       textColor = 'text-[#007C1F]';
-      borderColor = 'border-[#007C1F]/20';
       bgColor = 'bg-transparent';
     } else if (ratingLower.includes('fear')) {
       textColor = 'text-[#D60016]';
-      borderColor = 'border-[#D60016]/20';
       bgColor = 'bg-transparent';
     } else if (ratingLower.includes('neutral')) {
       textColor = 'text-yellow-accent';
-      borderColor = isParentSelected ? 'border-[#000000]/10' : 'border-white/10';
       bgColor = 'bg-transparent';
     }
 
@@ -134,7 +130,7 @@ function SignalBadge({ signal, isParentSelected = false }: { signal?: SignalStat
 }
 
 export default function MacroClientPage({ data }: ClientPageProps) {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsMounted();
 
   // 1. 대분류 상태 관리 (1 ~ 4)
   const [activeMain, setActiveMain] = useState<number | null>(null);
@@ -144,10 +140,6 @@ export default function MacroClientPage({ data }: ClientPageProps) {
 
   // 3. 소분류 아이템 상태 관리 (key format: "mainIndex-subIndex-itemIndex") - 여러 개 개별 토글 가능하도록 Set 구조 사용
   const [openCharts, setOpenCharts] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   if (!mounted) {
     return (

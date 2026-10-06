@@ -166,10 +166,11 @@ export async function POST(req: NextRequest) {
       paymentStatus: finalStatus 
     });
 
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[Toss Webhook] Error processing webhook:', err);
+    const message = err instanceof Error ? err.message : 'Internal webhook error';
     return NextResponse.json(
-      { success: false, message: err.message || 'Internal webhook error' },
+      { success: false, message },
       { status: 500 }
     );
   }

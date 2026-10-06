@@ -1,7 +1,6 @@
 import React from 'react';
 import { unstable_cache } from 'next/cache';
 import { supabase as publicSupabase } from '@/lib/supabase';
-import { createClient } from '@/lib/supabase-server';
 import EtfSearchClient from '@/components/EtfSearchClient';
 import { getSessionUser } from '@/app/actions/auth';
 import { getWishlist } from '@/app/actions/wishlist';
@@ -29,7 +28,7 @@ const getCachedEtfsData = unstable_cache(
       .order('date', { ascending: false })
       .limit(20);
 
-    let pricesMap: Record<string, any> = {};
+    const pricesMap: Record<string, { close?: number | null; yield_1w?: number | null; yield_5w?: number | null; yield_20w?: number | null; yield_60w?: number | null; yield_120w?: number | null }> = {};
     const uniqueDates = Array.from(new Set((latestDateRows || []).map((r) => r.date))).slice(0, 3);
 
     if (uniqueDates.length > 0) {

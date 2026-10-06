@@ -1,7 +1,6 @@
 import React from 'react';
 import { unstable_cache } from 'next/cache';
 import { supabase as publicSupabase } from '@/lib/supabase';
-import { createClient } from '@/lib/supabase-server';
 import { getSessionUser } from '@/app/actions/auth';
 import { getStockWishlist } from '@/app/actions/stock_wishlist';
 import Filter from '@/app/components/Filter';
@@ -73,7 +72,7 @@ const getCachedStocksData = unstable_cache(
       ...(pricePage5.data || []),
     ];
 
-    const pricesMap: Record<string, any> = {};
+    const pricesMap: Record<string, (typeof allPrices)[number]> = {};
     for (const p of allPrices) {
       if (!pricesMap[p.ticker]) {
         pricesMap[p.ticker] = p;

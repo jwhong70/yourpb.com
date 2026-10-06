@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { unstable_cache } from 'next/cache';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { supabase as publicSupabase } from '@/lib/supabase';
 import Filter from '@/components/Filter';
 import ModelCarousel from '@/components/ModelCarousel';

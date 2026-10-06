@@ -71,9 +71,10 @@ export async function upgradeToPremium(plan: '1month' | '6months', paymentKey?: 
     revalidatePath('/wishlist');
 
     return { success: true };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('upgradeToPremium execution failure:', err);
-    return { success: false, error: err.message || '멤버십 업그레이드 처리 중 예상치 못한 오류가 발생했습니다.' };
+    const message = err instanceof Error ? err.message : '멤버십 업그레이드 처리 중 예상치 못한 오류가 발생했습니다.';
+    return { success: false, error: message };
   }
 }
 
@@ -118,9 +119,10 @@ export async function confirmTossPayment(
     }
 
     return { success: true, data };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Toss Payments confirmTossPayment execution error:', err);
-    return { success: false, error: err.message || '결제 승인 처리 중 예상치 못한 오류가 발생했습니다.' };
+    const message = err instanceof Error ? err.message : '결제 승인 처리 중 예상치 못한 오류가 발생했습니다.';
+    return { success: false, error: message };
   }
 }
 
@@ -206,9 +208,10 @@ export async function cancelSubscription(cancelReason: string = '사용자 요�
     revalidatePath('/wishlist');
 
     return { success: true, message: '구독이 성공적으로 해지되었으며 결제가 취소되었습니다.' };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('cancelSubscription execution failure:', err);
-    return { success: false, error: err.message || '구독 해지 및 결제 취소 처리 중 오류가 발생했습니다.' };
+    const message = err instanceof Error ? err.message : '구독 해지 및 결제 취소 처리 중 오류가 발생했습니다.';
+    return { success: false, error: message };
   }
 }
 
@@ -275,7 +278,8 @@ export async function adminResetUserMembership(email: string, cancelReason: stri
     revalidatePath('/mypage');
 
     return { success: true, user: data?.[0] };
-  } catch (err: any) {
-    return { success: false, error: err.message };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : '서버 오류가 발생했습니다.';
+    return { success: false, error: message };
   }
 }

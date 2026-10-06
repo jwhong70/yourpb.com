@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, Suspense } from 'react';
 import { Mail, Lock, User, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
@@ -21,15 +21,15 @@ function LoginContent() {
   const [password, setPassword] = useState('');
 
   // Status states
-  const [error, setError] = useState<string | null>(null);
+  const [prevUrlError, setPrevUrlError] = useState(urlError);
+  const [error, setError] = useState<string | null>(() => (urlError ? decodeURIComponent(urlError) : null));
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (urlError) {
-      setError(decodeURIComponent(urlError));
-    }
-  }, [urlError]);
+  if (prevUrlError !== urlError) {
+    setPrevUrlError(urlError);
+    if (urlError) setError(decodeURIComponent(urlError));
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,8 +55,9 @@ function LoginContent() {
           setPassword('');
         }
       }
-    } catch (err: any) {
-      setError(err.message || '알 수 없는 오류가 발생했습니다.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.';
+      setError(message);
     } finally {
       setIsLoading(false);
     }
@@ -242,8 +243,9 @@ function LoginContent() {
                   setError(null);
                   try {
                     await signInWithGoogle(redirectTo);
-                  } catch (err: any) {
-                    setError(err.message || '구글 로그인 중 오류가 발생했습니다.');
+                  } catch (err: unknown) {
+                    const message = err instanceof Error ? err.message : '구글 로그인 중 오류가 발생했습니다.';
+                    setError(message);
                   } finally {
                     setIsLoading(false);
                   }
@@ -268,8 +270,9 @@ function LoginContent() {
                   setError(null);
                   try {
                     await signInWithKakao(redirectTo);
-                  } catch (err: any) {
-                    setError(err.message || '카카오 로그인 중 오류가 발생했습니다.');
+                  } catch (err: unknown) {
+                    const message = err instanceof Error ? err.message : '카카오 로그인 중 오류가 발생했습니다.';
+                    setError(message);
                   } finally {
                     setIsLoading(false);
                   }

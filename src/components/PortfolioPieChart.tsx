@@ -25,13 +25,11 @@ export default function PortfolioPieChart({ data }: PortfolioPieChartProps) {
   const cy = 150
   const r = 130
 
-  let currentAngle = -90 // 12시 방향부터 시작
-
-  const slices = chartItems.map((item) => {
+  const slices = chartItems.map((item, idx) => {
+    const prevAngleSum = chartItems.slice(0, idx).reduce((sum, prev) => sum + (prev.pct / 100) * 360, 0)
+    const startAngle = -90 + prevAngleSum
     const angle = (item.pct / 100) * 360
-    const startAngle = currentAngle
-    const endAngle = currentAngle + angle
-    currentAngle += angle
+    const endAngle = startAngle + angle
 
     const startRad = (Math.PI / 180) * startAngle
     const endRad = (Math.PI / 180) * endAngle
