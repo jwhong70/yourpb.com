@@ -284,9 +284,9 @@ export default function MacroClientPage({ data }: ClientPageProps) {
       // 2.2. 유동성 하위 지표들
       case '2-2':
         return [
-          { title: '2.2.1. 연방준비제도 총자산', chartType: 'bar', data: data.regulator.liquidity.treast.data, valKey: 'value', signal: data.regulator.liquidity.treast.signal, theme: 0, ticker: 'treast' },
-          { title: '2.2.2. 연준 보유 MBS', chartType: 'bar', data: data.regulator.liquidity.wshomcb.data, valKey: 'value', signal: data.regulator.liquidity.wshomcb.signal, theme: 1, ticker: 'wshomcb' },
-          { title: '2.2.3. 화폐발행액(유통화폐)', chartType: 'bar', data: data.regulator.liquidity.wcurcir.data, valKey: 'value', signal: data.regulator.liquidity.wcurcir.signal, theme: 2, ticker: 'wcurcir' },
+          { title: '2.2.1. 연방준비제도 총자산', chartType: 'line', data: data.regulator.liquidity.treast.data, valKey: 'value', signal: data.regulator.liquidity.treast.signal, theme: 0, ticker: 'treast' },
+          { title: '2.2.2. 연준 보유 MBS', chartType: 'line', data: data.regulator.liquidity.wshomcb.data, valKey: 'value', signal: data.regulator.liquidity.wshomcb.signal, theme: 1, ticker: 'wshomcb' },
+          { title: '2.2.3. 화폐발행액(유통화폐)', chartType: 'line', data: data.regulator.liquidity.wcurcir.data, valKey: 'value', signal: data.regulator.liquidity.wcurcir.signal, theme: 2, ticker: 'wcurcir' },
           { title: '2.2.4. 역레포 거래총액', chartType: 'bar', data: data.regulator.liquidity.rrpontsyd.data, valKey: 'value', signal: data.regulator.liquidity.rrpontsyd.signal, theme: 3, ticker: 'rrpontsyd' },
           { title: '2.2.5. 재무부 일반계정잔액(TGA)', chartType: 'bar', data: data.regulator.liquidity.wtregen.data, valKey: 'value', signal: data.regulator.liquidity.wtregen.signal, theme: 4, ticker: 'wtregen' },
         ];
