@@ -8,6 +8,7 @@ import ModelCarousel from '@/components/ModelCarousel';
 import { getSessionUser } from '@/app/actions/auth';
 import { getWishlist } from '@/app/actions/wishlist';
 import PortfolioPieChart from '@/components/PortfolioPieChart';
+import PortfolioHistoryTimeline from '@/components/PortfolioHistoryTimeline';
 import { PB_MODEL_PORTFOLIO } from '@/config/portfolio';
 import { getMonthlyBrief } from '@/lib/monthly-brief';
 
@@ -191,6 +192,11 @@ export default async function Home() {
             })}
           </div>
 
+        </div>
+
+        {/* 포트폴리오 리밸런싱 및 매매 집행 히스토리 타임라인 */}
+        <div className="pt-2">
+          <PortfolioHistoryTimeline />
         </div>
       </section>
 
