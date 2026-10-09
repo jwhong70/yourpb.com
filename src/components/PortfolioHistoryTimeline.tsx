@@ -89,7 +89,7 @@ export default function PortfolioHistoryTimeline() {
               {isExpanded && (
                 <div className="p-4 sm:p-6 border-t border-black/10 bg-[#F9F8F6] space-y-5">
                   {/* 리밸런싱 요약 설명 */}
-                  <div className="p-3.5 sm:p-4 bg-white border-l-4 border-[#000000] border-t border-r border-b border-black/10 shadow-2xs">
+                  <div className="p-3.5 sm:p-4 bg-white border border-black/10 border-l-4 border-l-black shadow-2xs">
                     <p className="text-xs sm:text-sm font-semibold text-gray-800 leading-relaxed">
                       💡 {item.summary}
                     </p>
@@ -135,7 +135,7 @@ export default function PortfolioHistoryTimeline() {
                                 <span className="text-xs text-gray-400 font-mono font-bold">CASH</span>
                               )}
 
-                              <span className="text-xs sm:text-sm font-bold text-gray-900 truncate max-w-[200px] sm:max-w-[320px]">
+                              <span className="text-xs sm:text-sm font-bold text-gray-900 truncate max-w-50 sm:max-w-80">
                                 {trade.name}
                               </span>
                             </div>
