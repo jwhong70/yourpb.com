@@ -397,7 +397,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
               </div>
 
               <div className="mt-6 md:mt-8 flex items-center justify-between gap-1 w-full">
-                <h3 className={`text-xs min-[380px]:text-sm sm:text-base md:text-xl font-bold tracking-tight whitespace-nowrap ${
+                <h3 className={`text-xs min-[380px]:text-sm sm:text-base md:text-lg font-bold tracking-tight whitespace-nowrap ${
                   isSelected ? 'text-[#000000]' : 'text-white'
                 }`}>
                   {cat.title}
@@ -432,12 +432,12 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                   <div key={sub.id} className="flex flex-col border-t border-b border-[#000000] rounded-none overflow-hidden bg-[#9E9E9E]">
                     <button
                       onClick={() => setActiveSub(isSubSelected ? null : sub.id)}
-                      className={`flex justify-between items-center p-4 text-left transition-colors duration-200 ${
+                      className={`flex justify-between items-center p-3.5 sm:p-4 text-left transition-colors duration-200 ${
                         isSubSelected ? 'bg-black/10' : 'hover:bg-black/5'
                       }`}
                     >
                       <h4 
-                        className="text-base font-extrabold tracking-tight flex items-center gap-2 select-none"
+                        className="text-xs min-[380px]:text-sm sm:text-base md:text-lg font-bold tracking-tight flex items-center gap-2 select-none"
                         style={{ color: '#000000' }}
                       >
                         {sub.title}
@@ -446,7 +446,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
                         {/* 중분류 신호등 표시 */}
                         <SignalBadge signal={sub.signal} />
                         <ChevronDown 
-                          className={`w-4 h-4 transition-transform duration-200 ${
+                          className={`w-3.5 h-3.5 md:w-5 md:h-5 transition-transform duration-200 ${
                             isSubSelected ? 'transform rotate-180' : ''
                           }`} 
                           style={{ color: '#000000' }}
