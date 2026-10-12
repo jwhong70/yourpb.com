@@ -14,72 +14,48 @@ export const metadata = {
 
 const getCachedStocksData = unstable_cache(
   async () => {
-    // 1. stock_list 전체 종목 조회 (PostgREST 1000건 제한 방지를 위해 병렬 range 조회)
-    const [page1, page2] = await Promise.all([
-      publicSupabase
-        .from('stock_list')
-        .select('ticker, name, sector2, industry2, interest')
-        .order('ticker')
-        .range(0, 999),
-      publicSupabase
-        .from('stock_list')
-        .select('ticker, name, sector2, industry2, interest')
-        .order('ticker')
-        .range(1000, 1999),
-    ]);
+    // 1. stock_list 전체 종목 단일 조회 (Supabase 3,000건 한도로 단 1회 쿼리 완결)
+    const { data: stocks, error: stockError } = await publicSupabase
+      .from('stock_list')
+      .select('ticker, name, sector2, industry2, interest')
+      .order('ticker')
+      .limit(3000);
 
-    const stocks = [...(page1.data || []), ...(page2.data || [])];
-
-    if (stocks.length === 0 && page1.error) {
-      console.error('Error fetching stock list:', page1.error);
-      return [];
+    if (stockError || !stocks || stocks.length === 0) {
+      console.error('Error fetching stock list:', stockError);
+      throw new Error(`Failed to fetch stock list: ${stockError?.message || 'Empty'}`);
     }
 
-    // 2. stock_prices 에서 최신 주간 가격 및 수익률 데이터 병렬 조회 (최근 5,000건 확보로 모든 종목 최신가 보장)
-    const [pricePage1, pricePage2, pricePage3, pricePage4, pricePage5] = await Promise.all([
-      publicSupabase
-        .from('stock_prices')
-        .select('ticker, date, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
-        .order('date', { ascending: false })
-        .range(0, 999),
-      publicSupabase
-        .from('stock_prices')
-        .select('ticker, date, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
-        .order('date', { ascending: false })
-        .range(1000, 1999),
-      publicSupabase
-        .from('stock_prices')
-        .select('ticker, date, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
-        .order('date', { ascending: false })
-        .range(2000, 2999),
-      publicSupabase
-        .from('stock_prices')
-        .select('ticker, date, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
-        .order('date', { ascending: false })
-        .range(3000, 3999),
-      publicSupabase
-        .from('stock_prices')
-        .select('ticker, date, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
-        .order('date', { ascending: false })
-        .range(4000, 4999),
-    ]);
+    // 2. 가장 최신 시세 기준일(latest date) 1건 초고속 조회
+    const { data: latestDateRow } = await publicSupabase
+      .from('stock_prices')
+      .select('date')
+      .order('date', { ascending: false })
+      .limit(1);
 
-    const allPrices = [
-      ...(pricePage1.data || []),
-      ...(pricePage2.data || []),
-      ...(pricePage3.data || []),
-      ...(pricePage4.data || []),
-      ...(pricePage5.data || []),
-    ];
+    const latestDate = latestDateRow?.[0]?.date;
+    const pricesMap: Record<string, { close?: number | null; yield_1w?: number | null; yield_5w?: number | null; yield_20w?: number | null; yield_60w?: number | null; yield_120w?: number | null }> = {};
 
-    const pricesMap: Record<string, (typeof allPrices)[number]> = {};
-    for (const p of allPrices) {
-      if (!pricesMap[p.ticker]) {
-        pricesMap[p.ticker] = p;
+    if (latestDate) {
+      // 3. 해당 최신 기준일의 stock_prices 단일 쿼리 조회 (3,000건 한도로 1,017건 전건 단번에 수집)
+      const { data: latestPrices, error: priceError } = await publicSupabase
+        .from('stock_prices')
+        .select('ticker, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
+        .eq('date', latestDate)
+        .limit(3000);
+
+      // Fail-Safe 방어벽: 최신 날짜 시세가 정상 수치(최소 500건 이상)로 수집된 경우에만 매핑
+      if (!priceError && latestPrices && latestPrices.length >= 500) {
+        latestPrices.forEach((p) => {
+          pricesMap[p.ticker] = p;
+        });
+      } else {
+        console.error('Warning: stock_prices incomplete or failed for date:', latestDate, priceError);
+        throw new Error(`Incomplete stock prices fetched (${latestPrices?.length || 0} rows).`);
       }
     }
 
-    // 3. 주식 정보와 가격 데이터 병합
+    // 4. 주식 정보와 최신 주간/월간 수익률 결합
     return stocks.map((stock) => {
       const priceInfo = pricesMap[stock.ticker] || {};
       return {
@@ -97,7 +73,7 @@ const getCachedStocksData = unstable_cache(
       };
     });
   },
-  ['stock-page-data-cache-v4'],
+  ['stock-page-data-cache-v5'],
   { revalidate: 3600, tags: ['stock-page'] }
 );
 
