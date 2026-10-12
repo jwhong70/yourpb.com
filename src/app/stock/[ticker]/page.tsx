@@ -268,9 +268,11 @@ export default async function StockDetailPage({ params }: PageProps) {
                   현재가: {closePrice !== null ? formatPrice(closePrice) : '-'}
                 </span>
               </div>
-              <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight flex items-baseline gap-2">
-                <span>{stock.name}</span>
-                <span className="text-lg sm:text-xl font-bold uppercase text-gray-500">({ticker})</span>
+              <h1 className="text-lg sm:text-2xl font-black text-gray-900 tracking-tight break-keep">
+                {stock.name}{' '}
+                <span className="text-base sm:text-xl font-bold uppercase text-gray-600 whitespace-nowrap">
+                  ({ticker})
+                </span>
               </h1>
             </div>
           </div>
@@ -294,37 +296,37 @@ export default async function StockDetailPage({ params }: PageProps) {
             <div className={`space-y-8 select-none transition-all duration-500 ${!isPremium ? 'blur-md pointer-events-none opacity-40 select-none' : ''}`}>
 
               {/* 분류체계 박스, 개요를 반응형 2단 그리드로 가로/세로 배치 (480px 분기) */}
-              <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-6 sm:gap-8">
 
-                {/* 1단: 주식 기초 정보 */}
-                <section className="p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md flex flex-col justify-between relative overflow-hidden">
+                {/* 1단: 주식 기초 정보 (컴팩트 폰트) */}
+                <section className="p-3.5 sm:p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md flex flex-col justify-between relative overflow-hidden">
                   <div className="absolute -right-20 -top-20 w-60 h-60 rounded-full bg-navy/20 blur-[60px] pointer-events-none" />
                   <div>
-                    <div className="text-gray-500 text-sm uppercase tracking-wider mb-2.5">
+                    <div className="text-[#000000]/60 text-xs uppercase tracking-wider mb-2">
                       <span>주식 기초 정보 (Basic Info)</span>
                     </div>
-                    <div className="space-y-2">
-                      <div className="p-2.5 rounded-none bg-[#F9F8F6]">
-                        <span className="text-base font-semibold text-gray-500 block mb-0.5">회사명(티커)</span>
-                        <span className="text-base font-semibold text-gray-900 truncate block">
+                    <div className="space-y-1.5">
+                      <div className="p-2 rounded-none bg-[#F9F8F6]">
+                        <span className="text-xs font-medium text-gray-500 block mb-0.5">회사명 (티커)</span>
+                        <span className="text-sm font-bold text-gray-900 truncate block">
                           {stock.name} ({stock.ticker})
                         </span>
                       </div>
-                      <div className="p-2.5 rounded-none bg-[#F9F8F6]">
-                        <span className="text-base font-semibold text-gray-500 block mb-0.5">대분류 (Sector)</span>
-                        <span className="text-base font-semibold text-gray-900 truncate block">
+                      <div className="p-2 rounded-none bg-[#F9F8F6]">
+                        <span className="text-xs font-medium text-gray-500 block mb-0.5">대분류 (Sector)</span>
+                        <span className="text-sm font-bold text-gray-900 truncate block">
                           {isPremium ? (stock.sector2 || '-') : '••••'}
                         </span>
                       </div>
-                      <div className="p-2.5 rounded-none bg-[#F9F8F6]">
-                        <span className="text-base font-semibold text-gray-500 block mb-0.5">중분류 (Industry)</span>
-                        <span className="text-base font-semibold text-gray-900 truncate block">
+                      <div className="p-2 rounded-none bg-[#F9F8F6]">
+                        <span className="text-xs font-medium text-gray-500 block mb-0.5">중분류 (Industry)</span>
+                        <span className="text-sm font-bold text-gray-900 truncate block">
                           {isPremium ? (stock.industry2 || '-') : '••••'}
                         </span>
                       </div>
-                      <div className="p-2.5 rounded-none bg-[#F9F8F6]">
-                        <span className="text-base font-semibold text-gray-500 block mb-0.5">부문 (Divisions)</span>
-                        <span className="text-base font-semibold text-gray-900 truncate block whitespace-pre-line">
+                      <div className="p-2 rounded-none bg-[#F9F8F6]">
+                        <span className="text-xs font-medium text-gray-500 block mb-0.5">부문 (Divisions)</span>
+                        <span className="text-sm font-bold text-gray-900 truncate block whitespace-pre-line">
                           {isPremium ? (stock.divisions || '정보 없음') : '••••'}
                         </span>
                       </div>
@@ -333,13 +335,13 @@ export default async function StockDetailPage({ params }: PageProps) {
                 </section>
 
                 {/* 2단: 개요 (Description) */}
-                <div className="p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md flex flex-col justify-between">
+                <div className="p-3.5 sm:p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md flex flex-col justify-between">
                   <div>
-                    <div className="text-gray-500 text-sm uppercase tracking-wider mb-2.5">
+                    <div className="text-[#000000]/60 text-xs uppercase tracking-wider mb-2">
                       <span>기업 개요 (Overview)</span>
                     </div>
-                    <h3 className="text-xl font-extrabold text-gray-900 mb-2.5 select-none">기업 소개 및 투자 가이드</h3>
-                    <p className="text-gray-900 text-base font-semibold leading-relaxed whitespace-pre-line font-sans">
+                    <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 select-none">기업 소개 및 투자 가이드</h3>
+                    <p className="text-gray-800 text-sm font-normal leading-relaxed whitespace-pre-line font-sans">
                       {isPremium
                         ? (stock.description || '이 종목에 대한 상세 리서치 요약 정보가 아직 등록되지 않았습니다.')
                         : '구독 회원에게만 공개되는 기업 개요 정보입니다. 프리미엄 멤버십을 통해 전체 기업 정보와 리포트 분석 자료를 확인해보세요.'}
@@ -349,7 +351,7 @@ export default async function StockDetailPage({ params }: PageProps) {
               </div>
 
               {/* 차트 영역 (반응형 2단 - 480px 분기) */}
-              <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-6 sm:gap-8">
                 <StockCandleChart prices={prices} source="yfinance" />
                 <StockPerformanceChart
                   yield_1w={yield_1w}

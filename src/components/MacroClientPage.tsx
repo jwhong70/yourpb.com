@@ -380,7 +380,7 @@ export default function MacroClientPage({ data }: ClientPageProps) {
             <button
               key={cat.id}
               onClick={() => handleMainClick(cat.id)}
-              className={`flex flex-col justify-between p-3.5 md:p-5 rounded-none border border-[#000000] text-left transition-all duration-300 relative overflow-hidden group ${
+              className={`flex flex-col justify-between p-3 sm:p-4 md:p-5 rounded-none border border-[#000000] text-left transition-all duration-300 relative overflow-hidden group ${
                 isSelected
                   ? 'bg-box-bg text-[#000000] shadow-2xl scale-[1.02]'
                   : 'bg-[#000000] text-white hover:bg-black/80 hover:scale-[1.01]'
@@ -397,13 +397,13 @@ export default function MacroClientPage({ data }: ClientPageProps) {
               </div>
 
               <div className="mt-6 md:mt-8 flex items-center justify-between gap-1 w-full">
-                <h3 className={`text-lg font-bold tracking-tight md:text-xl ${
+                <h3 className={`text-xs min-[380px]:text-sm sm:text-base md:text-xl font-bold tracking-tight whitespace-nowrap ${
                   isSelected ? 'text-[#000000]' : 'text-white'
                 }`}>
                   {cat.title}
                 </h3>
                 <ChevronDown 
-                  className={`w-4 h-4 md:w-5 md:h-5 transition-transform duration-300 shrink-0 ${
+                  className={`w-3.5 h-3.5 md:w-5 md:h-5 transition-transform duration-300 shrink-0 ${
                     isSelected ? 'transform rotate-180 text-[#000000]' : 'text-white/60'
                   }`} 
                 />
