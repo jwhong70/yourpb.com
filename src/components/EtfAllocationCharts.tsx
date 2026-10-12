@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts';
 import { useIsMounted } from '@/hooks/useIsMounted';
 
 export interface AllocationItem {
@@ -189,15 +188,19 @@ function SolidPieChartWidget({ title, data, source }: SolidPieChartWidgetProps) 
                     />
                   ))}
                 </Pie>
-                <ChartTooltip
-                  cursor={false}
-                  content={
-                    <ChartTooltipContent
-                      nameKey="name"
-                      hideLabel
-                      formatter={(value, name) => [`${(Number(value) || 0).toFixed(1)}%`, name]}
-                    />
-                  }
+                <Tooltip
+                  formatter={(value: any, name: any) => [`${(Number(value) || 0).toFixed(1)}%`, name]}
+                  contentStyle={{
+                    backgroundColor: '#111111',
+                    border: '1px solid #D4AF37',
+                    borderRadius: '0px',
+                    color: '#FFFFFF',
+                    fontSize: '12px',
+                    fontWeight: 'bold',
+                    padding: '6px 10px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                  }}
+                  itemStyle={{ color: '#D4AF37' }}
                 />
               </PieChart>
             </ResponsiveContainer>
