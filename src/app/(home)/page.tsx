@@ -9,8 +9,35 @@ import { getSessionUser } from '@/app/actions/auth';
 import { getWishlist } from '@/app/actions/wishlist';
 import PortfolioPieChart from '@/components/PortfolioPieChart';
 import PortfolioHistoryTimeline from '@/components/PortfolioHistoryTimeline';
+import PortfolioCalculator from '@/components/PortfolioCalculator';
 import { PB_MODEL_PORTFOLIO } from '@/config/portfolio';
 import { getMonthlyBrief } from '@/lib/monthly-brief';
+
+const getCachedPortfolioPrices = unstable_cache(
+  async (tickers: string[]) => {
+    if (!tickers || tickers.length === 0) return {};
+    const { data } = await publicSupabase
+      .from('etf_prices')
+      .select('ticker, date, close')
+      .in('ticker', tickers)
+      .order('date', { ascending: false });
+
+    const priceMap: Record<string, { close: number; date: string }> = {};
+    if (data) {
+      data.forEach((p) => {
+        if (!priceMap[p.ticker]) {
+          priceMap[p.ticker] = {
+            close: Number(p.close) || 0,
+            date: p.date ? String(p.date) : '',
+          };
+        }
+      });
+    }
+    return priceMap;
+  },
+  ['home-portfolio-prices-cache-v1'],
+  { revalidate: 3600, tags: ['home-page'] }
+);
 
 const getCachedEtfs = unstable_cache(
   async () => {
@@ -25,23 +52,21 @@ const getCachedEtfs = unstable_cache(
 );
 
 export default async function Home() {
-  const [user, wishlist, etfs] = await Promise.all([
+  const portfolioData = PB_MODEL_PORTFOLIO;
+  const modelPortfolioTickers = portfolioData
+    .map(item => item.ticker)
+    .filter(Boolean);
+
+  const [user, wishlist, etfs, portfolioPrices] = await Promise.all([
     getSessionUser(),
     getWishlist(),
     getCachedEtfs(),
+    getCachedPortfolioPrices(modelPortfolioTickers),
   ]);
   const wishlistTickers = wishlist.map(etf => etf.ticker);
 
   // 월간 브리프 데이터 로드 (monthly-brief.md 연동)
   const brief = getMonthlyBrief();
-
-  // 포트폴리오 비중 정의 (공통 설정 모듈 참조)
-  const portfolioData = PB_MODEL_PORTFOLIO;
-
-  // 포트폴리오에 지정된 대표 ETF 티커 리스트 추출 (실시간 변경 반영)
-  const modelPortfolioTickers = portfolioData
-    .map(item => item.ticker)
-    .filter(Boolean);
 
   // DB에서 가져온 최신 etfs 데이터와 매핑하여 캐러셀 구성
   const modelPortfolioEtfs = etfs
@@ -192,6 +217,14 @@ export default async function Home() {
             })}
           </div>
 
+        </div>
+        
+        {/* 2-1. 당신의 피비 모델 포트폴리오 1초 배분 계산기 */}
+        <div className="pt-2">
+          <PortfolioCalculator
+            portfolioData={portfolioData}
+            prices={portfolioPrices}
+          />
         </div>
 
         {/* 포트폴리오 리밸런싱 및 매매 집행 히스토리 타임라인 */}
