@@ -121,17 +121,11 @@ export default function PortfolioCalculator({
   return (
     <div className="bg-white border-2 border-black p-6 sm:p-8 space-y-6 shadow-sm">
       {/* 1. 상단 타이틀 & 내년 차세대 확장 탭 */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-black/10 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-black/10 pb-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="w-2.5 h-2.5 bg-[#D4AF37] rounded-full inline-block" />
-            <span className="text-xs font-bold text-[#9E533F] tracking-wider uppercase font-mono">
-              PORTFOLIO ALLOCATION CALCULATOR
-            </span>
-          </div>
-          <h3 className="text-lg sm:text-xl font-extrabold text-black tracking-tight flex items-center gap-2">
+          <h3 className="text-base sm:text-xl font-extrabold text-black tracking-tight flex items-center gap-2 whitespace-nowrap">
             <Calculator className="w-5 h-5 text-black shrink-0" />
-            당신의 피비 모델 포트폴리오 1초 배분 계산기
+            모델 포트폴리오 배분 계산기
           </h3>
           <p className="text-xs text-gray-500 mt-1">
             내 투자금을 입력하면 당월 모델 포트폴리오 비중에 맞춘 <b>목표 금액(원화/달러)</b>과 <b>예상 매수 주수</b>를 즉시 산출합니다.
@@ -139,20 +133,19 @@ export default function PortfolioCalculator({
         </div>
 
         {/* 내년 차세대 확장 예고 탭 슬롯 */}
-        <div className="inline-flex items-center p-1 bg-gray-100 border border-black/10 rounded-none self-start lg:self-auto text-xs font-bold">
+        <div className="inline-flex items-center p-0.5 sm:p-1 bg-gray-100 border border-black/10 rounded-none self-start sm:self-auto text-[11px] sm:text-xs font-bold shrink-0">
           <button
             type="button"
-            className="px-3 py-1.5 bg-black text-white shadow-xs rounded-none transition-all cursor-default"
+            className="px-2.5 sm:px-3 py-1 sm:py-1.5 bg-black text-white shadow-xs rounded-none transition-all cursor-default whitespace-nowrap"
           >
             간편 비중 계산기
           </button>
           <div
-            className="px-3 py-1.5 text-gray-400 flex items-center gap-1.5 select-none rounded-none"
+            className="px-2.5 sm:px-3 py-1 sm:py-1.5 text-gray-400 flex items-center gap-1 select-none rounded-none whitespace-nowrap"
             title="한국투자증권, 키움증권, KB증권 등 Open API 기반 실시간 계좌 잔고 연동 및 스마트 분할 주문 서비스가 2027년 상반기 공개됩니다."
           >
-            <Lock className="w-3 h-3 text-gray-400" />
-            <span>증권사 계좌 연동</span>
-            <span className="text-[9px] bg-gray-200 text-gray-600 px-1 py-0.2 font-mono">2027</span>
+            <Lock className="w-3 h-3 text-gray-400 shrink-0" />
+            <span>증권사 계좌 연동 (2027)</span>
           </div>
         </div>
       </div>
