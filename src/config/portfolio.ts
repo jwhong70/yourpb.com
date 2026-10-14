@@ -18,10 +18,10 @@ export interface PortfolioAllocation {
  * 4. 자동 연동: ticker가 지정된 모든 종목은 메인 홈 추천 그리드 및 /monthly 브리프에 자동 매핑됩니다.
  */
 export const PB_MODEL_PORTFOLIO: PortfolioAllocation[] = [
-  { type: '현금', pct: 30, ticker: '', name: '현금 자산(KRW)', color: '#A8A29E' }, // 웜그레이
-  { type: '채권', pct: 0, ticker: '', name: '미지정', color: '#E7E5E4' }, // 오트밀 베이지
   { type: '시장', pct: 0, ticker: '', name: '미지정', color: '#2C4027' }, // 다크 올리브그린
   { type: '섹터', pct: 50, ticker: 'XLE', name: 'Energy Select Sector SPDR Fund', color: '#597350' }, // 미드 올리브그린
   { type: '테마', pct: 0, ticker: '', name: '미지정', color: '#94A68D' }, // 세이지 그린
+  { type: '채권', pct: 0, ticker: '', name: '미지정', color: '#E7E5E4' }, // 오트밀 베이지
   { type: '대체', pct: 20, ticker: 'UVXY', name: 'ProShares Ultra VIX Short-Term Futures ETF', color: '#9E533F' }, // 테라코타
+  { type: '현금', pct: 30, ticker: '', name: '현금 자산(KRW)', color: '#A8A29E' }, // 웜그레이
 ];
