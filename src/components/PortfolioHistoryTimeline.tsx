@@ -20,16 +20,16 @@ export default function PortfolioHistoryTimeline() {
 
   return (
     <div className="space-y-4 font-sans">
-      <div className="flex items-center justify-between border-b border-black/10 pb-3">
+      <div className="border-b border-black/10 pb-3 space-y-1">
         <div className="flex items-center gap-2">
           <History className="w-5 h-5 text-gray-900" />
           <h3 className="text-lg sm:text-xl font-extrabold tracking-tight text-gray-900 select-none">
             포트폴리오 리밸런싱 히스토리
           </h3>
         </div>
-        <span className="text-xs sm:text-sm font-semibold text-gray-500 font-mono">
+        <div className="text-xs sm:text-sm font-semibold text-gray-500 font-mono pl-7">
           총 {PB_PORTFOLIO_HISTORY.length}회 매매 집행
-        </span>
+        </div>
       </div>
 
       <div className="space-y-4">
@@ -47,9 +47,9 @@ export default function PortfolioHistoryTimeline() {
               <button
                 type="button"
                 onClick={() => toggleExpand(item.id)}
-                className="w-full text-left p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-gray-50 transition-colors select-none"
+                className="w-full text-left p-4 sm:p-5 flex items-start sm:items-center justify-between gap-3 hover:bg-gray-50 transition-colors select-none"
               >
-                <div className="flex items-start sm:items-center gap-3">
+                <div className="flex flex-col items-start gap-2">
                   <span className="px-2.5 py-1 bg-black text-white text-xs font-mono font-bold shrink-0">
                     {item.date}
                   </span>
