@@ -53,14 +53,14 @@ const renderCustomizedLabel = (props: CustomLabelProps) => {
   const rawValue = typeof props.value === 'number' ? props.value : (Number(props.payload?.value) || 0);
   const rawFill = props.fill || props.payload?.fill || '#111111';
 
-  // 비중이 5% 미만인 미세 슬라이스는 내부 공간 협소로 인한 글자 겹침을 방지하기 위해
+  // 비중이 6% 미만인 미세 슬라이스는 내부 공간 협소로 인한 글자 겹침을 방지하기 위해
   // 내부 라벨을 표시하지 않고 하단 범례 및 툴팁으로 안내합니다.
-  if (rawValue < 5.0) {
+  if (rawValue < 6.0) {
     return null;
   }
 
   // 슬라이스 비중에 따라 라벨의 방사형 거리 최적화
-  const distRatio = rawValue >= 35 ? 0.52 : rawValue >= 15 ? 0.60 : 0.68;
+  const distRatio = rawValue >= 35 ? 0.52 : rawValue >= 15 ? 0.58 : 0.65;
   const radius = outerRadius * distRatio;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
@@ -77,10 +77,10 @@ const renderCustomizedLabel = (props: CustomLabelProps) => {
       dominantBaseline="central"
       className="select-none pointer-events-none"
     >
-      <tspan x={x} dy="-0.45em" className="text-xs sm:text-sm font-extrabold">
+      <tspan x={x} dy="-0.35em" fontSize="11px" className="font-extrabold select-none">
         {rawName}
       </tspan>
-      <tspan x={x} dy="1.25em" className="text-[11px] sm:text-xs font-bold">
+      <tspan x={x} dy="1.25em" fontSize="9.5px" className="font-bold select-none">
         {rawValue.toFixed(1)}%
       </tspan>
     </text>
@@ -174,8 +174,8 @@ function SolidPieChartWidget({ title, data, source }: SolidPieChartWidgetProps) 
                     paddingAngle={0.5}
                     dataKey="value"
                     nameKey="name"
-                    startAngle={140}
-                    endAngle={-220}
+                    startAngle={90}
+                    endAngle={-270}
                     isAnimationActive={false}
                     label={renderCustomizedLabel}
                     labelLine={false}
