@@ -7,6 +7,7 @@ import { useQueryState, parseAsString, parseAsStringLiteral } from 'nuqs';
 import Filter from './Filter';
 import { toggleWishlist } from '@/app/actions/wishlist';
 import { toast } from 'sonner';
+import MiniSparkline from './MiniSparkline';
 
 interface EtfWithPrice {
   ticker: string;
@@ -21,6 +22,7 @@ interface EtfWithPrice {
   yield_60w: number | null;
   yield_120w: number | null;
   interest?: string;
+  sparkline?: number[];
 }
 
 interface EtfSearchClientProps {
@@ -328,9 +330,14 @@ export default function EtfSearchClient({
                                 </button>
                                 <div className="flex flex-col min-w-0">
                                   <span className="font-semibold text-gray-900 text-xs sm:text-sm truncate">{etf.name}</span>
-                                  <span className="text-[10px] sm:text-[11px] font-mono text-gray-400 font-normal tracking-wide">
-                                    {etf.ticker}
-                                  </span>
+                                  <div className="flex items-center gap-2 mt-0.5">
+                                    <span className="text-[10px] sm:text-[11px] font-mono text-gray-400 font-normal tracking-wide">
+                                      {etf.ticker}
+                                    </span>
+                                    {etf.sparkline && etf.sparkline.length >= 2 && (
+                                      <MiniSparkline data={etf.sparkline} width={46} height={13} />
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             </td>

@@ -4,6 +4,7 @@ import NextTopLoader from "nextjs-toploader";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "sonner/dist/styles.css";
 import GlobalToaster from "@/components/GlobalToaster";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 import "./globals.css";
 
 const pretendard = localFont({
@@ -73,6 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </NuqsAdapter>
         <GlobalToaster />
+        <ScrollToTopButton />
       </body>
     </html>
   );

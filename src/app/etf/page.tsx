@@ -21,30 +21,36 @@ const getCachedEtfsData = unstable_cache(
       return [];
     }
 
-    // 2. 가장 최근 날짜 목록(max dates) 구하기
-    const { data: latestDateRows } = await publicSupabase
+    // 2. 벤치마크 SPY를 기준으로 최근 10주간의 기준일 목록(descending) 조회
+    const { data: dateRows } = await publicSupabase
       .from('etf_prices')
       .select('date')
+      .eq('ticker', 'SPY')
       .order('date', { ascending: false })
-      .limit(20);
+      .limit(10);
 
+    const sparklineDates = (dateRows || []).map((r) => r.date);
     const pricesMap: Record<string, { close?: number | null; yield_1w?: number | null; yield_5w?: number | null; yield_20w?: number | null; yield_60w?: number | null; yield_120w?: number | null }> = {};
-    const uniqueDates = Array.from(new Set((latestDateRows || []).map((r) => r.date))).slice(0, 3);
+    const sparkMap: Record<string, number[]> = {};
 
-    if (uniqueDates.length > 0) {
-      // 3. 최근 날짜 범위의 etf_prices 조회
+    if (sparklineDates.length > 0) {
+      // 3. 최근 10주간의 etf_prices 조회 (시간 오름차순으로 정렬하여 스파크라인 배열 및 최신 시세 맵 동시 생성)
       const { data: prices, error: priceError } = await publicSupabase
         .from('etf_prices')
         .select('ticker, date, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
-        .in('date', uniqueDates)
-        .order('date', { ascending: false })
-        .limit(1500);
+        .in('date', sparklineDates)
+        .order('date', { ascending: true })
+        .limit(5000);
 
       if (!priceError && prices) {
         prices.forEach((p) => {
-          if (!pricesMap[p.ticker]) {
-            pricesMap[p.ticker] = p;
+          if (!sparkMap[p.ticker]) {
+            sparkMap[p.ticker] = [];
           }
+          if (p.close !== null && p.close !== undefined) {
+            sparkMap[p.ticker].push(Number(p.close));
+          }
+          pricesMap[p.ticker] = p;
         });
       }
     }
@@ -64,10 +70,11 @@ const getCachedEtfsData = unstable_cache(
         yield_20w: priceInfo.yield_20w !== undefined && priceInfo.yield_20w !== null ? Number(priceInfo.yield_20w) : null,
         yield_60w: priceInfo.yield_60w !== undefined && priceInfo.yield_60w !== null ? Number(priceInfo.yield_60w) : null,
         yield_120w: priceInfo.yield_120w !== undefined && priceInfo.yield_120w !== null ? Number(priceInfo.yield_120w) : null,
+        sparkline: sparkMap[etf.ticker] || [],
       };
     });
   },
-  ['etf-page-data-cache-v2'],
+  ['etf-page-data-cache-v3'],
   { revalidate: 3600, tags: ['etf-page'] }
 );
 
