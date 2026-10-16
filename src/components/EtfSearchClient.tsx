@@ -102,6 +102,7 @@ export default function EtfSearchClient({
     'dir',
     parseAsStringLiteral(['asc', 'desc'] as const).withDefault('desc')
   );
+  const [searchTerm] = useQueryState('q', parseAsString.withDefault(''));
 
   // 관심/찜 종목 등록/해제 핸들러 (하이브리드: 로그인 시 DB + localStorage, 비로그인 시 localStorage)
   const handleToggleInterest = (e: React.MouseEvent, ticker: string, currentInterest?: string) => {
@@ -192,9 +193,14 @@ export default function EtfSearchClient({
     return `${val > 0 ? '+' : ''}${val.toFixed(1)}%`;
   };
 
-  // 현재 필터링 결과를 받아서 정렬 가동
+  // 현재 필터링 결과를 받아서 정렬 가동 (검색어가 있을 때는 Fuse.js 관련도 순서 최우선 보존)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getSortedEtfs = (filteredList: any[]) => {
+    const term = searchTerm.trim();
+    if (term) {
+      return filteredList as EtfWithPrice[];
+    }
+
     const listCopy = [...filteredList] as EtfWithPrice[];
     listCopy.sort((a, b) => {
       const valA = a[sortColumn as keyof EtfWithPrice];

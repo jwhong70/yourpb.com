@@ -6,6 +6,7 @@ import { ChevronDown, ArrowUpDown, Lock, Heart } from 'lucide-react';
 import { useQueryState, parseAsString, parseAsStringLiteral } from 'nuqs';
 import { toggleStockWishlist } from '@/app/actions/stock_wishlist';
 import { toast } from 'sonner';
+import Fuse from 'fuse.js';
 
 export interface StockWithPrice {
   ticker: string;
@@ -203,23 +204,49 @@ export default function Filter({
     return Array.from(new Set(list)).sort();
   }, [stocks, selectedSector, interestFilter]);
 
-  // 3. 필터링된 주식 목록 (종목명 또는 티커로 검색 지원)
+  // Fuse.js 인스턴스 생성 (티커 가중치 0.6, 종목명 가중치 0.4, 퍼지 오타 보정 threshold 0.35)
+  const fuse = useMemo(() => {
+    return new Fuse(stocks, {
+      keys: [
+        { name: 'ticker', weight: 0.6 },
+        { name: 'name', weight: 0.4 },
+      ],
+      threshold: 0.35,
+      ignoreLocation: true,
+      minMatchCharLength: 1,
+    });
+  }, [stocks]);
+
+  // 3. 필터링된 주식 목록 (Fuse.js 지능형 퍼지 검색 및 티커/종목명 동시 지원)
   const filteredStocks = useMemo(() => {
-    return stocks.filter((stock) => {
+    const term = searchTerm.trim();
+
+    // 검색어가 있을 경우: Fuse.js 퍼지 검색 우선 실행하여 관련도 순으로 정렬된 후보군 추출
+    let candidateStocks: StockWithPrice[];
+    if (term) {
+      const fuseResults = fuse.search(term);
+      candidateStocks = fuseResults.map((r) => r.item);
+    } else {
+      candidateStocks = stocks;
+    }
+
+    // 대분류, 중분류, 관심 필터 적용
+    return candidateStocks.filter((stock) => {
       const matchInterest = interestFilter === 'all' || stock.interest === 'y';
       const matchSector = selectedSector === 'all' || stock.sector2 === selectedSector;
       const matchIndustry = selectedIndustry === 'all' || stock.industry2 === selectedIndustry;
-      const term = searchTerm.trim().toLowerCase();
-      const matchSearch =
-        !term ||
-        (stock.name || '').toLowerCase().includes(term) ||
-        (stock.ticker || '').toLowerCase().includes(term);
-      return matchInterest && matchSector && matchIndustry && matchSearch;
+      return matchInterest && matchSector && matchIndustry;
     });
-  }, [stocks, selectedSector, selectedIndustry, interestFilter, searchTerm]);
+  }, [stocks, fuse, selectedSector, selectedIndustry, interestFilter, searchTerm]);
 
   // 4. 정렬 로직 적용
   const sortedStocks = useMemo(() => {
+    const term = searchTerm.trim();
+    // 검색어가 입력되어 있을 때는 Fuse.js가 산출한 검색 일치도(Relevance) 순서를 최우선 보존
+    if (term) {
+      return filteredStocks;
+    }
+
     const listCopy = [...filteredStocks];
     listCopy.sort((a, b) => {
       const valA = a[sortColumn as keyof StockWithPrice];
@@ -242,7 +269,7 @@ export default function Filter({
       return 0;
     });
     return listCopy;
-  }, [filteredStocks, sortColumn, sortDirection]);
+  }, [filteredStocks, sortColumn, sortDirection, searchTerm]);
 
   // 정렬 핸들러
   const handleSort = (column: keyof StockWithPrice) => {

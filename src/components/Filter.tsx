@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useQueryState, parseAsString, parseAsStringLiteral } from 'nuqs';
 import WishlistButton from '@/app/components/WishlistButton';
+import Fuse from 'fuse.js';
 
 interface ETF {
   ticker: string;
@@ -144,18 +145,40 @@ export default function Filter({
     setSearchTerm('');
   };
 
-  // 최종 필터링: 중분류 및 종목명/티커 검색어 필터 적용
-  const filteredEtfs = useMemo(() => {
-    return etfsAfterCategory.filter((etf: ETF) => {
-      const matchesReport = selectedReport === 'all' || etf.report === selectedReport;
-      const term = searchTerm.trim().toLowerCase();
-      const matchesSearch =
-        !term ||
-        (etf.name || '').toLowerCase().includes(term) ||
-        (etf.ticker || '').toLowerCase().includes(term);
-      return matchesReport && matchesSearch;
+  // Fuse.js 인스턴스 생성 (티커 가중치 0.6, 종목명 가중치 0.4, 퍼지 threshold 0.35)
+  const fuse = useMemo(() => {
+    return new Fuse(initialEtfs, {
+      keys: [
+        { name: 'ticker', weight: 0.6 },
+        { name: 'name', weight: 0.4 },
+      ],
+      threshold: 0.35,
+      ignoreLocation: true,
+      minMatchCharLength: 1,
     });
-  }, [etfsAfterCategory, selectedReport, searchTerm]);
+  }, [initialEtfs]);
+
+  // 최종 필터링: 중분류 및 Fuse.js 지능형 퍼지 검색 적용
+  const filteredEtfs = useMemo(() => {
+    const term = searchTerm.trim();
+
+    // 검색어가 있을 경우: Fuse.js 퍼지 검색 우선 실행
+    let candidateEtfs: ETF[];
+    if (term) {
+      const fuseResults = fuse.search(term);
+      candidateEtfs = fuseResults.map((r) => r.item);
+    } else {
+      candidateEtfs = etfsAfterCategory;
+    }
+
+    // 중분류 및 카테고리/관심/레버리지 필터 조건과 교집합 필터링
+    return candidateEtfs.filter((etf: ETF) => {
+      // 카테고리/레버리지/관심 필터 조건 만족 여부 검사
+      const matchesBase = etfsAfterCategory.some((c) => c.ticker === etf.ticker);
+      const matchesReport = selectedReport === 'all' || etf.report === selectedReport;
+      return matchesBase && matchesReport;
+    });
+  }, [etfsAfterCategory, fuse, selectedReport, searchTerm]);
 
   // 이미지 에러 핸들러
   const handleImageError = (ticker: string) => {
