@@ -35,6 +35,9 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
 
   // 차트 모드: 'candle' (캔들스틱) 또는 'line' (종가 라인)
   const [chartMode, setChartMode] = useState<'candle' | 'line'>('candle');
+  const [isFullView, setIsFullView] = useState(false);
+  const isFullViewRef = useRef(false);
+  isFullViewRef.current = isFullView;
 
   // 호버 툴팁 상태
   const [hoverData, setHoverData] = useState<{
@@ -91,6 +94,17 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
 
     return { sortedData: uniqueSorted, maData: ma };
   }, [prices]);
+
+  // 최근 120주 초기 범위
+  const targetBarCount = 120;
+  const initialRange = useMemo(() => {
+    if (sortedData.length === 0) return { from: 0, to: 0 };
+    const count = Math.min(sortedData.length, targetBarCount);
+    return {
+      from: sortedData.length - count - 0.5,
+      to: sortedData.length - 0.5,
+    };
+  }, [sortedData.length]);
 
   // 가격 포맷 함수: 소수점 2자리 (ETF의 달러/원화 공통 최적화)
   const formatPrice = (val: number) => {
@@ -152,6 +166,9 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
         borderColor: '#E5E7EB',
         timeVisible: true,
         secondsVisible: false,
+        fixRightEdge: true, // 최신 데이터 우측 끝 고정
+        rightOffset: 0.5,
+        lockVisibleTimeRangeOnResize: true,
       },
       handleScroll: {
         mouseWheel: true,
@@ -199,7 +216,7 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
       lineSeriesRef.current = lineSeries;
     }
 
-    // 20주 이동평균선(MA 20) 추가 (슬레이트 그레이 #4B5563, 차트 가림 방지를 위해 캔버스 내 타이틀 비표시)
+    // 20주 이동평균선(MA 20) 추가
     if (maData.length > 0) {
       const maSeries = chart.addSeries(LineSeries, {
         color: '#4B5563',
@@ -210,8 +227,62 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
       maSeries.setData(maData);
     }
 
-    // 데이터 전체 영역 맞춤
-    chart.timeScale().fitContent();
+    // 초기 뷰포트: 최근 120주 포커스
+    chart.timeScale().setVisibleLogicalRange(initialRange as any);
+    setIsFullView(false);
+
+    // 좌우 경계 클램핑: 왼쪽 빈 스페이스 차단 & 우측 최근 데이터 자석 고정
+    let isAdjusting = false;
+    let isUserPannedPast = false;
+    const anchorTo = sortedData.length - 0.5;
+    const minFrom = -0.5;
+
+    chart.timeScale().subscribeVisibleLogicalRangeChange((range) => {
+      if (!range || isAdjusting) return;
+
+      let targetFrom: number = range.from;
+      let targetTo: number = range.to;
+      let needsUpdate = false;
+
+      // ① 왼쪽 빈 스페이스 완벽 차단: 첫 번째 데이터 이전으로 넘어가지 못하도록 클램핑
+      if (targetFrom < minFrom) {
+        targetFrom = minFrom;
+        needsUpdate = true;
+      }
+
+      // ② 우측 자석 앵커링: 최근 뷰 상태에서 축소(Zoom Out) 시 우측 끝 고정 유지
+      if (!isFullViewRef.current) {
+        if (range.to < anchorTo - 1.5) {
+          isUserPannedPast = true;
+        } else if (range.to >= anchorTo - 0.2) {
+          isUserPannedPast = false;
+        }
+
+        if (!isUserPannedPast && targetTo < anchorTo) {
+          const span = targetTo - targetFrom;
+          targetTo = anchorTo;
+          targetFrom = Math.max(minFrom, anchorTo - span);
+          needsUpdate = true;
+        }
+      }
+
+      // ③ 전체 데이터 너비를 초과하는 무한 축소 방지
+      const maxSpan = sortedData.length;
+      if (targetTo - targetFrom > maxSpan) {
+        targetFrom = minFrom;
+        targetTo = sortedData.length - 0.5;
+        needsUpdate = true;
+      }
+
+      if (needsUpdate) {
+        isAdjusting = true;
+        chart.timeScale().setVisibleLogicalRange({
+          from: targetFrom as any,
+          to: targetTo as any,
+        });
+        setTimeout(() => { isAdjusting = false; }, 0);
+      }
+    });
 
     // 반응형 리사이즈 감지
     const handleResize = () => {
@@ -250,12 +321,18 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
       chart.remove();
       chartInstanceRef.current = null;
     };
-  }, [sortedData, maData, chartMode]);
+  }, [sortedData, maData, chartMode, initialRange]);
 
-  // 차트 뷰 리셋
+  // 차트 뷰 리셋 / 최근 120주 토글
   const handleResetZoom = () => {
-    if (chartInstanceRef.current) {
-      chartInstanceRef.current.timeScale().fitContent();
+    if (chartInstanceRef.current && sortedData.length > 0) {
+      if (isFullView) {
+        chartInstanceRef.current.timeScale().setVisibleLogicalRange(initialRange as any);
+        setIsFullView(false);
+      } else {
+        chartInstanceRef.current.timeScale().fitContent();
+        setIsFullView(true);
+      }
     }
   };
 
@@ -313,14 +390,14 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
             </button>
           </div>
 
-          {/* 전체 보기 리셋 버튼 */}
+          {/* 전체 보기 / 최근 120주 리셋 버튼 */}
           <button
             type="button"
             onClick={handleResetZoom}
-            title="차트 전체 보기 리셋"
-            className="px-2.5 py-1 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition-colors cursor-pointer"
+            title={isFullView ? '최근 120주 보기' : '차트 전체 보기'}
+            className="px-2.5 py-1 text-xs font-semibold text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition-colors cursor-pointer whitespace-nowrap shrink-0 shadow-2xs"
           >
-            전체 보기
+            {isFullView ? '최근 120주' : '전체 보기'}
           </button>
 
           {/* 범례 표시 */}
