@@ -7,26 +7,23 @@ import Footer from '@/components/Footer';
 import { getSessionUser } from '@/app/actions/auth';
 
 export const metadata: Metadata = {
-  title: '글로벌 거시경제(Macro) 모니터링 - YOURPB',
+  title: '글로벌 거시경제(Macro) 모니터링 - 당신의 피비',
   description: '글로벌 경제사이클, 경기조절자(금리/물가/유동성), 리스크 온/오프 상태 및 마켓사이클 신호를 실시간 모니터링합니다.',
 };
 
 const getCachedMacroRawData = unstable_cache(
   async () => {
-    const now = new Date();
+    // 1. 연간용: 1995년 이후 전체 히스토리 & 전망 (약 35년치)
+    const startYearWeo = 1995;
 
-    // 1. 주간/월간용 최근 1.5년 전 날짜 (안전 여유분)
-    const date1YearAgo = new Date();
-    date1YearAgo.setMonth(now.getMonth() - 18);
-    const dateParam = date1YearAgo.toISOString().split('T')[0];
+    // 2. 분기용: 2000년 이후 전체 사이클 (약 25년치)
+    const startDateQ = '2000-01-01';
 
-    // 2. 분기용 최근 6년 전 날짜
-    const date5YearsAgo = new Date();
-    date5YearsAgo.setFullYear(now.getFullYear() - 6);
-    const startDateQ = date5YearsAgo.toISOString().split('T')[0];
+    // 3. 월간용: 2015년 이후 거시 사이클 (약 11년치)
+    const startDateM = '2015-01-01';
 
-    // 3. 연간용 최근 3년 전 연도
-    const startYearWeo = now.getFullYear() - 3;
+    // 4. 주간/일간용: 2020년 이후 주봉/주간 흐름 (약 6년치)
+    const startDateW = '2020-01-01';
 
     const fetchAll = async <T,>(query: { range: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }> }): Promise<T[]> => {
       let allData: T[] = [];
@@ -65,7 +62,7 @@ const getCachedMacroRawData = unstable_cache(
 
       fetchAll(publicSupabase.from('macro_oecd_cli').select('*').in('ticker', [
         'g20', 'united_states', 'korea', 'china'
-      ]).gte('date', dateParam)),
+      ]).gte('date', startDateM)),
 
       fetchAll(publicSupabase.from('macro_fred_q').select('*').in('ticker', [
         'gdpc1', 'pcecc96', 'gpdic1', 'pnfic1', 'prfic1', 'expgsc1', 'impgsc1', 'gcec1', 'ophnfb'
@@ -74,22 +71,22 @@ const getCachedMacroRawData = unstable_cache(
       fetchAll(publicSupabase.from('macro_fred_w').select('*').in('ticker', [
         'ic4wsa', 't10y2y', 't10y3m', 'dfedtaru', 'treast', 'wcurcir',
         'rrpontsyd', 'wtregen', 'baa10y', 'bamlh0a0hym2ey', 'compout', 'wshomcb'
-      ]).gte('date', dateParam)),
+      ]).gte('date', startDateW)),
 
       fetchAll(publicSupabase.from('macro_fred_m').select('*').in('ticker', [
         'jtsjol', 'payems', 'unrate', 'totalsl', 'rsafs', 'pce', 'indpro', 'tcu',
         'dgorder', 'cpiaucsl', 'cpilfesl', 'pcepi', 'pcepilfe',
         'ppifis', 'wpsfd49116', 'wm2ns', 'ttlcons', 'permit', 'houst', 'exhoslusm495s',
         'hsn1f', 'spcs20rsa'
-      ]).gte('date', dateParam)),
+      ]).gte('date', startDateM)),
 
       fetchAll(publicSupabase.from('index_prices').select('*').in('ticker', [
         '^IRX', '^TNX', '^TYX', '^VIX', 'DX-Y.NYB', 'EURUSD=X', 'JPY=X', 'CNY=X',
         'KRW=X', 'TWD=X', 'GC=F', 'CL=F', 'HG=F', 'ZW=F', 'ZC=F', '^GSPC', '^IXIC',
         '^RUT', '^STOXX50E', '^N225', '^KS11', '000001.SS', '^HSI'
-      ]).gte('date', dateParam)),
+      ]).gte('date', startDateW)),
 
-      fetchAll(publicSupabase.from('fear_greed').select('*').gte('date', dateParam)),
+      fetchAll(publicSupabase.from('fear_greed').select('*').gte('date', startDateW)),
 
       fetchAll(publicSupabase.from('index_list').select('ticker, source')),
     ]);
@@ -105,7 +102,7 @@ const getCachedMacroRawData = unstable_cache(
       indexList: indexListRaw || []
     };
   },
-  ['macro-raw-data-cache-v4'],
+  ['macro-raw-data-cache-v6'],
   { revalidate: 3600, tags: ['macro-page'] }
 );
 
