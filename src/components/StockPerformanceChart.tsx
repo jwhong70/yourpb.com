@@ -68,11 +68,11 @@ export default function StockPerformanceChart({
   };
 
   return (
-    <div className="lg:h-115 flex flex-col p-6 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl">
-      <div className="flex items-center justify-between border-b border-black/10 pb-4 mb-6">
+    <div className="lg:h-115 flex flex-col px-2 py-4 sm:p-6 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl">
+      <div className="flex items-center justify-between border-b border-black/10 pb-3 mb-4 px-0.5 sm:px-0">
         <div>
-          <h4 className="text-lg font-bold text-[#000000] tracking-tight">수익률 성과 지표</h4>
-          <p className="text-xs text-[#000000]/60 mt-1">최근 데이터 기준 주요 기간별 주가 수익률 현황입니다.</p>
+          <h4 className="text-base sm:text-lg font-bold text-[#000000] tracking-tight">수익률 성과 지표</h4>
+          <p className="text-[11px] sm:text-xs text-[#000000]/60 mt-0.5">최근 데이터 기준 주요 기간별 주가 수익률 현황입니다.</p>
         </div>
       </div>
 

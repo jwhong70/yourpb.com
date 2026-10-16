@@ -156,7 +156,7 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
       rightPriceScale: {
         borderColor: '#E5E7EB',
         entireTextOnly: true,
-        minimumWidth: 65,
+        minimumWidth: 50,
         scaleMargins: {
           top: 0.1,
           bottom: 0.1,
@@ -359,29 +359,29 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
   } : null);
 
   return (
-    <div className="flex flex-col h-full p-6 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl">
+    <div className="flex flex-col h-full px-2 py-3.5 sm:p-6 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl">
       {/* 1. 타이틀 영역 */}
-      <div className="border-b border-black/10 pb-3 mb-3">
+      <div className="border-b border-black/10 pb-2.5 mb-2.5 px-0.5 sm:px-0">
         <div className="flex items-center gap-2">
-          <h3 className="text-lg font-bold text-[#000000] tracking-tight">주가 추이 (주봉)</h3>
+          <h3 className="text-base sm:text-lg font-bold text-[#000000] tracking-tight">주가 추이 (주봉)</h3>
           <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-[#D4AF37]/15 text-[#AA820A] border border-[#D4AF37]/30">
             블랙 & 골드
           </span>
         </div>
-        <p className="text-xs text-[#000000]/60 mt-1">
-          마우스 휠로 확대/축소 및 드래그로 이동하여 시계열을 탐색할 수 있습니다.
+        <p className="text-[11px] sm:text-xs text-[#000000]/60 mt-0.5">
+          마우스 휠이나 터치 드래그로 확대/축소 및 이동하여 시계열을 탐색할 수 있습니다.
         </p>
       </div>
 
-      {/* 2. 컨트롤 & 범례 바 (줄 바꿈 후 좌측 정렬) */}
-      <div className="flex flex-wrap items-center justify-between gap-2.5 mb-3 select-none">
-        <div className="flex flex-wrap items-center gap-2">
+      {/* 2. 컨트롤 & 범례 바 */}
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5 px-0.5 sm:px-0 select-none">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
           {/* 캔들 / 라인 토글 */}
           <div className="inline-flex rounded-md shadow-xs bg-gray-100 p-0.5 border border-black/10">
             <button
               type="button"
               onClick={() => setChartMode('candle')}
-              className={`px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
+              className={`px-2 sm:px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
                 chartMode === 'candle'
                   ? 'bg-black text-[#D4AF37] shadow-xs'
                   : 'text-gray-600 hover:text-black'
@@ -392,7 +392,7 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
             <button
               type="button"
               onClick={() => setChartMode('line')}
-              className={`px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
+              className={`px-2 sm:px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
                 chartMode === 'line'
                   ? 'bg-black text-[#D4AF37] shadow-xs'
                   : 'text-gray-600 hover:text-black'
@@ -407,7 +407,7 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
             type="button"
             onClick={handleResetZoom}
             title={isFullView ? '최근 120주 보기' : '차트 전체 보기'}
-            className="px-2.5 py-1 text-xs font-semibold text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition-colors cursor-pointer whitespace-nowrap shrink-0 shadow-2xs"
+            className="px-2 sm:px-2.5 py-1 text-xs font-semibold text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition-colors cursor-pointer whitespace-nowrap shrink-0 shadow-2xs"
           >
             {isFullView ? '최근 120주' : '전체 보기'}
           </button>
@@ -431,18 +431,18 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
           </div>
         </div>
 
-        <div className="text-[11px] text-gray-400">
-          <span>🔍 휠 확대/축소</span>
+        <div className="text-[10px] sm:text-[11px] text-gray-400">
+          <span>🔍 드래그/휠 확대</span>
         </div>
       </div>
 
       {/* 3. 데이터 현황 및 호버 정보 바 (OHLC + 등락률) */}
       {activeData && (
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs mb-3 px-3 py-2 bg-gray-50/80 rounded border border-gray-200/80 font-mono">
-          <span className="text-gray-500 font-sans text-[11px]">
-            {hoverData ? '선택 일자' : '최근 기준'}: <strong className="text-gray-900">{activeData.time}</strong>
+        <div className="flex flex-wrap items-center gap-x-2.5 sm:gap-x-4 gap-y-1 text-[11px] sm:text-xs mb-2.5 px-2 py-1.5 sm:px-3 sm:py-2 bg-gray-50/80 rounded border border-gray-200/80 font-mono">
+          <span className="text-gray-500 font-sans text-[10px] sm:text-[11px]">
+            {hoverData ? '선택' : '최근'}: <strong className="text-gray-900">{activeData.time}</strong>
           </span>
-          <div className="flex items-center gap-3 text-[11px]">
+          <div className="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-[11px]">
             <span>
               시 <strong className="text-gray-900">{formatPrice(activeData.open)}</strong>
             </span>
