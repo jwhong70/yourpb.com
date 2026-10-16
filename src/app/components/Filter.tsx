@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ChevronDown, ArrowUpDown, Lock, Heart } from 'lucide-react';
 import { useQueryState, parseAsString, parseAsStringLiteral } from 'nuqs';
 import { toggleStockWishlist } from '@/app/actions/stock_wishlist';
+import { toast } from 'sonner';
 
 export interface StockWithPrice {
   ticker: string;
@@ -127,7 +128,18 @@ export default function Filter({
       prev.map((s) => (s.ticker === ticker ? { ...s, interest: nextInterest } : s))
     );
 
-    // 2. localStorage 업데이트
+    // 2. 토스트 피드백 표시
+    if (nextInterest === 'y') {
+      toast.success(`${ticker} 관심 종목에 추가되었습니다.`, {
+        description: isLoggedIn
+          ? '내 계정 찜 목록에 안전하게 저장되었습니다.'
+          : '임시 저장되었습니다. 로그인 시 계정에 영구 보존됩니다.',
+      });
+    } else {
+      toast.info(`${ticker} 관심 종목에서 제외되었습니다.`);
+    }
+
+    // 3. localStorage 업데이트
     try {
       const stored = localStorage.getItem('yourpb_interest_tickers_v2');
       let tickers: string[] = stored ? JSON.parse(stored) : [];
@@ -145,16 +157,18 @@ export default function Filter({
       console.error('Failed to update localStorage for interest tickers:', err);
     }
 
-    // 3. 로그인 상태일 경우 Supabase DB와 비동기 동기화
+    // 4. 로그인 상태일 경우 Supabase DB와 비동기 동기화
     if (isLoggedIn) {
       startTransition(async () => {
         try {
           const result = await toggleStockWishlist(ticker);
           if (result && result.error) {
             console.error('Failed to sync stock wishlist on server:', result.error);
+            toast.error(result.error);
           }
         } catch (error) {
           console.error('toggleStockWishlist error:', error);
+          toast.error('관심 종목 동기화 중 오류가 발생했습니다.');
         }
       });
     }

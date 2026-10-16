@@ -6,6 +6,7 @@ import { Heart } from 'lucide-react';
 import { useQueryState, parseAsString, parseAsStringLiteral } from 'nuqs';
 import Filter from './Filter';
 import { toggleWishlist } from '@/app/actions/wishlist';
+import { toast } from 'sonner';
 
 interface EtfWithPrice {
   ticker: string;
@@ -113,7 +114,18 @@ export default function EtfSearchClient({
       prev.map((etf) => (etf.ticker === ticker ? { ...etf, interest: nextInterest } : etf))
     );
 
-    // 2. localStorage 업데이트
+    // 2. 토스트 피드백 표시
+    if (nextInterest === 'y') {
+      toast.success(`${ticker} 관심 종목에 추가되었습니다.`, {
+        description: isLoggedIn
+          ? '내 계정 찜 목록에 안전하게 저장되었습니다.'
+          : '임시 저장되었습니다. 로그인 시 계정에 영구 보존됩니다.',
+      });
+    } else {
+      toast.info(`${ticker} 관심 종목에서 제외되었습니다.`);
+    }
+
+    // 3. localStorage 업데이트
     try {
       const stored = localStorage.getItem('yourpb_interest_etf_tickers');
       let tickers: string[] = stored ? JSON.parse(stored) : [];
@@ -131,16 +143,18 @@ export default function EtfSearchClient({
       console.error('Failed to update localStorage for etf interest tickers:', err);
     }
 
-    // 3. 로그인 상태일 경우 Supabase DB와 비동기 동기화
+    // 4. 로그인 상태일 경우 Supabase DB와 비동기 동기화
     if (isLoggedIn) {
       startTransition(async () => {
         try {
           const result = await toggleWishlist(ticker);
           if (result && result.error) {
             console.error('Failed to sync wishlist on server:', result.error);
+            toast.error(result.error);
           }
         } catch (error) {
           console.error('toggleWishlist error:', error);
+          toast.error('관심 종목 동기화 중 오류가 발생했습니다.');
         }
       });
     }

@@ -2,7 +2,8 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import NextTopLoader from "nextjs-toploader";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { Toaster } from "sonner";
+import "sonner/dist/styles.css";
+import GlobalToaster from "@/components/GlobalToaster";
 import "./globals.css";
 
 const pretendard = localFont({
@@ -71,16 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <NuqsAdapter>
           {children}
         </NuqsAdapter>
-        <Toaster
-          position="top-center"
-          richColors
-          closeButton
-          toastOptions={{
-            style: {
-              fontFamily: "var(--font-pretendard), sans-serif",
-            },
-          }}
-        />
+        <GlobalToaster />
       </body>
     </html>
   );
