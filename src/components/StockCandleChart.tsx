@@ -283,10 +283,13 @@ export default function StockCandleChart({ prices, source }: StockCandleChartPro
       }
     });
 
-    // 반응형 리사이즈 감지
+    // 반응형 리사이즈 감지 (가로 회전 및 윈도우 크기 변화에 너비와 높이 동시 대응)
     const handleResize = () => {
       if (container && chart) {
-        chart.applyOptions({ width: container.clientWidth });
+        chart.applyOptions({
+          width: container.clientWidth,
+          height: container.clientHeight || 320,
+        });
       }
     };
     const resizeObserver = new ResizeObserver(() => handleResize());
@@ -458,13 +461,13 @@ export default function StockCandleChart({ prices, source }: StockCandleChartPro
         </div>
       )}
 
-      {/* Lightweight Charts 캔버스 뷰포트 */}
+      {/* Lightweight Charts 캔버스 뷰포트 (가로 회전 시 높이 자동 최적화) */}
       {sortedData.length === 0 ? (
-        <div className="flex items-center justify-center h-80 text-[#000000]/50 text-sm">
+        <div className="flex items-center justify-center h-80 landscape:h-64 sm:h-96 text-[#000000]/50 text-sm">
           주가 데이터가 존재하지 않습니다.
         </div>
       ) : (
-        <div className="relative w-full h-80">
+        <div className="relative w-full h-80 landscape:h-64 sm:h-96">
           <div ref={chartContainerRef} className="w-full h-full" />
         </div>
       )}

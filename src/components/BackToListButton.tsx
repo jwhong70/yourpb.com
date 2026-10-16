@@ -28,19 +28,10 @@ export default function BackToListButton({
     try {
       const cleanFallbackPath = fallbackUrl.split('?')[0]; // e.g. '/stock', '/etf', '/monthly'
       const savedListUrl = sessionStorage.getItem(`yourpb_last_list_url_${cleanFallbackPath}`);
-      const lastListPath = sessionStorage.getItem('yourpb_last_list_path');
 
-      // 1. 목록 화면에서 상세 화면으로 직접 들어온 직후인 경우:
-      // 브라우저 history.back()을 호출하여 스크롤 위치 및 필터/검색어 상태를 원형 그대로 복원
-      if (lastListPath === cleanFallbackPath && window.history.length > 1) {
-        sessionStorage.removeItem('yourpb_last_list_path');
-        router.back();
-        return;
-      }
-
-      // 2. 로그인 페이지를 거쳤거나, 새로고침 등으로 브라우저 히스토리 스택이 분기된 경우:
-      // 세션에 저장된 필터 파라미터가 포함된 전체 목록 URL로 안전하게 복귀 (로그인 창으로 튕김 방지)
+      // 세션에 저장된 필터 파라미터가 포함된 전체 목록 URL이 있다면 해당 URL로 직접 이동하여 필터 상태 100% 복원
       if (savedListUrl) {
+        sessionStorage.removeItem('yourpb_last_list_path');
         router.push(savedListUrl);
         return;
       }
@@ -48,7 +39,7 @@ export default function BackToListButton({
       // 스토리지 접근 불가 등 예외 발생 시 안전하게 fallbackUrl로 이동
     }
 
-    // 3. 그 외(외부 직접 링크 등)는 기본 목록 경로로 이동
+    // 기본 목록 경로로 이동
     router.push(fallbackUrl);
   };
 

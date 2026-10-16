@@ -118,11 +118,24 @@ export default function Filter({
     parseAsStringLiteral(['asc', 'desc'] as const).withDefault('desc')
   );
 
-  // 사용자가 설정한 현재 주식 필터 URL을 세션 스토리지에 지속 저장
+  // 사용자가 설정한 현재 주식 필터 URL을 파라미터 상태로부터 정밀 조합
+  const getFilterUrl = () => {
+    const params = new URLSearchParams();
+    if (interestFilter && interestFilter !== 'all') params.set('interest', interestFilter);
+    if (selectedSector && selectedSector !== 'all') params.set('sector', selectedSector);
+    if (selectedIndustry && selectedIndustry !== 'all') params.set('industry', selectedIndustry);
+    if (selectedPeriod && selectedPeriod !== '1w') params.set('period', selectedPeriod);
+    if (searchTerm && searchTerm.trim()) params.set('q', searchTerm.trim());
+    if (sortColumn && sortColumn !== 'yield_1w') params.set('sort', sortColumn);
+    if (sortDirection && sortDirection !== 'desc') params.set('dir', sortDirection);
+    const qs = params.toString();
+    return qs ? `/stock?${qs}` : '/stock';
+  };
+
+  // 필터 및 검색어 변경 시 세션 스토리지에 복귀 URL 실시간 보존
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const fullUrl = window.location.pathname + window.location.search;
-      sessionStorage.setItem('yourpb_last_list_url_/stock', fullUrl);
+      sessionStorage.setItem('yourpb_last_list_url_/stock', getFilterUrl());
     }
   }, [interestFilter, selectedSector, selectedIndustry, selectedPeriod, searchTerm, sortColumn, sortDirection]);
 
@@ -321,7 +334,7 @@ export default function Filter({
   const handleRowClick = (ticker: string) => {
     if (typeof window !== 'undefined') {
       sessionStorage.setItem('yourpb_last_list_path', '/stock');
-      sessionStorage.setItem('yourpb_last_list_url_/stock', window.location.pathname + window.location.search);
+      sessionStorage.setItem('yourpb_last_list_url_/stock', getFilterUrl());
     }
     router.push(`/stock/${ticker}`);
   };

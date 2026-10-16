@@ -99,11 +99,22 @@ export default function Filter({
     parseAsString.withDefault('')
   );
   
-  // 사용자가 설정한 현재 ETF 필터 URL을 세션 스토리지에 지속 저장
+  // 사용자가 설정한 현재 ETF 필터 URL을 파라미터 상태로부터 정밀 조합
+  const getFilterUrl = () => {
+    const params = new URLSearchParams();
+    if (interestFilter && interestFilter !== 'all') params.set('interest', interestFilter);
+    if (leverageFilter && leverageFilter !== 'exclude') params.set('leverage', leverageFilter);
+    if (selectedCategory && selectedCategory !== 'all') params.set('category', selectedCategory);
+    if (selectedReport && selectedReport !== 'all') params.set('report', selectedReport);
+    if (searchTerm && searchTerm.trim()) params.set('q', searchTerm.trim());
+    const qs = params.toString();
+    return qs ? `/etf?${qs}` : '/etf';
+  };
+
+  // 필터 및 검색어 변경 시 세션 스토리지에 복귀 URL 실시간 보존
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const fullUrl = window.location.pathname + window.location.search;
-      sessionStorage.setItem('yourpb_last_list_url_/etf', fullUrl);
+      sessionStorage.setItem('yourpb_last_list_url_/etf', getFilterUrl());
     }
   }, [interestFilter, leverageFilter, selectedCategory, selectedReport, searchTerm]);
 
@@ -111,7 +122,7 @@ export default function Filter({
   const recordListNav = () => {
     if (typeof window !== 'undefined') {
       sessionStorage.setItem('yourpb_last_list_path', '/etf');
-      sessionStorage.setItem('yourpb_last_list_url_/etf', window.location.pathname + window.location.search);
+      sessionStorage.setItem('yourpb_last_list_url_/etf', getFilterUrl());
     }
   };
 
