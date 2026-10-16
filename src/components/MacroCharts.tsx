@@ -447,7 +447,7 @@ export function MacroBarChart({
       <div
         id={chartKey}
         ref={containerRef}
-        className="w-full h-[220px] sm:h-[280px] relative overflow-hidden"
+        className="w-full h-55 sm:h-70 relative overflow-hidden"
       />
 
       {source && (
@@ -642,7 +642,7 @@ export function MacroLineChart({
       <div
         id={chartKey}
         ref={containerRef}
-        className="w-full h-[220px] sm:h-[280px] relative overflow-hidden"
+        className="w-full h-55 sm:h-70 relative overflow-hidden"
       />
 
       {source && (
@@ -848,7 +848,7 @@ export function MacroCandleChart({
     <div className="flex flex-col p-2 bg-[#F9F8F6] border-b border-b-[#000000]/60 shadow-xs">
       <div className="flex flex-col gap-1.5 px-2.5 py-2 mb-1 bg-white/80 border border-black/5 rounded text-xs select-none">
         <div className="flex items-center justify-between gap-2">
-          <span className="font-bold text-gray-900 text-xs truncate max-w-[200px] sm:max-w-xs">{title}</span>
+          <span className="font-bold text-gray-900 text-xs truncate max-w-50 sm:max-w-xs">{title}</span>
           <div className="flex items-center gap-2 text-[10px] text-gray-500 font-medium shrink-0">
             <span className="flex items-center gap-1">
               <span className="w-2 h-2 bg-[#D4AF37] inline-block border border-[#B8860B]" /> 상승
@@ -894,7 +894,7 @@ export function MacroCandleChart({
       <div
         id={chartKey}
         ref={containerRef}
-        className="w-full h-[220px] sm:h-[280px] relative overflow-hidden"
+        className="w-full h-55 sm:h-70 relative overflow-hidden"
       />
 
       {source && (
