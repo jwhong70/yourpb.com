@@ -36,7 +36,6 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
   // 차트 모드: 'candle' (캔들스틱) 또는 'line' (종가 라인)
   const [chartMode, setChartMode] = useState<'candle' | 'line'>('candle');
   const [isFullView, setIsFullView] = useState(false);
-  const [isAtRecent, setIsAtRecent] = useState(true);
   const isFullViewRef = useRef(false);
   useEffect(() => {
     isFullViewRef.current = isFullView;
@@ -286,15 +285,13 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
         setTimeout(() => { isAdjusting = false; }, 0);
       }
 
-      // ④ 현재 뷰포트 범위에 따라 [전체 보기] / [최근 120주] 및 [최근 값 고정] 상태 실시간 동기화
+      // ④ 현재 뷰포트 범위에 따라 [전체 보기] / [최근 120주] 버튼 상태 실시간 동기화
       const finalSpan = targetTo - targetFrom;
       const isViewingFull = finalSpan >= (sortedData.length * 0.75);
       if (isViewingFull !== isFullViewRef.current) {
         isFullViewRef.current = isViewingFull;
         setIsFullView(isViewingFull);
       }
-      const isNear = Math.abs(targetTo - anchorTo) <= 2;
-      setIsAtRecent(isNear);
     });
 
     // 반응형 리사이즈 감지 (가로 회전 및 윈도우 크기 변화에 너비와 높이 동시 대응)
@@ -339,33 +336,21 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
     };
   }, [sortedData, maData, chartMode, initialRange]);
 
-  // 차트 뷰 리셋 / 최근 값 고정 토글
+  // 차트 뷰 리셋 / 최근 120주 토글 (스마트 토글)
   const handleResetZoom = () => {
-    if (!chartInstanceRef.current || sortedData.length === 0) return;
+    if (chartInstanceRef.current && sortedData.length > 0) {
+      const currentRange = chartInstanceRef.current.timeScale().getVisibleLogicalRange();
+      const currentSpan = currentRange ? (currentRange.to - currentRange.from) : (isFullView ? sortedData.length : targetBarCount);
+      const isCurrentlyFull = currentSpan >= (sortedData.length * 0.75);
 
-    const currentRange = chartInstanceRef.current.timeScale().getVisibleLogicalRange();
-    const anchorTo = sortedData.length - 0.5;
-    const isNear = currentRange ? Math.abs(currentRange.to - anchorTo) <= 2 : true;
-
-    // 1. 과거 데이터를 탐색 중인 경우: 즉시 최근 120주로 자석 고정 복귀!
-    if (!isNear) {
-      chartInstanceRef.current.timeScale().setVisibleLogicalRange(initialRange as any);
-      setIsFullView(false);
-      setIsAtRecent(true);
-      setHoverData(null);
-      return;
+      if (isCurrentlyFull) {
+        chartInstanceRef.current.timeScale().setVisibleLogicalRange(initialRange as any);
+        setIsFullView(false);
+      } else {
+        chartInstanceRef.current.timeScale().fitContent();
+        setIsFullView(true);
+      }
     }
-
-    // 2. 이미 최근 끝에 있는 경우: 전체 보기 <-> 최근 120주 전환
-    if (isFullView) {
-      chartInstanceRef.current.timeScale().setVisibleLogicalRange(initialRange as any);
-      setIsFullView(false);
-    } else {
-      chartInstanceRef.current.timeScale().fitContent();
-      setIsFullView(true);
-    }
-    setIsAtRecent(true);
-    setHoverData(null);
   };
 
   const latestPoint = sortedData[sortedData.length - 1];
@@ -422,18 +407,14 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
             </button>
           </div>
 
-          {/* 최근 값 고정 / 전체 보기 리셋 버튼 */}
+          {/* 전체 보기 / 최근 120주 리셋 버튼 */}
           <button
             type="button"
             onClick={handleResetZoom}
-            title={!isAtRecent ? '최근 120주로 복귀 고정' : (isFullView ? '최근 120주 보기' : '차트 전체 보기')}
-            className={`px-2 sm:px-2.5 py-1 text-xs font-semibold rounded transition-colors cursor-pointer whitespace-nowrap shrink-0 shadow-2xs ${
-              !isAtRecent
-                ? 'bg-[#000000] text-[#D4AF37] border border-[#D4AF37] font-bold ring-1 ring-[#D4AF37]/50'
-                : 'text-gray-700 bg-white border border-gray-300 hover:bg-gray-100'
-            }`}
+            title={isFullView ? '최근 120주 보기' : '차트 전체 보기'}
+            className="px-2 sm:px-2.5 py-1 text-xs font-semibold text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition-colors cursor-pointer whitespace-nowrap shrink-0 shadow-2xs"
           >
-            {!isAtRecent ? '📍 최근 값 고정' : (isFullView ? '최근 120주' : '전체 보기')}
+            {isFullView ? '최근 120주' : '전체 보기'}
           </button>
 
           {/* 범례 표시 */}
@@ -460,47 +441,34 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
         </div>
       </div>
 
-      {/* 3. 데이터 현황 및 호버 정보 바 (OHLC + 등락률 + 최근 값 복귀 버튼) */}
+      {/* 3. 데이터 현황 및 호버 정보 바 (OHLC + 등락률) */}
       {activeData && (
-        <div className="flex flex-wrap items-center justify-between gap-x-2.5 sm:gap-x-4 gap-y-1 text-[11px] sm:text-xs mb-2.5 px-2 py-1.5 sm:px-3 sm:py-2 bg-gray-50/80 rounded border border-gray-200/80 font-mono">
-          <div className="flex flex-wrap items-center gap-x-2.5 sm:gap-x-4 gap-y-1">
-            <span className="text-gray-500 font-sans text-[10px] sm:text-[11px]">
-              {hoverData ? '선택' : '최근'}: <strong className="text-gray-900">{activeData.time}</strong>
+        <div className="flex flex-wrap items-center gap-x-2.5 sm:gap-x-4 gap-y-1 text-[11px] sm:text-xs mb-2.5 px-2 py-1.5 sm:px-3 sm:py-2 bg-gray-50/80 rounded border border-gray-200/80 font-mono">
+          <span className="text-gray-500 font-sans text-[10px] sm:text-[11px]">
+            {hoverData ? '선택' : '최근'}: <strong className="text-gray-900">{activeData.time}</strong>
+          </span>
+          <div className="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-[11px]">
+            <span>
+              시 <strong className="text-gray-900">{formatPrice(activeData.open)}</strong>
             </span>
-            <div className="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-[11px]">
-              <span>
-                시 <strong className="text-gray-900">{formatPrice(activeData.open)}</strong>
-              </span>
-              <span>
-                고 <strong className="text-gray-900">{formatPrice(activeData.high)}</strong>
-              </span>
-              <span>
-                저 <strong className="text-gray-900">{formatPrice(activeData.low)}</strong>
-              </span>
-              <span>
-                종 <strong className="text-gray-900">{formatPrice(activeData.close)}</strong>
-              </span>
-              <span
-                className={`font-bold ${
-                  activeData.changeRate >= 0 ? 'text-[#AA820A]' : 'text-[#111111]'
-                }`}
-              >
-                {activeData.changeRate >= 0 ? '+' : ''}
-                {activeData.changeRate.toFixed(2)}%
-              </span>
-            </div>
-          </div>
-
-          {hoverData && (
-            <button
-              type="button"
-              onClick={() => setHoverData(null)}
-              className="text-[10px] text-gray-600 hover:text-black font-sans font-semibold px-1.5 py-0.5 rounded bg-gray-200/70 hover:bg-gray-300 transition-colors cursor-pointer shrink-0"
-              title="최근 종가 기준으로 복귀"
+            <span>
+              고 <strong className="text-gray-900">{formatPrice(activeData.high)}</strong>
+            </span>
+            <span>
+              저 <strong className="text-gray-900">{formatPrice(activeData.low)}</strong>
+            </span>
+            <span>
+              종 <strong className="text-gray-900">{formatPrice(activeData.close)}</strong>
+            </span>
+            <span
+              className={`font-bold ${
+                activeData.changeRate >= 0 ? 'text-[#AA820A]' : 'text-[#111111]'
+              }`}
             >
-              ✕ 최근 값 고정
-            </button>
-          )}
+              {activeData.changeRate >= 0 ? '+' : ''}
+              {activeData.changeRate.toFixed(2)}%
+            </span>
+          </div>
         </div>
       )}
 
