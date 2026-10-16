@@ -302,10 +302,10 @@ export default function EtfSearchClient({
                             key={etf.ticker}
                             onClick={() => router.push(`/etf/${etf.ticker}`)}
                             onMouseEnter={() => router.prefetch(`/etf/${etf.ticker}`)}
-                            className="hover:bg-black/5 transition-colors cursor-pointer"
+                            className="hover:bg-black/5 transition-colors cursor-pointer group"
                           >
-                            <td className="py-3 px-3 sm:px-6 font-semibold truncate border-r border-r-white" title={etf.name}>
-                              <div className="flex items-center gap-2">
+                            <td className="py-2.5 px-3 sm:px-6 align-middle border-r border-r-white" title={`${etf.name} (${etf.ticker})`}>
+                              <div className="flex items-center gap-2.5">
                                 <button
                                   type="button"
                                   onClick={(e) => handleToggleInterest(e, etf.ticker, etf.interest)}
@@ -320,10 +320,15 @@ export default function EtfSearchClient({
                                     }`}
                                   />
                                 </button>
-                                <span className="truncate">{etf.name}</span>
+                                <div className="flex flex-col min-w-0">
+                                  <span className="font-semibold text-gray-900 text-xs sm:text-sm truncate">{etf.name}</span>
+                                  <span className="text-[10px] sm:text-[11px] font-mono text-gray-400 font-normal tracking-wide">
+                                    {etf.ticker}
+                                  </span>
+                                </div>
                               </div>
                             </td>
-                            <td className={`py-3 px-3 sm:px-6 text-right border-r border-r-white truncate ${getYieldColor(yieldVal)}`}>
+                            <td className={`py-2.5 px-3 sm:px-6 text-right align-middle border-r border-r-white truncate ${getYieldColor(yieldVal)}`}>
                               {formatYield(yieldVal)}
                             </td>
                           </tr>

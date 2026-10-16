@@ -203,13 +203,17 @@ export default function Filter({
     return Array.from(new Set(list)).sort();
   }, [stocks, selectedSector, interestFilter]);
 
-  // 3. 필터링된 주식 목록
+  // 3. 필터링된 주식 목록 (종목명 또는 티커로 검색 지원)
   const filteredStocks = useMemo(() => {
     return stocks.filter((stock) => {
       const matchInterest = interestFilter === 'all' || stock.interest === 'y';
       const matchSector = selectedSector === 'all' || stock.sector2 === selectedSector;
       const matchIndustry = selectedIndustry === 'all' || stock.industry2 === selectedIndustry;
-      const matchSearch = !searchTerm.trim() || stock.name.toLowerCase().includes(searchTerm.toLowerCase());
+      const term = searchTerm.trim().toLowerCase();
+      const matchSearch =
+        !term ||
+        (stock.name || '').toLowerCase().includes(term) ||
+        (stock.ticker || '').toLowerCase().includes(term);
       return matchInterest && matchSector && matchIndustry && matchSearch;
     });
   }, [stocks, selectedSector, selectedIndustry, interestFilter, searchTerm]);
@@ -372,15 +376,15 @@ export default function Filter({
             </div>
           </div>
 
-          {/* 종목명 검색창 */}
+          {/* 종목명 또는 티커 검색창 */}
           <div className="flex flex-col space-y-2">
             <label htmlFor="search-input" className="text-xs text-gray-700 font-bold tracking-wider">
-              종목명 검색
+              종목명 또는 티커 검색
             </label>
             <input
               id="search-input"
               type="text"
-              placeholder="종목명을 입력하세요..."
+              placeholder="종목명 또는 티커(AAPL, MSFT 등)를 입력하세요..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full bg-white text-gray-800 border border-[#000000] rounded-none py-3.5 px-4 text-sm font-semibold focus:outline-hidden focus:ring-1 focus:ring-black transition-all shadow-xs"
@@ -462,8 +466,8 @@ export default function Filter({
                         onMouseEnter={() => router.prefetch(`/stock/${stock.ticker}`)}
                         className="hover:bg-black/5 transition-colors cursor-pointer group divide-x divide-white"
                       >
-                       <td className="py-3 px-3 sm:px-6 font-semibold truncate" title={stock.name}>
-                         <div className="flex items-center gap-2">
+                       <td className="py-2.5 px-3 sm:px-6 align-middle" title={`${stock.name} (${stock.ticker})`}>
+                         <div className="flex items-center gap-2.5">
                            <button
                              type="button"
                              onClick={(e) => handleToggleInterest(e, stock.ticker, stock.interest)}
@@ -478,13 +482,20 @@ export default function Filter({
                                }`}
                              />
                            </button>
-                           <span className="truncate">{stock.name}</span>
-                           {!isPremium && (
-                             <Lock className="w-3 h-3 text-gold/60 shrink-0" />
-                           )}
+                           <div className="flex flex-col min-w-0">
+                             <div className="flex items-center gap-1.5 min-w-0">
+                               <span className="font-semibold text-gray-900 text-xs sm:text-sm truncate">{stock.name}</span>
+                               {!isPremium && (
+                                 <Lock className="w-3 h-3 text-gold/60 shrink-0" />
+                               )}
+                             </div>
+                             <span className="text-[10px] sm:text-[11px] font-mono text-gray-400 font-normal tracking-wide">
+                               {stock.ticker}
+                             </span>
+                           </div>
                          </div>
                        </td>
-                       <td className={`py-3 px-3 sm:px-6 text-right truncate ${yieldStyle.colorClass}`}>
+                       <td className={`py-2.5 px-3 sm:px-6 text-right align-middle truncate ${yieldStyle.colorClass}`}>
                          {yieldStyle.text}
                        </td>
                      </tr>

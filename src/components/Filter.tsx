@@ -144,11 +144,15 @@ export default function Filter({
     setSearchTerm('');
   };
 
-  // 최종 필터링: 중분류 및 종목명 검색어 필터 적용
+  // 최종 필터링: 중분류 및 종목명/티커 검색어 필터 적용
   const filteredEtfs = useMemo(() => {
     return etfsAfterCategory.filter((etf: ETF) => {
       const matchesReport = selectedReport === 'all' || etf.report === selectedReport;
-      const matchesSearch = !searchTerm || (etf.name || '').toLowerCase().includes(searchTerm.toLowerCase());
+      const term = searchTerm.trim().toLowerCase();
+      const matchesSearch =
+        !term ||
+        (etf.name || '').toLowerCase().includes(term) ||
+        (etf.ticker || '').toLowerCase().includes(term);
       return matchesReport && matchesSearch;
     });
   }, [etfsAfterCategory, selectedReport, searchTerm]);
@@ -297,15 +301,15 @@ export default function Filter({
           </div>
         </div>
 
-        {/* 4단계: 종목명 검색 */}
+        {/* 4단계: 종목명 또는 티커 검색 */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 border-t border-[#000000] pt-4">
-          <span className="text-xs text-[#000000] font-bold uppercase tracking-wider w-20">종목명 검색</span>
+          <span className="text-xs text-[#000000] font-bold uppercase tracking-wider shrink-0">종목명 또는 티커 검색</span>
           <div className="relative w-full sm:max-w-md">
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="검색어를 입력하세요..."
+              placeholder="종목명 또는 티커(SPY, QQQ 등)를 입력하세요..."
               className="w-full px-4 py-2 text-xs bg-white border border-black/20 rounded-none focus:outline-none focus:ring-1 focus:ring-black placeholder:text-gray-400 font-bold"
             />
             {searchTerm && (
