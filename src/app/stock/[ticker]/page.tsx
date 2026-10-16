@@ -122,7 +122,7 @@ async function fetchStockDetailFromDb(tickerInput: string) {
       .select('date, open, high, low, close, yield_1w, yield_5w, yield_20w, yield_60w, yield_120w')
       .eq('ticker', actualTicker)
       .order('date', { ascending: false })
-      .limit(120),
+      .limit(5000),
     publicSupabase
       .from('stock_signals')
       .select('analyst_name, signal, confidence, reasoning')
@@ -142,7 +142,7 @@ const getCachedStockDetail = (ticker: string) => {
   const cleanTicker = ticker.trim().toUpperCase();
   return unstable_cache(
     () => fetchStockDetailFromDb(cleanTicker),
-    ['stock-detail-page-v3', cleanTicker],
+    ['stock-detail-page-v4', cleanTicker],
     { revalidate: 3600, tags: [`stock-${cleanTicker}`] }
   )();
 };

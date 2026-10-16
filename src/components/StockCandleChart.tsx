@@ -271,6 +271,14 @@ export default function StockCandleChart({ prices, source }: StockCandleChartPro
         });
         setTimeout(() => { isAdjusting = false; }, 0);
       }
+
+      // ④ 현재 뷰포트 범위에 따라 [전체 보기] / [최근 120주] 버튼 상태 실시간 동기화
+      const finalSpan = targetTo - targetFrom;
+      const isViewingFull = finalSpan >= (sortedData.length * 0.75);
+      if (isViewingFull !== isFullViewRef.current) {
+        isFullViewRef.current = isViewingFull;
+        setIsFullView(isViewingFull);
+      }
     });
 
     // 반응형 리사이즈 감지
@@ -312,10 +320,14 @@ export default function StockCandleChart({ prices, source }: StockCandleChartPro
     };
   }, [sortedData, maData, chartMode, initialRange]);
 
-  // 차트 뷰 리셋 / 최근 120주 토글
+  // 차트 뷰 리셋 / 최근 120주 토글 (스마트 토글)
   const handleResetZoom = () => {
     if (chartInstanceRef.current && sortedData.length > 0) {
-      if (isFullView) {
+      const currentRange = chartInstanceRef.current.timeScale().getVisibleLogicalRange();
+      const currentSpan = currentRange ? (currentRange.to - currentRange.from) : (isFullView ? sortedData.length : targetBarCount);
+      const isCurrentlyFull = currentSpan >= (sortedData.length * 0.75);
+
+      if (isCurrentlyFull) {
         chartInstanceRef.current.timeScale().setVisibleLogicalRange(initialRange as any);
         setIsFullView(false);
       } else {
@@ -340,7 +352,7 @@ export default function StockCandleChart({ prices, source }: StockCandleChartPro
       {/* 1. 타이틀 영역 */}
       <div className="border-b border-black/10 pb-3 mb-3">
         <div className="flex items-center gap-2">
-          <h3 className="text-lg font-bold text-[#000000] tracking-tight">주가 추이 (120주 주봉)</h3>
+          <h3 className="text-lg font-bold text-[#000000] tracking-tight">주가 추이 (주봉)</h3>
           <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-[#D4AF37]/15 text-[#AA820A] border border-[#D4AF37]/30">
             블랙 & 골드
           </span>
