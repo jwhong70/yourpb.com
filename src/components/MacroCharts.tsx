@@ -409,28 +409,54 @@ export function MacroBarChart({
     chart.timeScale().setVisibleLogicalRange(initialRange);
     setIsFullView(false);
 
-    // 2. 우측 고정 자석 앵커링: 확대/축소 시 최근 데이터(또는 향후 3년 끝) 우측 벽에 고정
+    // 2. 좌우 경계 클램핑: 왼쪽 빈 스페이스 차단 & 우측 최근 데이터 자석 고정
     let isAdjusting = false;
     let isUserPannedPast = false;
     const anchorTo = initialRange.to;
+    const minFrom = -0.5;
 
     chart.timeScale().subscribeVisibleLogicalRangeChange((range) => {
-      if (!range || isAdjusting || isFullViewRef.current) return;
+      if (!range || isAdjusting) return;
 
-      // 사용자가 의도적으로 과거 데이터를 탐색하려고 왼쪽으로 스크롤한 경우
-      if (range.to < anchorTo - 1.5) {
-        isUserPannedPast = true;
-      } else if (range.to >= anchorTo - 0.2) {
-        isUserPannedPast = false;
+      let targetFrom: number = range.from;
+      let targetTo: number = range.to;
+      let needsUpdate = false;
+
+      // ① 왼쪽 빈 스페이스 완벽 차단: 첫 번째 데이터(인덱스 0) 왼쪽으로 넘어가지 못하도록 고정
+      if (targetFrom < minFrom) {
+        targetFrom = minFrom;
+        needsUpdate = true;
       }
 
-      // 과거 탐색 중이 아닌데 축소(Zoom Out) 등으로 인해 to가 안쪽으로 밀려 들어오면 우측 앵커에 자석 고정
-      if (!isUserPannedPast && range.to < anchorTo) {
-        const barSpan = range.to - range.from;
+      // ② 우측 자석 앵커링: 최근 뷰 상태에서 축소(Zoom Out) 시 우측 끝 고정 유지
+      if (!isFullViewRef.current) {
+        if (range.to < anchorTo - 1.5) {
+          isUserPannedPast = true;
+        } else if (range.to >= anchorTo - 0.2) {
+          isUserPannedPast = false;
+        }
+
+        if (!isUserPannedPast && targetTo < anchorTo) {
+          const span = targetTo - targetFrom;
+          targetTo = anchorTo;
+          targetFrom = Math.max(minFrom, anchorTo - span);
+          needsUpdate = true;
+        }
+      }
+
+      // ③ 전체 데이터 너비를 초과하는 무한 축소 방지
+      const maxSpan = sortedData.length;
+      if (targetTo - targetFrom > maxSpan) {
+        targetFrom = minFrom;
+        targetTo = sortedData.length - 0.5;
+        needsUpdate = true;
+      }
+
+      if (needsUpdate) {
         isAdjusting = true;
         chart.timeScale().setVisibleLogicalRange({
-          from: anchorTo - barSpan,
-          to: anchorTo,
+          from: targetFrom as any,
+          to: targetTo as any,
         });
         setTimeout(() => { isAdjusting = false; }, 0);
       }
@@ -640,26 +666,54 @@ export function MacroLineChart({
     chart.timeScale().setVisibleLogicalRange(initialRange);
     setIsFullView(false);
 
-    // 우측 고정 자석 앵커링: 축소 시 최근 데이터가 왼쪽으로 밀리지 않도록 고정
+    // 2. 좌우 경계 클램핑: 왼쪽 빈 스페이스 차단 & 우측 최근 데이터 자석 고정
     let isAdjusting = false;
     let isUserPannedPast = false;
     const anchorTo = sortedData.length - 0.5;
+    const minFrom = -0.5;
 
     chart.timeScale().subscribeVisibleLogicalRangeChange((range) => {
-      if (!range || isAdjusting || isFullViewRef.current) return;
+      if (!range || isAdjusting) return;
 
-      if (range.to < anchorTo - 1.5) {
-        isUserPannedPast = true;
-      } else if (range.to >= anchorTo - 0.2) {
-        isUserPannedPast = false;
+      let targetFrom: number = range.from;
+      let targetTo: number = range.to;
+      let needsUpdate = false;
+
+      // ① 왼쪽 빈 스페이스 완벽 차단: 첫 번째 데이터(인덱스 0) 왼쪽으로 넘어가지 못하도록 고정
+      if (targetFrom < minFrom) {
+        targetFrom = minFrom;
+        needsUpdate = true;
       }
 
-      if (!isUserPannedPast && range.to < anchorTo) {
-        const barSpan = range.to - range.from;
+      // ② 우측 자석 앵커링: 최근 뷰 상태에서 축소(Zoom Out) 시 우측 끝 고정 유지
+      if (!isFullViewRef.current) {
+        if (range.to < anchorTo - 1.5) {
+          isUserPannedPast = true;
+        } else if (range.to >= anchorTo - 0.2) {
+          isUserPannedPast = false;
+        }
+
+        if (!isUserPannedPast && targetTo < anchorTo) {
+          const span = targetTo - targetFrom;
+          targetTo = anchorTo;
+          targetFrom = Math.max(minFrom, anchorTo - span);
+          needsUpdate = true;
+        }
+      }
+
+      // ③ 전체 데이터 너비를 초과하는 무한 축소 방지
+      const maxSpan = sortedData.length;
+      if (targetTo - targetFrom > maxSpan) {
+        targetFrom = minFrom;
+        targetTo = sortedData.length - 0.5;
+        needsUpdate = true;
+      }
+
+      if (needsUpdate) {
         isAdjusting = true;
         chart.timeScale().setVisibleLogicalRange({
-          from: anchorTo - barSpan,
-          to: anchorTo,
+          from: targetFrom as any,
+          to: targetTo as any,
         });
         setTimeout(() => { isAdjusting = false; }, 0);
       }
@@ -909,26 +963,54 @@ export function MacroCandleChart({
     chart.timeScale().setVisibleLogicalRange(initialRange);
     setIsFullView(false);
 
-    // 우측 고정 자석 앵커링: 축소 시 최근 데이터가 왼쪽으로 밀리지 않도록 고정
+    // 2. 좌우 경계 클램핑: 왼쪽 빈 스페이스 차단 & 우측 최근 데이터 자석 고정
     let isAdjusting = false;
     let isUserPannedPast = false;
     const anchorTo = candleData.length - 0.5;
+    const minFrom = -0.5;
 
     chart.timeScale().subscribeVisibleLogicalRangeChange((range) => {
-      if (!range || isAdjusting || isFullViewRef.current) return;
+      if (!range || isAdjusting) return;
 
-      if (range.to < anchorTo - 1.5) {
-        isUserPannedPast = true;
-      } else if (range.to >= anchorTo - 0.2) {
-        isUserPannedPast = false;
+      let targetFrom: number = range.from;
+      let targetTo: number = range.to;
+      let needsUpdate = false;
+
+      // ① 왼쪽 빈 스페이스 완벽 차단: 첫 번째 데이터(인덱스 0) 왼쪽으로 넘어가지 못하도록 고정
+      if (targetFrom < minFrom) {
+        targetFrom = minFrom;
+        needsUpdate = true;
       }
 
-      if (!isUserPannedPast && range.to < anchorTo) {
-        const barSpan = range.to - range.from;
+      // ② 우측 자석 앵커링: 최근 뷰 상태에서 축소(Zoom Out) 시 우측 끝 고정 유지
+      if (!isFullViewRef.current) {
+        if (range.to < anchorTo - 1.5) {
+          isUserPannedPast = true;
+        } else if (range.to >= anchorTo - 0.2) {
+          isUserPannedPast = false;
+        }
+
+        if (!isUserPannedPast && targetTo < anchorTo) {
+          const span = targetTo - targetFrom;
+          targetTo = anchorTo;
+          targetFrom = Math.max(minFrom, anchorTo - span);
+          needsUpdate = true;
+        }
+      }
+
+      // ③ 전체 데이터 너비를 초과하는 무한 축소 방지
+      const maxSpan = candleData.length;
+      if (targetTo - targetFrom > maxSpan) {
+        targetFrom = minFrom;
+        targetTo = candleData.length - 0.5;
+        needsUpdate = true;
+      }
+
+      if (needsUpdate) {
         isAdjusting = true;
         chart.timeScale().setVisibleLogicalRange({
-          from: anchorTo - barSpan,
-          to: anchorTo,
+          from: targetFrom as any,
+          to: targetTo as any,
         });
         setTimeout(() => { isAdjusting = false; }, 0);
       }
