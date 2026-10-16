@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import {
   createChart,
   ColorType,
@@ -46,12 +46,10 @@ export const downloadSvgAsPng = (targetElement: HTMLElement | SVGSVGElement | nu
   if (!targetElement) return;
 
   try {
-    // 1. 컨테이너에 매핑된 IChartApi 인스턴스 탐색
     let chartInstance: IChartApi | null = (targetElement as unknown as { __chartInstance?: IChartApi }).__chartInstance || null;
     if (!chartInstance && targetElement.id) {
       chartInstance = chartInstances.get(targetElement.id) || null;
     }
-    // 자식 중 등록된 차트 인스턴스 탐색
     if (!chartInstance) {
       const childWithChart = targetElement.querySelector('[id^="chart-svg-"]') as HTMLElement | null;
       if (childWithChart) {
@@ -60,7 +58,6 @@ export const downloadSvgAsPng = (targetElement: HTMLElement | SVGSVGElement | nu
       }
     }
 
-    // TradingView 공식 takeScreenshot() 호출로 100% 온전한 차트 이미지 추출
     if (chartInstance && typeof chartInstance.takeScreenshot === 'function') {
       const screenshotCanvas = chartInstance.takeScreenshot(true, false);
       if (screenshotCanvas && screenshotCanvas.width > 0 && screenshotCanvas.height > 0) {
@@ -72,24 +69,20 @@ export const downloadSvgAsPng = (targetElement: HTMLElement | SVGSVGElement | nu
         const ctx = outCanvas.getContext('2d');
 
         if (ctx) {
-          // 프리미엄 베이지 배경
           ctx.fillStyle = '#F9F8F6';
           ctx.fillRect(0, 0, outCanvas.width, outCanvas.height);
 
-          // 상단 타이틀
           ctx.fillStyle = '#111111';
           ctx.font = 'bold 20px Pretendard, -apple-system, sans-serif';
           ctx.textBaseline = 'middle';
           ctx.fillText(fileName, padding, padding + 20);
 
-          // 상단 우측 브랜드명 (규칙 준수)
           ctx.fillStyle = '#6B7280';
           ctx.font = '500 13px Pretendard, -apple-system, sans-serif';
           ctx.textAlign = 'right';
           ctx.fillText('당신의 피비 | yourpb.vercel.app', outCanvas.width - padding, padding + 20);
           ctx.textAlign = 'left';
 
-          // 차트 본체 드로잉
           ctx.drawImage(screenshotCanvas, padding, padding + headerH);
 
           const pngDataUrl = outCanvas.toDataURL('image/png');
@@ -104,7 +97,6 @@ export const downloadSvgAsPng = (targetElement: HTMLElement | SVGSVGElement | nu
       }
     }
 
-    // 2. SVG 폴백 (기존 SVG 요소 호환)
     const svgElement = targetElement.tagName.toLowerCase() === 'svg'
       ? (targetElement as SVGSVGElement)
       : targetElement.querySelector('svg');
@@ -168,7 +160,17 @@ function formatVal(val: number | null | undefined): string {
   return Number(val).toFixed(2);
 }
 
-// 공통 차트 옵션 빌더 (모바일 가로세로 3:2 황금비율 적용)
+// 최근 N개 표시 범위 적용 헬퍼
+function applyRecentRange(chart: IChartApi, totalBars: number, targetCount: number) {
+  if (totalBars <= 0) return;
+  const count = Math.min(totalBars, targetCount);
+  chart.timeScale().setVisibleLogicalRange({
+    from: totalBars - count - 0.5,
+    to: totalBars - 0.5,
+  });
+}
+
+// 공통 차트 옵션 빌더 (fixRightEdge: 최신 데이터 우측 고정)
 function getCommonChartOptions(container: HTMLElement) {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
   return {
@@ -214,6 +216,9 @@ function getCommonChartOptions(container: HTMLElement) {
       borderColor: 'rgba(0, 0, 0, 0.15)',
       timeVisible: true,
       secondsVisible: false,
+      fixRightEdge: true, // 최신 데이터 우측 끝 고정 (확대/축소 시 최신 데이터 기준)
+      rightOffset: 0.5,
+      lockVisibleTimeRangeOnResize: true,
       tickMarkFormatter: (time: Time) => {
         const s = String(time);
         if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
@@ -249,7 +254,7 @@ interface BaseChartProps {
 }
 
 // ----------------------------------------------------
-// 1. 세로 막대 차트 (MacroBarChart - Lightweight Histogram)
+// 1. 세로 막대 차트 (MacroBarChart - 최근 N년 초기 뷰 & 전체 보기 토글)
 // ----------------------------------------------------
 export function MacroBarChart({
   data,
@@ -263,7 +268,16 @@ export function MacroBarChart({
   const seriesRef = useRef<ISeriesApi<'Histogram'> | null>(null);
 
   const [hoverData, setHoverData] = useState<{ time: string; value: number } | null>(null);
+  const [isFullView, setIsFullView] = useState(false);
   const currentYear = useMemo(() => new Date().getFullYear(), []);
+
+  // 연간 데이터인지(6개) 분기 데이터인지(20개) 판별
+  const targetBarCount = useMemo(() => {
+    if (data && data.length > 0 && data[0].year != null) {
+      return 6; // 연간 데이터: 최근 6년
+    }
+    return 20; // 분기/월간 데이터: 최근 20개 (약 5년)
+  }, [data]);
 
   // 데이터 정제 및 날짜 오름차순 정렬
   const sortedData = useMemo(() => {
@@ -280,7 +294,6 @@ export function MacroBarChart({
 
       const numVal = Number(rawVal);
       const isCurrent = d.year === currentYear;
-      // 올해 지표: 골드(#D4AF37), 일반 양수: 딥블랙(#111111), 음수: 슬레이트(#4B5563)
       const color = isCurrent ? '#D4AF37' : (numVal >= 0 ? '#111111' : '#4B5563');
 
       map.set(timeStr, {
@@ -296,7 +309,20 @@ export function MacroBarChart({
     );
   }, [data, valueKey, currentYear]);
 
-  // 차트 인스턴스 초기화 & 반응형 렌더링
+  // 뷰포트 토글 핸들러
+  const handleToggleView = useCallback(() => {
+    const chart = chartRef.current;
+    if (!chart || sortedData.length === 0) return;
+
+    if (isFullView) {
+      applyRecentRange(chart, sortedData.length, targetBarCount);
+      setIsFullView(false);
+    } else {
+      chart.timeScale().fitContent();
+      setIsFullView(true);
+    }
+  }, [isFullView, sortedData.length, targetBarCount]);
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container || sortedData.length === 0) return;
@@ -309,17 +335,15 @@ export function MacroBarChart({
     const chart = createChart(container, getCommonChartOptions(container));
     chartRef.current = chart;
 
-    // 인스턴스를 컨테이너 및 맵에 등록 (takeScreenshot용)
     (container as unknown as { __chartInstance: IChartApi }).__chartInstance = chart;
     if (chartKey) {
       chartInstances.set(chartKey, chart);
     }
 
-    // 막대 차트 timeScale 간격 최적화 (답답함 해소)
     chart.timeScale().applyOptions({
-      barSpacing: 14,
+      barSpacing: 22,
       minBarSpacing: 4,
-      rightOffset: 2,
+      rightOffset: 0.5,
     });
 
     const series = chart.addSeries(HistogramSeries, {
@@ -348,9 +372,10 @@ export function MacroBarChart({
       }
     });
 
-    chart.timeScale().fitContent();
+    // 초기 상태: 최근 5~6개 바만 큼직하게 표시 (좌측 드래그 시 과거 데이터 등장)
+    applyRecentRange(chart, sortedData.length, targetBarCount);
+    setIsFullView(false);
 
-    // 반응형 리사이즈 대응 (가로 & 세로)
     const resizeObserver = new ResizeObserver((entries) => {
       if (!entries || entries.length === 0) return;
       const { width, height } = entries[0].contentRect;
@@ -373,7 +398,7 @@ export function MacroBarChart({
         chartRef.current = null;
       }
     };
-  }, [sortedData, chartKey]);
+  }, [sortedData, chartKey, targetBarCount]);
 
   const latestPoint = sortedData[sortedData.length - 1];
   const activeData = hoverData || (latestPoint ? { time: String(latestPoint.time), value: latestPoint.value } : null);
@@ -388,23 +413,25 @@ export function MacroBarChart({
 
   return (
     <div className="flex flex-col p-2 bg-[#F9F8F6] border-b border-b-[#000000]/60 shadow-xs">
-      {/* 상단 컨트롤 바: 1행(타이틀), 2행(전체보기 버튼 + 실시간 수치 정보) */}
       <div className="flex flex-col gap-1.5 px-2.5 py-2 mb-1 bg-white/80 border border-black/5 rounded text-xs select-none">
-        {/* 1행: 차트 타이틀 */}
         <div className="flex items-center justify-between">
           <span className="font-bold text-gray-900 text-xs truncate max-w-full">{title}</span>
         </div>
 
-        {/* 2행: 전체보기 버튼 (줄바꿈 후 배치) & 실시간 수치 정보 */}
         <div className="flex items-center justify-between gap-2 pt-1 border-t border-black/5">
-          <button
-            type="button"
-            onClick={() => chartRef.current?.timeScale().fitContent()}
-            title="차트 전체 보기"
-            className="px-2 py-0.5 text-[10px] font-semibold text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition-colors cursor-pointer whitespace-nowrap shrink-0 shadow-2xs"
-          >
-            전체 보기
-          </button>
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={handleToggleView}
+              title={isFullView ? '최근 5년 보기' : '전체 시계열 보기'}
+              className="px-2 py-0.5 text-[10px] font-semibold text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition-colors cursor-pointer whitespace-nowrap shrink-0 shadow-2xs"
+            >
+              {isFullView ? '최근 보기' : '전체 보기'}
+            </button>
+            <span className="text-[9px] text-gray-400 hidden sm:inline">
+              (← 드래그 시 과거 데이터)
+            </span>
+          </div>
 
           {activeData && (
             <div className="flex items-center gap-2 text-[11px] font-mono">
@@ -417,7 +444,6 @@ export function MacroBarChart({
         </div>
       </div>
 
-      {/* TradingView Canvas 렌더링 컨테이너 (모바일 3:2 황금비율 높이) */}
       <div
         id={chartKey}
         ref={containerRef}
@@ -434,7 +460,7 @@ export function MacroBarChart({
 }
 
 // ----------------------------------------------------
-// 2. 선/영역 차트 (MacroLineChart - Lightweight Area)
+// 2. 선/영역 차트 (MacroLineChart - 최근 5년 초기 뷰 & 전체 보기 토글)
 // ----------------------------------------------------
 export function MacroLineChart({
   data,
@@ -448,6 +474,12 @@ export function MacroLineChart({
   const seriesRef = useRef<ISeriesApi<'Area'> | null>(null);
 
   const [hoverData, setHoverData] = useState<{ time: string; value: number } | null>(null);
+  const [isFullView, setIsFullView] = useState(false);
+
+  // 월간 지표는 최근 60개(5년), 분기 지표는 20개
+  const targetBarCount = useMemo(() => {
+    return 60; // 최근 5년 (월간 기준 60개)
+  }, []);
 
   const sortedData = useMemo(() => {
     if (!data || data.length === 0) return [];
@@ -473,6 +505,19 @@ export function MacroLineChart({
     );
   }, [data, valueKey]);
 
+  const handleToggleView = useCallback(() => {
+    const chart = chartRef.current;
+    if (!chart || sortedData.length === 0) return;
+
+    if (isFullView) {
+      applyRecentRange(chart, sortedData.length, targetBarCount);
+      setIsFullView(false);
+    } else {
+      chart.timeScale().fitContent();
+      setIsFullView(true);
+    }
+  }, [isFullView, sortedData.length, targetBarCount]);
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container || sortedData.length === 0) return;
@@ -490,7 +535,6 @@ export function MacroLineChart({
       chartInstances.set(chartKey, chart);
     }
 
-    // 럭셔리 블랙 & 골드 그라데이션 Area 차트
     const series = chart.addSeries(AreaSeries, {
       lineColor: '#111111',
       lineWidth: 2 as LineWidth,
@@ -523,7 +567,9 @@ export function MacroLineChart({
       }
     });
 
-    chart.timeScale().fitContent();
+    // 최근 5년 초기 포커스
+    applyRecentRange(chart, sortedData.length, targetBarCount);
+    setIsFullView(false);
 
     const resizeObserver = new ResizeObserver((entries) => {
       if (!entries || entries.length === 0) return;
@@ -547,7 +593,7 @@ export function MacroLineChart({
         chartRef.current = null;
       }
     };
-  }, [sortedData, chartKey]);
+  }, [sortedData, chartKey, targetBarCount]);
 
   const latestPoint = sortedData[sortedData.length - 1];
   const activeData = hoverData || (latestPoint ? { time: String(latestPoint.time), value: latestPoint.value } : null);
@@ -562,21 +608,25 @@ export function MacroLineChart({
 
   return (
     <div className="flex flex-col p-2 bg-[#F9F8F6] border-b border-b-[#000000]/60 shadow-xs">
-      {/* 상단 컨트롤 바: 1행(타이틀), 2행(전체보기 버튼 + 실시간 수치 정보) */}
       <div className="flex flex-col gap-1.5 px-2.5 py-2 mb-1 bg-white/80 border border-black/5 rounded text-xs select-none">
         <div className="flex items-center justify-between">
           <span className="font-bold text-gray-900 text-xs truncate max-w-full">{title}</span>
         </div>
 
         <div className="flex items-center justify-between gap-2 pt-1 border-t border-black/5">
-          <button
-            type="button"
-            onClick={() => chartRef.current?.timeScale().fitContent()}
-            title="차트 전체 보기"
-            className="px-2 py-0.5 text-[10px] font-semibold text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition-colors cursor-pointer whitespace-nowrap shrink-0 shadow-2xs"
-          >
-            전체 보기
-          </button>
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={handleToggleView}
+              title={isFullView ? '최근 5년 보기' : '전체 시계열 보기'}
+              className="px-2 py-0.5 text-[10px] font-semibold text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition-colors cursor-pointer whitespace-nowrap shrink-0 shadow-2xs"
+            >
+              {isFullView ? '최근 보기' : '전체 보기'}
+            </button>
+            <span className="text-[9px] text-gray-400 hidden sm:inline">
+              (← 드래그 시 과거 데이터)
+            </span>
+          </div>
 
           {activeData && (
             <div className="flex items-center gap-2 text-[11px] font-mono">
@@ -605,7 +655,7 @@ export function MacroLineChart({
 }
 
 // ----------------------------------------------------
-// 3. 캔들/주봉 차트 (MacroCandleChart - Lightweight Candlestick)
+// 3. 캔들/주봉 차트 (MacroCandleChart - 최근 120주 초기 뷰 & 전체 보기 토글)
 // ----------------------------------------------------
 export function MacroCandleChart({
   data,
@@ -625,6 +675,9 @@ export function MacroCandleChart({
     low: number;
     close: number;
   } | null>(null);
+
+  const [isFullView, setIsFullView] = useState(false);
+  const targetBarCount = 120; // 최근 120주
 
   const { candleData, maData } = useMemo(() => {
     if (!data || data.length === 0) return { candleData: [], maData: [] };
@@ -655,7 +708,6 @@ export function MacroCandleChart({
       String(a.time).localeCompare(String(b.time))
     );
 
-    // 20선 이동평균선 산출
     const ma: { time: Time; value: number }[] = [];
     for (let i = 0; i < sorted.length; i++) {
       if (i >= 19) {
@@ -672,6 +724,19 @@ export function MacroCandleChart({
 
     return { candleData: sorted, maData: ma };
   }, [data]);
+
+  const handleToggleView = useCallback(() => {
+    const chart = chartRef.current;
+    if (!chart || candleData.length === 0) return;
+
+    if (isFullView) {
+      applyRecentRange(chart, candleData.length, targetBarCount);
+      setIsFullView(false);
+    } else {
+      chart.timeScale().fitContent();
+      setIsFullView(true);
+    }
+  }, [isFullView, candleData.length, targetBarCount]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -690,7 +755,6 @@ export function MacroCandleChart({
       chartInstances.set(chartKey, chart);
     }
 
-    // 정통 블랙 & 골드 캔들스틱
     const candleSeries = chart.addSeries(CandlestickSeries, {
       upColor: '#D4AF37',
       downColor: '#222222',
@@ -707,7 +771,6 @@ export function MacroCandleChart({
     candleSeriesRef.current = candleSeries;
     candleSeries.setData(candleData);
 
-    // 20선 이동평균선
     if (maData.length > 0) {
       const maSeries = chart.addSeries(LineSeries, {
         color: '#4B5563',
@@ -736,7 +799,9 @@ export function MacroCandleChart({
       }
     });
 
-    chart.timeScale().fitContent();
+    // 최근 120주 초기 포커스
+    applyRecentRange(chart, candleData.length, targetBarCount);
+    setIsFullView(false);
 
     const resizeObserver = new ResizeObserver((entries) => {
       if (!entries || entries.length === 0) return;
@@ -760,7 +825,7 @@ export function MacroCandleChart({
         chartRef.current = null;
       }
     };
-  }, [candleData, maData, chartKey]);
+  }, [candleData, maData, chartKey, targetBarCount]);
 
   const latestPoint = candleData[candleData.length - 1];
   const activeData = hoverData || (latestPoint ? {
@@ -781,9 +846,7 @@ export function MacroCandleChart({
 
   return (
     <div className="flex flex-col p-2 bg-[#F9F8F6] border-b border-b-[#000000]/60 shadow-xs">
-      {/* 상단 컨트롤 바: 1행(타이틀 & 범례), 2행(전체보기 버튼 + 시/고/저/종 셋째 자리 반올림 수치 정보) */}
       <div className="flex flex-col gap-1.5 px-2.5 py-2 mb-1 bg-white/80 border border-black/5 rounded text-xs select-none">
-        {/* 1행: 차트 타이틀 및 범례 */}
         <div className="flex items-center justify-between gap-2">
           <span className="font-bold text-gray-900 text-xs truncate max-w-[200px] sm:max-w-xs">{title}</span>
           <div className="flex items-center gap-2 text-[10px] text-gray-500 font-medium shrink-0">
@@ -801,16 +864,20 @@ export function MacroCandleChart({
           </div>
         </div>
 
-        {/* 2행: 전체보기 버튼 (줄바꿈 후 배치) & 시/고/저/종 수치 표시 (소수점 셋째 자리 반올림) */}
         <div className="flex items-center justify-between gap-2 pt-1 border-t border-black/5 flex-wrap">
-          <button
-            type="button"
-            onClick={() => chartRef.current?.timeScale().fitContent()}
-            title="차트 전체 보기"
-            className="px-2 py-0.5 text-[10px] font-semibold text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition-colors cursor-pointer whitespace-nowrap shrink-0 shadow-2xs"
-          >
-            전체 보기
-          </button>
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={handleToggleView}
+              title={isFullView ? '최근 120주 보기' : '전체 시계열 보기'}
+              className="px-2 py-0.5 text-[10px] font-semibold text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition-colors cursor-pointer whitespace-nowrap shrink-0 shadow-2xs"
+            >
+              {isFullView ? '최근 보기' : '전체 보기'}
+            </button>
+            <span className="text-[9px] text-gray-400 hidden sm:inline">
+              (← 드래그 시 과거 데이터)
+            </span>
+          </div>
 
           {activeData && (
             <div className="flex items-center gap-1.5 text-[10px] font-mono flex-wrap justify-end">
@@ -824,7 +891,6 @@ export function MacroCandleChart({
         </div>
       </div>
 
-      {/* TradingView Canvas 렌더링 컨테이너 (모바일 3:2 황금비율 높이) */}
       <div
         id={chartKey}
         ref={containerRef}
