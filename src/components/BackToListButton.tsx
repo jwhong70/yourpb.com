@@ -26,40 +26,29 @@ export default function BackToListButton({
     }
 
     try {
-      const referrer = document.referrer;
-      const currentOrigin = window.location.origin;
+      const cleanFallbackPath = fallbackUrl.split('?')[0]; // e.g. '/stock', '/etf', '/monthly'
+      const savedListUrl = sessionStorage.getItem(`yourpb_last_list_url_${cleanFallbackPath}`);
+      const lastListPath = sessionStorage.getItem('yourpb_last_list_path');
 
-      // 1. 이전 출처가 동일 도메인인지 검사
-      if (referrer && referrer.startsWith(currentOrigin)) {
-        const referrerUrl = new URL(referrer);
-        const refPath = referrerUrl.pathname;
-        const currentPath = window.location.pathname;
+      // 1. 목록 화면에서 상세 화면으로 직접 들어온 직후인 경우:
+      // 브라우저 history.back()을 호출하여 스크롤 위치 및 필터/검색어 상태를 원형 그대로 복원
+      if (lastListPath === cleanFallbackPath && window.history.length > 1) {
+        sessionStorage.removeItem('yourpb_last_list_path');
+        router.back();
+        return;
+      }
 
-        // 2. 인증/로그인/결제 관련 페이지는 뒤로 가기로 복귀하지 않음 (로그인 화면으로 튕김 방지)
-        const isAuthOrPaymentPage =
-          refPath.includes('/login') ||
-          refPath.includes('/signup') ||
-          refPath.includes('/auth') ||
-          refPath.includes('/subscribe');
-
-        // 3. 동일한 상세 페이지이거나 새로고침인 경우 방지
-        const isSamePage = refPath === currentPath;
-
-        // 4. fallbackUrl 기준 목록 페이지에서 직접 진입했는지 확인
-        // 목록 페이지에서 온 경우에만 router.back()을 호출하여 사용자의 검색/필터/스크롤 상태를 보존
-        const cleanFallbackPath = fallbackUrl.split('?')[0];
-        const isFromDirectList = refPath === cleanFallbackPath;
-
-        if (!isAuthOrPaymentPage && !isSamePage && isFromDirectList && window.history.length > 1) {
-          router.back();
-          return;
-        }
+      // 2. 로그인 페이지를 거쳤거나, 새로고침 등으로 브라우저 히스토리 스택이 분기된 경우:
+      // 세션에 저장된 필터 파라미터가 포함된 전체 목록 URL로 안전하게 복귀 (로그인 창으로 튕김 방지)
+      if (savedListUrl) {
+        router.push(savedListUrl);
+        return;
       }
     } catch {
-      // referrer 파싱 등 예외 발생 시 안전하게 fallbackUrl로 이동
+      // 스토리지 접근 불가 등 예외 발생 시 안전하게 fallbackUrl로 이동
     }
 
-    // 그 외(로그인 후 복귀, 외부 링크 유입, 직접 접속 등)는 안전하게 지정된 목록 페이지로 이동
+    // 3. 그 외(외부 직접 링크 등)는 기본 목록 경로로 이동
     router.push(fallbackUrl);
   };
 

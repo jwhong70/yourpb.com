@@ -118,6 +118,14 @@ export default function Filter({
     parseAsStringLiteral(['asc', 'desc'] as const).withDefault('desc')
   );
 
+  // 사용자가 설정한 현재 주식 필터 URL을 세션 스토리지에 지속 저장
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const fullUrl = window.location.pathname + window.location.search;
+      sessionStorage.setItem('yourpb_last_list_url_/stock', fullUrl);
+    }
+  }, [interestFilter, selectedSector, selectedIndustry, selectedPeriod, searchTerm, sortColumn, sortDirection]);
+
   // 관심 종목 등록/해제 핸들러 (하이브리드: 로그인 시 DB + localStorage, 비로그인 시 localStorage)
   const handleToggleInterest = (e: React.MouseEvent, ticker: string, currentInterest: string) => {
     e.stopPropagation(); // 행 클릭 이벤트가 상세 페이지 이동을 유도하는 것 방지
@@ -311,6 +319,10 @@ export default function Filter({
 
   // 행 클릭 시 상세 페이지 이동 제어 (비회원/무료회원도 상세 페이지의 안내 뷰포트로 이동)
   const handleRowClick = (ticker: string) => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('yourpb_last_list_path', '/stock');
+      sessionStorage.setItem('yourpb_last_list_url_/stock', window.location.pathname + window.location.search);
+    }
     router.push(`/stock/${ticker}`);
   };
 

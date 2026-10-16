@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
@@ -99,6 +99,22 @@ export default function Filter({
     parseAsString.withDefault('')
   );
   
+  // 사용자가 설정한 현재 ETF 필터 URL을 세션 스토리지에 지속 저장
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const fullUrl = window.location.pathname + window.location.search;
+      sessionStorage.setItem('yourpb_last_list_url_/etf', fullUrl);
+    }
+  }, [interestFilter, leverageFilter, selectedCategory, selectedReport, searchTerm]);
+
+  // 상세 페이지 진입 시 세션 스토리지에 네비게이션 출처 기록
+  const recordListNav = () => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('yourpb_last_list_path', '/etf');
+      sessionStorage.setItem('yourpb_last_list_url_/etf', window.location.pathname + window.location.search);
+    }
+  };
+
   // 이미지 로드 에러 트래킹을 위한 상태
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
@@ -388,7 +404,11 @@ export default function Filter({
                         index % 2 === 0 ? 'max-[560px]:snap-start' : ''
                       }`}
                     >
-                      <Link href={`/etf/${etf.ticker}`} className="block relative aspect-2/3 w-full overflow-hidden bg-navy/60">
+                      <Link
+                        href={`/etf/${etf.ticker}`}
+                        onClick={recordListNav}
+                        className="block relative aspect-2/3 w-full overflow-hidden bg-navy/60"
+                      >
                         {/* poster 상단 테두리 위에 이름 표시 */}
                         <div className="absolute top-0 left-0 right-0 z-10 px-3 py-1.5 bg-linear-to-b from-black/80 to-transparent">
                           <span className="text-xs font-bold text-silver truncate block">
@@ -429,7 +449,11 @@ export default function Filter({
 
                       {/* 하단 정보 영역 */}
                       <div className="p-3 flex flex-col justify-between grow gap-2 bg-box-bg">
-                        <Link href={`/etf/${etf.ticker}`} className="block group-hover:text-sky-primary transition-colors">
+                        <Link
+                          href={`/etf/${etf.ticker}`}
+                          onClick={recordListNav}
+                          className="block group-hover:text-sky-primary transition-colors"
+                        >
                           <span className="text-sm font-bold text-[#000000] tracking-wide block mb-0.5">
                             {etf.ticker}
                           </span>

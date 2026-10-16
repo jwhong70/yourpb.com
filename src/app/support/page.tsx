@@ -7,7 +7,7 @@ import { getSessionUser } from '@/app/actions/auth';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '고객센터 - YOURPB',
+  title: '고객센터 - 당신의 피비',
   description: '당신의 피비 서비스 이용 중 불편하신 사항이나 피드백이 있으시면 언제든지 문의해 주세요.',
 };
 
