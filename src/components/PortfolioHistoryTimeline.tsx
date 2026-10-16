@@ -33,7 +33,7 @@ export default function PortfolioHistoryTimeline() {
       </div>
 
       <div className="space-y-4">
-        {PB_PORTFOLIO_HISTORY.map((item: RebalancingHistoryItem, idx: number) => {
+        {PB_PORTFOLIO_HISTORY.map((item: RebalancingHistoryItem) => {
           const isExpanded = expandedId === item.id;
           const sellCount = item.trades.filter(t => t.action.includes('매도') || t.action.includes('축소')).length;
           const buyCount = item.trades.filter(t => t.action.includes('매수') || t.action.includes('편입') || t.action.includes('확대')).length;

@@ -834,7 +834,9 @@ export function MacroCandleChart({
 
   const [isFullView, setIsFullView] = useState(false);
   const isFullViewRef = useRef(false);
-  isFullViewRef.current = isFullView;
+  useEffect(() => {
+    isFullViewRef.current = isFullView;
+  }, [isFullView]);
 
   const targetBarCount = 120; // 최근 120주
 

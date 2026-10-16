@@ -37,7 +37,9 @@ export default function StockCandleChart({ prices, source }: StockCandleChartPro
   const [chartMode, setChartMode] = useState<'candle' | 'line'>('candle');
   const [isFullView, setIsFullView] = useState(false);
   const isFullViewRef = useRef(false);
-  isFullViewRef.current = isFullView;
+  useEffect(() => {
+    isFullViewRef.current = isFullView;
+  }, [isFullView]);
 
   // 호버 툴팁 상태
   const [hoverData, setHoverData] = useState<{
