@@ -18,6 +18,7 @@ import { getSessionUser } from '@/app/actions/auth';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PremiumPaywall from '@/components/PremiumPaywall';
+import BackToListButton from '@/components/BackToListButton';
 
 // 차트 컴포넌트 Dynamic Import (초기 렌더링 최적화)
 const StockCandleChart = dynamic(() => import('@/components/StockCandleChart'), {
@@ -242,13 +243,7 @@ export default async function StockDetailPage({ params }: PageProps) {
           {/* 상단 네비게이션 및 타이틀 */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <Link
-                href="/stock"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#000000] hover:bg-gray-900 active:scale-95 text-white font-bold rounded-none shadow-md transition-all cursor-pointer group text-base"
-              >
-                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                <span>목록으로 복귀</span>
-              </Link>
+              <BackToListButton fallbackUrl="/stock" />
 
               {isPremium && (
                 <span className="flex items-center gap-1.5 text-xs font-bold text-black bg-yellow-accent border border-yellow-accent/40 px-3 py-1 rounded-full shadow-lg select-none">
