@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { cancelSubscription } from '@/app/actions/subscription';
 import { deleteAccount } from '@/app/actions/auth';
+import { toast } from 'sonner';
 
 interface User {
   id: string;
@@ -47,7 +48,9 @@ export default function MyPageClient({ initialUser }: MyPageClientProps) {
     try {
       const result = await cancelSubscription('마이페이지에서 사용자 직접 구독 해지');
       if (result.success) {
-        alert('프리미엄 멤버십이 성공적으로 해지되었습니다. 무료 회원으로 전환되었습니다.');
+        toast.success('프리미엄 멤버십이 성공적으로 해지되었습니다.', {
+          description: '무료 회원으로 전환되었습니다.',
+        });
         setUser(prev => ({
           ...prev,
           membership_status: 'free',
@@ -55,11 +58,11 @@ export default function MyPageClient({ initialUser }: MyPageClientProps) {
         }));
         router.refresh();
       } else {
-        alert(`해지 처리 실패: ${result.error}`);
+        toast.error(`해지 처리 실패: ${result.error}`);
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      alert(`오류 발생: ${message}`);
+      toast.error(`오류 발생: ${message}`);
     } finally {
       setIsCanceling(false);
     }
@@ -71,15 +74,19 @@ export default function MyPageClient({ initialUser }: MyPageClientProps) {
     try {
       const result = await deleteAccount();
       if (result.success) {
-        alert('회원 탈퇴가 완료되었습니다. 그동안 당신의 피비를 이용해 주셔서 감사합니다.');
-        router.replace('/');
+        toast.success('회원 탈퇴가 완료되었습니다.', {
+          description: '그동안 당신의 피비를 이용해 주셔서 감사합니다.',
+        });
+        setTimeout(() => {
+          router.replace('/');
+        }, 1200);
       } else {
-        alert(`회원 탈퇴 실패: ${result.error}`);
+        toast.error(`회원 탈퇴 실패: ${result.error}`);
         setIsDeleting(false);
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      alert(`오류 발생: ${message}`);
+      toast.error(`오류 발생: ${message}`);
       setIsDeleting(false);
     }
   };

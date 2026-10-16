@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Download, Lock, Sparkles, X, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'sonner';
 
 interface EtfPdfDownloadButtonProps {
   ticker: string;
@@ -39,6 +40,11 @@ export default function EtfPdfDownloadButton({
             href={reportUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => {
+              toast.success(`${ticker} 분석 보고서`, {
+                description: '새 탭에서 PDF 보고서가 열립니다.',
+              });
+            }}
             className="w-full max-w-md flex items-center justify-center gap-2.5 px-6 py-4.5 bg-[#000000] hover:bg-gray-900 active:scale-95 text-white font-black rounded-none shadow-lg transition-all cursor-pointer text-base"
           >
             <Download className="w-5 h-5" />

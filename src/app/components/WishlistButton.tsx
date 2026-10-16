@@ -5,6 +5,7 @@ import { Heart } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toggleWishlist } from '@/app/actions/wishlist';
 import { motion } from 'framer-motion';
+import { toast } from 'sonner';
 
 interface WishlistButtonProps {
   ticker: string;
@@ -32,13 +33,19 @@ export default function WishlistButton({
     e.stopPropagation();
 
     if (!isLoggedIn) {
-      alert('/login으로 이동하세요');
-      router.push('/login');
+      toast.error('로그인이 필요한 서비스입니다', {
+        description: '관심 종목을 저장하려면 로그인해 주세요.',
+        action: {
+          label: '로그인',
+          onClick: () => router.push('/login'),
+        },
+      });
       return;
     }
 
     // 1. UI 즉시 반응 (낙관적 업데이트)
-    setIsWished((prev) => !prev);
+    const willBeWished = !isWished;
+    setIsWished(willBeWished);
 
     // 2. 서버 액션 트리거
     startTransition(async () => {
@@ -46,12 +53,19 @@ export default function WishlistButton({
         const result = await toggleWishlist(ticker);
         if (result && result.error) {
           // 서버 에러 응답 시 원래 상태로 롤백
-          setIsWished((prev) => !prev);
-          alert(result.error);
+          setIsWished(!willBeWished);
+          toast.error(result.error);
+        } else {
+          if (willBeWished) {
+            toast.success(`${ticker} 관심 종목에 추가되었습니다.`);
+          } else {
+            toast.info(`${ticker} 관심 종목에서 제외되었습니다.`);
+          }
         }
       } catch (error) {
         // 네트워크 에러 시 원래 상태로 롤백
-        setIsWished((prev) => !prev);
+        setIsWished(!willBeWished);
+        toast.error('관심 종목 변경 중 오류가 발생했습니다.');
         console.error('Failed to toggle wishlist:', error);
       }
     });

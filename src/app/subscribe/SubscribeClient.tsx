@@ -6,6 +6,7 @@ import { Check, Award, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { loadTossPayments } from '@tosspayments/tosspayments-sdk';
 import { cancelSubscription } from '@/app/actions/subscription';
+import { toast } from 'sonner';
 
 interface User {
   id: string;
@@ -98,18 +99,24 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
   // 3. 결제 진행 핸들러
   const handlePaymentSubmit = async () => {
     if (!user) {
-      alert('구독 플랜을 시작하려면 로그인이 필요합니다. 로그인 페이지로 이동합니다.');
-      router.push('/login');
+      toast.error('로그인이 필요한 서비스입니다', {
+        description: '구독 플랜을 시작하려면 로그인해 주세요. 로그인 페이지로 이동합니다.',
+      });
+      setTimeout(() => {
+        router.push('/login');
+      }, 1200);
       return;
     }
 
     if (user.membership_status === 'premium') {
-      alert('이미 프리미엄 멤버십 구독을 이용 중이십니다.');
+      toast.info('이미 프리미엄 멤버십 구독을 이용 중이십니다.');
       return;
     }
 
     if (!widgets) {
-      alert('결제창 모듈 로딩 중입니다. 잠시만 대기 후 다시 시도해 주세요.');
+      toast.warning('결제창 모듈을 로딩 중입니다', {
+        description: '잠시만 대기 후 다시 시도해 주세요.',
+      });
       return;
     }
 
@@ -131,7 +138,9 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
     } catch (err: unknown) {
       console.error('Payment request failed:', err);
       const message = err instanceof Error ? err.message : String(err);
-      alert(`결제 처리 중 에러가 발생했습니다: ${message}`);
+      toast.error('결제 처리 중 오류가 발생했습니다', {
+        description: message,
+      });
       setIsPending(null);
     }
   };
@@ -148,15 +157,17 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
     try {
       const result = await cancelSubscription('사용자 직접 구독 해지');
       if (result.success) {
-        alert('구독이 성공적으로 해지되었습니다. 무료 회원으로 전환되었습니다.');
+        toast.success('구독이 성공적으로 해지되었습니다.', {
+          description: '무료 회원으로 전환되었습니다.',
+        });
         setUser(prev => prev ? { ...prev, membership_status: 'free', subscription_end_date: null } : null);
         router.refresh();
       } else {
-        alert(`해지 처리 중 오류가 발생했습니다: ${result.error}`);
+        toast.error(`해지 처리 중 오류가 발생했습니다: ${result.error}`);
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      alert(`해지 처리 실패: ${message}`);
+      toast.error(`해지 처리 실패: ${message}`);
     } finally {
       setIsCanceling(false);
     }

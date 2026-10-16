@@ -15,6 +15,7 @@ import {
   type ISeriesApi,
   type Time,
 } from 'lightweight-charts';
+import { toast } from 'sonner';
 
 // 공통 타입 정의
 export interface ChartDataPoint {
@@ -92,6 +93,9 @@ export const downloadSvgAsPng = (targetElement: HTMLElement | SVGSVGElement | nu
           document.body.appendChild(downloadLink);
           downloadLink.click();
           document.body.removeChild(downloadLink);
+          toast.success('차트 이미지가 저장되었습니다', {
+            description: `${fileName}.png`,
+          });
           return;
         }
       }
@@ -130,6 +134,9 @@ export const downloadSvgAsPng = (targetElement: HTMLElement | SVGSVGElement | nu
           document.body.appendChild(downloadLink);
           downloadLink.click();
           document.body.removeChild(downloadLink);
+          toast.success('차트 이미지가 저장되었습니다', {
+            description: `${fileName}.png`,
+          });
         }
         URL.revokeObjectURL(blobURL);
       };
@@ -137,6 +144,7 @@ export const downloadSvgAsPng = (targetElement: HTMLElement | SVGSVGElement | nu
     }
   } catch (error) {
     console.error('Error exporting chart as PNG:', error);
+    toast.error('차트 이미지 저장 중 오류가 발생했습니다');
   }
 };
 
