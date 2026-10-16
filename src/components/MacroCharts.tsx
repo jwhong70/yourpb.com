@@ -160,16 +160,6 @@ function formatVal(val: number | null | undefined): string {
   return Number(val).toFixed(2);
 }
 
-// 최근 N개 표시 범위 적용 헬퍼
-function applyRecentRange(chart: IChartApi, totalBars: number, targetCount: number) {
-  if (totalBars <= 0) return;
-  const count = Math.min(totalBars, targetCount);
-  chart.timeScale().setVisibleLogicalRange({
-    from: totalBars - count - 0.5,
-    to: totalBars - 0.5,
-  });
-}
-
 // 공통 차트 옵션 빌더 (fixRightEdge: 최신 데이터 우측 고정)
 function getCommonChartOptions(container: HTMLElement) {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
@@ -216,7 +206,7 @@ function getCommonChartOptions(container: HTMLElement) {
       borderColor: 'rgba(0, 0, 0, 0.15)',
       timeVisible: true,
       secondsVisible: false,
-      fixRightEdge: true, // 최신 데이터 우측 끝 고정 (확대/축소 시 최신 데이터 기준)
+      fixRightEdge: true, // 최신 데이터 우측 끝 고정
       rightOffset: 0.5,
       lockVisibleTimeRangeOnResize: true,
       tickMarkFormatter: (time: Time) => {
@@ -254,7 +244,7 @@ interface BaseChartProps {
 }
 
 // ----------------------------------------------------
-// 1. 세로 막대 차트 (MacroBarChart - 최근 N년 초기 뷰 & 전체 보기 토글)
+// 1. 세로 막대 차트 (현재 기준 과거 5년 ~ 향후 3년 초기 포커스 & 우측 고정 줌)
 // ----------------------------------------------------
 export function MacroBarChart({
   data,
@@ -269,15 +259,10 @@ export function MacroBarChart({
 
   const [hoverData, setHoverData] = useState<{ time: string; value: number } | null>(null);
   const [isFullView, setIsFullView] = useState(false);
-  const currentYear = useMemo(() => new Date().getFullYear(), []);
+  const isFullViewRef = useRef(false);
+  isFullViewRef.current = isFullView;
 
-  // 연간 데이터인지(6개) 분기 데이터인지(20개) 판별
-  const targetBarCount = useMemo(() => {
-    if (data && data.length > 0 && data[0].year != null) {
-      return 6; // 연간 데이터: 최근 6년
-    }
-    return 20; // 분기/월간 데이터: 최근 20개 (약 5년)
-  }, [data]);
+  const currentYear = useMemo(() => new Date().getFullYear(), []);
 
   // 데이터 정제 및 날짜 오름차순 정렬
   const sortedData = useMemo(() => {
@@ -309,19 +294,67 @@ export function MacroBarChart({
     );
   }, [data, valueKey, currentYear]);
 
+  // 연간 데이터 판별
+  const isYearlyData = useMemo(() => {
+    return sortedData.some(d => d.rawYear != null);
+  }, [sortedData]);
+
+  // 현재 기준 과거 5년 ~ 향후 3년 초기 뷰포트 계산
+  const initialRange = useMemo(() => {
+    if (sortedData.length === 0) return { from: 0, to: 0 };
+
+    if (isYearlyData) {
+      const curYear = new Date().getFullYear();
+      const startTarget = curYear - 5; // 과거 5년
+      const endTarget = curYear + 3;   // 향후 3년
+
+      let fromIdx = 0;
+      let toIdx = sortedData.length - 1;
+
+      // startTarget 이상인 첫 번째 인덱스
+      const foundStart = sortedData.findIndex(d => {
+        const y = d.rawYear || parseInt(String(d.time).slice(0, 4), 10);
+        return !isNaN(y) && y >= startTarget;
+      });
+      if (foundStart !== -1) fromIdx = foundStart;
+
+      // endTarget 이하인 마지막 인덱스
+      for (let i = sortedData.length - 1; i >= 0; i--) {
+        const y = sortedData[i].rawYear || parseInt(String(sortedData[i].time).slice(0, 4), 10);
+        if (!isNaN(y) && y <= endTarget) {
+          toIdx = i;
+          break;
+        }
+      }
+
+      return {
+        from: fromIdx - 0.5,
+        to: toIdx + 0.5,
+      };
+    }
+
+    // 분기/월간 데이터: 최근 20개 (약 5년)
+    const targetCount = 20;
+    const count = Math.min(sortedData.length, targetCount);
+    return {
+      from: sortedData.length - count - 0.5,
+      to: sortedData.length - 0.5,
+    };
+  }, [sortedData, isYearlyData]);
+
   // 뷰포트 토글 핸들러
   const handleToggleView = useCallback(() => {
     const chart = chartRef.current;
     if (!chart || sortedData.length === 0) return;
 
     if (isFullView) {
-      applyRecentRange(chart, sortedData.length, targetBarCount);
+      chart.timeScale().setVisibleLogicalRange(initialRange);
       setIsFullView(false);
     } else {
       chart.timeScale().fitContent();
       setIsFullView(true);
     }
-  }, [isFullView, sortedData.length, targetBarCount]);
+  }, [isFullView, sortedData.length, initialRange]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -372,9 +405,36 @@ export function MacroBarChart({
       }
     });
 
-    // 초기 상태: 최근 5~6개 바만 큼직하게 표시 (좌측 드래그 시 과거 데이터 등장)
-    applyRecentRange(chart, sortedData.length, targetBarCount);
+    // 1. 초기 뷰포트: 현재 기준 과거 5년 ~ 향후 3년 정확히 설정
+    chart.timeScale().setVisibleLogicalRange(initialRange);
     setIsFullView(false);
+
+    // 2. 우측 고정 자석 앵커링: 확대/축소 시 최근 데이터(또는 향후 3년 끝) 우측 벽에 고정
+    let isAdjusting = false;
+    let isUserPannedPast = false;
+    const anchorTo = initialRange.to;
+
+    chart.timeScale().subscribeVisibleLogicalRangeChange((range) => {
+      if (!range || isAdjusting || isFullViewRef.current) return;
+
+      // 사용자가 의도적으로 과거 데이터를 탐색하려고 왼쪽으로 스크롤한 경우
+      if (range.to < anchorTo - 1.5) {
+        isUserPannedPast = true;
+      } else if (range.to >= anchorTo - 0.2) {
+        isUserPannedPast = false;
+      }
+
+      // 과거 탐색 중이 아닌데 축소(Zoom Out) 등으로 인해 to가 안쪽으로 밀려 들어오면 우측 앵커에 자석 고정
+      if (!isUserPannedPast && range.to < anchorTo) {
+        const barSpan = range.to - range.from;
+        isAdjusting = true;
+        chart.timeScale().setVisibleLogicalRange({
+          from: anchorTo - barSpan,
+          to: anchorTo,
+        });
+        setTimeout(() => { isAdjusting = false; }, 0);
+      }
+    });
 
     const resizeObserver = new ResizeObserver((entries) => {
       if (!entries || entries.length === 0) return;
@@ -398,7 +458,7 @@ export function MacroBarChart({
         chartRef.current = null;
       }
     };
-  }, [sortedData, chartKey, targetBarCount]);
+  }, [sortedData, chartKey, initialRange]);
 
   const latestPoint = sortedData[sortedData.length - 1];
   const activeData = hoverData || (latestPoint ? { time: String(latestPoint.time), value: latestPoint.value } : null);
@@ -423,13 +483,13 @@ export function MacroBarChart({
             <button
               type="button"
               onClick={handleToggleView}
-              title={isFullView ? '최근 5년 보기' : '전체 시계열 보기'}
+              title={isFullView ? '최근 범위 보기' : '전체 시계열 보기'}
               className="px-2 py-0.5 text-[10px] font-semibold text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition-colors cursor-pointer whitespace-nowrap shrink-0 shadow-2xs"
             >
               {isFullView ? '최근 보기' : '전체 보기'}
             </button>
             <span className="text-[9px] text-gray-400 hidden sm:inline">
-              (← 드래그 시 과거 데이터)
+              (과거 5년~향후 3년 / ← 드래그 시 과거)
             </span>
           </div>
 
@@ -460,7 +520,7 @@ export function MacroBarChart({
 }
 
 // ----------------------------------------------------
-// 2. 선/영역 차트 (MacroLineChart - 최근 5년 초기 뷰 & 전체 보기 토글)
+// 2. 선/영역 차트 (최근 5년 초기 뷰 & 우측 고정 줌 & 전체 보기 토글)
 // ----------------------------------------------------
 export function MacroLineChart({
   data,
@@ -475,11 +535,11 @@ export function MacroLineChart({
 
   const [hoverData, setHoverData] = useState<{ time: string; value: number } | null>(null);
   const [isFullView, setIsFullView] = useState(false);
+  const isFullViewRef = useRef(false);
+  isFullViewRef.current = isFullView;
 
-  // 월간 지표는 최근 60개(5년), 분기 지표는 20개
-  const targetBarCount = useMemo(() => {
-    return 60; // 최근 5년 (월간 기준 60개)
-  }, []);
+  // 월간 지표는 최근 60개(5년)
+  const targetBarCount = 60;
 
   const sortedData = useMemo(() => {
     if (!data || data.length === 0) return [];
@@ -505,18 +565,27 @@ export function MacroLineChart({
     );
   }, [data, valueKey]);
 
+  const initialRange = useMemo(() => {
+    if (sortedData.length === 0) return { from: 0, to: 0 };
+    const count = Math.min(sortedData.length, targetBarCount);
+    return {
+      from: sortedData.length - count - 0.5,
+      to: sortedData.length - 0.5,
+    };
+  }, [sortedData.length, targetBarCount]);
+
   const handleToggleView = useCallback(() => {
     const chart = chartRef.current;
     if (!chart || sortedData.length === 0) return;
 
     if (isFullView) {
-      applyRecentRange(chart, sortedData.length, targetBarCount);
+      chart.timeScale().setVisibleLogicalRange(initialRange);
       setIsFullView(false);
     } else {
       chart.timeScale().fitContent();
       setIsFullView(true);
     }
-  }, [isFullView, sortedData.length, targetBarCount]);
+  }, [isFullView, sortedData.length, initialRange]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -568,8 +637,33 @@ export function MacroLineChart({
     });
 
     // 최근 5년 초기 포커스
-    applyRecentRange(chart, sortedData.length, targetBarCount);
+    chart.timeScale().setVisibleLogicalRange(initialRange);
     setIsFullView(false);
+
+    // 우측 고정 자석 앵커링: 축소 시 최근 데이터가 왼쪽으로 밀리지 않도록 고정
+    let isAdjusting = false;
+    let isUserPannedPast = false;
+    const anchorTo = sortedData.length - 0.5;
+
+    chart.timeScale().subscribeVisibleLogicalRangeChange((range) => {
+      if (!range || isAdjusting || isFullViewRef.current) return;
+
+      if (range.to < anchorTo - 1.5) {
+        isUserPannedPast = true;
+      } else if (range.to >= anchorTo - 0.2) {
+        isUserPannedPast = false;
+      }
+
+      if (!isUserPannedPast && range.to < anchorTo) {
+        const barSpan = range.to - range.from;
+        isAdjusting = true;
+        chart.timeScale().setVisibleLogicalRange({
+          from: anchorTo - barSpan,
+          to: anchorTo,
+        });
+        setTimeout(() => { isAdjusting = false; }, 0);
+      }
+    });
 
     const resizeObserver = new ResizeObserver((entries) => {
       if (!entries || entries.length === 0) return;
@@ -593,7 +687,7 @@ export function MacroLineChart({
         chartRef.current = null;
       }
     };
-  }, [sortedData, chartKey, targetBarCount]);
+  }, [sortedData, chartKey, initialRange]);
 
   const latestPoint = sortedData[sortedData.length - 1];
   const activeData = hoverData || (latestPoint ? { time: String(latestPoint.time), value: latestPoint.value } : null);
@@ -624,7 +718,7 @@ export function MacroLineChart({
               {isFullView ? '최근 보기' : '전체 보기'}
             </button>
             <span className="text-[9px] text-gray-400 hidden sm:inline">
-              (← 드래그 시 과거 데이터)
+              (최근 5년 / ← 드래그 시 과거)
             </span>
           </div>
 
@@ -655,7 +749,7 @@ export function MacroLineChart({
 }
 
 // ----------------------------------------------------
-// 3. 캔들/주봉 차트 (MacroCandleChart - 최근 120주 초기 뷰 & 전체 보기 토글)
+// 3. 캔들/주봉 차트 (최근 120주 초기 뷰 & 우측 고정 줌 & 전체 보기 토글)
 // ----------------------------------------------------
 export function MacroCandleChart({
   data,
@@ -677,6 +771,9 @@ export function MacroCandleChart({
   } | null>(null);
 
   const [isFullView, setIsFullView] = useState(false);
+  const isFullViewRef = useRef(false);
+  isFullViewRef.current = isFullView;
+
   const targetBarCount = 120; // 최근 120주
 
   const { candleData, maData } = useMemo(() => {
@@ -725,18 +822,27 @@ export function MacroCandleChart({
     return { candleData: sorted, maData: ma };
   }, [data]);
 
+  const initialRange = useMemo(() => {
+    if (candleData.length === 0) return { from: 0, to: 0 };
+    const count = Math.min(candleData.length, targetBarCount);
+    return {
+      from: candleData.length - count - 0.5,
+      to: candleData.length - 0.5,
+    };
+  }, [candleData.length, targetBarCount]);
+
   const handleToggleView = useCallback(() => {
     const chart = chartRef.current;
     if (!chart || candleData.length === 0) return;
 
     if (isFullView) {
-      applyRecentRange(chart, candleData.length, targetBarCount);
+      chart.timeScale().setVisibleLogicalRange(initialRange);
       setIsFullView(false);
     } else {
       chart.timeScale().fitContent();
       setIsFullView(true);
     }
-  }, [isFullView, candleData.length, targetBarCount]);
+  }, [isFullView, candleData.length, initialRange]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -800,8 +906,33 @@ export function MacroCandleChart({
     });
 
     // 최근 120주 초기 포커스
-    applyRecentRange(chart, candleData.length, targetBarCount);
+    chart.timeScale().setVisibleLogicalRange(initialRange);
     setIsFullView(false);
+
+    // 우측 고정 자석 앵커링: 축소 시 최근 데이터가 왼쪽으로 밀리지 않도록 고정
+    let isAdjusting = false;
+    let isUserPannedPast = false;
+    const anchorTo = candleData.length - 0.5;
+
+    chart.timeScale().subscribeVisibleLogicalRangeChange((range) => {
+      if (!range || isAdjusting || isFullViewRef.current) return;
+
+      if (range.to < anchorTo - 1.5) {
+        isUserPannedPast = true;
+      } else if (range.to >= anchorTo - 0.2) {
+        isUserPannedPast = false;
+      }
+
+      if (!isUserPannedPast && range.to < anchorTo) {
+        const barSpan = range.to - range.from;
+        isAdjusting = true;
+        chart.timeScale().setVisibleLogicalRange({
+          from: anchorTo - barSpan,
+          to: anchorTo,
+        });
+        setTimeout(() => { isAdjusting = false; }, 0);
+      }
+    });
 
     const resizeObserver = new ResizeObserver((entries) => {
       if (!entries || entries.length === 0) return;
@@ -825,7 +956,7 @@ export function MacroCandleChart({
         chartRef.current = null;
       }
     };
-  }, [candleData, maData, chartKey, targetBarCount]);
+  }, [candleData, maData, chartKey, initialRange]);
 
   const latestPoint = candleData[candleData.length - 1];
   const activeData = hoverData || (latestPoint ? {
@@ -875,7 +1006,7 @@ export function MacroCandleChart({
               {isFullView ? '최근 보기' : '전체 보기'}
             </button>
             <span className="text-[9px] text-gray-400 hidden sm:inline">
-              (← 드래그 시 과거 데이터)
+              (최근 120주 / ← 드래그 시 과거)
             </span>
           </div>
 
