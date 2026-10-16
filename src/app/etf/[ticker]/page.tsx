@@ -191,8 +191,8 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
       <Header initialUser={user} />
-      <main className="grow pt-16 sm:pt-20">
-        <div className="pt-4 sm:pt-8 pb-16 px-3 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-5 sm:space-y-8 mt-2 sm:mt-10 landscape:mt-1 landscape:pt-2 landscape:space-y-4">
+      <main className="grow pt-20">
+        <div className="pt-8 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8 mt-10">
           {/* 상단 네비게이션 및 타이틀 */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">

@@ -461,13 +461,13 @@ export default function StockCandleChart({ prices, source }: StockCandleChartPro
         </div>
       )}
 
-      {/* Lightweight Charts 캔버스 뷰포트 (가로 회전 시 높이 자동 최적화) */}
+      {/* Lightweight Charts 캔버스 뷰포트 */}
       {sortedData.length === 0 ? (
-        <div className="flex items-center justify-center h-80 landscape:h-64 sm:h-96 text-[#000000]/50 text-sm">
+        <div className="flex items-center justify-center h-80 text-[#000000]/50 text-sm">
           주가 데이터가 존재하지 않습니다.
         </div>
       ) : (
-        <div className="relative w-full h-80 landscape:h-64 sm:h-96">
+        <div className="relative w-full h-80">
           <div ref={chartContainerRef} className="w-full h-full" />
         </div>
       )}
