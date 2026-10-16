@@ -4,6 +4,7 @@ import React, { useState, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { useQueryState, parseAsString, parseAsStringLiteral } from 'nuqs';
 import WishlistButton from '@/app/components/WishlistButton';
 
 interface ETF {
@@ -60,9 +61,15 @@ export default function Filter({
   isLoggedIn = false, 
   children 
 }: FilterProps) {
-  // 필터 상태 변수
-  const [interestFilter, setInterestFilter] = useState<'y' | 'all'>('all');
-  const [leverageFilter, setLeverageFilter] = useState<'exclude' | 'include'>('exclude');
+  // 필터 상태 변수 (nuqs URL 쿼리 연동 - 뒤로가기 및 새로고침 시에도 상태 유지)
+  const [interestFilter, setInterestFilter] = useQueryState(
+    'interest',
+    parseAsStringLiteral(['y', 'all'] as const).withDefault('all')
+  );
+  const [leverageFilter, setLeverageFilter] = useQueryState(
+    'leverage',
+    parseAsStringLiteral(['exclude', 'include'] as const).withDefault('exclude')
+  );
   
   // 가로 스크롤 상태 트래킹을 위한 state와 ref
   const [activeIndex, setActiveIndex] = useState(0);
@@ -78,9 +85,18 @@ export default function Filter({
       setActiveIndex(index);
     }
   };
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedReport, setSelectedReport] = useState<string>('all');
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useQueryState(
+    'category',
+    parseAsString.withDefault('all')
+  );
+  const [selectedReport, setSelectedReport] = useQueryState(
+    'report',
+    parseAsString.withDefault('all')
+  );
+  const [searchTerm, setSearchTerm] = useQueryState(
+    'q',
+    parseAsString.withDefault('')
+  );
   
   // 이미지 로드 에러 트래킹을 위한 상태
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});

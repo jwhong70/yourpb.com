@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { Heart } from 'lucide-react';
+import { useQueryState, parseAsString, parseAsStringLiteral } from 'nuqs';
 import Filter from './Filter';
 import { toggleWishlist } from '@/app/actions/wishlist';
 
@@ -85,12 +86,21 @@ export default function EtfSearchClient({
     });
   }, [isLoggedIn, initialWishlistTickers]);
   
-  // 기간 선택 상태 변수 추가
-  const [selectedPeriod, setSelectedPeriod] = useState<'1w' | '5w' | '20w' | '60w' | '120w'>('1w');
+  // 기간 선택 상태 변수 (nuqs 연동)
+  const [selectedPeriod, setSelectedPeriod] = useQueryState(
+    'period',
+    parseAsStringLiteral(['1w', '5w', '20w', '60w', '120w'] as const).withDefault('1w')
+  );
 
-  // 정렬 상태 변수 (초기 정렬: yield_1w, 내림차순 desc)
-  const [sortColumn, setSortColumn] = useState<keyof EtfWithPrice>('yield_1w');
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+  // 정렬 상태 변수 (nuqs 연동)
+  const [sortColumn, setSortColumn] = useQueryState(
+    'sort',
+    parseAsString.withDefault('yield_1w')
+  );
+  const [sortDirection, setSortDirection] = useQueryState(
+    'dir',
+    parseAsStringLiteral(['asc', 'desc'] as const).withDefault('desc')
+  );
 
   // 관심/찜 종목 등록/해제 핸들러 (하이브리드: 로그인 시 DB + localStorage, 비로그인 시 localStorage)
   const handleToggleInterest = (e: React.MouseEvent, ticker: string, currentInterest?: string) => {
@@ -173,8 +183,8 @@ export default function EtfSearchClient({
   const getSortedEtfs = (filteredList: any[]) => {
     const listCopy = [...filteredList] as EtfWithPrice[];
     listCopy.sort((a, b) => {
-      const valA = a[sortColumn];
-      const valB = b[sortColumn];
+      const valA = a[sortColumn as keyof EtfWithPrice];
+      const valB = b[sortColumn as keyof EtfWithPrice];
 
       // null 또는 undefined 값은 하단 정렬 처리
       if (valA === null || valA === undefined) return 1;

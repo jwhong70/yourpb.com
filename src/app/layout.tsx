@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import NextTopLoader from "nextjs-toploader";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
 
 const pretendard = localFont({
@@ -66,7 +67,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           speed={200}
           shadow="0 0 10px #D4AF37,0 0 5px #D4AF37"
         />
-        {children}
+        <NuqsAdapter>
+          {children}
+        </NuqsAdapter>
       </body>
     </html>
   );

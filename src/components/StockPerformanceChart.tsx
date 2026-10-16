@@ -33,11 +33,11 @@ export default function StockPerformanceChart({
   // 1. 유효한 데이터만 맵핑
   const chartData = useMemo(() => {
     return [
-      { name: '1W', value: yield_1w !== null ? Number(yield_1w) : null },
-      { name: '5W', value: yield_5w !== null ? Number(yield_5w) : null },
-      { name: '20W', value: yield_20w !== null ? Number(yield_20w) : null },
-      { name: '60W', value: yield_60w !== null ? Number(yield_60w) : null },
-      { name: '120W', value: yield_120w !== null ? Number(yield_120w) : null },
+      { name: '1주', value: yield_1w !== null ? Number(yield_1w) : null },
+      { name: '5주', value: yield_5w !== null ? Number(yield_5w) : null },
+      { name: '20주', value: yield_20w !== null ? Number(yield_20w) : null },
+      { name: '60주', value: yield_60w !== null ? Number(yield_60w) : null },
+      { name: '120주', value: yield_120w !== null ? Number(yield_120w) : null },
     ].filter((item): item is { name: string; value: number } => item.value !== null);
   }, [yield_1w, yield_5w, yield_20w, yield_60w, yield_120w]);
 
@@ -68,10 +68,10 @@ export default function StockPerformanceChart({
   };
 
   return (
-    <div className="flex flex-col h-full p-6 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl">
+    <div className="lg:h-115 flex flex-col p-6 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-xl">
       <div className="flex items-center justify-between border-b border-black/10 pb-4 mb-6">
         <div>
-          <h4 className="text-lg font-bold text-[#000000] tracking-tight">기간별 수익률 성과</h4>
+          <h4 className="text-lg font-bold text-[#000000] tracking-tight">수익률 성과 지표</h4>
           <p className="text-xs text-[#000000]/60 mt-1">최근 데이터 기준 주요 기간별 주가 수익률 현황입니다.</p>
         </div>
       </div>
@@ -84,7 +84,7 @@ export default function StockPerformanceChart({
         /* shadcn/ui 기반 흑백 막대 차트 */
         <div className="relative w-full h-60 pb-2 flex flex-col items-center">
           <ChartContainer config={chartConfig} className="w-full h-full max-w-md">
-            <BarChart data={chartData} margin={{ top: 20, right: 10, left: -25, bottom: 5 }}>
+            <BarChart data={chartData} margin={{ top: 20, right: 15, left: -5, bottom: 5 }}>
               <CartesianGrid vertical={false} stroke="rgba(0,0,0,0.05)" />
               <XAxis
                 dataKey="name"
@@ -96,7 +96,8 @@ export default function StockPerformanceChart({
               <YAxis
                 tickLine={false}
                 axisLine={false}
-                tickMargin={8}
+                tickMargin={4}
+                width={42}
                 className="text-[9px] font-bold font-mono"
                 tickFormatter={(val) => `${val}%`}
               />
@@ -109,7 +110,7 @@ export default function StockPerformanceChart({
                   return (
                     <Cell
                       key={`cell-${index}`}
-                      fill={isPositive ? '#000000' : '#9E9E9E'}
+                      fill={isPositive ? '#D4AF37' : '#4B5563'}
                     />
                   );
                 })}

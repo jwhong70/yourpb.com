@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useEffect, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronDown, ArrowUpDown, Lock, Heart } from 'lucide-react';
+import { useQueryState, parseAsString, parseAsStringLiteral } from 'nuqs';
 import { toggleStockWishlist } from '@/app/actions/stock_wishlist';
 
 export interface StockWithPrice {
@@ -83,16 +84,37 @@ export default function Filter({
     });
   }, [isLoggedIn, initialWishlistTickers]);
 
-  // 필터 상태 (디폴트: 유니버스 전체)
-  const [interestFilter, setInterestFilter] = useState<'y' | 'all'>('all');
-  const [selectedSector, setSelectedSector] = useState<string>('all');
-  const [selectedIndustry, setSelectedIndustry] = useState<string>('all');
-  const [selectedPeriod, setSelectedPeriod] = useState<'1w' | '5w' | '20w' | '60w' | '120w'>('1w');
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  // 필터 상태 (디폴트: 유니버스 전체, nuqs URL 연동)
+  const [interestFilter, setInterestFilter] = useQueryState(
+    'interest',
+    parseAsStringLiteral(['y', 'all'] as const).withDefault('all')
+  );
+  const [selectedSector, setSelectedSector] = useQueryState(
+    'sector',
+    parseAsString.withDefault('all')
+  );
+  const [selectedIndustry, setSelectedIndustry] = useQueryState(
+    'industry',
+    parseAsString.withDefault('all')
+  );
+  const [selectedPeriod, setSelectedPeriod] = useQueryState(
+    'period',
+    parseAsStringLiteral(['1w', '5w', '20w', '60w', '120w'] as const).withDefault('1w')
+  );
+  const [searchTerm, setSearchTerm] = useQueryState(
+    'q',
+    parseAsString.withDefault('')
+  );
 
   // 정렬 상태 (기본 정렬: yield_1w, 내림차순 desc)
-  const [sortColumn, setSortColumn] = useState<keyof StockWithPrice>('yield_1w');
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+  const [sortColumn, setSortColumn] = useQueryState(
+    'sort',
+    parseAsString.withDefault('yield_1w')
+  );
+  const [sortDirection, setSortDirection] = useQueryState(
+    'dir',
+    parseAsStringLiteral(['asc', 'desc'] as const).withDefault('desc')
+  );
 
   // 관심 종목 등록/해제 핸들러 (하이브리드: 로그인 시 DB + localStorage, 비로그인 시 localStorage)
   const handleToggleInterest = (e: React.MouseEvent, ticker: string, currentInterest: string) => {
@@ -182,8 +204,8 @@ export default function Filter({
   const sortedStocks = useMemo(() => {
     const listCopy = [...filteredStocks];
     listCopy.sort((a, b) => {
-      const valA = a[sortColumn];
-      const valB = b[sortColumn];
+      const valA = a[sortColumn as keyof StockWithPrice];
+      const valB = b[sortColumn as keyof StockWithPrice];
 
       // null 또는 undefined 값 처리 (하단 정렬)
       if (valA === null || valA === undefined) return 1;

@@ -84,7 +84,7 @@ export default function EtfPerformanceChart({
         /* shadcn/ui 기반 흑백 막대 차트 */
         <div className="relative w-full h-60 pb-2 flex flex-col items-center">
           <ChartContainer config={chartConfig} className="w-full h-full max-w-md">
-            <BarChart data={chartData} margin={{ top: 20, right: 10, left: -25, bottom: 5 }}>
+            <BarChart data={chartData} margin={{ top: 20, right: 15, left: -5, bottom: 5 }}>
               <CartesianGrid vertical={false} stroke="rgba(0,0,0,0.05)" />
               <XAxis
                 dataKey="name"
@@ -96,7 +96,8 @@ export default function EtfPerformanceChart({
               <YAxis
                 tickLine={false}
                 axisLine={false}
-                tickMargin={8}
+                tickMargin={4}
+                width={42}
                 className="text-[9px] font-bold font-mono"
                 tickFormatter={(val) => `${val}%`}
               />
@@ -109,7 +110,7 @@ export default function EtfPerformanceChart({
                   return (
                     <Cell
                       key={`cell-${index}`}
-                      fill={isPositive ? '#000000' : '#9E9E9E'}
+                      fill={isPositive ? '#D4AF37' : '#4B5563'}
                     />
                   );
                 })}
