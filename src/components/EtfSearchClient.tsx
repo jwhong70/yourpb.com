@@ -173,13 +173,13 @@ export default function EtfSearchClient({
     }
   };
 
-  // 정렬 아이콘 렌더링
+  // 정렬 아이콘 렌더링 (헤더 2단 구조)
   const renderSortIcon = (column: keyof EtfWithPrice) => {
-    if (sortColumn !== column) return <span className="ml-1.5 text-white/40 text-[10px]">↕</span>;
+    if (sortColumn !== column) return <span className="text-white/40 text-[10px] select-none">↕</span>;
     return sortDirection === 'asc' ? (
-      <span className="ml-1.5 text-white text-[10px]">▲</span>
+      <span className="text-white text-[10px] select-none">▲</span>
     ) : (
-      <span className="ml-1.5 text-white text-[10px]">▼</span>
+      <span className="text-white text-[10px] select-none">▼</span>
     );
   };
 
@@ -289,15 +289,21 @@ export default function EtfSearchClient({
                       <tr className="bg-[#000000] text-white font-bold text-xs uppercase tracking-wider select-none divide-x divide-white">
                         <th
                           onClick={() => handleSort('name')}
-                          className="py-3 px-3 sm:px-6 cursor-pointer hover:bg-gray-900 transition-colors"
+                          className="py-2.5 px-3 sm:px-6 cursor-pointer hover:bg-gray-900 transition-colors"
                         >
-                          이름 {renderSortIcon('name')}
+                          <div className="flex flex-col items-start leading-tight">
+                            <span>종목명</span>
+                            <span className="leading-none mt-1">{renderSortIcon('name')}</span>
+                          </div>
                         </th>
                         <th
                           onClick={() => handleSort(`yield_${selectedPeriod}` as keyof EtfWithPrice)}
-                          className="py-3 px-3 sm:px-6 text-right cursor-pointer hover:bg-gray-900 transition-colors w-24 sm:w-32"
+                          className="py-2.5 px-1 sm:px-6 text-right cursor-pointer hover:bg-gray-900 transition-colors w-13.5 sm:w-28"
                         >
-                          수익률 {renderSortIcon(`yield_${selectedPeriod}` as keyof EtfWithPrice)}
+                          <div className="flex flex-col items-end leading-tight">
+                            <span className="whitespace-nowrap">수익률</span>
+                            <span className="leading-none mt-1">{renderSortIcon(`yield_${selectedPeriod}` as keyof EtfWithPrice)}</span>
+                          </div>
                         </th>
                       </tr>
                     </thead>
@@ -341,7 +347,7 @@ export default function EtfSearchClient({
                                 </div>
                               </div>
                             </td>
-                            <td className={`py-2.5 px-3 sm:px-6 text-right align-middle border-r border-r-white truncate ${getYieldColor(yieldVal)}`}>
+                            <td className={`py-2.5 px-1 sm:px-6 text-right align-middle border-r border-r-white truncate ${getYieldColor(yieldVal)}`}>
                               {formatYield(yieldVal)}
                             </td>
                           </tr>

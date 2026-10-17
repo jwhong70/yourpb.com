@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronDown, ArrowUpDown, Lock, Heart } from 'lucide-react';
+import { ChevronDown, Lock, Heart } from 'lucide-react';
 import { useQueryState, parseAsString, parseAsStringLiteral } from 'nuqs';
 import { toggleStockWishlist } from '@/app/actions/stock_wishlist';
 import { toast } from 'sonner';
@@ -309,15 +309,13 @@ export default function Filter({
     setSortDirection('desc');
   };
 
-  // 정렬 화살표 아이콘 렌더링
+  // 정렬 화살표 아이콘 렌더링 (헤더 2단 구조 및 화이트 톤)
   const renderSortIcon = (column: keyof StockWithPrice) => {
-    if (sortColumn !== column) {
-      return <ArrowUpDown className="w-3.5 h-3.5 ml-1.5 opacity-30 inline-block" />;
-    }
+    if (sortColumn !== column) return <span className="text-white/40 text-[10px] select-none">↕</span>;
     return sortDirection === 'asc' ? (
-      <span className="ml-1.5 text-coral text-xs font-bold inline-block">▲</span>
+      <span className="text-white text-[10px] select-none">▲</span>
     ) : (
-      <span className="ml-1.5 text-blue-primary text-xs font-bold inline-block">▼</span>
+      <span className="text-white text-[10px] select-none">▼</span>
     );
   };
 
@@ -493,15 +491,21 @@ export default function Filter({
                 <tr className="bg-[#000000] text-white font-bold text-xs uppercase tracking-wider select-none divide-x divide-white">
                   <th
                     onClick={() => handleSort('name')}
-                    className="py-3 px-3 sm:px-6 cursor-pointer hover:bg-gray-900 transition-colors"
+                    className="py-2.5 px-3 sm:px-6 cursor-pointer hover:bg-gray-900 transition-colors"
                   >
-                    종목명 {renderSortIcon('name')}
+                    <div className="flex flex-col items-start leading-tight">
+                      <span>종목명</span>
+                      <span className="leading-none mt-1">{renderSortIcon('name')}</span>
+                    </div>
                   </th>
                   <th
                     onClick={() => handleSort(`yield_${selectedPeriod}` as keyof StockWithPrice)}
-                    className="py-3 px-3 sm:px-6 text-right cursor-pointer hover:bg-gray-900 transition-colors w-24 sm:w-32"
+                    className="py-2.5 px-1 sm:px-6 text-right cursor-pointer hover:bg-gray-900 transition-colors w-13.5 sm:w-28"
                   >
-                    수익률 {renderSortIcon(`yield_${selectedPeriod}` as keyof StockWithPrice)}
+                    <div className="flex flex-col items-end leading-tight">
+                      <span className="whitespace-nowrap">수익률</span>
+                      <span className="leading-none mt-1">{renderSortIcon(`yield_${selectedPeriod}` as keyof StockWithPrice)}</span>
+                    </div>
                   </th>
                 </tr>
               </thead>
@@ -547,7 +551,7 @@ export default function Filter({
                            </div>
                          </div>
                        </td>
-                       <td className={`py-2.5 px-3 sm:px-6 text-right align-middle truncate ${yieldStyle.colorClass}`}>
+                       <td className={`py-2.5 px-1 sm:px-6 text-right align-middle truncate ${yieldStyle.colorClass}`}>
                          {yieldStyle.text}
                        </td>
                      </tr>
