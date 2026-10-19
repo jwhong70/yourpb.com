@@ -49,6 +49,8 @@ const MASTER_NAME_KO: Record<string, string> = {
   'David Dreman': '데이비드 드레먼',
   'John Neff': '존 네프',
   'Pat Dorsey': '팻 도시',
+  'Christopher Browne': '크리스토퍼 브라운',
+  'Peter Cundill': '피터 컨딜',
   'Christopher Browne / Peter Cundill': '브라운/컨딜 (안전마진)',
   'Michael Mauboussin': '마이클 모부신',
   'Anthony Bolton': '앤서니 볼튼'
@@ -72,6 +74,8 @@ const MASTER_AVATAR_MAP: Record<string, string> = {
   'David Dreman': '/avatars/masters/dreman.webp',
   'John Neff': '/avatars/masters/neff.webp',
   'Pat Dorsey': '/avatars/masters/dorsey.webp',
+  'Christopher Browne': '/avatars/masters/browne.webp',
+  'Peter Cundill': '/avatars/masters/cundill.webp',
   'Christopher Browne / Peter Cundill': '/avatars/masters/cundill.webp',
   'Michael Mauboussin': '/avatars/masters/mauboussin.webp',
   'Anthony Bolton': '/avatars/masters/bolton.webp'
@@ -205,7 +209,16 @@ export default async function StockDetailPage({ params }: PageProps) {
   if (isPremium) {
     // 4. 프리미엄 회원의 경우 실제 캐시된 주가 데이터 및 시그널 제공
     prices = rawPrices;
-    signals = rawSignals;
+    // 'Christopher Browne / Peter Cundill'을 크리스토퍼 브라운과 피터 컨딜 2개의 독립 카드로 자동 분리 (총 21인, 3열 그리드 완성)
+    signals = (rawSignals || []).flatMap((sig) => {
+      if (sig.analyst_name === 'Christopher Browne / Peter Cundill') {
+        return [
+          { ...sig, analyst_name: 'Christopher Browne' },
+          { ...sig, analyst_name: 'Peter Cundill' }
+        ];
+      }
+      return [sig];
+    });
     latestPrice = prices.length > 0 ? prices[0] : null;
     closePrice = latestPrice ? Number(latestPrice.close) : null;
     yield_1w = latestPrice ? Number(latestPrice.yield_1w) : null;
@@ -412,7 +425,7 @@ export default async function StockDetailPage({ params }: PageProps) {
                   <div className="border-b-2 border-black pb-2">
                     <h2 className="text-xl sm:text-2xl font-black text-gray-900 flex items-center gap-2">
                       <Brain className="w-6 h-6 text-black animate-pulse" />
-                      <span>20대 투자 대가 및 AI 종합 분석</span>
+                      <span>21대 투자 대가 및 AI 종합 분석</span>
                     </h2>
                     <p className="text-sm font-semibold text-gray-500 mt-1 leading-relaxed">
                       전설적인 투자 대가들의 투자원칙과 AI 모델의 투자전략을 적용한 이 종목에 대한 투자 의견 및 세부 판단입니다.<br />
