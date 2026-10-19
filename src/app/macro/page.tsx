@@ -102,9 +102,77 @@ const getCachedMacroRawData = unstable_cache(
       indexList: indexListRaw || []
     };
   },
-  ['macro-raw-data-cache-v6'],
+  ['macro-raw-data-cache-v7'],
   { revalidate: 3600, tags: ['macro-page'] }
 );
+
+function roundTo2(val: unknown): number | null {
+  if (val === null || val === undefined || val === '') return null;
+  const num = Number(val);
+  if (isNaN(num)) return null;
+  return Math.round(num * 100) / 100;
+}
+
+function roundCandle(val: unknown): number | null {
+  if (val === null || val === undefined || val === '') return null;
+  const num = Number(val);
+  if (isNaN(num)) return null;
+  if (Math.abs(num) >= 10) {
+    return Math.round(num * 100) / 100;
+  }
+  return Math.round(num * 10000) / 10000;
+}
+
+function slimSeries<T extends Record<string, unknown>>(list: T[]): Record<string, unknown>[] {
+  if (!Array.isArray(list) || list.length === 0) return [];
+  return list.map((item) => {
+    const trimmed: Record<string, unknown> = {};
+    if (item.date != null) {
+      const d = String(item.date).trim();
+      trimmed.date = d.length > 10 ? d.slice(0, 10) : d;
+    }
+    if (item.year != null) trimmed.year = Number(item.year);
+    if (item.value != null) trimmed.value = roundTo2(item.value);
+    if (item.yoy_pct != null) trimmed.yoy_pct = roundTo2(item.yoy_pct);
+    if (item.mom != null) trimmed.mom = roundTo2(item.mom);
+    if (item.mom_pct != null) trimmed.mom_pct = roundTo2(item.mom_pct);
+    if (item.open != null) trimmed.open = roundCandle(item.open);
+    if (item.high != null) trimmed.high = roundCandle(item.high);
+    if (item.low != null) trimmed.low = roundCandle(item.low);
+    if (item.close != null) trimmed.close = roundCandle(item.close);
+    if (item.score != null) trimmed.score = roundTo2(item.score);
+    if (item.rating != null) trimmed.rating = String(item.rating);
+    return trimmed;
+  });
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function slimAllChartData(obj: any): any {
+  if (Array.isArray(obj)) {
+    if (
+      obj.length > 0 &&
+      typeof obj[0] === 'object' &&
+      obj[0] !== null &&
+      ('date' in obj[0] || 'year' in obj[0])
+    ) {
+      return slimSeries(obj);
+    }
+    return obj.map(slimAllChartData);
+  }
+  if (obj !== null && typeof obj === 'object') {
+    const res: Record<string, unknown> = {};
+    for (const key of Object.keys(obj)) {
+      if (key === 'sources') {
+        res[key] = obj[key];
+      } else {
+        res[key] = slimAllChartData(obj[key]);
+      }
+    }
+    return res;
+  }
+  return obj;
+}
+
 
 export default async function MacroPage() {
   const [user, rawData] = await Promise.all([
@@ -1124,7 +1192,7 @@ export default async function MacroPage() {
             </h1>
           </div>
 
-          <MacroClientPage data={dashboardData} />
+          <MacroClientPage data={slimAllChartData(dashboardData)} />
         </div>
       </main>
       <Footer />
