@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo, useEffect, useTransition } from 'react';
+import React, { useState, useMemo, useEffect, useTransition, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronDown, Lock, Heart } from 'lucide-react';
 import { useQueryState, parseAsString, parseAsStringLiteral } from 'nuqs';
@@ -292,6 +292,37 @@ export default function Filter({
     return listCopy;
   }, [filteredStocks, sortColumn, sortDirection, searchTerm]);
 
+  // 점진적 렌더링: 초기 50개 노출 후 스크롤에 따라 50개씩 자연스럽게 확장
+  const [visibleCount, setVisibleCount] = useState(50);
+  const loaderRef = useRef<HTMLDivElement>(null);
+
+  // 검색어나 정렬/필터 조건 변경 시 노출 개수를 50개로 리셋
+  useEffect(() => {
+    setVisibleCount(50);
+  }, [interestFilter, selectedSector, selectedIndustry, selectedPeriod, searchTerm, sortColumn, sortDirection]);
+
+  // 인피니트 스크롤 IntersectionObserver (400px 전에 미리 다음 50개 로드)
+  useEffect(() => {
+    const target = loaderRef.current;
+    if (!target) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCount((prev) => Math.min(prev + 50, sortedStocks.length));
+        }
+      },
+      { rootMargin: '400px' }
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [sortedStocks.length]);
+
+  const displayedStocks = useMemo(() => {
+    return sortedStocks.slice(0, visibleCount);
+  }, [sortedStocks, visibleCount]);
+
   // 정렬 핸들러
   const handleSort = (column: keyof StockWithPrice) => {
     if (sortColumn === column) {
@@ -510,7 +541,7 @@ export default function Filter({
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#000000] text-xs text-gray-900 font-sans">
-                {sortedStocks.map((stock) => {
+                {displayedStocks.map((stock) => {
                   const periodYield = stock[`yield_${selectedPeriod}` as keyof StockWithPrice] as number | null;
                   const yieldStyle = getYieldStyle(periodYield);
                   const isWished = stock.interest === 'y';
@@ -559,6 +590,11 @@ export default function Filter({
                 })}
               </tbody>
             </table>
+            {visibleCount < sortedStocks.length && (
+              <div ref={loaderRef} className="py-3 text-center text-xs text-gray-400 font-sans font-medium select-none">
+                다음 종목 불러오는 중...
+              </div>
+            )}
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-20 bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none text-center">

@@ -876,7 +876,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                     <span>무감정 HRP 분산투자</span>
                   </h4>
                   <p className="text-xs text-gray-600 leading-relaxed">
-                    감정적 매매를 원천 차단하는 가장 확실한 방법은 기계적 분산입니다. YOURPB의 월간 계층적 리스크 패리티 모델을 확인하세요.
+                    감정적 매매를 원천 차단하는 가장 확실한 방법은 기계적 분산입니다. 당신의 피비의 월간 계층적 리스크 패리티 모델을 확인하세요.
                   </p>
                   <div className="pt-1">
                     <Link

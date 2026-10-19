@@ -69,13 +69,14 @@ export async function toggleStockWishlist(ticker: string) {
 /**
  * 현재 로그인한 사용자의 찜한 주식 티커 목록 조회
  */
-export async function getStockWishlist(): Promise<string[]> {
-  const supabase = await createClient();
-  const user = await getSessionUser();
+export async function getStockWishlist(passedUser?: { id: string } | null): Promise<string[]> {
+  const user = passedUser !== undefined ? passedUser : await getSessionUser();
 
   if (!user) {
     return [];
   }
+
+  const supabase = await createClient();
 
   try {
     const { data, error } = await supabase

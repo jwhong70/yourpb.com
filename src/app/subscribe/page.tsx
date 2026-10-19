@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import SubscribeClient from './SubscribeClient';
 
 export const metadata = {
-  title: '프리미엄 멤버십 구독 플랜 | YOURPB',
+  title: '프리미엄 멤버십 구독 플랜 - 당신의 피비',
   description: '워런 버핏 등 투자 대가 20인의 AI 주식 분석 시그널, 1,000대 글로벌 주식 정밀 분석 및 ETF/주식 원본 리서치 PDF 무제한 다운로드 혜택을 이용해 보세요.',
 };
 

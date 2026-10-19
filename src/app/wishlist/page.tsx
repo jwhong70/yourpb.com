@@ -6,13 +6,13 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export const metadata = {
-  title: '내 찜 목록 | YOURPB',
+  title: '내 찜 목록 - 당신의 피비',
   description: '내가 찜한 ETF 목록을 한눈에 관리하고 모니터링합니다.',
 };
 
 export default async function WishlistPage() {
   const user = await getSessionUser();
-  const wishlist = await getWishlist();
+  const wishlist = await getWishlist(user);
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">

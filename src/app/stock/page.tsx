@@ -78,9 +78,9 @@ const getCachedStocksData = unstable_cache(
 );
 
 export default async function StockPage() {
-  const [user, stockWishlistTickers, mergedStocks] = await Promise.all([
-    getSessionUser(),
-    getStockWishlist(),
+  const user = await getSessionUser();
+  const [stockWishlistTickers, mergedStocks] = await Promise.all([
+    getStockWishlist(user),
     getCachedStocksData(),
   ]);
   const isPremium = user?.membership_status === 'premium';
