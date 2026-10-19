@@ -81,13 +81,14 @@ export interface WishlistEtf {
  * 현재 로그인한 사용자의 찜한 ETF 목록 조회
  * - ETF 정보를 함께 조인하여 반환합니다.
  */
-export async function getWishlist(): Promise<WishlistEtf[]> {
-  const supabase = await createClient();
-  const user = await getSessionUser();
+export async function getWishlist(passedUser?: { id: string } | null): Promise<WishlistEtf[]> {
+  const user = passedUser !== undefined ? passedUser : await getSessionUser();
 
   if (!user) {
     return [];
   }
+
+  const supabase = await createClient();
 
   try {
     const { data, error } = await supabase

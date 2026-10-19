@@ -8,7 +8,7 @@ interface MiniSparklineProps {
   height?: number;
 }
 
-export default function MiniSparkline({
+const MiniSparkline = React.memo(function MiniSparkline({
   data,
   width = 52,
   height = 15,
@@ -68,4 +68,6 @@ export default function MiniSparkline({
       </svg>
     </div>
   );
-}
+});
+
+export default MiniSparkline;

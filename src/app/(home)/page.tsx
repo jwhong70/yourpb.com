@@ -57,9 +57,9 @@ export default async function Home() {
     .map(item => item.ticker)
     .filter(Boolean);
 
-  const [user, wishlist, etfs, portfolioPrices] = await Promise.all([
-    getSessionUser(),
-    getWishlist(),
+  const user = await getSessionUser();
+  const [wishlist, etfs, portfolioPrices] = await Promise.all([
+    getWishlist(user),
     getCachedEtfs(),
     getCachedPortfolioPrices(modelPortfolioTickers),
   ]);

@@ -79,9 +79,9 @@ const getCachedEtfsData = unstable_cache(
 );
 
 export default async function EtfPage() {
-  const [user, wishlist, mergedEtfs] = await Promise.all([
-    getSessionUser(),
-    getWishlist(),
+  const user = await getSessionUser();
+  const [wishlist, mergedEtfs] = await Promise.all([
+    getWishlist(user),
     getCachedEtfsData(),
   ]);
   const wishlistTickers = wishlist.map((etf) => etf.ticker);

@@ -76,6 +76,10 @@ export default function Filter({
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+  // 인피니트 스크롤: 초기 24개 노출 후 스크롤에 따라 24개씩 점진적 확장
+  const [visibleCount, setVisibleCount] = useState(24);
+  const cardLoaderRef = useRef<HTMLDivElement>(null);
+
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const container = e.currentTarget;
     const cardWidth = container.firstElementChild?.getBoundingClientRect().width || 0;
@@ -84,6 +88,11 @@ export default function Filter({
     if (itemWidth > 0) {
       const index = Math.round(container.scrollLeft / itemWidth);
       setActiveIndex(index);
+
+      // 모바일 가로 스크롤: 끝에서 4개 카드 전에 도달하면 다음 12개 카드 추가 로드
+      if (index >= visibleCount - 4) {
+        setVisibleCount((prev) => prev + 12);
+      }
     }
   };
   const [selectedCategory, setSelectedCategory] = useQueryState(
@@ -206,6 +215,33 @@ export default function Filter({
       return matchesBase && matchesReport;
     });
   }, [etfsAfterCategory, fuse, selectedReport, searchTerm]);
+
+  // 필터 조건 변경 시 노출 개수를 24개로 리셋
+  useEffect(() => {
+    setVisibleCount(24);
+  }, [interestFilter, leverageFilter, selectedCategory, selectedReport, searchTerm]);
+
+  // 데스크톱 세로 스크롤 IntersectionObserver (400px 전에 미리 다음 24개 로드)
+  useEffect(() => {
+    const target = cardLoaderRef.current;
+    if (!target) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCount((prev) => Math.min(prev + 24, filteredEtfs.length));
+        }
+      },
+      { rootMargin: '400px' }
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [filteredEtfs.length]);
+
+  const visibleEtfs = useMemo(() => {
+    return filteredEtfs.slice(0, visibleCount);
+  }, [filteredEtfs, visibleCount]);
 
   // 이미지 에러 핸들러
   const handleImageError = (ticker: string) => {
@@ -401,7 +437,7 @@ export default function Filter({
                 }}
                 className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 max-[560px]:flex max-[560px]:flex-row max-[560px]:overflow-x-auto max-[560px]:snap-x max-[560px]:snap-mandatory max-[560px]:gap-4 max-[560px]:pb-4 scrollbar-none"
               >
-                {filteredEtfs.map((etf, index) => {
+                {visibleEtfs.map((etf, index) => {
                   const isWished = initialWishlistTickers.includes(etf.ticker);
                   const isError = imageErrors[etf.ticker];
                   const storageUrl = `https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/poster-etf/${etf.ticker.toUpperCase()}.png`;
@@ -489,36 +525,19 @@ export default function Filter({
                 })}
               </motion.div>
 
-              {/* 모바일 닷 인디케이터 (화면 너비 560px 이하에서만 작동) */}
-              {filteredEtfs.length > 0 && (
-                <div className="flex min-[561px]:hidden justify-center items-center gap-1.5 pt-4">
-                  {filteredEtfs.map((_, index) => {
-                    const activeGroupStart = Math.floor(activeIndex / 2) * 2;
-                    const isActive = index === activeGroupStart || index === activeGroupStart + 1;
-                    return (
-                      <button
-                        key={index}
-                        onClick={() => {
-                          if (scrollContainerRef.current) {
-                            const container = scrollContainerRef.current;
-                            const cardWidth = container.firstElementChild?.getBoundingClientRect().width || 0;
-                            const gap = 16; // max-[560px]:gap-4 (16px)
-                            const targetIndex = Math.floor(index / 2) * 2;
-                            container.scrollTo({
-                              left: targetIndex * (cardWidth + gap),
-                              behavior: 'smooth'
-                            });
-                          }
-                        }}
-                        className={`w-2 h-2 rounded-full transition-all duration-200 cursor-pointer ${
-                          isActive 
-                            ? 'bg-black w-4' 
-                            : 'bg-black/25 hover:bg-black/40'
-                        }`}
-                        aria-label={`Go to slide ${index + 1}`}
-                      />
-                    );
-                  })}
+              {/* 모바일 위치 인디케이터 (화면 너비 560px 이하) */}
+              {filteredEtfs.length > 2 && (
+                <div className="flex min-[561px]:hidden justify-center items-center gap-2 pt-4">
+                  <div className="px-3.5 py-1 bg-black text-[#D4AF37] text-xs font-mono font-bold rounded-full border border-[#D4AF37]/40 shadow-sm select-none">
+                    {Math.min(Math.floor(activeIndex / 2) + 1, Math.ceil(filteredEtfs.length / 2))} / {Math.ceil(filteredEtfs.length / 2)}
+                  </div>
+                </div>
+              )}
+
+              {/* 데스크톱/추가 로드 감지 센티넬 */}
+              {visibleCount < filteredEtfs.length && (
+                <div ref={cardLoaderRef} className="py-6 text-center text-xs text-gray-400 font-sans font-medium select-none">
+                  다음 관심 ETF 불러오는 중...
                 </div>
               )}
             </div>

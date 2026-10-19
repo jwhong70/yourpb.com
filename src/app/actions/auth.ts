@@ -101,10 +101,35 @@ export async function signOut() {
  * - 비로그인 시 null을 반환합니다.
  */
 export async function getSessionUser() {
+  const cookieStore = await cookies();
+  const allCookies = cookieStore.getAll();
+  const hasAuthCookie = allCookies.some(
+    (c) => c.name.startsWith('sb-') || c.name.includes('auth-token')
+  );
+  const isDemo = cookieStore.get('demo_user')?.value === 'true';
+
+  // 1. 인증 쿠키도 없고 데모 쿠키도 없으면 원격 Auth 호출 없이 즉시 null 반환 (익명 방문자 초고속 응답)
+  if (!hasAuthCookie && !isDemo) {
+    return null;
+  }
+
+  // 2. 데모 쿠키만 있고 인증 쿠키가 없는 경우 즉시 데모 세션 반환
+  if (!hasAuthCookie && isDemo) {
+    const demoStatus = cookieStore.get('demo_membership_status')?.value;
+    return {
+      id: '00000000-0000-0000-0000-000000000000',
+      email: 'demo@yourpb.com',
+      name: '홍길동 PB',
+      membership_status: demoStatus || 'premium',
+      subscription_end_date: null,
+    };
+  }
+
+  // 3. 인증 쿠키가 있는 경우 Supabase 서버 클라이언트를 통해 실제 세션 검증
   const supabase = await createClient();
   const { data: { user }, error: authError } = await supabase.auth.getUser();
 
-  // 1. 실제 로그인 세션이 존재하는 경우 데모 쿠키와 관계없이 실제 세션을 최우선 보장
+  // 실제 로그인 세션이 존재하는 경우 데모 쿠키와 관계없이 실제 세션을 최우선 보장
   if (user && !authError) {
     const { data: profile, error: dbError } = await supabase
       .from('users')
@@ -132,12 +157,9 @@ export async function getSessionUser() {
     };
   }
 
-  // 2. 비로그인 상태일 때만 데모 쿠키 검사
-  const cookieStore = await cookies();
-  const isDemo = cookieStore.get('demo_user')?.value === 'true';
-  const demoStatus = cookieStore.get('demo_membership_status')?.value;
-
+  // 4. 인증 토큰 검증 실패 또는 만료 시 데모 쿠키 확인
   if (isDemo) {
+    const demoStatus = cookieStore.get('demo_membership_status')?.value;
     return {
       id: '00000000-0000-0000-0000-000000000000',
       email: 'demo@yourpb.com',
