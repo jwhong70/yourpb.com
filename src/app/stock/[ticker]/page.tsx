@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { unstable_cache } from 'next/cache';
 import { supabase as publicSupabase } from '@/lib/supabase';
 import { getSessionUser } from '@/app/actions/auth';
@@ -33,13 +34,13 @@ const StockPerformanceChart = dynamic(() => import('@/components/StockPerformanc
 const MASTER_NAME_KO: Record<string, string> = {
   'Warren Buffett': '워런 버핏',
   'Cathie Wood': '캐시 우드',
-  'Fundamental Analyst': '기본적 분석가',
+  'Fundamental Analyst': '기본적 분석가 (수석 피비)',
   'Bill Ackman': '빌 애크먼',
   'Charlie Munger': '찰리 멍거',
   'Peter Lynch': '피터 린치',
   'Michael Burry': '마이클 버리',
   'Aswath Damodaran': '아스워드 다모다란',
-  'Technical Analyst': '기술적 분석가',
+  'Technical Analyst': '기술적 분석가 (수석 피비)',
   'Benjamin Graham': '벤자민 그레이엄',
   'Terry Smith': '테리 스미스',
   'James O\'Shaughnessy': '제임스 오쇼너시',
@@ -53,7 +54,31 @@ const MASTER_NAME_KO: Record<string, string> = {
   'Anthony Bolton': '앤서니 볼튼'
 };
 
+const MASTER_AVATAR_MAP: Record<string, string> = {
+  'Warren Buffett': '/avatars/masters/buffett.webp',
+  'Cathie Wood': '/avatars/masters/wood.webp',
+  'Fundamental Analyst': '/avatars/masters/hong.webp',
+  'Bill Ackman': '/avatars/masters/ackman.webp',
+  'Charlie Munger': '/avatars/masters/munger.webp',
+  'Peter Lynch': '/avatars/masters/lynch.webp',
+  'Michael Burry': '/avatars/masters/burry.webp',
+  'Aswath Damodaran': '/avatars/masters/damodaran.webp',
+  'Technical Analyst': '/avatars/masters/hong.webp',
+  'Benjamin Graham': '/avatars/masters/graham.webp',
+  'Terry Smith': '/avatars/masters/smith.webp',
+  'James O\'Shaughnessy': '/avatars/masters/oshaughnessy.webp',
+  'Philip Fisher': '/avatars/masters/fisher.webp',
+  'John Templeton': '/avatars/masters/templeton.webp',
+  'David Dreman': '/avatars/masters/dreman.webp',
+  'John Neff': '/avatars/masters/neff.webp',
+  'Pat Dorsey': '/avatars/masters/dorsey.webp',
+  'Christopher Browne / Peter Cundill': '/avatars/masters/cundill.webp',
+  'Michael Mauboussin': '/avatars/masters/mauboussin.webp',
+  'Anthony Bolton': '/avatars/masters/bolton.webp'
+};
+
 const getKoreanName = (name: string) => MASTER_NAME_KO[name] || name;
+const getMasterAvatar = (name: string) => MASTER_AVATAR_MAP[name] || '/avatars/masters/hong.webp';
 
 interface PageProps {
   params: Promise<{ ticker: string }>;
@@ -444,13 +469,30 @@ export default async function StockDetailPage({ params }: PageProps) {
                         <div key={idx} className="p-5 bg-box-bg border border-black rounded-none shadow-md flex flex-col justify-between hover:shadow-lg transition-all relative overflow-hidden group">
                           {/* 탑 헤더 영역 */}
                           <div>
-                            <div className="flex items-center justify-between mb-3.5">
-                              <span className="text-base font-extrabold text-gray-900 tracking-tight">
-                                {getKoreanName(sig.analyst_name)}
-                              </span>
-                              <span className={`px-2.5 py-0.5 text-xs font-black border uppercase tracking-wider rounded-none ${badgeBg}`}>
-                                {badgeText}
-                              </span>
+                            <div className="flex items-start justify-between mb-4 gap-3">
+                              {/* 좌측: 대가 이름 및 매수/매도 뱃지 */}
+                              <div className="flex flex-col justify-center gap-1.5 min-w-0">
+                                <span className="text-base font-extrabold text-gray-900 tracking-tight">
+                                  {getKoreanName(sig.analyst_name)}
+                                </span>
+                                <div className="flex items-center">
+                                  <span className={`px-2.5 py-0.5 text-xs font-black border uppercase tracking-wider rounded-none ${badgeBg}`}>
+                                    {badgeText}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* 우측: 3D 픽사 아바타 (좌측 텍스트를 응시하는 시선 구도) */}
+                              <div className="shrink-0 relative group-hover:scale-105 transition-transform duration-300">
+                                <Image
+                                  src={getMasterAvatar(sig.analyst_name)}
+                                  alt={getKoreanName(sig.analyst_name)}
+                                  width={44}
+                                  height={44}
+                                  className="w-11 h-11 rounded-full object-cover border-2 border-[#D4AF37]/80 shadow-sm bg-gray-900"
+                                  loading="lazy"
+                                />
+                              </div>
                             </div>
                             
                             {/* 신뢰도 게이지 바 */}
