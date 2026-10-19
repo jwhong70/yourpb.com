@@ -120,7 +120,7 @@ export const getSessionUser = cache(async () => {
     return {
       id: '00000000-0000-0000-0000-000000000000',
       email: 'demo@yourpb.com',
-      name: '홍길동 PB',
+      name: '홍길동 피비',
       membership_status: demoStatus || 'premium',
       subscription_end_date: null,
     };
@@ -164,7 +164,7 @@ export const getSessionUser = cache(async () => {
     return {
       id: '00000000-0000-0000-0000-000000000000',
       email: 'demo@yourpb.com',
-      name: '홍길동 PB',
+      name: '홍길동 피비',
       membership_status: demoStatus || 'premium',
       subscription_end_date: null,
     };

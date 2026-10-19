@@ -993,7 +993,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                 <li>3페이지 고해상도 행동편향 맞춤 처방전 PDF 무제한 인쇄 및 소장</li>
                 <li>1,000대 글로벌 주식 & ETF 원본 리서치 보고서 무제한 다운로드</li>
                 <li>HRP 기반 글로벌 모델 포트폴리오 비중 실시간 열람</li>
-                <li>1:1 프라이빗 뱅커(PB) 자산배분 유선 상담 우선 배정</li>
+                <li>1:1 프라이빗 뱅커(피비) 자산배분 유선 상담 우선 배정</li>
               </ul>
             </div>
 

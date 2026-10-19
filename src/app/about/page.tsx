@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, Instagram, Phone } from 'lucide-react';
+import { Mail, Instagram, Phone, Compass, TrendingUp, Target, ShieldCheck } from 'lucide-react';
 import Image from 'next/image';
 import { getSessionUser } from '@/app/actions/auth';
 import Header from '@/components/Header';
@@ -45,7 +45,7 @@ export default async function AboutPage() {
     },
     {
       period: '2011.06 ~ 2013.01',
-      title: '하나 Club-One PB',
+      title: '하나 Club-One 피비',
       description: '하나 Club-One에서 VIP 고객관리 담당',
     },
     {
@@ -105,16 +105,89 @@ export default async function AboutPage() {
                 </p>
 
                 <p className="text-base text-gray-500 leading-relaxed">
-                  은행 및 증권사 PB, 대형 자산운용사 펀드 매니저 출신으로, 펀드, ISA, 퇴직연금 분야에서 탁월한 수익률(일임형 ISA, IRP 전업권 1위)을 달성한 금융 전문가입니다.
+                  은행 및 증권사 피비, 대형 자산운용사 펀드 매니저 출신으로, 펀드, ISA, 퇴직연금 분야에서 탁월한 수익률(일임형 ISA, IRP 전업권 1위)을 달성한 금융 전문가입니다.
                 </p>
-
-                {/* 이력서 다운로드 버튼 제거됨 */}
               </div>
 
             </div>
           </section>
 
-          {/* 2. 경력 사항 타임라인 (두번째 블록) */}
+          {/* 2. 서비스 헌장 & 핵심 고객 페르소나 (신설 블록) */}
+          <section className="space-y-8">
+            <div className="text-center md:text-left space-y-2 pb-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#D4AF37]/10 border border-[#D4AF37]/40 text-[#b58b1a] text-xs font-bold uppercase tracking-wider">
+                <Compass className="w-3.5 h-3.5 text-[#D4AF37]" />
+                <span>Service Philosophy & Charter</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900 select-none">
+                우리가 지향하는 금융과 서비스 헌장
+              </h2>
+              <p className="text-base text-gray-600 max-w-3xl leading-relaxed">
+                높은 자산 문턱의 은행 피비센터 대신, 합리적인 비용으로 내 손안에서 완성하는 스마트한 자기주도 자산관리 파트너
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* 카드 1: 서비스 본질 (Product Hierarchy) */}
+              <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-7 space-y-4 hover:border-[#D4AF37] transition-all shadow-xs">
+                <div className="w-12 h-12 bg-emerald-500/10 text-emerald-600 flex items-center justify-center rounded-none font-bold">
+                  <TrendingUp className="w-6 h-6" />
+                </div>
+                <div className="space-y-1">
+                  <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider">01. Service Essence</span>
+                  <h3 className="text-xl font-extrabold text-gray-900">ETF 중심의 포트폴리오</h3>
+                </div>
+                <div className="space-y-3 text-sm text-gray-600 leading-relaxed">
+                  <p>
+                    <strong className="text-gray-900 font-bold">🥇 핵심 기둥 (Hero)</strong>: 글로벌 ETF(미국 상장 ETF 중심 + 국내 상장 ETF)가 플랫폼의 핵심 주인공입니다.
+                  </p>
+                  <p>
+                    <strong className="text-gray-900 font-bold">🥈 지원 도구 (Enabler)</strong>: 1,000 여개 개별 우량주 심층 리서치는 ETF 속 알짜 보유종목을 투시(X-Ray)하는 정밀 도구이자, 고객이 이미 보유한 국내외 대형주를 진단·케어하는 서비스 차원에서 제공합니다.
+                  </p>
+                </div>
+              </div>
+
+              {/* 카드 2: 타깃 고객 페르소나 (Target Persona) */}
+              <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-7 space-y-4 hover:border-[#D4AF37] transition-all shadow-xs">
+                <div className="w-12 h-12 bg-[#D4AF37]/10 text-[#b58b1a] flex items-center justify-center rounded-none font-bold">
+                  <Target className="w-6 h-6 text-[#D4AF37]" />
+                </div>
+                <div className="space-y-1">
+                  <span className="text-xs font-bold text-[#b58b1a] uppercase tracking-wider">02. Core Persona</span>
+                  <h3 className="text-xl font-extrabold text-gray-900">30~50대 스마트 투자자</h3>
+                </div>
+                <div className="space-y-3 text-sm text-gray-600 leading-relaxed">
+                  <p>
+                    테마주 몰빵이 아닌 <strong className="text-gray-900 font-bold">ETF 중심의 간접투자를 선호</strong>하며, 일부 국내외 대형 우량주를 곁들이는 합리적인 개인투자자를 지향합니다.
+                  </p>
+                  <p>
+                    과거 은행/증권사 VIP 피비센터의 수준 높은 자산관리를 원했지만 높은 예탁 문턱에 막혔던 고객에게, 객관적 인텔리전스를 제공하여 <strong className="text-gray-900 font-bold">&apos;자기주도적&apos;</strong>으로 자산을 키우도록 돕습니다.
+                  </p>
+                </div>
+              </div>
+
+              {/* 카드 3: 원칙과 청렴성 (Integrity & Principles) */}
+              <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-7 space-y-4 hover:border-[#D4AF37] transition-all shadow-xs">
+                <div className="w-12 h-12 bg-blue-500/10 text-blue-600 flex items-center justify-center rounded-none font-bold">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <div className="space-y-1">
+                  <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">03. Principle & Integrity</span>
+                  <h3 className="text-xl font-extrabold text-gray-900">원칙 중심의 정석 투자</h3>
+                </div>
+                <div className="space-y-3 text-sm text-gray-600 leading-relaxed">
+                  <p>
+                    공부 없이 급등주 족집게 픽만 바라는 게으른 요행이나, 초고수 전업 단타 매매를 위한 정보는 단호히 지양합니다.
+                  </p>
+                  <p>
+                    누군가에게 무작정 의존하는 투자가 아닌, <strong className="text-gray-900 font-bold">기관급 2Page 정밀 리포트와 머신러닝 HRP 분산 모델</strong>을 통해 스스로 납득하고 검증하는 품격 있는 투자를 안내합니다.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* 3. 경력 사항 타임라인 */}
           <section className="space-y-8">
             <div className="flex items-center pb-2">
               <h2 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
