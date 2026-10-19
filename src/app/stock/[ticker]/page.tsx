@@ -32,6 +32,7 @@ const StockPerformanceChart = dynamic(() => import('@/components/StockPerformanc
 });
 
 const MASTER_NAME_KO: Record<string, string> = {
+  // 영문 키
   'Warren Buffett': '워런 버핏',
   'Cathie Wood': '캐시 우드',
   'Fundamental Analyst': '기본적 분석가 (수석 피비)',
@@ -53,10 +54,37 @@ const MASTER_NAME_KO: Record<string, string> = {
   'Peter Cundill': '피터 컨딜',
   'Christopher Browne / Peter Cundill': '브라운/컨딜 (안전마진)',
   'Michael Mauboussin': '마이클 모부신',
-  'Anthony Bolton': '앤서니 볼튼'
+  'Anthony Bolton': '앤서니 볼튼',
+
+  // 한글 키 (DB 저장 규격 대응)
+  '워런 버핏': '워런 버핏',
+  '캐시 우드': '캐시 우드',
+  '기본적 분석가': '기본적 분석가 (수석 피비)',
+  '기본적 분석가 (수석 피비)': '기본적 분석가 (수석 피비)',
+  '빌 애크먼': '빌 애크먼',
+  '찰리 멍거': '찰리 멍거',
+  '피터 린치': '피터 린치',
+  '마이클 버리': '마이클 버리',
+  '아스워드 다모다란': '아스워드 다모다란',
+  '기술적 분석가': '기술적 분석가 (수석 피비)',
+  '기술적 분석가 (수석 피비)': '기술적 분석가 (수석 피비)',
+  '벤자민 그레이엄': '벤자민 그레이엄',
+  '테리 스미스': '테리 스미스',
+  '제임스 오쇼너시': '제임스 오쇼너시',
+  '필립 피셔': '필립 피셔',
+  '존 템플턴': '존 템플턴',
+  '데이비드 드레먼': '데이비드 드레먼',
+  '존 네프': '존 네프',
+  '팻 도시': '팻 도시',
+  '크리스토퍼 브라운': '크리스토퍼 브라운',
+  '피터 컨딜': '피터 컨딜',
+  '브라운/컨딜 (안전마진)': '브라운/컨딜 (안전마진)',
+  '마이클 모부신': '마이클 모부신',
+  '앤서니 볼튼': '앤서니 볼튼'
 };
 
 const MASTER_AVATAR_MAP: Record<string, string> = {
+  // 영문 키
   'Warren Buffett': '/avatars/masters/buffett.webp',
   'Cathie Wood': '/avatars/masters/wood.webp',
   'Fundamental Analyst': '/avatars/masters/hong.webp',
@@ -78,7 +106,33 @@ const MASTER_AVATAR_MAP: Record<string, string> = {
   'Peter Cundill': '/avatars/masters/cundill.webp',
   'Christopher Browne / Peter Cundill': '/avatars/masters/cundill.webp',
   'Michael Mauboussin': '/avatars/masters/mauboussin.webp',
-  'Anthony Bolton': '/avatars/masters/bolton.webp'
+  'Anthony Bolton': '/avatars/masters/bolton.webp',
+
+  // 한글 키 (DB 저장 규격 대응)
+  '워런 버핏': '/avatars/masters/buffett.webp',
+  '캐시 우드': '/avatars/masters/wood.webp',
+  '기본적 분석가': '/avatars/masters/hong.webp',
+  '기본적 분석가 (수석 피비)': '/avatars/masters/hong.webp',
+  '기술적 분석가': '/avatars/masters/hong.webp',
+  '기술적 분석가 (수석 피비)': '/avatars/masters/hong.webp',
+  '빌 애크먼': '/avatars/masters/ackman.webp',
+  '찰리 멍거': '/avatars/masters/munger.webp',
+  '피터 린치': '/avatars/masters/lynch.webp',
+  '마이클 버리': '/avatars/masters/burry.webp',
+  '아스워드 다모다란': '/avatars/masters/damodaran.webp',
+  '벤자민 그레이엄': '/avatars/masters/graham.webp',
+  '테리 스미스': '/avatars/masters/smith.webp',
+  '제임스 오쇼너시': '/avatars/masters/oshaughnessy.webp',
+  '필립 피셔': '/avatars/masters/fisher.webp',
+  '존 템플턴': '/avatars/masters/templeton.webp',
+  '데이비드 드레먼': '/avatars/masters/dreman.webp',
+  '존 네프': '/avatars/masters/neff.webp',
+  '팻 도시': '/avatars/masters/dorsey.webp',
+  '크리스토퍼 브라운': '/avatars/masters/browne.webp',
+  '피터 컨딜': '/avatars/masters/cundill.webp',
+  '브라운/컨딜 (안전마진)': '/avatars/masters/cundill.webp',
+  '마이클 모부신': '/avatars/masters/mauboussin.webp',
+  '앤서니 볼튼': '/avatars/masters/bolton.webp'
 };
 
 const getKoreanName = (name: string) => MASTER_NAME_KO[name] || name;
@@ -209,12 +263,13 @@ export default async function StockDetailPage({ params }: PageProps) {
   if (isPremium) {
     // 4. 프리미엄 회원의 경우 실제 캐시된 주가 데이터 및 시그널 제공
     prices = rawPrices;
-    // 'Christopher Browne / Peter Cundill'을 크리스토퍼 브라운과 피터 컨딜 2개의 독립 카드로 자동 분리 (총 21인, 3열 그리드 완성)
+    // 'Christopher Browne / Peter Cundill' (또는 '브라운/컨딜 (안전마진)')을 크리스토퍼 브라운과 피터 컨딜 2개의 독립 카드로 자동 분리 (총 21인, 3열 그리드 완성)
     signals = (rawSignals || []).flatMap((sig) => {
-      if (sig.analyst_name === 'Christopher Browne / Peter Cundill') {
+      const name = (sig.analyst_name || '').trim();
+      if (name === 'Christopher Browne / Peter Cundill' || name === '브라운/컨딜 (안전마진)') {
         return [
-          { ...sig, analyst_name: 'Christopher Browne' },
-          { ...sig, analyst_name: 'Peter Cundill' }
+          { ...sig, analyst_name: '크리스토퍼 브라운' },
+          { ...sig, analyst_name: '피터 컨딜' }
         ];
       }
       return [sig];
