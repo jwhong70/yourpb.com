@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase-server';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
+import { cache } from 'react';
 
 export interface SignUpParams {
   name: string;
@@ -100,7 +101,7 @@ export async function signOut() {
  * - 현재 세션의 인증 사용자 및 DB 연동 프로필(멤버십 정보 포함)을 조회합니다.
  * - 비로그인 시 null을 반환합니다.
  */
-export async function getSessionUser() {
+export const getSessionUser = cache(async () => {
   const cookieStore = await cookies();
   const allCookies = cookieStore.getAll();
   const hasAuthCookie = allCookies.some(
@@ -170,7 +171,7 @@ export async function getSessionUser() {
   }
 
   return null;
-}
+});
 
 /**
  * 구글 소셜 로그인(sign in with Google) Action

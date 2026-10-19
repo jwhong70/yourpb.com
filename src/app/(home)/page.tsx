@@ -1,41 +1,77 @@
 import React from 'react';
 import Link from 'next/link';
 import { unstable_cache } from 'next/cache';
+import dynamic from 'next/dynamic';
 import { ArrowRight } from 'lucide-react';
 import { supabase as publicSupabase } from '@/lib/supabase';
-import Filter from '@/components/Filter';
-import ModelCarousel from '@/components/ModelCarousel';
 import { getSessionUser } from '@/app/actions/auth';
 import { getWishlist } from '@/app/actions/wishlist';
 import PortfolioPieChart from '@/components/PortfolioPieChart';
-import PortfolioHistoryTimeline from '@/components/PortfolioHistoryTimeline';
-import PortfolioCalculator from '@/components/PortfolioCalculator';
 import { PB_MODEL_PORTFOLIO } from '@/config/portfolio';
 import { getMonthlyBrief } from '@/lib/monthly-brief';
+
+const PortfolioCalculator = dynamic(() => import('@/components/PortfolioCalculator'), {
+  loading: () => (
+    <div className="p-6 bg-white border border-black shadow-xs animate-pulse">
+      <div className="h-6 w-48 bg-black/10 mb-4" />
+      <div className="h-10 bg-black/5" />
+    </div>
+  ),
+});
+
+const PortfolioHistoryTimeline = dynamic(() => import('@/components/PortfolioHistoryTimeline'), {
+  loading: () => (
+    <div className="p-6 bg-white border border-black shadow-xs animate-pulse">
+      <div className="h-6 w-56 bg-black/10 mb-4" />
+      <div className="h-20 bg-black/5" />
+    </div>
+  ),
+});
+
+const ModelCarousel = dynamic(() => import('@/components/ModelCarousel'), {
+  loading: () => <div className="h-64 bg-black/5 animate-pulse rounded-none" />
+});
+
+const Filter = dynamic(() => import('@/components/Filter'), {
+  loading: () => (
+    <div className="space-y-6 animate-pulse">
+      <div className="h-20 bg-black/5 border border-black" />
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="aspect-2/3 bg-black/5 border border-black" />
+        ))}
+      </div>
+    </div>
+  ),
+});
 
 const getCachedPortfolioPrices = unstable_cache(
   async (tickers: string[]) => {
     if (!tickers || tickers.length === 0) return {};
-    const { data } = await publicSupabase
-      .from('etf_prices')
-      .select('ticker, date, close')
-      .in('ticker', tickers)
-      .order('date', { ascending: false });
-
     const priceMap: Record<string, { close: number; date: string }> = {};
-    if (data) {
-      data.forEach((p) => {
-        if (!priceMap[p.ticker]) {
-          priceMap[p.ticker] = {
-            close: Number(p.close) || 0,
-            date: p.date ? String(p.date) : '',
+
+    await Promise.all(
+      tickers.map(async (ticker) => {
+        const { data } = await publicSupabase
+          .from('etf_prices')
+          .select('ticker, date, close')
+          .eq('ticker', ticker)
+          .order('date', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (data) {
+          priceMap[data.ticker] = {
+            close: Number(data.close) || 0,
+            date: data.date ? String(data.date) : '',
           };
         }
-      });
-    }
+      })
+    );
+
     return priceMap;
   },
-  ['home-portfolio-prices-cache-v1'],
+  ['home-portfolio-prices-cache-v2'],
   { revalidate: 3600, tags: ['home-page'] }
 );
 
