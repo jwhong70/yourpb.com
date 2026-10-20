@@ -5,6 +5,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "sonner/dist/styles.css";
 import GlobalToaster from "@/components/GlobalToaster";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
+import InstallPrompt from "@/components/InstallPrompt";
 import "./globals.css";
 
 const pretendard = localFont({
@@ -15,7 +16,7 @@ const pretendard = localFont({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#000000",
+  themeColor: "#0A0A0A",
   width: "device-width",
   initialScale: 1,
 };
@@ -25,9 +26,14 @@ export const metadata: Metadata = {
   title: "당신의 피비 - ETF 포트폴리오 자산관리 파트너",
   description: "각종 지표, ETF, 주식 분석을 한 곳에서 확인하세요",
   manifest: "/manifest.json",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.png",
+    apple: "/apple-touch-icon.png",
+  },
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
+    statusBarStyle: "black-translucent",
     title: "당신의 피비",
   },
   formatDetection: {
@@ -75,6 +81,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </NuqsAdapter>
         <GlobalToaster />
         <ScrollToTopButton />
+        <InstallPrompt />
       </body>
     </html>
   );
