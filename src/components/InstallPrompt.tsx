@@ -40,10 +40,10 @@ export default function InstallPrompt() {
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 
-    // 5. 사용자가 웹사이트를 8초 이상 둘러본 뒤 자연스럽게 슬라이드업 노출
+    // 5. 사용자가 웹사이트를 3초 이상 둘러본 뒤 하단에서 스르륵 노출
     const timer = setTimeout(() => {
       setIsVisible(true);
-    }, 8000);
+    }, 3000);
 
     return () => {
       window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
