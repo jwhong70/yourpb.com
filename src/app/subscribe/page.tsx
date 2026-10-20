@@ -21,10 +21,10 @@ export default async function SubscribePage() {
           
           {/* 상단 타이틀 영역 */}
           <div className="text-center space-y-4 max-w-3xl mx-auto">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white select-none">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-white select-none">
               프리미엄으로 업그레이드
             </h1>
-            <p className="text-base sm:text-lg text-gray-400 font-medium leading-relaxed">
+            <p className="text-xs sm:text-sm text-gray-400 font-medium leading-relaxed">
               워런 버핏 등 <strong className="text-white font-bold">투자 대가 20인의 AI 주식 시그널</strong>과 <strong className="text-white font-bold">1,000대 글로벌 주식 정밀 분석</strong>,<br className="hidden sm:inline" />
               그리고 <strong className="text-[#D4AF37] font-bold">ETF 및 주식 정밀 리서치 보고서 원본 PDF 다운로드</strong> 혜택을 무제한으로 누려보세요.
             </p>

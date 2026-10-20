@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, Instagram, Phone, Compass, TrendingUp, Target, ShieldCheck } from 'lucide-react';
+import { Mail, Instagram, Phone, Compass } from 'lucide-react';
 import Image from 'next/image';
 import { getSessionUser } from '@/app/actions/auth';
 import Header from '@/components/Header';
@@ -69,42 +69,42 @@ export default async function AboutPage() {
     <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
       <Header initialUser={user} />
       <main className="grow pt-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16 mt-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-14 mt-6">
 
           {/* 1. 프로필 요약 (첫번째 블록) */}
-          <section className="bg-box-bg rounded-none p-8 sm:p-10 shadow-2xl relative overflow-hidden">
+          <section className="bg-box-bg rounded-none p-6 sm:p-8 shadow-2xl relative overflow-hidden">
             {/* 미세한 팝 컬러 그라데이션 장식 배경 */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-sky-primary/10 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-red-accent/5 rounded-full blur-3xl pointer-events-none" />
 
             {/* 웹: 좌우 / 앱: 세로 반응형 flex */}
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
 
               {/* 프로필 이미지 */}
-              <div className="w-48 h-48 sm:w-56 sm:h-56 shrink-0 rounded-none overflow-hidden border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md bg-inner-bg relative group">
+              <div className="w-40 h-40 sm:w-48 sm:h-48 shrink-0 rounded-none overflow-hidden border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md bg-inner-bg relative group">
                 <Image
                   src="/profile_animation.png"
                   alt="홍선생 프로필"
                   fill
-                  sizes="(max-width: 768px) 192px, 224px"
+                  sizes="(max-width: 768px) 160px, 192px"
                   priority
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
 
               {/* 이력서 요약 문구 및 메인 설명 */}
-              <div className="flex-1 space-y-5 text-center md:text-left">
-                <div className="space-y-2">
+              <div className="flex-1 space-y-3.5 text-center md:text-left">
+                <div className="space-y-1.5">
                   <h1 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
                     홍선생
                   </h1>
                 </div>
 
-                <p className="text-base font-bold text-gray-700 leading-relaxed max-w-2xl">
+                <p className="text-sm sm:text-base font-bold text-gray-800 leading-relaxed max-w-2xl">
                   &ldquo;20년 이상의 현업 금융 지식과 포트폴리오 관리 성과를 바탕으로, 당신을 위한 맞춤형 포트폴리오를 제공합니다.&rdquo;
                 </p>
 
-                <p className="text-base text-gray-500 leading-relaxed">
+                <p className="text-sm text-gray-600 leading-relaxed">
                   은행 및 증권사 피비, 대형 자산운용사 펀드 매니저 출신으로, 펀드, ISA, 퇴직연금 분야에서 탁월한 수익률(일임형 ISA, IRP 전업권 1위)을 달성한 금융 전문가입니다.
                 </p>
               </div>
@@ -113,31 +113,28 @@ export default async function AboutPage() {
           </section>
 
           {/* 2. 서비스 헌장 & 핵심 고객 페르소나 (신설 블록) */}
-          <section className="space-y-8">
-            <div className="text-center md:text-left space-y-2 pb-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#D4AF37]/10 border border-[#D4AF37]/40 text-[#b58b1a] text-xs font-bold uppercase tracking-wider">
+          <section className="space-y-6">
+            <div className="text-center md:text-left space-y-1.5 pb-1">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#D4AF37]/10 border border-[#D4AF37]/40 text-[#b58b1a] text-xs font-bold uppercase tracking-wider">
                 <Compass className="w-3.5 h-3.5 text-[#D4AF37]" />
                 <span>Service Philosophy & Charter</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900 select-none">
+              <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-gray-900 select-none">
                 우리가 지향하는 금융과 서비스 헌장
               </h2>
-              <p className="text-base text-gray-600 max-w-3xl leading-relaxed">
+              <p className="text-sm text-gray-600 max-w-3xl leading-relaxed">
                 높은 자산 문턱의 은행 피비센터 대신, 합리적인 비용으로 내 손안에서 완성하는 스마트한 자기주도 자산관리 파트너
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
               {/* 카드 1: 서비스 본질 (Product Hierarchy) */}
-              <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-7 space-y-4 hover:border-[#D4AF37] transition-all shadow-xs">
-                <div className="w-12 h-12 bg-emerald-500/10 text-emerald-600 flex items-center justify-center rounded-none font-bold">
-                  <TrendingUp className="w-6 h-6" />
-                </div>
+              <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-4.5 sm:p-5 space-y-3 hover:border-[#D4AF37] transition-all shadow-xs">
                 <div className="space-y-1">
                   <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider">01. Service Essence</span>
-                  <h3 className="text-xl font-extrabold text-gray-900">ETF 중심의 포트폴리오</h3>
+                  <h3 className="text-base sm:text-lg font-extrabold text-gray-900">ETF 중심의 포트폴리오</h3>
                 </div>
-                <div className="space-y-3 text-sm text-gray-600 leading-relaxed">
+                <div className="space-y-2.5 text-sm text-gray-600 leading-relaxed">
                   <p>
                     <strong className="text-gray-900 font-bold">🥇 핵심 기둥 (Hero)</strong>: 글로벌 ETF(미국 상장 ETF 중심 + 국내 상장 ETF)가 플랫폼의 핵심 주인공입니다.
                   </p>
@@ -148,15 +145,12 @@ export default async function AboutPage() {
               </div>
 
               {/* 카드 2: 타깃 고객 페르소나 (Target Persona) */}
-              <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-7 space-y-4 hover:border-[#D4AF37] transition-all shadow-xs">
-                <div className="w-12 h-12 bg-[#D4AF37]/10 text-[#b58b1a] flex items-center justify-center rounded-none font-bold">
-                  <Target className="w-6 h-6 text-[#D4AF37]" />
-                </div>
+              <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-4.5 sm:p-5 space-y-3 hover:border-[#D4AF37] transition-all shadow-xs">
                 <div className="space-y-1">
                   <span className="text-xs font-bold text-[#b58b1a] uppercase tracking-wider">02. Core Persona</span>
-                  <h3 className="text-xl font-extrabold text-gray-900">30~50대 스마트 투자자</h3>
+                  <h3 className="text-base sm:text-lg font-extrabold text-gray-900">30~50대 스마트 투자자</h3>
                 </div>
-                <div className="space-y-3 text-sm text-gray-600 leading-relaxed">
+                <div className="space-y-2.5 text-sm text-gray-600 leading-relaxed">
                   <p>
                     테마주 몰빵이 아닌 <strong className="text-gray-900 font-bold">ETF 중심의 간접투자를 선호</strong>하며, 일부 국내외 대형 우량주를 곁들이는 합리적인 개인투자자를 지향합니다.
                   </p>
@@ -167,15 +161,12 @@ export default async function AboutPage() {
               </div>
 
               {/* 카드 3: 원칙과 청렴성 (Integrity & Principles) */}
-              <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-7 space-y-4 hover:border-[#D4AF37] transition-all shadow-xs">
-                <div className="w-12 h-12 bg-blue-500/10 text-blue-600 flex items-center justify-center rounded-none font-bold">
-                  <ShieldCheck className="w-6 h-6" />
-                </div>
+              <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-4.5 sm:p-5 space-y-3 hover:border-[#D4AF37] transition-all shadow-xs">
                 <div className="space-y-1">
                   <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">03. Principle & Integrity</span>
-                  <h3 className="text-xl font-extrabold text-gray-900">원칙 중심의 정석 투자</h3>
+                  <h3 className="text-base sm:text-lg font-extrabold text-gray-900">원칙 중심의 정석 투자</h3>
                 </div>
-                <div className="space-y-3 text-sm text-gray-600 leading-relaxed">
+                <div className="space-y-2.5 text-sm text-gray-600 leading-relaxed">
                   <p>
                     공부 없이 급등주 족집게 픽만 바라는 게으른 요행이나, 초고수 전업 단타 매매를 위한 정보는 단호히 지양합니다.
                   </p>
@@ -187,50 +178,43 @@ export default async function AboutPage() {
             </div>
           </section>
 
-          {/* 3. 경력 사항 타임라인 */}
-          <section className="space-y-8">
-            <div className="flex items-center pb-2">
+          {/* 3. 경력 사항 (불릿/수직선 제거 및 모바일 가로폭 최대 확보 모던 리스트) */}
+          <section className="space-y-4">
+            <div className="flex items-center pb-1">
               <h2 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
                 전문 경력 (Career History)
               </h2>
             </div>
 
-            {/* 수직 타임라인 레이아웃 (세로선 스타일 변경) */}
-            <div className="relative border-l-2 border-[#D4AF37]/30 ml-4 pl-3 sm:pl-4 space-y-10">
+            <div className="space-y-3">
               {careerHistory.map((item, idx) => (
-                <div key={idx} className="relative group">
-                  {/* 타임라인 원형 마커 노드 (블릿 스타일 변경) */}
-                  <span className="absolute -left-6.5 sm:-left-7.5 top-2.5 flex items-center justify-center w-4.5 h-4.5 rounded-full bg-white border-2 border-[#D4AF37] transition-all shadow-xs">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
-                  </span>
-
-                  {/* 경력 상세 카드 */}
-                  <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white rounded-none p-6 hover:shadow-md hover:border-[#D4AF37] transition-all space-y-2">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                      <h3 className="text-xl font-extrabold text-[#000000] group-hover:text-[#D4AF37] transition-colors">
-                        {item.title}
-                      </h3>
-                      <span className="text-sm font-bold font-mono text-[#000000] shrink-0 bg-black/5 px-2.5 py-0.5 rounded-none self-start sm:self-center">
-                        {item.period}
-                      </span>
-                    </div>
-                    <p className="text-base text-[#000000] leading-relaxed">
-                      {item.description}
-                    </p>
+                <div
+                  key={idx}
+                  className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-4 sm:p-5 hover:border-[#D4AF37] transition-all space-y-2 shadow-2xs"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                    <h3 className="text-base sm:text-lg font-bold text-gray-900">
+                      {item.title}
+                    </h3>
+                    <span className="text-xs font-mono font-semibold text-gray-700 bg-black/5 px-2 py-0.5 self-start sm:self-center">
+                      {item.period}
+                    </span>
                   </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {item.description}
+                  </p>
                 </div>
               ))}
             </div>
           </section>
 
-
           {/* 4. CONTACT US (세번째 블록 - 이메일, 인스타 링크 연동) */}
-          <section className="bg-box-bg rounded-none p-8 sm:p-10 space-y-8">
-            <div className="text-center space-y-2">
-              <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight select-none">
+          <section className="bg-box-bg rounded-none p-6 sm:p-8 space-y-6">
+            <div className="text-center space-y-1.5">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight select-none">
                 CONTACT US
               </h2>
-              <p className="text-base text-gray-500">
+              <p className="text-sm text-gray-500">
                 자산배분 상담 및 퇴직연금 포트폴리오 진단 문의를 기다립니다.
               </p>
             </div>

@@ -288,11 +288,11 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
               <span>행동재무학 기반 실전 진단 솔루션</span>
             </div>
             
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-gray-900 tracking-tight select-none">
               투자 행동 편향 정밀 진단
             </h1>
             
-            <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed font-normal">
+            <p className="text-xs sm:text-sm text-gray-600 max-w-2xl mx-auto leading-relaxed font-normal">
               워런 버핏은 &ldquo;투자는 지능이 아니라 감정을 다스리는 싸움&rdquo;이라 했습니다.<br className="hidden sm:inline" />
               19가지 실전 문항을 통해 나의 무의식적 투자 심리 약점을 진단하고, 맞춤형 극복 처방전을 발급받으세요.
             </p>

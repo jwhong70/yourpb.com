@@ -204,7 +204,7 @@ export default async function MonthlyBriefPage() {
                 </div>
 
                 <div className="space-y-2 print:space-y-1">
-                  <h1 className="text-2xl sm:text-4xl print:text-2xl font-black text-gray-900 tracking-tight leading-tight">
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl print:text-2xl font-extrabold text-gray-900 tracking-tight leading-tight">
                     {brief.title}
                   </h1>
                   <p className="text-sm sm:text-base print:text-xs font-bold text-gray-500 print:text-gray-700">
