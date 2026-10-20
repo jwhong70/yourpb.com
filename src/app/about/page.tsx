@@ -123,7 +123,7 @@ export default async function AboutPage() {
                 우리가 지향하는 금융과 서비스 헌장
               </h2>
               <p className="text-sm text-gray-600 max-w-3xl leading-relaxed">
-                높은 자산 문턱의 은행 피비센터 대신, 합리적인 비용으로 내 손안에서 완성하는 스마트한 자기주도 자산관리 파트너
+                높은 문턱의 은행 피비센터 대신, 합리적인 비용으로 내 손안에서 완성하는 스마트한 자기주도 자산관리 파트너
               </p>
             </div>
 
