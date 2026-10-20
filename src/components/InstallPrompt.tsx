@@ -34,17 +34,7 @@ export default function InstallPrompt() {
       // localStorage 접근 불가 환경(카톡 시크릿/웹뷰 등) 예외 무시하고 계속 진행
     }
 
-    const userAgent = (window.navigator?.userAgent || "").toLowerCase();
-    
-    // 3. 카카오톡 인앱 브라우저 감지
-    const isKakaoTalk = userAgent.includes("kakaotalk");
-    setIsKakao(isKakaoTalk);
-
-    // 4. iOS (아이폰/아이패드) 감지
-    const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
-    setIsIOS(isIosDevice);
-
-    // 5. 안드로이드/크롬 PWA 설치 신호 감지
+    // 3. 안드로이드/크롬 PWA 설치 신호 감지
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
@@ -52,8 +42,11 @@ export default function InstallPrompt() {
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 
-    // 6. 1.5초 후 자연스럽게 슬라이드업 노출 (즉각적 반응성)
+    // 4. 1.5초 후 환경 감지 및 자연스럽게 슬라이드업 노출 (React 19 단일 배칭)
     const timer = setTimeout(() => {
+      const userAgent = (window.navigator?.userAgent || "").toLowerCase();
+      setIsKakao(userAgent.includes("kakaotalk"));
+      setIsIOS(/iphone|ipad|ipod/.test(userAgent));
       setIsVisible(true);
     }, 1500);
 
@@ -162,7 +155,7 @@ export default function InstallPrompt() {
                 e.stopPropagation();
                 handleInstallClick();
               }}
-              className="rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-3.5 py-2 text-xs font-bold text-neutral-950 shadow-lg transition-transform active:scale-95 hover:brightness-110"
+              className="rounded-xl bg-linear-to-r from-amber-500 to-amber-600 px-3.5 py-2 text-xs font-bold text-neutral-950 shadow-lg transition-transform active:scale-95 hover:brightness-110"
             >
               {isKakao ? "브라우저로 열기" : "1초 설치"}
             </button>
