@@ -67,12 +67,33 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
     }
   }, []);
 
+  // URL 쿼리 파라미터(?ep=3) 변경 실시간 감지 및 동기화
+  useEffect(() => {
+    const ep = searchParams.get('ep');
+    if (ep) {
+      const targetEpNum = parseInt(ep, 10);
+      const found = LEARNING_EPISODES.find((e) => e.episodeNumber === targetEpNum);
+      if (found && found.id !== selectedEp.id) {
+        setSelectedEp(found);
+        setCurrentCardIndex(1);
+        setOpenChapterId(found.chapterNumber);
+      }
+    }
+  }, [searchParams, selectedEp.id]);
+
   // 에피소드 변경 시 처리
   const handleSelectEpisode = (ep: LearningEpisode) => {
     setSelectedEp(ep);
     setCurrentCardIndex(1);
     setViewMode('cards');
     setOpenChapterId(ep.chapterNumber);
+
+    // URL 쿼리 파라미터 실시간 동기화 (?ep=3)
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('ep', String(ep.episodeNumber));
+      window.history.replaceState(null, '', url.toString());
+    }
 
     // 부드럽게 상단 뷰어로 스크롤
     if (typeof window !== 'undefined' && window.innerWidth < 1024) {
@@ -111,13 +132,27 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
     }
   };
 
-  // PDF 다운로드 클릭 핸들러
+  // PDF 다운로드 URL 생성 (고화질 모바일 슬라이드형 PDF)
+  const getPdfDownloadUrl = (epNum: number) => {
+    const epDir = `ep_${String(epNum).padStart(2, '0')}`;
+    return `https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/${epDir}/slide.pdf`;
+  };
+
+  // PDF 다운로드 클릭 핸들러 (Rule 7 준수: 프리미엄 회원 전용 다운로드)
   const handlePdfClick = () => {
     const isPremium = initialUser?.membership_status === 'premium';
     if (!isPremium) {
       setIsPaywallModalOpen(true);
     } else {
-      alert(`[${selectedEp.title}] 고화질 정밀 리서치 원본 PDF 다운로드가 곧 시작됩니다.`);
+      const pdfUrl = getPdfDownloadUrl(selectedEp.episodeNumber);
+      const link = document.createElement('a');
+      link.href = pdfUrl;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.download = `당신의피비_50강선행학습_${String(selectedEp.episodeNumber).padStart(2, '0')}강_${selectedEp.title.replace(/\s+/g, '_')}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   };
 
