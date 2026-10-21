@@ -89,7 +89,7 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     subtitle: '모두가 환호할 때 경계하고, 모두가 비관할 때 기회를 잡는 법',
     cardCount: 10,
     hasVideo: true,
-    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_01/video.mp4',
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_03/video.mp4',
     dialogueSummary: {
       manager: '인터넷 카페랑 단톡방에서 난리 난 종목은 지금이라도 안 타면 바보가 되는 기분이에요.',
       director: '모두가 파티를 즐길 때가 가장 위험하다는 남편 말이 매번 맞더라고요.',
