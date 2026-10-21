@@ -121,10 +121,10 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
     }
   };
 
-  // 이미지 경로 생성 (1강과 2강은 실제 추출된 에셋 사용, 이후는 폴백 처리)
+  // 이미지 경로 생성 (Supabase Storage 글로벌 고속 CDN 스트리밍)
   const getCardImageUrl = (epNum: number, cardNum: number) => {
-    const epDir = epNum === 1 ? 'ep_01' : epNum === 2 ? 'ep_02' : 'ep_01';
-    return `/learning/${epDir}/${cardNum}.png`;
+    const epDir = `ep_${String(epNum).padStart(2, '0')}`;
+    return `https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/${epDir}/${cardNum}.png`;
   };
 
   const progressPercent = Math.round((completedEps.length / 50) * 100);
@@ -218,7 +218,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
             {viewMode === 'cards' ? (
               <div className="relative bg-black rounded-xl border border-white/10 overflow-hidden flex flex-col items-center select-none shadow-2xl">
                 {/* 메인 이미지 디스플레이 (종횡비 4:5 인스타 카드뉴스 규격, 웅장한 가독성 확보) */}
-                <div className="relative w-full aspect-4/5 max-h-[820px] flex items-center justify-center bg-[#0a0a0a]">
+                <div className="relative w-full aspect-4/5 max-h-205 flex items-center justify-center bg-[#0a0a0a]">
                   <Image
                     src={getCardImageUrl(selectedEp.episodeNumber, currentCardIndex)}
                     alt={`${selectedEp.title} - ${currentCardIndex}장`}

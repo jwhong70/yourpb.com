@@ -41,7 +41,7 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     subtitle: '아무 주식이나 사지 마세요! 거시 경제 숲부터 보는 깔때기 분석법',
     cardCount: 10,
     hasVideo: true,
-    videoUrl: '/learning/ep_01/video.mp4',
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_01/video.mp4',
     dialogueSummary: {
       manager: '형부! 나 아파트 잔금 대출 치르고 입주했잖아. 매달 대출 갚고 나면 남는 돈도 없는데, 남들 주식으로 돈 번 거 보면 막 급등주라도 사야 하나 조급해요!',
       director: '소영아, 주식 시장이 그렇게 만만하지 않아. 남들 말 듣고 조급해하다 물리면 큰일 난다. 형부한테 기본부터 제대로 배워야 해.',
@@ -64,7 +64,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '주식시장에서 살아남는 단 3가지 질문',
     subtitle: '매수 버튼을 누르기 전, 스스로에게 반드시 던져야 하는 질문들',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_02/video.mp4',
     dialogueSummary: {
       manager: '주식을 살 때 도대체 뭘 보고 사야 할지 감이 안 와요. 그냥 뉴스에 호재 뜨면 사면 안 되나요?',
       director: '뉴스 보고 들어가면 항상 상투더라! 언니도 예전에 남편 말 안 듣고 샀다가 마음고생 많이 했어.',
@@ -87,7 +88,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '대중과 거꾸로 가는 역발상 투자',
     subtitle: '모두가 환호할 때 경계하고, 모두가 비관할 때 기회를 잡는 법',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_01/video.mp4',
     dialogueSummary: {
       manager: '인터넷 카페랑 단톡방에서 난리 난 종목은 지금이라도 안 타면 바보가 되는 기분이에요.',
       director: '모두가 파티를 즐길 때가 가장 위험하다는 남편 말이 매번 맞더라고요.',
@@ -110,7 +112,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '복리의 힘과 장기 투자',
     subtitle: '사회초년생 필독! 내 퇴직금이 4,400만 원이나 차이 난다고?',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_04/video.mp4',
     dialogueSummary: {
       manager: '매달 30만 원씩 소액으로 모아서 언제 부자가 돼요? 너무 티끌 모아 태산 같아요.',
       director: '소영아, 10년 20년 지나면 그 티끌이 눈덩이가 돼. 언니도 일찍 시작할 걸 후회된다니까.',
@@ -133,7 +136,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '중도 인출의 무서운 함정',
     subtitle: '4,000만 원 뺐을 뿐인데 내 노후 자금 6,700만 원이 사라졌다?',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_05/video.mp4',
     dialogueSummary: {
       manager: '급전이 필요해서 연금이나 청약 통장 깨려고 고민한 적 많은데, 괜찮겠죠?',
       director: '절대 안 돼! 한번 깨고 나면 다시 모으는 건 백배는 더 힘들어.',
@@ -156,7 +160,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '세금 효율을 최대한 높이는 방법',
     subtitle: '수익률만큼 중요한 세테크, 모르면 1,500만 원 손해 봅니다!',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_06/video.mp4',
     dialogueSummary: {
       manager: '주식에서 수익률 10% 내는 것만 신경 썼지, 세금은 신경도 못 썼어요.',
       director: '세금으로 몇백만 원 뜯기면 수익률 아무리 좋아도 허탈해지더라고요.',
@@ -179,7 +184,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '적정한 리스크를 감수해야 하는 이유',
     subtitle: '원금만 지키려다 내 자산만 제자리걸음? 1억 4천만 원 더 버는 법!',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_07/video.mp4',
     dialogueSummary: {
       manager: '손실 보는 게 너무 무서워서 예금만 들고 싶은데, 그러면 안 되나요?',
       director: '예금 이자보다 물가 오르는 게 더 빠르잖아. 마트 갈 때마다 느끼는 게 돈 가치가 떨어지는 거야.',
@@ -202,7 +208,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '분산 투자로 손실을 방어하는 법',
     subtitle: "'몰빵' 투자하다가 노후자금 1억 원이 사라진다면?",
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_08/video.mp4',
     dialogueSummary: {
       manager: '한 종목에 확신이 있으면 집중 투자해야 돈을 크게 벌지 않나요?',
       director: '그 확신이 빗나가면 인생이 흔들려. 계란을 한 바구니에 담지 말라는 말이 괜히 있는 게 아니야.',
@@ -225,7 +232,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '포트폴리오 구성 전략: 안전·핵심·위성 전략',
     subtitle: '피비센터 VIP들이 실제로 사용하는 3단 자산 배분 프레임워크',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_09/video.mp4',
     dialogueSummary: {
       manager: '안정적인 ETF만 모으자니 심심하고, 개별주만 하자니 불안한데 어떻게 조절해요?',
       director: '나도 안정적인 게 좋지만 가끔 유망한 테마주도 조금은 해보고 싶더라.',
@@ -248,7 +256,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '포트폴리오 구성 전략: 안전자산 구성',
     subtitle: '위기 때 진가를 발휘하는 나만의 금융 방패 만들기',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_10/video.mp4',
     dialogueSummary: {
       manager: '안전자산은 그냥 은행 예금이랑 달러 통장만 있으면 되는 건가요?',
       director: '달러가 오를 때 주식이 떨어지고 서로 상쇄되는 걸 보니까 신기하더라고요.',
@@ -275,7 +284,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: 'S&P500 vs 나스닥100, 나에게 맞는 핵심 ETF 고르기',
     subtitle: '안정성의 SPY vs 테크 성장의 QQQ, 어떤 비율로 섞어야 할까?',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_11/video.mp4',
     dialogueSummary: {
       manager: '다들 SPY랑 QQQ 사라고 하는데, 두 개가 어떻게 다르고 저 같은 사람은 뭘 사야 하나요?',
       director: '기술주가 많이 오르긴 하는데 떨어질 때도 무섭게 떨어지잖아. 균형이 중요하지.',
@@ -294,7 +304,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '배당 성장 vs 고배당 ETF의 실체와 선택 기준',
     subtitle: 'SCHD와 JEPI, 당장 들어오는 배당금의 유혹에 빠지지 마세요',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_12/video.mp4',
     dialogueSummary: {
       manager: '월배당 10% 준다는 ETF가 있던데, 그거 사서 매달 이자 받으면 은퇴 끝 아닌가요?',
       director: '원금이 깎여서 배당 주는 건지 꼼꼼히 봐야 한다고 홍선생이 매번 강조했어.',
@@ -313,7 +324,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '채권 ETF로 하락장 방패 구축하기',
     subtitle: '금리 인하기에 채권 ETF가 강력한 무기가 되는 원리',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_13/video.mp4',
     dialogueSummary: {
       manager: '채권은 수익률이 낮아서 재미없어 보여요. 왜 포트폴리오에 넣어야 하죠?',
       director: '2008년이나 2020년 폭락 때 채권이 없었으면 다들 패닉에 빠졌을 거야.',
@@ -332,7 +344,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '원자재·금(Gold) ETF를 담는 골든 타이밍',
     subtitle: '화폐 가치가 떨어질 때 내 자산의 구매력을 지키는 금의 마법',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_14/video.mp4',
     dialogueSummary: {
       manager: '금값 최고치라고 뉴스에 매일 나오는데, 지금 금 ETF 사도 되나요?',
       director: '골드바를 사긴 보관도 부담스러운데 ETF로도 살 수 있어?',
@@ -351,7 +364,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: 'ETF 총보수(TER)와 숨은 기타비용 뜯어보기',
     subtitle: '보수 0.03%의 비밀! 내 수익률을 갉아먹는 보이지 않는 비용들',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_15/video.mp4',
     dialogueSummary: {
       manager: 'ETF는 수수료가 다 0.03%처럼 거의 무료인 줄 알았어요.',
       director: '광고에 나오는 수수료랑 실제 나가는 총비용이 다르다며?',
@@ -370,7 +384,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: 'ETF 속 보유종목 엑스레이 분석법',
     subtitle: '내가 산 ETF 안에 어떤 기업이 몇 퍼센트 들어있는지 투시하기',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_16/video.mp4',
     dialogueSummary: {
       manager: 'ETF를 5개나 샀는데, 알고 보니 다 엔비디아랑 애플만 잔뜩 들어있더라고요!',
       director: '맞아! 이름만 다르고 속에 든 종목이 똑같으면 분산투자가 아니잖아.',
@@ -389,7 +404,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '동일 비중(RSP) vs 시가총액 가중(SPY) 차이점',
     subtitle: '빅테크 쏠림이 불안할 때 대안이 되는 동일 가중 ETF의 매력',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_17/video.mp4',
     dialogueSummary: {
       manager: 'S&P500이 500개 기업이라는데, 실제론 상위 7개 테크 기업이 30%를 차지한다면서요?',
       director: '그 7개 기업이 흔들리면 지수 전체가 휘청거리겠네.',
@@ -408,7 +424,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '환노출(H) vs 환헤지, 달러 자산의 전략적 활용',
     subtitle: '환율 1,400원 시대! 국내 상장 미국 ETF, (H) 붙은 걸 사야 할까?',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_18/video.mp4',
     dialogueSummary: {
       manager: 'ETF 이름 뒤에 (H) 붙어 있는 건 뭐고 환헤지가 뭔지 헷갈려요.',
       director: '환율 떨어지면 손해 볼까 봐 (H)를 사야 하나 고민되던데.',
@@ -427,7 +444,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '레버리지·인버스 ETF의 위험과 복리 침식 효과',
     subtitle: '2배, 3배 오른다더니 횡보장에 내 원금이 반토막 난 이유',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_19/video.mp4',
     dialogueSummary: {
       manager: '나스닥 3배 레버리지(TQQQ)로 적금처럼 모아가면 대박 난다는 유튜브 영상 봤어요!',
       director: '3배 오르면 3배 떨어질 수도 있잖아! 너무 무서워 보여.',
@@ -446,7 +464,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '3인 패밀리 맞춤형 ETF 포트폴리오 실전 배분',
     subtitle: '처제 한과장(40대)과 아내 한실장(50대)의 포트폴리오는 왜 달라야 할까?',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_20/video.mp4',
     dialogueSummary: {
       manager: '형부! 그럼 제 대출금 상황이랑 나이에 맞는 구체적인 ETF 배분 비중 알려주세요!',
       director: '내 나이랑 소영이 나이는 은퇴까지 남은 기간이 다르니까 포트폴리오도 달라야겠지?',
@@ -469,7 +488,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '연말정산 148만 원 환급! IRP vs 연금저축펀드',
     subtitle: '직장인 13월의 월급을 두둑하게 만드는 연금 계좌 200% 활용법',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_21/video.mp4',
     dialogueSummary: {
       manager: '연말정산 때 세금 토해냈는데, IRP랑 연금저축 넣으면 100만 원 넘게 돌려받는다고요?',
       director: '작년에 남편이 세팅해 준 덕분에 13월의 월급 쏠쏠하게 받았잖아.',
@@ -488,7 +508,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '만능 절세 통장 ISA 200% 활용하는 법',
     subtitle: '일반형 200만 원, 서민형 400만 원 비과세 + 초과분 9.9% 분리과세',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_22/video.mp4',
     dialogueSummary: {
       manager: 'ISA 통장 만들라고 은행에서 문자 왔는데, 이게 왜 필수 통장인가요?',
       director: '수익 난 거랑 손실 난 거 합쳐서 세금 매겨준다는 게 ISA 맞지?',
@@ -507,7 +528,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '연금계좌에서 미국 지수 ETF를 담아야 하는 이유',
     subtitle: '배당소득세 15.4% 원천징수 없이 100% 재투자되는 과세이연의 기적',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_23/video.mp4',
     dialogueSummary: {
       manager: '미국 직투로 SPY 사면 양도세 22%인데, 국내 상장 미국 ETF는 연금에서 사면 어떻게 돼요?',
       director: '세금을 나중에 연금 받을 때 아주 낮게 뗀다고 들었어.',
@@ -526,7 +548,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '퇴직연금 DB형 vs DC형, 직장인 선택 가이드',
     subtitle: '내 임금상승률과 투자 수익률 비교로 내 퇴직금 2배 불리기',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_24/video.mp4',
     dialogueSummary: {
       manager: '회사에서 DB형이랑 DC형 고르라는데 머리가 하얘져요. 특허법인 직장인은 뭐가 좋나요?',
       director: '회사가 알아서 굴려주는 게 편하지 않아?',
@@ -545,7 +568,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '연금 인출 시기 세금 폭탄 피하는 절세 순서',
     subtitle: '어느 계좌부터 돈을 빼야 세금을 한 푼이라도 덜 낼까?',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_25/video.mp4',
     dialogueSummary: {
       manager: '나중에 55세 넘어서 연금 탈 때 세금 왕창 떼여서 후회하는 분들 많다면서요?',
       director: '모으는 것만큼 찾는 것도 순서가 있구나.',
@@ -564,7 +588,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '해외주식 양도소득세 250만 원 공제와 부부 증여 절세법',
     subtitle: '수익 난 미국 주식, 세금 22% 합법적으로 0원으로 만드는 마법',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_26/video.mp4',
     dialogueSummary: {
       manager: '미국 주식으로 1,000만 원 벌면 165만 원이나 세금 내야 하잖아요. 아까워요!',
       director: '배우자 증여 활용하면 세금 확 줄일 수 있다고 언니한테도 알려줬잖아.',
@@ -583,7 +608,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '건강보험료 피부양자 자격 지키는 금융소득 관리',
     subtitle: '연 2,000만 원 넘는 순간 건보료 폭탄! 은퇴자 필수 방어 가이드',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_27/video.mp4',
     dialogueSummary: {
       manager: '배당 많이 받으면 건강보험료 피부양자에서 탈락해서 매달 몇십만 원씩 나온다면서요?',
       director: '언니 친구 중에도 배당금 조금 더 받았다가 지역가입자로 털려서 고생했어.',
@@ -602,7 +628,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '월배당 ETF로 제2의 월급 만들기 실전',
     subtitle: '매달 통장에 50만 원, 100만 원씩 꽂히는 자동 캐시플로우 시스템',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_28/video.mp4',
     dialogueSummary: {
       manager: '월급날 말고 매달 다른 날에 50만 원씩 배당이 들어오면 대출 이자 갚는데 너무 든든할 것 같아요.',
       director: '그게 진짜 파이프라인이지! 마음이 여유로워지거든.',
@@ -621,7 +648,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '목돈 마련과 분할 매수의 기술 (DCA)',
     subtitle: '목돈 3,000만 원이 생겼다면 한 번에 넣을까, 나눠서 넣을까?',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_29/video.mp4',
     dialogueSummary: {
       manager: '이번에 성과급 500만 원 나왔는데, 지금 주가 높을 때 한 번에 넣어도 될지 너무 떨려요.',
       director: '한 번에 샀다가 다음 날 떨어지면 잠 못 자지. 나눠 사는 게 속 편해.',
@@ -640,7 +668,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '처제 한과장의 주담대 상환 vs 연금저축 납입 황금비율',
     subtitle: '대출 이자율 4.2% vs 투자 기대수익률 7%, 무엇을 먼저 갚아야 할까?',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_30/video.mp4',
     dialogueSummary: {
       manager: '형부! 제 제일 큰 고민이에요. 매달 남는 여유 돈으로 주담대 원금을 갚을까요, ETF를 살까요?',
       director: '빚부터 다 갚고 투자해야 마음이 편하지 않아?',
@@ -663,7 +692,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '금리 인하기 대출 갈아타기 전략',
     subtitle: '대환대출 인프라로 매달 이자 20만 원 아끼는 실전 스킬',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_31/video.mp4',
     dialogueSummary: {
       manager: '작년에 고금리로 대출받았는데 요즘 금리 내려간다니까 배가 아파요.',
       director: '스마트폰으로 은행 안 가고도 대출 갈아탈 수 있다며?',
@@ -682,7 +712,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '원리금 균등 vs 원금 균등, 어떤 게 나에게 유리할까?',
     subtitle: '총이자 3,000만 원을 아끼는 상환 방식 선택의 비밀',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_32/video.mp4',
     dialogueSummary: {
       manager: '대출받을 때 은행 직원이 원리금 균등으로 해줬는데, 원금 균등이 이자가 훨씬 적다면서요?',
       director: '초기에 내는 돈이 달라서 월급 사정에 맞춰야 해.',
@@ -701,7 +732,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '비상금 통장(CMA·파킹통장) 최적 규모 설정법',
     subtitle: '비상금이 너무 많아도 손해, 너무 적으면 주식 강제 매도!',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_33/video.mp4',
     dialogueSummary: {
       manager: '비상금으로 천만 원씩 통장에 놀려두는 게 너무 아까워요.',
       director: '갑자기 병원 가거나 부모님 일 생기면 비상금 없어서 주식 손절하게 되잖아.',
@@ -720,7 +752,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '신용점수 관리와 대출 한도 극대화 꿀팁',
     subtitle: '신용점수 1점 차이로 금리 0.3%가 바뀐다! 올크레딧 950점 만들기',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_34/video.mp4',
     dialogueSummary: {
       manager: '신용카드 많이 쓰면 신용점수 떨어진다는 소문이 있던데 진짜예요?',
       director: '카드 한도 꽉 채워 쓰면 점수 깎인다고 들었어.',
@@ -739,7 +772,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '가계부 없이 통장 4개로 끝내는 자동 지출 통제',
     subtitle: '급여 ➔ 고정비 ➔ 생활비 ➔ 비상금, 돈이 알아서 모이는 시스템',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_35/video.mp4',
     dialogueSummary: {
       manager: '가계부 앱 깔아놓고 3일 만에 포기했어요. 귀찮아서 못 쓰겠어요.',
       director: '나도 써봤는데 쓰는 것만으로는 돈이 안 줄더라고.',
@@ -758,7 +792,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '마이너스 통장의 올바른 사용법과 치명적 함정',
     subtitle: '편리하다고 쓰다간 복리 이자 눈덩이! 비상용 마통 관리 수칙',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_36/video.mp4',
     dialogueSummary: {
       manager: '마통은 이자가 쓴 만큼만 나가니까 비상금 대신 마통 뚫어놓으면 편하지 않나요?',
       director: '그게 내 돈인 줄 알고 쓰다가 빚만 늘어난 사람들 많이 봤다.',
@@ -777,7 +812,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '자녀 교육비 마련과 어린이 증여 비과세 플랜',
     subtitle: '미성년자 10년마다 2,000만 원 비과세 증여로 20살에 1억 만들어주기',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_37/video.mp4',
     dialogueSummary: {
       manager: '언니는 조카들 대학 등록금이랑 결혼 자금 어떻게 준비하고 있어?',
       director: '남편이 아이들 태어났을 때부터 미국 ETF 증여 통장 만들어줘서 꾸준히 굴리고 있지.',
@@ -796,7 +832,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '아내 한실장의 살림 노하우: 물가를 이기는 소비 다이어트',
     subtitle: '숨만 쉬어도 나가는 구독료와 배달비, 월 40만 원 줄이는 실전 팁',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_38/video.mp4',
     dialogueSummary: {
       manager: '언니는 피비 남편이랑 살면서 생활비 관리 어떻게 해? 난 매달 어디로 돈이 새는지 모르겠어.',
       director: 'OTT랑 정기 구독 서비스부터 정리하고, 일주일 냉파(냉장고 파먹기)만 해도 40만 원이 세이브돼.',
@@ -815,7 +852,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '보험 리모델링으로 매달 새어나가는 고정비 잡기',
     subtitle: '저축성 보험의 환상을 깨고 실손+3대 질병 진단비로 슬림화하기',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_39/video.mp4',
     dialogueSummary: {
       manager: '보험료로만 매달 40만 원씩 나가는데, 지인이 들어달래서 든 거라 해지도 못 하겠어요.',
       director: '지인 부탁으로 든 보험이 제일 돈 아까운 거야. 홍선생한테 진단받고 다 다이어트했잖아.',
@@ -834,7 +872,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '순자산 10억 달성을 위한 10년 현금흐름 로드맵',
     subtitle: '막연한 부자의 꿈을 구체적인 숫자로 엑셀화하는 10년 마일스톤',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_40/video.mp4',
     dialogueSummary: {
       manager: '형부! 저도 10년 뒤에는 순자산 10억 넘겨서 경제적 자유를 누리고 싶어요. 가능할까요?',
       director: '목표가 구체적이어야 매달 버티는 힘이 생기더라고.',
@@ -857,7 +896,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '주식시장 폭락장에서 절대 하지 말아야 할 3가지',
     subtitle: '공포에 질려 바닥에서 패닉 셀(Panic Sell)하면 영원히 손실 확정',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_41/video.mp4',
     dialogueSummary: {
       manager: '계좌가 파란불로 도배되고 -20% 찍히면 무서워서 다 팔아버리고 싶어요!',
       director: '그때 파는 사람이 제일 바보야. 팔지 않으면 손실이 확정된 게 아니거든.',
@@ -876,7 +916,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '공포 탐욕 지수(Fear & Greed)를 활용한 저점 분할 매수',
     subtitle: '시장이 극단적 공포(Extreme Fear)에 빠질 때 담대하게 분할 매수하기',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_42/video.mp4',
     dialogueSummary: {
       manager: '언제가 바닥인지 알 수가 없는데 언제 추가 매수를 시작해야 하나요?',
       director: 'CNN 공포탐욕지수 20 밑으로 내려가면 홍선생이 항상 매수 준비하라고 했잖아.',
@@ -895,7 +936,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '하락장을 버티게 해주는 리밸런싱의 기적',
     subtitle: '많이 오른 자산을 팔아 떨어진 자산을 채우는 기계적 자산배분',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_43/video.mp4',
     dialogueSummary: {
       manager: '리밸런싱이란 말을 자주 듣는데, 왜 수익 난 주식을 팔아서 채권을 사야 하죠?',
       director: '비쌀 때 팔고 쌀 때 사는 걸 사람이 머리로 못 하니까 규칙으로 하는 거지.',
@@ -914,7 +956,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: 'FOMO(고립공포감)와 뇌동매매를 잠재우는 심리 처방전',
     subtitle: '친구의 코인 대박 소식에 흔들리지 않는 내면의 중심 잡기',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_44/video.mp4',
     dialogueSummary: {
       manager: '옆자리 김 대리가 테마주로 천만 원 벌었다고 자랑하는데 배가 너무 아파서 미치겠어요!',
       director: '남의 떡이 커 보이는 법이야. 그 대리가 잃었을 때는 말 안 했을걸?',
@@ -933,7 +976,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '주가 창 끄고 일상에 집중하는 시스템 투자법',
     subtitle: '매일 호가창을 들여다보는 사람치고 부자 된 사람 없습니다',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_45/video.mp4',
     dialogueSummary: {
       manager: '일하다가도 10분마다 주가 확인하고 밤에 미국장 시작하면 잠을 못 자요.',
       director: '그렇게 피폐해져서 일도 안 되고 건강만 상해. 자동 이체 걸어두고 잊고 살아!',
@@ -952,7 +996,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '전문가의 말을 맹신하면 안 되는 이유',
     subtitle: '내 돈에 대한 최종 책임은 오직 나 자신에게만 있습니다',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_46/video.mp4',
     dialogueSummary: {
       manager: '유명 유튜버가 하반기에 폭락 온다고 현금화하라는데 형부 말 들을까요, 그분 말 들을까요?',
       director: '작년에도 폭락 온다고 했다가 불장 왔잖아! 예측은 아무도 못 맞춰.',
@@ -971,7 +1016,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '워런 버핏과 찰리 멍거의 자산관리 불변의 지혜',
     subtitle: '규칙 1: 절대 돈을 잃지 마라. 규칙 2: 규칙 1을 절대 잊지 마라.',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_47/video.mp4',
     dialogueSummary: {
       manager: '워런 버핏 할아버지는 평생 동안 어떻게 저렇게 성공할 수 있었을까요?',
       director: '무리하지 않고 아는 것에만 투자하고 끝까지 살아남았기 때문이지.',
@@ -990,7 +1036,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '경제 위기 주기(사이클)를 내 편으로 만드는 기술',
     subtitle: '사계절이 오가듯 금융 시장에도 봄, 여름, 가을, 겨울이 있습니다',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_48/video.mp4',
     dialogueSummary: {
       manager: '지금은 경기 침체기인가요, 회복기인가요? 사계절 사이클은 어떻게 아나요?',
       director: '겨울이 지나면 반드시 봄이 오듯이 경제도 돌고 도는 거구나.',
@@ -1009,7 +1056,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '진짜 부자들의 공통적인 소비와 투자 습관',
     subtitle: '부자처럼 보이려는 사람과 진짜 부자가 된 사람들의 결정적 차이',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_49/video.mp4',
     dialogueSummary: {
       manager: '진짜 피비센터 VIP 부자들은 명품 두르고 외제차만 탈 것 같은데 실제론 어때요?',
       director: '오히려 검소하고 자산 가치가 떨어지는 소비를 극도로 경계하더라고.',
@@ -1028,7 +1076,8 @@ export const LEARNING_EPISODES: LearningEpisode[] = [
     title: '50주 완강! 3인 패밀리가 완성한 평생 자산관리 시스템',
     subtitle: '조급했던 처제 한과장의 눈부신 변화, 이제 당신 차례입니다',
     cardCount: 10,
-    hasVideo: false,
+    hasVideo: true,
+    videoUrl: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_50/video.mp4',
     dialogueSummary: {
       manager: '형부, 언니! 1년 동안 50강 완강하고 나니까 이제 대출 빚도 무섭지 않고 제 포트폴리오가 너무 든든해요!',
       director: '소영이가 이제 언니보다 경제 지표를 더 잘 보더라고. 정말 대견해!',

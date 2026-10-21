@@ -40,3 +40,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# media assets (served via Supabase Storage CDN)
+*.mp4
+/public/learning/
+
+# local utility scripts
+/scripts/

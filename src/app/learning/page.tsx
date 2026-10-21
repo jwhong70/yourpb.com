@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: '당신의 피비',
       images: [
         {
-          url: '/learning/ep_01/1.png',
+          url: 'https://vypehsjeufupmrpgcsbd.supabase.co/storage/v1/object/public/upload/learning/ep_01/1.png',
           width: 800,
           height: 1000,
           alt: '당신의 피비 자산관리 선행학습 50부작',
