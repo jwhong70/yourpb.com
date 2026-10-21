@@ -24,7 +24,10 @@ export default function InstallPrompt() {
       const isStandalone = window.matchMedia && window.matchMedia("(display-mode: standalone)").matches;
       if (isStandalone) return;
 
-      // 2. 7일 이내에 닫기를 눌렀는지 확인 (안전한 try-catch)
+      // 2. 이미 설치 완료된 이력이 있는지 확인
+      if (localStorage.getItem("yourpb_pwa_installed") === "true") return;
+
+      // 3. 7일 이내에 닫기를 눌렀는지 확인 (안전한 try-catch)
       const dismissedTime = localStorage.getItem("yourpb_pwa_dismissed");
       if (dismissedTime) {
         const diffDays = (Date.now() - parseInt(dismissedTime, 10)) / (1000 * 60 * 60 * 24);
@@ -34,7 +37,23 @@ export default function InstallPrompt() {
       // localStorage 접근 불가 환경(카톡 시크릿/웹뷰 등) 예외 무시하고 계속 진행
     }
 
-    // 3. 안드로이드/크롬 PWA 설치 신호 감지
+    // 4. PC 데스크톱 환경 원천 차단 (스마트폰/태블릿 및 768px 미만 모바일 화면에서만 동작)
+    const userAgent = (window.navigator?.userAgent || "").toLowerCase();
+    const isMobileDevice = /iphone|ipad|ipod|android|blackberry|iemobile|opera mini|mobile/i.test(userAgent) || (window.innerWidth < 768);
+    if (!isMobileDevice) return;
+
+    // 5. 브라우저 설치 완료 이벤트 감지 (설치 시 영구 숨김 처리)
+    const handleAppInstalled = () => {
+      setIsVisible(false);
+      try {
+        localStorage.setItem("yourpb_pwa_installed", "true");
+      } catch {
+        // 무시
+      }
+    };
+    window.addEventListener("appinstalled", handleAppInstalled);
+
+    // 6. 안드로이드/크롬 PWA 설치 신호 감지
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
@@ -42,15 +61,15 @@ export default function InstallPrompt() {
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 
-    // 4. 1.5초 후 환경 감지 및 자연스럽게 슬라이드업 노출 (React 19 단일 배칭)
+    // 7. 1.5초 후 환경 감지 및 모바일에서만 자연스럽게 슬라이드업 노출
     const timer = setTimeout(() => {
-      const userAgent = (window.navigator?.userAgent || "").toLowerCase();
       setIsKakao(userAgent.includes("kakaotalk"));
       setIsIOS(/iphone|ipad|ipod/.test(userAgent));
       setIsVisible(true);
     }, 1500);
 
     return () => {
+      window.removeEventListener("appinstalled", handleAppInstalled);
       window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
       clearTimeout(timer);
     };
@@ -86,6 +105,11 @@ export default function InstallPrompt() {
         const choice = await deferredPrompt.userChoice;
         if (choice.outcome === "accepted") {
           setIsVisible(false);
+          try {
+            localStorage.setItem("yourpb_pwa_installed", "true");
+          } catch {
+            // 무시
+          }
         }
         setDeferredPrompt(null);
       } catch (err) {
@@ -112,10 +136,10 @@ export default function InstallPrompt() {
 
   return (
     <>
-      {/* 화면 하단 럭셔리 골드 플로팅 설치 배너 */}
+      {/* 화면 하단 럭셔리 골드 플로팅 설치 배너 (모바일 전용: md:hidden) */}
       <aside 
         aria-label="스마트폰 앱 설치 안내"
-        className="fixed bottom-4 left-3 right-3 z-50 mx-auto max-w-md animate-in fade-in slide-in-from-bottom-5 duration-500"
+        className="fixed bottom-4 left-3 right-3 z-50 mx-auto max-w-md animate-in fade-in slide-in-from-bottom-5 duration-500 md:hidden"
       >
         <div 
           onClick={handleInstallClick}
