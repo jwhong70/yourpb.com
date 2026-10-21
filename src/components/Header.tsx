@@ -45,20 +45,20 @@ export default function Header({ initialUser }: HeaderProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
           {/* 로고 영역 */}
-          <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center">
+          <div className="flex items-center gap-4 xl:gap-8">
+            <Link href="/" className="flex items-center shrink-0">
               <Image
                 src="/yourpb-final-logo.png"
                 alt="YOURPB.COM"
                 width={128}
                 height={32}
-                className="h-8 w-auto object-contain select-none"
+                className="h-7 xl:h-8 w-auto object-contain select-none"
                 priority
               />
             </Link>
 
             {/* 데스크톱 네비게이션 */}
-            <nav className="hidden lg:flex items-center gap-8">
+            <nav className="hidden lg:flex items-center gap-1.5 xl:gap-5">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 return (
@@ -66,7 +66,7 @@ export default function Header({ initialUser }: HeaderProps) {
                     key={link.name}
                     href={link.href}
                     prefetch={true}
-                    className={`text-base font-black transition-colors duration-200 px-3 h-14 flex items-center relative rounded-none ${isActive
+                    className={`text-sm xl:text-base font-bold xl:font-black transition-colors duration-200 px-2 xl:px-3 h-14 flex items-center relative rounded-none shrink-0 whitespace-nowrap ${isActive
                       ? 'text-white'
                       : 'text-[#9E9E9E] hover:text-white'
                       }`}

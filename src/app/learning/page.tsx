@@ -7,10 +7,10 @@ import { getSessionUser } from '@/app/actions/auth';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: '자산관리 선행학습 50부작 실전 클래스 | 당신의 피비',
-    description: '수석 피비 홍선생과 3인 패밀리가 함께하는 50주 자산관리 완성 로드맵. 실전 카드뉴스와 리서치 요약을 무료로 열람하세요.',
+    title: '자산관리 선행학습 | 당신의 피비',
+    description: '3인 패밀리와 함께하는 50주 자산관리 완성 로드맵. 실전 카드뉴스와 리서치 요약을 무료로 열람하세요.',
     openGraph: {
-      title: '자산관리 선행학습 50부작 실전 클래스 | 당신의 피비',
+      title: '자산관리 선행학습 | 당신의 피비',
       description: '특허법인 처제 한과장과 현실주의 언니 한실장의 리얼 50주 금융 독립 스토리. 숲부터 보는 탑다운 자산배분과 ETF 실전 가이드.',
       url: 'https://yourpb.vercel.app/learning',
       siteName: '당신의 피비',
