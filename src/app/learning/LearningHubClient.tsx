@@ -217,8 +217,8 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
             {/* B. 카드뉴스 슬라이더 뷰어 */}
             {viewMode === 'cards' ? (
               <div className="relative bg-black rounded-xl border border-white/10 overflow-hidden flex flex-col items-center select-none shadow-2xl">
-                {/* 메인 이미지 디스플레이 (종횡비 4:5 인스타 카드뉴스 규격) */}
-                <div className="relative w-full aspect-4/5 max-h-160 flex items-center justify-center bg-[#0a0a0a]">
+                {/* 메인 이미지 디스플레이 (종횡비 4:5 인스타 카드뉴스 규격, 웅장한 가독성 확보) */}
+                <div className="relative w-full aspect-4/5 max-h-[820px] flex items-center justify-center bg-[#0a0a0a]">
                   <Image
                     src={getCardImageUrl(selectedEp.episodeNumber, currentCardIndex)}
                     alt={`${selectedEp.title} - ${currentCardIndex}장`}
