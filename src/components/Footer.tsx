@@ -49,7 +49,7 @@ export default function Footer() {
             <span><strong>통신판매업신고번호:</strong> 제 2026-고양일산동-1750 호</span>
           </p>
           <p className="flex flex-wrap gap-x-3 gap-y-1 justify-center md:justify-start">
-            <span><strong>사업장 주소:</strong> 경기도 고양시 일산동구 위시티4로 80, 106동 602호(식사동, 위시티일산자이1단지)</span>
+            <span><strong>사업장 주소:</strong> 경기도 고양시 일산동구 위시티 4로 80</span>
             <span className="hidden md:inline text-white/10">|</span>
             <span><strong>개인정보보호책임자:</strong> 홍정웅</span>
           </p>
