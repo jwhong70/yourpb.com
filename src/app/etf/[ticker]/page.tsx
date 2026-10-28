@@ -188,6 +188,27 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
 
   const formatPercent = (val: number | string | null | undefined) => formatNum(val, '%');
 
+  // 레버리지/인버스 펀드 판별 (1X, None, 0 이외의 레버리지 배수)
+  const rawLev = (etfList.leverage || '').trim();
+  const isLeverage = !!rawLev && !['1X', 'NONE', 'NULL', '0', '1', '해당사항 없음'].includes(rawLev.toUpperCase());
+
+  // 국내 상장 ETF 판별 (.KS, .KQ, 6자리 숫자 티커)
+  const isDomestic = actualTicker.endsWith('.KS') || actualTicker.endsWith('.KQ') || /^\d{6}$/.test(actualTicker);
+
+  // 펀드 핵심 평가지표 4종 유효값 존재 여부 (PER, PBR, 분배율, YTM)
+  const hasValidMetrics = !!(
+    (etfInfo?.pe_ratio !== null && etfInfo?.pe_ratio !== undefined && !isNaN(Number(etfInfo?.pe_ratio))) ||
+    (etfInfo?.pb_ratio !== null && etfInfo?.pb_ratio !== undefined && !isNaN(Number(etfInfo?.pb_ratio))) ||
+    (etfInfo?.distribution_yield !== null && etfInfo?.distribution_yield !== undefined && !isNaN(Number(etfInfo?.distribution_yield))) ||
+    (etfInfo?.yield_to_maturity !== null && etfInfo?.yield_to_maturity !== undefined && !isNaN(Number(etfInfo?.yield_to_maturity)))
+  );
+
+  // 평가지표 박스 노출 여부: 레버리지나 국내상장이 아니고 유효 지표가 1개 이상 있을 때만 노출
+  const showMetricsBox = !isLeverage && !isDomestic && hasValidMetrics;
+
+  // 자산배분 파이차트 노출 여부: 레버리지 펀드는 파생/스왑 왜곡 방지를 위해 숨김 처리
+  const showAllocations = !isLeverage && allocations.length > 0;
+
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-sans">
       <Header initialUser={user} />
@@ -235,11 +256,11 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
           {/* 3. ETF 대시보드 메인 영역 (비회원/회원 모두에게 오픈) */}
           <div className="space-y-8">
 
-            {/* 분류체계 박스, 개요, 가치평가지표를 반응형 3단 그리드로 웹(가로)/앱(세로) 배치 */}
+            {/* 분류체계 박스, 개요, 가치평가지표를 반응형 그리드로 배치 (지표 생략 시 개요 박스가 2단으로 와이드 확장) */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
 
               {/* 1단: ETF 분류 체계 박스 (컴팩트 폰트) */}
-              <section className="p-3.5 sm:p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md flex flex-col justify-between relative overflow-hidden">
+              <section className="lg:col-span-1 p-3.5 sm:p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md flex flex-col justify-between relative overflow-hidden">
                 <div className="absolute -right-20 -top-20 w-60 h-60 rounded-full bg-navy/20 blur-[60px] pointer-events-none" />
                 <div>
                   <div className="text-[#000000]/60 text-xs uppercase tracking-wider mb-2">
@@ -281,8 +302,8 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
                 </div>
               </section>
 
-              {/* 2단: 개요 (Description) */}
-              <div className="p-3.5 sm:p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md flex flex-col justify-between">
+              {/* 2단: 개요 (Description) - 평가지표 박스가 생략되면 lg:col-span-2로 와이드 확장 */}
+              <div className={`${showMetricsBox ? 'lg:col-span-1' : 'lg:col-span-2'} p-3.5 sm:p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md flex flex-col justify-between`}>
                 <div>
                   <div className="text-[#000000]/60 text-xs uppercase tracking-wider mb-2">
                     <span>ETF 개요 및 투자 포인트</span>
@@ -294,40 +315,42 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
                 </div>
               </div>
 
-              {/* 3단: 핵심 평가지표 수치 (모두에게 공개) */}
-              <div className="p-3.5 sm:p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md space-y-3">
-                <div className="text-[#000000]/60 text-xs uppercase tracking-wider mb-1.5">
-                  <span>펀드 핵심 평가지표</span>
-                </div>
-                <h3 className="text-base sm:text-lg font-bold text-gray-900 select-none">가치 평가 & 분배 지표</h3>
+              {/* 3단: 핵심 평가지표 수치 (레버리지/국내상장이 아니고 지표가 존재할 때만 렌더링) */}
+              {showMetricsBox && (
+                <div className="lg:col-span-1 p-3.5 sm:p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md space-y-3">
+                  <div className="text-[#000000]/60 text-xs uppercase tracking-wider mb-1.5">
+                    <span>펀드 핵심 평가지표</span>
+                  </div>
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900 select-none">가치 평가 & 분배 지표</h3>
 
-                <div className="space-y-2 pt-1">
-                  <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
-                    <span className="text-xs sm:text-sm font-medium text-gray-500">PER (주가수익비율)</span>
-                    <span className="text-xs sm:text-sm font-bold text-gray-900">
-                      {formatNum(etfInfo?.pe_ratio)}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
-                    <span className="text-xs sm:text-sm font-medium text-gray-500">PBR (주가순자산비율)</span>
-                    <span className="text-xs sm:text-sm font-bold text-gray-900">
-                      {formatNum(etfInfo?.pb_ratio)}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
-                    <span className="text-xs sm:text-sm font-medium text-gray-500">분배율 (Distribution Yield)</span>
-                    <span className="text-xs sm:text-sm font-bold text-gray-900">
-                      {formatPercent(etfInfo?.distribution_yield)}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs sm:text-sm font-medium text-gray-500">만기수익률 (YTM)</span>
-                    <span className="text-xs sm:text-sm font-bold text-gray-900">
-                      {formatPercent(etfInfo?.yield_to_maturity)}
-                    </span>
+                  <div className="space-y-2 pt-1">
+                    <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
+                      <span className="text-xs sm:text-sm font-medium text-gray-500">PER (주가수익비율)</span>
+                      <span className="text-xs sm:text-sm font-bold text-gray-900">
+                        {formatNum(etfInfo?.pe_ratio)}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
+                      <span className="text-xs sm:text-sm font-medium text-gray-500">PBR (주가순자산비율)</span>
+                      <span className="text-xs sm:text-sm font-bold text-gray-900">
+                        {formatNum(etfInfo?.pb_ratio)}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
+                      <span className="text-xs sm:text-sm font-medium text-gray-500">분배율 (Distribution Yield)</span>
+                      <span className="text-xs sm:text-sm font-bold text-gray-900">
+                        {formatPercent(etfInfo?.distribution_yield)}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs sm:text-sm font-medium text-gray-500">만기수익률 (YTM)</span>
+                      <span className="text-xs sm:text-sm font-bold text-gray-900">
+                        {formatPercent(etfInfo?.yield_to_maturity)}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* 리서치 보고서 PDF 다운로드 버튼 (비회원/무료회원은 클릭 시 프리미엄 안내 모달) */}
@@ -339,13 +362,15 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
               returnUrl={`/etf/${ticker}${isFromMonthly ? '?from=monthly' : ''}`}
             />
 
-            {/* 1행: 자산 비중 분석 (국가별 비중, 섹터별 비중 솔리드 파이 차트) */}
-            <section className="pt-2">
-              <EtfAllocationCharts
-                allocations={allocations}
-                source="yfinance"
-              />
-            </section>
+            {/* 1행: 자산 비중 분석 (국가별 비중, 섹터별 비중 솔리드 파이 차트 - 레버리지 펀드는 왜곡 방지를 위해 숨김) */}
+            {showAllocations && (
+              <section className="pt-2">
+                <EtfAllocationCharts
+                  allocations={allocations}
+                  source="yfinance"
+                />
+              </section>
+            )}
 
             {/* 2행: 보유 비중 상위 10종목 (가로 전체 Full Width 독립 배치, 좌우 여백 최소화, 순위 열 제거, 비중 버그 수정) */}
             <section className="pt-2">
