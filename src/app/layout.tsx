@@ -16,7 +16,7 @@ const pretendard = localFont({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#0A0A0A",
+  themeColor: "#F9F8F6",
   width: "device-width",
   initialScale: 1,
 };

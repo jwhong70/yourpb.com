@@ -336,7 +336,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                       }
                       resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }}
-                    className="px-6 sm:px-8 py-4 bg-black hover:bg-gray-900 text-white text-sm sm:text-base font-black flex items-center justify-center gap-2 transition-all shadow-lg hover:scale-105 cursor-pointer select-none"
+                    className="px-6 sm:px-8 py-4 bg-[#D4AF37] hover:bg-[#C5A028] text-gray-950 text-sm sm:text-base font-extrabold flex items-center justify-center gap-2 transition-all shadow-md hover:scale-102 cursor-pointer select-none"
                   >
                     <Sparkles className="w-5 h-5 text-yellow-accent" />
                     <span>진단 종합 결과 확인하기</span>
@@ -369,7 +369,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                     onClick={() => {
                       cardRef.current?.scrollIntoView({ behavior: 'smooth' });
                     }}
-                    className="px-6 sm:px-8 py-4 bg-black hover:bg-gray-900 text-white text-sm sm:text-base font-black flex items-center justify-center gap-2 transition-all shadow-lg hover:scale-105 cursor-pointer select-none"
+                    className="px-6 sm:px-8 py-4 bg-[#D4AF37] hover:bg-[#C5A028] text-gray-950 text-sm sm:text-base font-extrabold flex items-center justify-center gap-2 transition-all shadow-md hover:scale-102 cursor-pointer select-none"
                   >
                     <Brain className="w-5 h-5" />
                     <span>진단 이어하기 (Q{currentStep + 1})</span>
@@ -409,7 +409,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                       cardRef.current?.scrollIntoView({ behavior: 'smooth' });
                     }, 100);
                   }}
-                  className="px-8 py-4 bg-black hover:bg-gray-900 text-white text-base font-black flex items-center justify-center gap-2 transition-all shadow-lg hover:scale-105 cursor-pointer select-none"
+                  className="px-8 py-4 bg-[#D4AF37] hover:bg-[#C5A028] text-gray-950 text-base font-extrabold flex items-center justify-center gap-2 transition-all shadow-md hover:scale-102 cursor-pointer select-none"
                 >
                   <Brain className="w-5 h-5" />
                   <span>진단 시작하기</span>
@@ -448,7 +448,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                   </div>
                   <div className="w-full bg-gray-100 border border-gray-200 h-2 overflow-hidden">
                     <div
-                      className="bg-black h-full transition-all duration-300"
+                      className="bg-[#D4AF37] h-full transition-all duration-300"
                       style={{ width: `${progressPercent}%` }}
                     />
                   </div>
@@ -510,7 +510,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                                 ? isOptBiased
                                   ? 'bg-rose-600 text-white border-rose-600'
                                   : 'bg-emerald-600 text-white border-emerald-600'
-                                : 'bg-black text-white border-black'
+                                : 'bg-[#1F1F1F] text-white border-black/20'
                               : 'bg-gray-100 text-gray-700 border-gray-300'
                           }`}
                         >
@@ -534,7 +534,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                       className={`w-full py-4 font-black text-sm sm:text-base flex items-center justify-center gap-2 transition-all shadow-md ${
                         currentSelectedIdx === undefined
                           ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                          : 'bg-black hover:bg-gray-900 text-white cursor-pointer'
+                          : 'bg-[#1F1F1F] hover:bg-[#2B2B2B] text-white cursor-pointer shadow-xs'
                       }`}
                     >
                       <Brain className="w-4 h-4" />
@@ -646,7 +646,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                       <button
                         type="button"
                         onClick={handleNext}
-                        className="px-6 py-3 bg-black hover:bg-gray-900 text-white text-xs font-black flex items-center gap-2 shadow-md cursor-pointer"
+                        className="px-6 py-3 bg-[#1F1F1F] hover:bg-[#2B2B2B] text-white text-xs font-bold flex items-center gap-2 shadow-xs cursor-pointer border border-black/20 hover:border-[#D4AF37]"
                       >
                         <span>
                           {currentStep < BIAS_QUESTIONS.length - 1
@@ -724,7 +724,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                 <button
                   type="button"
                   onClick={handlePrintPdf}
-                  className="w-full sm:w-auto px-6 py-3.5 bg-black hover:bg-gray-900 text-white font-black text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:scale-102 cursor-pointer"
+                  className="w-full sm:w-auto px-6 py-3.5 bg-[#D4AF37] hover:bg-[#C5A028] text-gray-950 font-extrabold text-sm flex items-center justify-center gap-2 transition-all shadow-md hover:scale-102 cursor-pointer"
                 >
                   <Printer className="w-4 h-4 text-yellow-accent" />
                   <span>📄 맞춤형 행동편향 컨설팅 처방전 다운로드 (PDF)</span>
@@ -854,7 +854,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* 1. 정기 재진단 */}
                 <div className="p-5 bg-box-bg border border-gray-300 space-y-2.5">
-                  <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-black text-xs">
+                  <div className="w-8 h-8 rounded-full bg-[#1F1F1F] text-[#D4AF37] border border-[#D4AF37]/30 flex items-center justify-center font-black text-xs shadow-xs">
                     01
                   </div>
                   <h4 className="text-sm font-black text-gray-900 flex items-center gap-1.5">
@@ -868,7 +868,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
 
                 {/* 2. 감정 배제 무감정 퀀트 자산배분 */}
                 <div className="p-5 bg-box-bg border border-gray-300 space-y-2.5">
-                  <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-black text-xs">
+                  <div className="w-8 h-8 rounded-full bg-[#1F1F1F] text-[#D4AF37] border border-[#D4AF37]/30 flex items-center justify-center font-black text-xs shadow-xs">
                     02
                   </div>
                   <h4 className="text-sm font-black text-gray-900 flex items-center gap-1.5">
@@ -891,7 +891,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
 
                 {/* 3. 맞춤 처방전 소장 & PB 상담 */}
                 <div className="p-5 bg-box-bg border border-gray-300 space-y-2.5">
-                  <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-black text-xs">
+                  <div className="w-8 h-8 rounded-full bg-[#1F1F1F] text-[#D4AF37] border border-[#D4AF37]/30 flex items-center justify-center font-black text-xs shadow-xs">
                     03
                   </div>
                   <h4 className="text-sm font-black text-gray-900 flex items-center gap-1.5">
@@ -921,17 +921,17 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
         {/* 4. 하단 Contact Us & 1:1 VIP 자산관리 상담 배너 (Monthly 스타일) */}
         {/* ============================================================ */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-4">
-          <div className="p-6 sm:p-8 bg-[#000000] border border-black text-white space-y-6 shadow-2xl">
+          <div className="p-6 sm:p-8 bg-linear-to-br from-amber-50/90 via-white to-amber-50/60 border border-black/10 border-l-4 border-l-[#D4AF37] text-gray-900 space-y-6 shadow-xs">
             <div className="space-y-2 text-center sm:text-left">
               <span className="text-xs font-bold text-[#D4AF37] uppercase tracking-widest flex items-center justify-center sm:justify-start gap-1.5">
                 <Sparkles className="w-3.5 h-3.5" />
                 당신의 피비 VIP 자산관리
               </span>
-              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+              <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
                 나의 투자 편향을 보완하는 맞춤형 포트폴리오가 필요하신가요?
               </h2>
-              <p className="text-xs sm:text-sm text-gray-300 leading-relaxed max-w-2xl font-normal">
-                감정과 충동을 배제한 <strong>HRP(계층적 리스크 패리티) 자산배분 모델</strong>과 룰 기반 분산 전략을 당신의 피비 수석 매니저가 1:1로 설계해 드립니다.
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed max-w-2xl font-normal">
+                감정과 충동을 배제한 <strong>HRP(계층적 리스크 패리티) 자산배분 모델</strong>과 룰 기반 분산 전략을 당신의 피비 전담 피비가 1:1로 설계해 드립니다.
               </p>
             </div>
 
@@ -993,14 +993,14 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                 <li>3페이지 고해상도 행동편향 맞춤 처방전 PDF 무제한 인쇄 및 소장</li>
                 <li>1,000대 글로벌 주식 & ETF 원본 리서치 보고서 무제한 다운로드</li>
                 <li>HRP 기반 글로벌 모델 포트폴리오 비중 실시간 열람</li>
-                <li>1:1 프라이빗 뱅커(피비) 자산배분 유선 상담 우선 배정</li>
+                <li>1:1 전담 피비 자산배분 상담 우선 배정</li>
               </ul>
             </div>
 
             <div className="space-y-2 pt-2">
               <Link
                 href="/subscribe"
-                className="w-full py-3.5 bg-black hover:bg-gray-900 text-white font-black text-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
+                className="w-full py-3.5 bg-[#D4AF37] hover:bg-[#C5A028] text-gray-950 font-extrabold text-xs flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer"
               >
                 <span>프리미엄 멤버십 업그레이드</span>
                 <ArrowRight className="w-4 h-4" />

@@ -177,30 +177,30 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
   if (user && user.membership_status === 'premium') {
     return (
       <div className="max-w-2xl mx-auto space-y-8 pt-6">
-        <div className="bg-black border-2 border-[#D4AF37] p-8 sm:p-10 shadow-2xl space-y-6 text-white text-center">
+        <div className="bg-white border-2 border-[#D4AF37] p-8 sm:p-10 shadow-md space-y-6 text-gray-900 text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37] mb-2">
             <Award className="w-8 h-8 text-[#D4AF37]" />
           </div>
 
           <div className="space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-gray-900">
               프리미엄 멤버십 이용 중
             </h2>
-            <p className="text-sm text-gray-400">
-              <strong className="text-white">{user.name}</strong> 님은 현재 당신의피비 VIP 프리미엄 혜택을 이용하고 계십니다.
+            <p className="text-sm text-gray-600">
+              <strong className="text-gray-900">{user.name}</strong> 님은 현재 당신의피비 VIP 프리미엄 혜택을 이용하고 계십니다.
             </p>
           </div>
 
           {user.subscription_end_date && (
-            <div className="bg-white/5 border border-white/10 p-4 inline-block mx-auto">
-              <span className="text-xs text-gray-400 block mb-1">구독 만료 예정일</span>
+            <div className="bg-[#FAF9F5] border border-black/10 p-4 inline-block mx-auto">
+              <span className="text-xs text-gray-500 block mb-1">구독 만료 예정일</span>
               <span className="text-lg font-mono font-black text-[#D4AF37]">
                 {user.subscription_end_date.split('T')[0]}
               </span>
             </div>
           )}
 
-          <div className="border-t border-white/10 pt-6 space-y-4">
+          <div className="border-t border-black/10 pt-6 space-y-4">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/"
@@ -234,54 +234,54 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
         {/* 1. 1개월 플랜 카드 */}
         <div 
           onClick={() => setSelectedPlan('1month')}
-          className={`flex flex-col bg-[#000000] border cursor-pointer rounded-none p-8 lg:p-10 shadow-xl justify-between space-y-8 relative transition-all duration-300 ${
+          className={`flex flex-col bg-white border cursor-pointer rounded-none p-8 lg:p-10 shadow-sm justify-between space-y-8 relative transition-all duration-300 ${
             selectedPlan === '1month' 
-              ? 'border-white scale-102 ring-2 ring-white/20' 
-              : 'border-white/10 opacity-70 hover:opacity-100'
+              ? 'border-gray-900 scale-102 ring-2 ring-black/10' 
+              : 'border-black/10 opacity-80 hover:opacity-100'
           }`}
         >
           <div className="space-y-6">
             <div>
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-gray-400 uppercase tracking-wider">1개월 멤버십</h3>
+                <h3 className="text-lg font-bold text-gray-700 uppercase tracking-wider">1개월 멤버십</h3>
                 {selectedPlan === '1month' && (
-                  <span className="text-[10px] font-black text-black bg-white px-2 py-0.5 uppercase tracking-wide">
+                  <span className="text-[10px] font-black text-white bg-[#1F1F1F] px-2 py-0.5 uppercase tracking-wide">
                     SELECTED
                   </span>
                 )}
               </div>
               <div className="mt-4 flex items-baseline">
-                <span className="text-4xl lg:text-5xl font-black tracking-tight text-white">₩5,000</span>
+                <span className="text-4xl lg:text-5xl font-black tracking-tight text-gray-900">₩5,000</span>
                 <span className="ml-2 text-sm font-semibold text-gray-500">/ 월</span>
               </div>
               <p className="mt-2 text-xs text-gray-500">매월 정기 결제, 언제든지 해지 가능</p>
             </div>
 
             {/* 혜택 리스트 */}
-            <div className="border-t border-white/10 pt-6">
+            <div className="border-t border-black/10 pt-6">
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
-                  <span className="text-sm sm:text-base text-gray-300">
-                    <strong className="text-white font-bold">[주식]</strong> 투자 대가 20인 AI 매매 시그널 & 적정가치 분석
+                  <span className="text-sm sm:text-base text-gray-600">
+                    <strong className="text-gray-900 font-bold">[주식]</strong> 투자 대가 20인 AI 매매 시그널 & 적정가치 분석
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
-                  <span className="text-sm sm:text-base text-gray-300">
-                    <strong className="text-white font-bold">[주식]</strong> 1,000대 글로벌 주식 정밀 분석 (120주 주봉 캔들)
+                  <span className="text-sm sm:text-base text-gray-600">
+                    <strong className="text-gray-900 font-bold">[주식]</strong> 1,000대 글로벌 주식 정밀 분석 (120주 주봉 캔들)
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
-                  <span className="text-sm sm:text-base text-gray-300">
-                    <strong className="text-white font-bold">[다운로드]</strong> ETF & 주식 2p 정밀 PDF 리포트 무제한 다운로드
+                  <span className="text-sm sm:text-base text-gray-600">
+                    <strong className="text-gray-900 font-bold">[다운로드]</strong> ETF & 주식 2p 정밀 PDF 리포트 무제한 다운로드
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
-                  <span className="text-sm sm:text-base text-gray-300">
-                    <strong className="text-white font-bold">[매크로]</strong> VIP 거시경제 지표 및 자산배분 모델 조회
+                  <span className="text-sm sm:text-base text-gray-600">
+                    <strong className="text-gray-900 font-bold">[매크로]</strong> VIP 거시경제 지표 및 자산배분 모델 조회
                   </span>
                 </li>
               </ul>
@@ -292,10 +292,10 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
         {/* 2. 6개월 플랜 카드 (추천) */}
         <div 
           onClick={() => setSelectedPlan('6months')}
-          className={`flex flex-col bg-[#000000] border cursor-pointer rounded-none p-8 lg:p-10 shadow-2xl justify-between space-y-8 relative transition-all duration-300 ${
+          className={`flex flex-col bg-white border cursor-pointer rounded-none p-8 lg:p-10 shadow-md justify-between space-y-8 relative transition-all duration-300 ${
             selectedPlan === '6months' 
-              ? 'border-[#D4AF37] scale-105 z-10 shadow-[#D4AF37]/5' 
-              : 'border-white/10 opacity-70 hover:opacity-100'
+              ? 'border-2 border-[#D4AF37] scale-105 z-10 ring-2 ring-[#D4AF37]/20 shadow-lg' 
+              : 'border-black/10 opacity-80 hover:opacity-100'
           }`}
         >
           {/* 추천 태그 뱃지 */}
@@ -319,31 +319,31 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
                 </div>
               </div>
               <div className="mt-4 flex items-baseline">
-                <span className="text-4xl lg:text-5xl font-black tracking-tight text-white">₩25,000</span>
+                <span className="text-4xl lg:text-5xl font-black tracking-tight text-gray-900">₩25,000</span>
                 <span className="ml-2 text-sm font-semibold text-gray-500">/ 6개월</span>
               </div>
               <p className="mt-2 text-xs text-gray-400">정가 ₩30,000 ➡️ ₩25,000 (월 ₩4,166 상당 / 추천 상품)</p>
             </div>
 
             {/* 혜택 리스트 */}
-            <div className="border-t border-white/10 pt-6">
+            <div className="border-t border-black/10 pt-6">
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
-                  <span className="text-sm sm:text-base text-gray-300 font-semibold">
+                  <span className="text-sm sm:text-base text-gray-700 font-semibold">
                     1개월 멤버십의 모든 주식 분석 & PDF 다운로드 혜택 포함
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
-                  <span className="text-sm sm:text-base text-gray-300">
-                    <strong className="text-white font-bold">[1:1 케어]</strong> 이메일 맞춤형 자산배분·포트폴리오 진단 1회 무료
+                  <span className="text-sm sm:text-base text-gray-600">
+                    <strong className="text-gray-900 font-bold">[1:1 케어]</strong> 이메일 맞춤형 자산배분·포트폴리오 진단 1회 무료
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
-                  <span className="text-sm sm:text-base text-gray-300">
-                    <strong className="text-white font-bold">[VIP 특전]</strong> 월간 시황 브리프 및 모델 포트폴리오 리밸런싱 우선 제공
+                  <span className="text-sm sm:text-base text-gray-600">
+                    <strong className="text-gray-900 font-bold">[VIP 특전]</strong> 월간 시황 브리프 및 모델 포트폴리오 리밸런싱 우선 제공
                   </span>
                 </li>
               </ul>

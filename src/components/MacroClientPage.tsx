@@ -68,17 +68,17 @@ function TrafficLight({ value, label, isParentSelected = false }: { value: numbe
   }
 
   const isPositive = value === 1;
-  const colorBg = isPositive 
-    ? 'bg-[#007C1F]' 
+  const colorBg = isPositive
+    ? 'bg-[#007C1F]'
     : 'bg-[#D60016]';
-  const shadowGlow = isPositive 
-    ? 'shadow-[0_0_6px_rgba(0,124,31,0.5)]' 
+  const shadowGlow = isPositive
+    ? 'shadow-[0_0_6px_rgba(0,124,31,0.5)]'
     : 'shadow-[0_0_6px_rgba(214,0,22,0.5)]';
 
   return (
     <div className="flex flex-col items-center gap-0.5">
-      <div 
-        className={`relative w-2.5 h-2.5 rounded-full ${colorBg} ${shadowGlow} border border-white/10 transition-all duration-500`} 
+      <div
+        className={`relative w-2.5 h-2.5 rounded-full ${colorBg} ${shadowGlow} border border-white/10 transition-all duration-500`}
       >
         {/* 3D 반사광 하이라이트 점 */}
         <div className="absolute top-0.5 left-0.5 w-0.75 h-0.5 rounded-full bg-white/70 filter blur-[0.2px]" />
@@ -242,7 +242,7 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
           { title: '1.1.2. 미국 GDP - 실질 정부 소비지출/총투자(분기)', chartType: 'bar', data: data.economic.gdp.us_gdp.gov_q, valKey: 'yoy_pct', theme: 3, ticker: 'gcec1' },
           { title: '1.1.2. 미국 GDP - 비농업 부문 시간당 노동생산성', chartType: 'bar', data: data.economic.gdp.us_gdp.prod_q, valKey: 'yoy_pct', theme: 4, ticker: 'ophnfb' },
           { title: '1.1.2. 미국 GDP - OECD 경기선행지수', chartType: 'line', data: data.economic.gdp.us_gdp.oecd, signal: data.economic.gdp.us_gdp.signal, theme: 1, ticker: 'united_states' },
-          
+
           { title: '1.1.3. 한국 GDP - 실질 GDP성장률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.imf, theme: 0, ticker: 'kor_ngdp_rpch_a' },
           { title: '1.1.3. 한국 GDP - 총투자비율(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.inv, theme: 1, ticker: 'kor_nid_ngdp_a' },
           { title: '1.1.3. 한국 GDP - 소비자물가상승률(IMF, 연간)', chartType: 'bar', data: data.economic.gdp.kr_gdp.cpi, theme: 2, ticker: 'kor_pcpipch_a' },
@@ -468,16 +468,14 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
             <button
               key={cat.id}
               onClick={() => handleMainClick(cat.id)}
-              className={`flex flex-col justify-between p-3 sm:p-4 md:p-5 rounded-none border border-[#000000] text-left transition-all duration-300 relative overflow-hidden group ${
-                isSelected
-                  ? 'bg-box-bg text-[#000000] shadow-2xl scale-[1.02]'
-                  : 'bg-[#000000] text-white hover:bg-black/80 hover:scale-[1.01]'
-              }`}
+              className={`flex flex-col justify-between p-3 sm:p-4 md:p-5 rounded-none text-left transition-all duration-300 relative overflow-hidden group ${isSelected
+                  ? 'bg-amber-50/90 text-gray-900 border-2 border-[#D4AF37] shadow-md scale-[1.02]'
+                  : 'bg-white text-gray-800 border border-black/10 hover:border-[#D4AF37] hover:shadow-xs hover:scale-[1.01]'
+                }`}
             >
               <div className="flex justify-between items-start gap-2 w-full">
-                <span className={`text-[10px] md:text-xs font-bold uppercase tracking-widest font-mono ${
-                  isSelected ? 'text-[#000000]/60' : 'text-white/60'
-                }`}>
+                <span className={`text-[10px] md:text-xs font-bold uppercase tracking-widest font-mono ${isSelected ? 'text-amber-800' : 'text-gray-400'
+                  }`}>
                   Category 0{cat.id}
                 </span>
                 {/* 대분류 신호등 표시 */}
@@ -485,15 +483,13 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
               </div>
 
               <div className="mt-6 md:mt-8 flex items-center justify-between gap-1 w-full">
-                <h3 className={`text-xs min-[380px]:text-sm sm:text-base md:text-lg font-bold tracking-tight whitespace-nowrap ${
-                  isSelected ? 'text-[#000000]' : 'text-white'
-                }`}>
+                <h3 className={`text-xs min-[380px]:text-sm sm:text-base md:text-lg font-bold tracking-tight whitespace-nowrap ${isSelected ? 'text-gray-900 font-extrabold' : 'text-gray-800'
+                  }`}>
                   {cat.title}
                 </h3>
-                <ChevronDown 
-                  className={`w-3.5 h-3.5 md:w-5 md:h-5 transition-transform duration-300 shrink-0 ${
-                    isSelected ? 'transform rotate-180 text-[#000000]' : 'text-white/60'
-                  }`} 
+                <ChevronDown
+                  className={`w-3.5 h-3.5 md:w-5 md:h-5 transition-transform duration-300 shrink-0 ${isSelected ? 'transform rotate-180 text-amber-700' : 'text-gray-400 group-hover:text-amber-600'
+                    }`}
                 />
               </div>
             </button>
@@ -510,34 +506,30 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden bg-box-bg border-t border-b border-[#000000] rounded-none p-2 sm:p-6 shadow-md"
+            className="overflow-hidden bg-white border border-black/10 rounded-none p-2 sm:p-6 shadow-sm"
           >
             <div className="flex flex-col gap-4">
-               {/* 중분류 목록 출력 */}
+              {/* 중분류 목록 출력 */}
               {getSubCategories(activeMain).map((sub) => {
                 const isSubSelected = activeSub === sub.id;
                 return (
-                  <div key={sub.id} className="flex flex-col border-t border-b border-[#000000] rounded-none overflow-hidden bg-[#9E9E9E]">
+                  <div key={sub.id} className="flex flex-col border border-black/10 rounded-none overflow-hidden bg-[#FAF9F5]">
                     <button
                       onClick={() => setActiveSub(isSubSelected ? null : sub.id)}
-                      className={`flex justify-between items-center p-3.5 sm:p-4 text-left transition-colors duration-200 ${
-                        isSubSelected ? 'bg-black/10' : 'hover:bg-black/5'
-                      }`}
+                      className={`flex justify-between items-center p-3.5 sm:p-4 text-left transition-colors duration-200 ${isSubSelected ? 'bg-amber-50/60' : 'hover:bg-black/5'
+                        }`}
                     >
-                      <h4 
-                        className="text-xs min-[380px]:text-sm sm:text-base md:text-lg font-bold tracking-tight flex items-center gap-2 select-none"
-                        style={{ color: '#000000' }}
+                      <h4
+                        className="text-xs min-[380px]:text-sm sm:text-base md:text-lg font-bold tracking-tight flex items-center gap-2 select-none text-gray-900"
                       >
                         {sub.title}
                       </h4>
                       <div className="flex items-center gap-4">
                         {/* 중분류 신호등 표시 */}
                         <SignalBadge signal={sub.signal} />
-                        <ChevronDown 
-                          className={`w-3.5 h-3.5 md:w-5 md:h-5 transition-transform duration-200 ${
-                            isSubSelected ? 'transform rotate-180' : ''
-                          }`} 
-                          style={{ color: '#000000' }}
+                        <ChevronDown
+                          className={`w-3.5 h-3.5 md:w-5 md:h-5 transition-transform duration-200 text-gray-500 ${isSubSelected ? 'transform rotate-180 text-amber-700' : ''
+                            }`}
                         />
                       </div>
                     </button>
@@ -550,7 +542,7 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
                           animate={{ opacity: 1, height: 'auto' }}
                           exit={{ opacity: 0, height: 0 }}
                           transition={{ duration: 0.25 }}
-                          className="overflow-hidden border-t border-[#000000] bg-black/5"
+                          className="overflow-hidden border-t border-black/10 bg-white"
                         >
                           <div className="p-4 flex flex-col gap-3">
                             {getItemsForSub(sub.id).map((item, itemIdx) => {
@@ -582,16 +574,15 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
                               const cleanTitle = item.title.replace(/^\d+(\.\d+)*\.?\s*/, "");
 
                               return (
-                                <div 
-                                  key={chartKey} 
+                                <div
+                                  key={chartKey}
                                   className={`flex flex-col border-t border-b border-[#000000] rounded-none overflow-hidden transition-all duration-200 ${subItemBg}`}
                                 >
                                   {/* 소분류 헤더 */}
                                   <div
                                     onClick={() => toggleChart(chartKey)}
-                                    className={`flex justify-between items-center px-4 py-3 text-left transition-colors duration-150 cursor-pointer select-none ${
-                                      isChartOpen ? 'bg-white/15' : 'hover:bg-white/5'
-                                    }`}
+                                    className={`flex justify-between items-center px-4 py-3 text-left transition-colors duration-150 cursor-pointer select-none ${isChartOpen ? 'bg-white/15' : 'hover:bg-white/5'
+                                      }`}
                                   >
                                     <div className="flex items-center gap-1.5 min-w-0 grow">
                                       <span className="text-xs font-extrabold text-white tracking-tight truncate">
@@ -615,10 +606,9 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
                                     </div>
                                     <div className="flex items-center gap-4">
                                       {/* 신호등 제거 */}
-                                      <ChevronDown 
-                                        className={`w-3.5 h-3.5 text-white transition-transform duration-200 ${
-                                          isChartOpen ? 'transform rotate-180 text-white' : ''
-                                        }`} 
+                                      <ChevronDown
+                                        className={`w-3.5 h-3.5 text-white transition-transform duration-200 ${isChartOpen ? 'transform rotate-180 text-white' : ''
+                                          }`}
                                       />
                                     </div>
                                   </div>
@@ -640,10 +630,10 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
                                           ) : (
                                             <>
                                               {item.chartType === 'bar' && (
-                                                <MacroBarChart 
-                                                  data={item.data} 
-                                                  themeIndex={item.theme ?? 0} 
-                                                  valueKey={item.valKey ?? 'value'} 
+                                                <MacroBarChart
+                                                  data={item.data}
+                                                  themeIndex={item.theme ?? 0}
+                                                  valueKey={item.valKey ?? 'value'}
                                                   title={item.title}
                                                   chartKey={`chart-svg-${chartKey}`}
                                                   barSize={sub.id === '1-1' ? 64 : 32}
@@ -651,19 +641,19 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
                                                 />
                                               )}
                                               {item.chartType === 'line' && (
-                                                <MacroLineChart 
-                                                  data={item.data} 
-                                                  themeIndex={item.theme ?? 0} 
-                                                  valueKey={item.valKey ?? 'value'} 
+                                                <MacroLineChart
+                                                  data={item.data}
+                                                  themeIndex={item.theme ?? 0}
+                                                  valueKey={item.valKey ?? 'value'}
                                                   title={item.title}
                                                   chartKey={`chart-svg-${chartKey}`}
                                                   source={item.ticker ? data.sources?.[item.ticker] : undefined}
                                                 />
                                               )}
                                               {item.chartType === 'candle' && (
-                                                <MacroCandleChart 
-                                                  data={item.data} 
-                                                  themeIndex={item.theme ?? 0} 
+                                                <MacroCandleChart
+                                                  data={item.data}
+                                                  themeIndex={item.theme ?? 0}
                                                   title={item.title}
                                                   chartKey={`chart-svg-${chartKey}`}
                                                   source={item.ticker ? data.sources?.[item.ticker] : undefined}
