@@ -102,8 +102,8 @@ export default async function Home() {
         </div>
 
         {/* 한줄 시장 테마 헤드라인 */}
-        <div className="p-5 sm:p-6 bg-linear-to-r from-gray-900 via-black to-gray-900 text-white border-l-4 border-[#D4AF37] shadow-md">
-          <p className="text-base sm:text-lg lg:text-xl font-bold leading-relaxed tracking-tight text-white/95">
+        <div className="p-5 sm:p-6 bg-linear-to-r from-amber-50/80 via-white to-amber-50/50 text-gray-900 border-l-4 border-[#D4AF37] border-y border-r border-black/10 shadow-xs">
+          <p className="text-base sm:text-lg lg:text-xl font-bold leading-relaxed tracking-tight text-gray-900">
             {brief.headline}
           </p>
         </div>
@@ -210,24 +210,24 @@ export default async function Home() {
       </section>
 
       {/* 3. 다음 단계 안내: 글로벌 ETF 탐색 및 속 종목 엑스레이 연결 배너 */}
-      <section className="bg-[#141414] border border-white/10 p-6 sm:p-8 text-white space-y-5">
+      <section className="bg-white border border-black/10 p-6 sm:p-8 text-gray-900 space-y-5 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-none bg-[#D4AF37]/10 border border-[#D4AF37]/30 flex items-center justify-center shrink-0">
-              <Layers className="w-5 h-5 text-[#D4AF37]" />
+            <div className="w-9 h-9 rounded-none bg-[#D4AF37]/15 border border-[#D4AF37]/40 flex items-center justify-center shrink-0">
+              <Layers className="w-5 h-5 text-[#8B6508]" />
             </div>
             <div>
-              <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 tracking-tight">
                 포트폴리오 비중을 정하셨나요?
               </h3>
-              <p className="text-xs sm:text-sm text-gray-400 mt-0.5">
+              <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
                 미국 및 국내 상장 글로벌 대표 ETF를 둘러보고, 상위 10대 편입 종목을 1초 만에 엑스레이 해보세요.
               </p>
             </div>
           </div>
           <Link
             href="/etf"
-            className="w-full sm:w-auto px-5 py-3 bg-[#D4AF37] hover:bg-[#c29f2f] text-black font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-2 shrink-0 text-center"
+            className="w-full sm:w-auto px-5 py-3 bg-[#D4AF37] hover:bg-[#c29f2f] text-black font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-2 shrink-0 text-center shadow-xs"
           >
             <span>글로벌 ETF 목록 전체보기</span>
             <ArrowRight className="w-4 h-4" />
@@ -235,8 +235,8 @@ export default async function Home() {
         </div>
 
         {/* 원클릭 추천 엑스레이 칩 (우리 DB에 실제 존재하는 5대 핵심 ETF) */}
-        <div className="pt-4 border-t border-white/10 flex flex-wrap items-center gap-2 text-xs">
-          <span className="text-gray-400 font-bold shrink-0">대표 ETF 엑스레이:</span>
+        <div className="pt-4 border-t border-black/10 flex flex-wrap items-center gap-2 text-xs">
+          <span className="text-gray-500 font-bold shrink-0">대표 ETF 엑스레이:</span>
           {[
             { ticker: 'SPY', name: 'S&P 500 대표지수' },
             { ticker: 'QQQ', name: '나스닥 100 성장' },
@@ -247,9 +247,9 @@ export default async function Home() {
             <Link
               key={item.ticker}
               href={`/etf/${item.ticker}`}
-              className="px-2.5 py-1 bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF37] text-gray-300 hover:text-white transition-colors font-mono"
+              className="px-2.5 py-1 bg-[#F9F8F6] hover:bg-[#D4AF37]/15 border border-black/10 hover:border-[#D4AF37] text-gray-800 hover:text-black transition-colors font-mono"
             >
-              <strong>{item.ticker}</strong> <span className="text-[11px] text-gray-400 font-sans">({item.name})</span>
+              <strong>{item.ticker}</strong> <span className="text-[11px] text-gray-500 font-sans">({item.name})</span>
             </Link>
           ))}
         </div>
