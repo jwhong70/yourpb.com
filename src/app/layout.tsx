@@ -6,6 +6,7 @@ import "sonner/dist/styles.css";
 import GlobalToaster from "@/components/GlobalToaster";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import InstallPrompt from "@/components/InstallPrompt";
+import AppSplashScreen from "@/components/AppSplashScreen";
 import "./globals.css";
 
 const pretendard = localFont({
@@ -89,12 +90,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <head>
+        <link rel="apple-touch-startup-image" href="/splash-icon-512x512.png?v=3" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans" suppressHydrationWarning>
+        <AppSplashScreen />
         <NextTopLoader
           color="#D4AF37"
           initialPosition={0.08}

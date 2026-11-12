@@ -101,38 +101,46 @@ export default async function Home() {
           </div>
         </div>
 
-        {/* 한줄 시장 테마 헤드라인 */}
-        <div className="p-5 sm:p-6 bg-linear-to-r from-amber-50/80 via-white to-amber-50/50 text-gray-900 border border-black/10 border-l-4 border-l-[#D4AF37] shadow-xs">
-          <p className="text-base sm:text-lg lg:text-xl font-bold leading-relaxed tracking-tight text-gray-900">
-            {brief.headline}
+        {/* 한줄 시장 테마 헤드라인 (그라데이션 없이 차분하고 품격 있는 웜 크림 & 딥 앰버 골드 톤) */}
+        <div className="p-4 sm:p-5 bg-white border border-black/10 border-l-4 border-l-[#D4AF37] shadow-xs">
+          <p className="text-base sm:text-lg font-bold leading-relaxed tracking-tight text-[#8B6508] break-keep">
+            &ldquo;{brief.headline}&rdquo;
           </p>
         </div>
 
-        {/* 당신의 피비의 자산배분 전략 단독 메인 카드 */}
-        <div className="p-6 sm:p-7 bg-white border-2 border-black shadow-sm space-y-3">
-          <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-            <h3 className="text-base sm:text-lg font-extrabold text-black flex items-center gap-2">
-              <span className="w-2.5 h-2.5 bg-[#D4AF37] rounded-full shrink-0" />
-              당신의 피비의 자산배분 전략 핵심 처방
-            </h3>
-            <span className="text-xs font-bold text-[#D4AF37] bg-[#D4AF37]/10 px-2.5 py-1">
-              Top-Down 포트폴리오
-            </span>
+        {/* 당신의 피비의 자산배분 전략 핵심 처방: 불릿/좌우배치 제거 및 1줄 접이식 아코디언 전환 */}
+        <details className="group bg-white border border-black/10 shadow-xs transition-all">
+          <summary className="p-4 sm:p-5 flex items-center justify-between cursor-pointer select-none list-none hover:bg-black/5 transition-colors">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3">
+              <h3 className="text-base sm:text-lg font-extrabold text-gray-900 tracking-tight break-keep">
+                당신의 피비의 자산배분 전략 핵심 처방
+              </h3>
+              <span className="text-[11px] font-bold text-[#8B6508] bg-[#D4AF37]/15 px-2 py-0.5 border border-[#D4AF37]/30 w-fit">
+                Top-Down 포트폴리오
+              </span>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-bold text-gray-600 shrink-0 ml-3">
+              <span className="group-open:hidden">전략 펼쳐보기 ▼</span>
+              <span className="hidden group-open:inline">접기 ▲</span>
+            </div>
+          </summary>
+
+          <div className="p-5 sm:p-6 border-t border-black/10 bg-[#FAF9F5] space-y-4 animate-in fade-in duration-150">
+            <p className="text-sm sm:text-base text-gray-800 leading-relaxed font-normal whitespace-pre-line break-keep">
+              {brief.sections.strategy}
+            </p>
+            <div className="pt-3 border-t border-black/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-gray-500">
+              <span className="break-keep">* 거시 사이클 및 금리/유동성 팩트 세부 지표는 상단 매크로 메뉴에서 심층 분석하실 수 있습니다.</span>
+              <Link
+                href="/macro"
+                className="font-bold text-gray-900 hover:text-[#8B6508] transition-colors inline-flex items-center gap-1 shrink-0"
+              >
+                <span>매크로 4대 팩트 진단하러 가기</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
           </div>
-          <p className="text-sm sm:text-base text-gray-800 leading-relaxed font-normal whitespace-pre-line pt-1">
-            {brief.sections.strategy}
-          </p>
-          <div className="pt-3 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3 text-xs text-gray-500">
-            <span>* 거시 사이클 및 금리/유동성 팩트 세부 지표는 상단 &apos;매크로&apos; 메뉴에서 심층 분석하실 수 있습니다.</span>
-            <Link
-              href="/macro"
-              className="font-bold text-black hover:text-[#D4AF37] transition-colors inline-flex items-center gap-1"
-            >
-              <span>매크로 4대 팩트 진단하러 가기</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-        </div>
+        </details>
       </section>
 
       {/* 2. 당신의 피비 포트폴리오 섹션 */}
