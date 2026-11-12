@@ -102,39 +102,56 @@ export default async function StockPage() {
               </span>
             </div>
 
-            {/* 💡 피비의 정직한 팩트 코칭 바 & 원클릭 추천 종목 태그 */}
-            <div className="bg-white border border-black/10 p-4 sm:p-5 text-gray-900 space-y-3 shadow-xs">
-              <div className="flex items-start gap-2.5 text-xs sm:text-sm text-gray-700">
-                <span className="text-[#8B6508] font-bold shrink-0 mt-0.5">💡 피비의 안내:</span>
-                <p className="leading-relaxed">
-                  관심 있는 종목을 클릭하시면{' '}
-                  <strong className="text-gray-900">① 밸류에이션(P/E, P/B)</strong>,{' '}
-                  <strong className="text-gray-900">② 21인 대가들의 AI 투자 관점 & 신뢰도</strong>,{' '}
-                  <strong className="text-gray-900">③ 주가 캔들 차트</strong>,{' '}
-                  <strong className="text-gray-900">④ 1주~120주 기간수익률 성과</strong>를 한눈에 확인하실 수 있습니다.
-                </p>
-              </div>
+            {/* 💡 피비의 안내: 1줄 접이식 펼침 메뉴 (기본 접힘으로 본문 검색 즉시 노출) */}
+            <details className="group bg-white border border-black/10 shadow-xs transition-all">
+              <summary className="p-4 sm:p-5 flex items-center justify-between cursor-pointer select-none list-none hover:bg-black/5 transition-colors">
+                <div className="flex items-center gap-2">
+                  <span className="text-[#8B6508] font-extrabold text-xs sm:text-sm">💡 피비의 안내</span>
+                  <span className="text-xs text-gray-500 font-medium hidden sm:inline">
+                    · 클릭하여 21인 대가 관점 및 펀더멘털 조회 요령 확인
+                  </span>
+                </div>
+                <div className="flex items-center gap-1 text-xs font-bold text-gray-600">
+                  <span className="group-open:hidden">펼쳐보기 ▼</span>
+                  <span className="hidden group-open:inline">가이드 접기 ▲</span>
+                </div>
+              </summary>
 
-              {/* 원클릭 추천 종목 체험 태그 */}
-              <div className="pt-2.5 border-t border-black/10 flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs">
-                <span className="text-gray-500 font-bold shrink-0 text-[11px] sm:text-xs">원클릭 추천 진단:</span>
-                {[
-                  { ticker: 'AAPL', label: 'AAPL (애플 21인 대가)' },
-                  { ticker: 'NVDA', label: 'NVDA (엔비디아 성과)' },
-                  { ticker: 'MSFT', label: 'MSFT (MS 안전마진)' },
-                  { ticker: 'AMZN', label: 'AMZN (아마존 펀더멘털)' },
-                  { ticker: 'GOOGL', label: 'GOOGL (구글 밸류에이션)' },
-                ].map((item) => (
-                  <Link
-                    key={item.ticker}
-                    href={`/stock/${item.ticker}`}
-                    className="px-2 sm:px-2.5 py-1 bg-[#F9F8F6] hover:bg-[#D4AF37]/15 border border-black/10 hover:border-[#D4AF37] text-gray-800 hover:text-black transition-colors text-[11px] sm:text-xs whitespace-nowrap"
-                  >
-                    <span>{item.label}</span>
-                  </Link>
-                ))}
+              <div className="p-4 sm:p-5 border-t border-black/10 bg-[#FAF9F5] space-y-3.5 animate-in fade-in duration-150">
+                <div className="space-y-1.5">
+                  <span className="text-xs font-bold text-gray-900 block">
+                    [우량주 펀더멘털 4대 진단 혜택]
+                  </span>
+                  <p className="text-xs sm:text-sm text-gray-700 leading-relaxed break-keep">
+                    관심 있는 종목을 클릭하시면{' '}
+                    <strong className="text-gray-950 font-bold">① 밸류에이션(P/E, P/B)</strong>,{' '}
+                    <strong className="text-gray-950 font-bold">② 21인 대가들의 AI 투자 관점 & 신뢰도</strong>,{' '}
+                    <strong className="text-gray-950 font-bold">③ 주가 캔들 차트</strong>,{' '}
+                    <strong className="text-gray-950 font-bold">④ 1주~120주 기간수익률 성과</strong>를 한눈에 확인하실 수 있습니다.
+                  </p>
+                </div>
+
+                {/* 원클릭 추천 종목 체험 태그 */}
+                <div className="pt-3 border-t border-black/10 flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs">
+                  <span className="text-gray-600 font-bold shrink-0 text-[11px] sm:text-xs">원클릭 추천 진단:</span>
+                  {[
+                    { ticker: 'AAPL', label: 'AAPL (애플 21인 대가)' },
+                    { ticker: 'NVDA', label: 'NVDA (엔비디아 성과)' },
+                    { ticker: 'MSFT', label: 'MSFT (MS 안전마진)' },
+                    { ticker: 'AMZN', label: 'AMZN (아마존 펀더멘털)' },
+                    { ticker: 'GOOGL', label: 'GOOGL (구글 밸류에이션)' },
+                  ].map((item) => (
+                    <Link
+                      key={item.ticker}
+                      href={`/stock/${item.ticker}`}
+                      className="px-2.5 py-1 bg-white hover:bg-amber-50 border border-black/10 hover:border-[#D4AF37] text-gray-800 hover:text-black transition-colors text-[11px] sm:text-xs whitespace-nowrap shadow-xs"
+                    >
+                      <span>{item.label}</span>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
+            </details>
 
             <Filter
               initialStocks={mergedStocks}
