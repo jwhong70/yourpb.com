@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://yourpb.vercel.app"),
   title: "당신의 피비 - ETF 포트폴리오 자산관리 파트너",
   description: "각종 지표, ETF, 주식 분석을 한 곳에서 확인하세요",
-  manifest: "/manifest.json",
+  manifest: "/manifest.json?v=4",
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.png",
@@ -90,7 +90,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <head>
-        <link rel="apple-touch-startup-image" href="/splash-icon-512x512.png?v=3" />
+        <link rel="apple-touch-startup-image" href="/splash-icon-512x512.png?v=4" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
