@@ -4,18 +4,31 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 export default function AppSplashScreen() {
-  const [showSplash, setShowSplash] = useState(true);
+  const [showSplash, setShowSplash] = useState(false);
   const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {
-    // 0.45초 노출 후 0.25초 페이드아웃 ➔ 0.7초 후 DOM 완전 제거
+    // 1. 스마트폰 홈 화면 앱(PWA Standalone)으로 실행된 경우:
+    //    스마트폰 OS가 이미 자체 스플래시 화면을 띄웠으므로 2중 로딩 없이 즉시 홈 화면으로 0초 직행
+    const isStandalone =
+      window.matchMedia('(display-mode: standalone)').matches ||
+      Boolean((window.navigator as unknown as { standalone?: boolean }).standalone);
+
+    if (isStandalone) {
+      return;
+    }
+
+    // 2. 일반 웹 브라우저 접속 시:
+    //    첫 방문 시 "당신의 피비" 한글 골드 로고를 0.4초간 품격 있게 노출 후 페이드아웃
+    setShowSplash(true);
+
     const fadeTimer = setTimeout(() => {
       setIsFading(true);
-    }, 450);
+    }, 400);
 
     const removeTimer = setTimeout(() => {
       setShowSplash(false);
-    }, 700);
+    }, 650);
 
     return () => {
       clearTimeout(fadeTimer);

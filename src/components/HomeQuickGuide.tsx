@@ -62,7 +62,7 @@ export default function HomeQuickGuide() {
 
         <div className="flex items-center gap-1.5 shrink-0 ml-3">
           <span className="text-xs font-bold text-gray-600">
-            {isOpen ? '접기 ▲' : '가이드 펼쳐보기 ▼'}
+            {isOpen ? '접기 ▲' : '펼쳐보기 ▼'}
           </span>
         </div>
       </button>

@@ -400,7 +400,7 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
           <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <h2 className="text-sm sm:text-base font-extrabold text-gray-900 tracking-tight break-keep">
-                피비의 매크로 나침반 & 신호등 이용 가이드
+                피비 매크로 모니터링 이용 가이드
               </h2>
               <span className="text-[11px] font-bold text-[#8B6508] bg-[#D4AF37]/15 px-2 py-0.5 border border-[#D4AF37]/30 whitespace-nowrap">
                 거시 경제 4대 팩트
@@ -413,7 +413,7 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
 
           <div className="flex items-center gap-1.5 shrink-0 ml-3">
             <span className="text-xs font-bold text-gray-600">
-              {isGuideOpen ? '가이드 접기 ▲' : '이용가이드 펼쳐보기 ▼'}
+              {isGuideOpen ? '접기 ▲' : '펼쳐보기 ▼'}
             </span>
           </div>
         </button>
