@@ -39,7 +39,7 @@ export default function Header({ initialUser }: HeaderProps) {
 
   return (
     <header
-      className="fixed top-0 left-0 w-full z-50 bg-[#000000] bg-linear-to-b from-white/12 via-[#000000] to-[#000000]/95 border-b border-white/15 py-3.5 transition-all duration-300 shadow-[inset_0_1.5px_0_rgba(255,255,255,0.25),0_4px_16px_rgba(0,0,0,0.15)] backdrop-blur-md"
+      className="fixed top-0 left-0 w-full z-50 bg-[#F9F8F6]/95 backdrop-blur-md border-b border-black/10 py-3.5 transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.04)]"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
@@ -47,7 +47,7 @@ export default function Header({ initialUser }: HeaderProps) {
           <div className="flex items-center gap-4 xl:gap-8">
             <Link href="/" className="flex items-center shrink-0">
               <Image
-                src="/yourpb-final-logo.png"
+                src="/logo-yourpb-transparent.png"
                 alt="YOURPB.COM"
                 width={128}
                 height={32}
@@ -66,8 +66,8 @@ export default function Header({ initialUser }: HeaderProps) {
                     href={link.href}
                     prefetch={true}
                     className={`text-sm xl:text-base font-bold xl:font-black transition-colors duration-200 px-2 xl:px-3 h-14 flex items-center relative rounded-none shrink-0 whitespace-nowrap ${isActive
-                      ? 'text-white'
-                      : 'text-[#9E9E9E] hover:text-white'
+                      ? 'text-black'
+                      : 'text-gray-600 hover:text-black'
                       }`}
                   >
                     <span>{link.name}</span>
@@ -86,32 +86,32 @@ export default function Header({ initialUser }: HeaderProps) {
               <div className="flex items-center gap-4">
                 <Link
                   href="/mypage"
-                  className="flex items-center gap-3 border-r border-white/10 pr-4 hover:opacity-80 transition-opacity cursor-pointer group"
+                  className="flex items-center gap-3 border-r border-black/10 pr-4 hover:opacity-80 transition-opacity cursor-pointer group"
                   title="내 정보 및 멤버십 관리"
                 >
-                  <span className="text-base font-black text-white group-hover:text-[#D4AF37] transition-colors">
+                  <span className="text-base font-black text-gray-900 group-hover:text-[#D4AF37] transition-colors">
                     {user.name}
                   </span>
                   {user.membership_status === 'premium' ? (
-                    <span className="flex items-center gap-1 text-xs font-black text-black bg-yellow-accent border border-yellow-accent/40 px-3 py-1 rounded-full animate-badge-glow select-none">
+                    <span className="flex items-center gap-1 text-xs font-black text-black bg-[#D4AF37] border border-[#D4AF37]/50 px-3 py-1 rounded-full animate-badge-glow select-none">
                       <Award className="w-4 h-4 text-black" />
                       Premium
                     </span>
                   ) : (
-                    <span className="text-xs font-semibold text-white/50 bg-white/10 px-3 py-1 rounded-full select-none group-hover:border-white/30 transition-colors">
+                    <span className="text-xs font-semibold text-gray-600 bg-gray-100 border border-black/10 px-3 py-1 rounded-full select-none group-hover:border-black/30 transition-colors">
                       Free
                     </span>
                   )}
                 </Link>
                 <Link
                   href="/mypage"
-                  className="text-xs font-bold text-gray-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/15 px-2.5 py-1.5 transition-colors"
+                  className="text-xs font-bold text-gray-700 hover:text-black bg-black/5 hover:bg-black/10 border border-black/10 px-2.5 py-1.5 transition-colors"
                 >
                   내 정보
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-1 text-sm font-black text-white/80 hover:text-white transition-colors cursor-pointer"
+                  className="flex items-center gap-1 text-sm font-black text-gray-600 hover:text-black transition-colors cursor-pointer"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                   <span>로그아웃</span>
@@ -120,7 +120,7 @@ export default function Header({ initialUser }: HeaderProps) {
             ) : (
               <Link
                 href={`/login?redirectTo=${encodeURIComponent(pathname)}`}
-                className="flex items-center gap-1.5 px-4.5 py-1.5 bg-[#D4AF37] hover:opacity-90 active:scale-95 text-black text-sm font-black rounded-xl shadow-xs transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-4.5 py-1.5 bg-[#D4AF37] hover:bg-[#c29f2f] active:scale-95 text-black text-sm font-black rounded-xl shadow-xs transition-all cursor-pointer"
               >
                 <LogIn className="w-3.5 h-3.5" />
                 <span>로그인</span>
@@ -132,7 +132,7 @@ export default function Header({ initialUser }: HeaderProps) {
           <div className="flex lg:hidden items-center gap-2">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-white hover:text-sky-primary p-2 focus:outline-none transition-colors"
+              className="text-gray-900 hover:text-black p-2 focus:outline-none transition-colors"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -142,8 +142,8 @@ export default function Header({ initialUser }: HeaderProps) {
 
       {/* 모바일 메뉴 드롭다운 */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-[#000000]/95 backdrop-blur-2xl border-b border-white/10 transition-all duration-300">
-          <div className="px-4 pt-3 pb-8 space-y-4">
+        <div className="lg:hidden bg-[#F9F8F6]/98 backdrop-blur-2xl border-b border-black/10 transition-all duration-300">
+          <div className="px-4 pt-3 pb-8 space-y-2">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -153,8 +153,8 @@ export default function Header({ initialUser }: HeaderProps) {
                   prefetch={true}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`block px-4 py-3 rounded-none text-base font-black transition-colors duration-200 ${isActive
-                    ? 'text-white'
-                    : 'text-[#9E9E9E] hover:bg-white/5 hover:text-white'
+                    ? 'text-black bg-[#D4AF37]/15 border-l-4 border-[#D4AF37]'
+                    : 'text-gray-700 hover:bg-black/5 hover:text-black'
                     }`}
                 >
                   {link.name}
@@ -163,25 +163,25 @@ export default function Header({ initialUser }: HeaderProps) {
             })}
 
             {/* 모바일 사용자 계정 상태 */}
-            <div className="pt-6 border-t border-white/10">
+            <div className="pt-6 border-t border-black/10">
               {user ? (
                 <div className="px-4 space-y-4">
                   <Link
                     href="/mypage"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center justify-between p-3 bg-white/5 border border-white/10 hover:border-[#D4AF37] transition-colors"
+                    className="flex items-center justify-between p-3 bg-white border border-black/10 hover:border-[#D4AF37] transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="text-lg font-black text-white">
+                      <span className="text-lg font-black text-gray-900">
                         {user.name}
                       </span>
                       {user.membership_status === 'premium' ? (
-                        <span className="flex items-center gap-1 text-xs font-black text-black bg-yellow-accent border border-yellow-accent/40 px-2.5 py-0.5 rounded-full animate-badge-glow">
+                        <span className="flex items-center gap-1 text-xs font-black text-black bg-[#D4AF37] border border-[#D4AF37]/50 px-2.5 py-0.5 rounded-full animate-badge-glow">
                           <Award className="w-3 h-3 text-black" />
                           Premium
                         </span>
                       ) : (
-                        <span className="text-xs font-semibold text-white/50 bg-white/10 px-2.5 py-0.5 rounded-full">
+                        <span className="text-xs font-semibold text-gray-600 bg-gray-100 border border-black/10 px-2.5 py-0.5 rounded-full">
                           Free
                         </span>
                       )}
@@ -193,7 +193,7 @@ export default function Header({ initialUser }: HeaderProps) {
                       setIsMobileMenuOpen(false);
                       handleLogout();
                     }}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-white/10 hover:bg-white/5 text-white rounded-xl text-sm font-black transition-colors cursor-pointer"
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-black/15 hover:bg-black/5 text-gray-900 rounded-xl text-sm font-black transition-colors cursor-pointer"
                   >
                     <LogOut className="w-4 h-4" />
                     <span>로그아웃</span>
@@ -203,7 +203,7 @@ export default function Header({ initialUser }: HeaderProps) {
                 <Link
                   href={`/login?redirectTo=${encodeURIComponent(pathname)}`}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#D4AF37] hover:opacity-90 text-black rounded-xl text-sm font-black shadow-md transition-colors cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#D4AF37] hover:bg-[#c29f2f] text-black rounded-xl text-sm font-black shadow-md transition-colors cursor-pointer"
                 >
                   <LogIn className="w-3.5 h-3.5" />
                   <span>로그인</span>
