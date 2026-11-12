@@ -20,7 +20,7 @@ export default function HomeQuickGuide() {
       step: '2단계',
       badge: 'ETF 탐색',
       title: '그 다음 내 기둥이 될 ETF를 선택하세요',
-      desc: '자산배분 비중에 맞추어 미국 및 국내 상장 글로벌 대표 ETF(시장지수·배당성장·채권)를 둘러보고 포트폴리오를 채웁니다.',
+      desc: '자산배분 비중에 맞추어 미국 및 국내 상장 글로벌 대표 ETF(시장지수·섹터·채권)를 둘러보고 포트폴리오를 채웁니다.',
       linkText: '글로벌 ETF 목록 둘러보기',
       href: '/etf',
       icon: Layers,
