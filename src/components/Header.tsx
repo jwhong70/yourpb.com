@@ -45,13 +45,13 @@ export default function Header({ initialUser }: HeaderProps) {
         <div className="flex items-center justify-between h-14">
           {/* 로고 영역 */}
           <div className="flex items-center gap-4 xl:gap-8">
-            <Link href="/" className="flex items-center shrink-0">
+            <Link href="/" className="flex items-center shrink-0 group">
               <Image
-                src="/logo-yourpb-transparent.png"
-                alt="YOURPB.COM"
-                width={128}
-                height={32}
-                className="h-7 xl:h-8 w-auto object-contain select-none"
+                src="/logo-luxury-gold.png"
+                alt="당신의 피비"
+                width={132}
+                height={33}
+                className="h-7.5 xl:h-8.5 w-auto object-contain select-none drop-shadow-[0_1px_3px_rgba(212,175,55,0.3)] transition-transform group-hover:scale-105"
                 priority
               />
             </Link>
