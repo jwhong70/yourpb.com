@@ -283,7 +283,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
         {/* 상단 히어로 배너 */}
         <section className="relative overflow-hidden bg-white border-b border-black/10 pt-28 pb-14 select-none shadow-xs">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#EA580C]/15 border border-[#EA580C]/40 text-gold text-xs font-bold uppercase tracking-widest">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#EA580C]/15 border border-[#EA580C]/40 text-[#EA580C] text-xs font-bold uppercase tracking-widest">
               <Sparkles className="w-3.5 h-3.5" />
               <span>행동재무학 기반 실전 진단 솔루션</span>
             </div>
@@ -307,7 +307,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
             {isCompleted && (
               <div className="max-w-xl mx-auto mt-4 p-3.5 bg-box-bg border border-black/20 text-xs text-gray-800 flex flex-wrap items-center justify-between gap-3 shadow-xs">
                 <div className="flex items-center gap-2 font-bold">
-                  <Award className="w-4 h-4 text-gold" />
+                  <Award className="w-4 h-4 text-[#EA580C]" />
                   <span>
                     최근 진단: <span className="text-black font-extrabold">{formattedCompletedDate || '완료'}</span>
                   </span>
@@ -348,7 +348,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                     onClick={handleStartNewDiagnosis}
                     className="px-6 sm:px-7 py-4 bg-white hover:bg-gray-50 text-gray-900 text-sm sm:text-base font-bold flex items-center justify-center gap-2 border-2 border-black transition-all shadow-md hover:scale-105 cursor-pointer select-none"
                   >
-                    <Brain className="w-5 h-5 text-gold" />
+                    <Brain className="w-5 h-5 text-[#EA580C]" />
                     <span>새롭게 다시 진단하기</span>
                   </button>
 
@@ -357,7 +357,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                     onClick={handlePrintPdf}
                     className="px-5 py-4 bg-[#EA580C]/15 hover:bg-[#EA580C]/25 text-gray-900 text-sm font-bold flex items-center justify-center gap-2 border border-[#EA580C] transition-all cursor-pointer select-none"
                   >
-                    <Printer className="w-4 h-4 text-gold" />
+                    <Printer className="w-4 h-4 text-[#EA580C]" />
                     <span>처방전 출력 (PDF)</span>
                   </button>
                 </>
@@ -386,7 +386,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                     }}
                     className="px-5 sm:px-6 py-4 bg-white hover:bg-gray-50 text-gray-900 text-sm font-bold flex items-center justify-center gap-2 border border-black transition-all shadow-xs cursor-pointer select-none"
                   >
-                    <Sparkles className="w-4 h-4 text-gold" />
+                    <Sparkles className="w-4 h-4 text-[#EA580C]" />
                     <span>진단 종합 결과 확인하기</span>
                   </button>
 
@@ -580,7 +580,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                         className="w-full p-4 flex items-center justify-between text-left text-xs sm:text-sm font-bold bg-box-bg hover:bg-gray-100 text-gray-900 transition-colors cursor-pointer"
                       >
                         <span className="flex items-center gap-2">
-                          <ShieldCheck className="w-4 h-4 text-gold" />
+                          <ShieldCheck className="w-4 h-4 text-[#EA580C]" />
                           <span>💡 {currentQ.name}의 핵심 특징 & 맞춤 극복 처방전 확인</span>
                         </span>
                         {expandedSolutions[currentQ.id] ? (
@@ -671,7 +671,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
             {/* 결과 종합 헤더 카드 */}
             <div className="bg-white border border-black p-6 sm:p-8 space-y-6 shadow-xl relative overflow-hidden">
               <div className="space-y-2 text-center sm:text-left">
-                <span className="text-xs font-bold text-gold uppercase tracking-widest flex items-center justify-center sm:justify-start gap-1.5">
+                <span className="text-xs font-bold text-[#EA580C] uppercase tracking-widest flex items-center justify-center sm:justify-start gap-1.5">
                   <Sparkles className="w-3.5 h-3.5" />
                   진단 완료 리포트
                 </span>
@@ -808,7 +808,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
             {/* 전체 19개 편향 점검 매트릭스 표 */}
             <div className="bg-white border border-black p-5 sm:p-6 space-y-4 shadow-md">
               <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
-                <Brain className="w-4 h-4 text-gold" />
+                <Brain className="w-4 h-4 text-[#EA580C]" />
                 <span>19개 행동 편향 종합 진단 현황표</span>
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs">
@@ -839,8 +839,8 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
             {/* 진단 완료 고객 전용: 4단계 심리 극복 & 자산관리 연계 로드맵 (CX 향상) */}
             <div className="bg-white border border-black p-6 sm:p-8 space-y-6 shadow-xl">
               <div className="space-y-1.5 border-b border-gray-200 pb-4">
-                <span className="text-xs font-bold text-gold uppercase tracking-widest flex items-center gap-1.5">
-                  <Compass className="w-4 h-4 text-gold" />
+                <span className="text-xs font-bold text-[#EA580C] uppercase tracking-widest flex items-center gap-1.5">
+                  <Compass className="w-4 h-4 text-[#EA580C]" />
                   당신의 피비 Action Roadmap
                 </span>
                 <h3 className="text-xl sm:text-2xl font-black text-gray-900">
@@ -858,7 +858,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                     01
                   </div>
                   <h4 className="text-sm font-black text-gray-900 flex items-center gap-1.5">
-                    <Calendar className="w-4 h-4 text-gold" />
+                    <Calendar className="w-4 h-4 text-[#EA580C]" />
                     <span>분기별 심리 정기 리체크</span>
                   </h4>
                   <p className="text-xs text-gray-600 leading-relaxed">
@@ -905,7 +905,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                     <button
                       type="button"
                       onClick={handlePrintPdf}
-                      className="inline-flex items-center gap-1 text-xs font-bold text-gold hover:underline cursor-pointer"
+                      className="inline-flex items-center gap-1 text-xs font-bold text-[#EA580C] hover:underline cursor-pointer"
                     >
                       <span>처방전 PDF 다운로드</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -921,7 +921,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
         {/* 4. 하단 Contact Us & 1:1 VIP 자산관리 상담 배너 (Monthly 스타일) */}
         {/* ============================================================ */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-4">
-          <div className="p-6 sm:p-8 bg-linear-to-br from-amber-50/90 via-white to-amber-50/60 border border-black/10 border-l-4 border-l-[#D4AF37] text-gray-900 space-y-6 shadow-xs">
+          <div className="p-6 sm:p-8 bg-linear-to-br from-amber-50/90 via-white to-amber-50/60 border border-black/10 border-l-4 border-l-[#EA580C] text-gray-900 space-y-6 shadow-xs">
             <div className="space-y-2 text-center sm:text-left">
               <span className="text-xs font-bold text-[#EA580C] uppercase tracking-widest flex items-center justify-center sm:justify-start gap-1.5">
                 <Sparkles className="w-3.5 h-3.5" />
@@ -968,12 +968,12 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
               <X className="w-5 h-5" />
             </button>
 
-            <div className="w-12 h-12 bg-amber-50 border border-[#EA580C] flex items-center justify-center mx-auto text-gold">
+            <div className="w-12 h-12 bg-amber-50 border border-[#EA580C] flex items-center justify-center mx-auto text-[#EA580C]">
               <Lock className="w-6 h-6" />
             </div>
 
             <div className="text-center space-y-2">
-              <span className="text-xs font-bold text-gold uppercase tracking-widest">
+              <span className="text-xs font-bold text-[#EA580C] uppercase tracking-widest">
                 프리미엄 멤버십 전용 혜택
               </span>
               <h3 className="text-xl font-black text-gray-900">
@@ -986,7 +986,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
 
             <div className="p-3.5 bg-box-bg border border-gray-300 space-y-2 text-xs text-gray-700">
               <div className="flex items-center gap-2 font-bold text-gray-900">
-                <Sparkles className="w-3.5 h-3.5 text-gold" />
+                <Sparkles className="w-3.5 h-3.5 text-[#EA580C]" />
                 <span>프리미엄 회원 제공 혜택</span>
               </div>
               <ul className="space-y-1 text-gray-600 pl-4 list-disc">

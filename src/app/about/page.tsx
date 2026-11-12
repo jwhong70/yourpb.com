@@ -115,8 +115,8 @@ export default async function AboutPage() {
           {/* 2. 서비스 헌장 & 핵심 고객 페르소나 (신설 블록) */}
           <section className="space-y-6">
             <div className="text-center md:text-left space-y-1.5 pb-1">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#D4AF37]/10 border border-[#D4AF37]/40 text-[#b58b1a] text-xs font-bold uppercase tracking-wider">
-                <Compass className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#EA580C]/10 border border-[#EA580C]/40 text-[#b58b1a] text-xs font-bold uppercase tracking-wider">
+                <Compass className="w-3.5 h-3.5 text-[#EA580C]" />
                 <span>Service Philosophy & Charter</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-gray-900 select-none">
@@ -129,7 +129,7 @@ export default async function AboutPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
               {/* 카드 1: 서비스 본질 (Product Hierarchy) */}
-              <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-4.5 sm:p-5 space-y-3 hover:border-[#D4AF37] transition-all shadow-xs">
+              <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-4.5 sm:p-5 space-y-3 hover:border-[#EA580C] transition-all shadow-xs">
                 <div className="space-y-1">
                   <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider">01. Service Essence</span>
                   <h3 className="text-base sm:text-lg font-extrabold text-gray-900">ETF 중심의 포트폴리오</h3>
@@ -145,7 +145,7 @@ export default async function AboutPage() {
               </div>
 
               {/* 카드 2: 타깃 고객 페르소나 (Target Persona) */}
-              <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-4.5 sm:p-5 space-y-3 hover:border-[#D4AF37] transition-all shadow-xs">
+              <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-4.5 sm:p-5 space-y-3 hover:border-[#EA580C] transition-all shadow-xs">
                 <div className="space-y-1">
                   <span className="text-xs font-bold text-[#b58b1a] uppercase tracking-wider">02. Core Persona</span>
                   <h3 className="text-base sm:text-lg font-extrabold text-gray-900">30~50대 스마트 투자자</h3>
@@ -161,7 +161,7 @@ export default async function AboutPage() {
               </div>
 
               {/* 카드 3: 원칙과 청렴성 (Integrity & Principles) */}
-              <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-4.5 sm:p-5 space-y-3 hover:border-[#D4AF37] transition-all shadow-xs">
+              <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-4.5 sm:p-5 space-y-3 hover:border-[#EA580C] transition-all shadow-xs">
                 <div className="space-y-1">
                   <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">03. Principle & Integrity</span>
                   <h3 className="text-base sm:text-lg font-extrabold text-gray-900">원칙 중심의 정석 투자</h3>
@@ -190,7 +190,7 @@ export default async function AboutPage() {
               {careerHistory.map((item, idx) => (
                 <div
                   key={idx}
-                  className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-4 sm:p-5 hover:border-[#D4AF37] transition-all space-y-2 shadow-2xs"
+                  className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-4 sm:p-5 hover:border-[#EA580C] transition-all space-y-2 shadow-2xs"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                     <h3 className="text-base sm:text-lg font-bold text-gray-900">
@@ -225,7 +225,7 @@ export default async function AboutPage() {
               {/* 이메일 카드 */}
               <a
                 href="mailto:jwhong70@gmail.com"
-                className="flex flex-col items-center justify-center p-6 bg-[#D4AF37] hover:bg-[#c29d2f] rounded-none text-center transition-all hover:shadow-lg group cursor-pointer"
+                className="flex flex-col items-center justify-center p-6 bg-[#EA580C] hover:bg-[#c29d2f] rounded-none text-center transition-all hover:shadow-lg group cursor-pointer"
               >
                 <div className="text-gray-900 mb-4 group-hover:scale-110 transition-transform">
                   <Mail className="w-8 h-8" />
@@ -240,7 +240,7 @@ export default async function AboutPage() {
               {/* 전화 문의 카드 */}
               <a
                 href="tel:070-4507-4460"
-                className="flex flex-col items-center justify-center p-6 bg-[#D4AF37] hover:bg-[#c29d2f] rounded-none text-center transition-all hover:shadow-lg group cursor-pointer"
+                className="flex flex-col items-center justify-center p-6 bg-[#EA580C] hover:bg-[#c29d2f] rounded-none text-center transition-all hover:shadow-lg group cursor-pointer"
               >
                 <div className="text-gray-900 mb-4 group-hover:scale-110 transition-transform">
                   <Phone className="w-8 h-8" />
@@ -257,7 +257,7 @@ export default async function AboutPage() {
                 href="https://www.instagram.com/yourpb_hong/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center p-6 bg-[#D4AF37] hover:bg-[#c29d2f] rounded-none text-center transition-all hover:shadow-lg group cursor-pointer"
+                className="flex flex-col items-center justify-center p-6 bg-[#EA580C] hover:bg-[#c29d2f] rounded-none text-center transition-all hover:shadow-lg group cursor-pointer"
               >
                 <div className="text-gray-900 mb-4 group-hover:scale-110 transition-transform">
                   <Instagram className="w-8 h-8" />

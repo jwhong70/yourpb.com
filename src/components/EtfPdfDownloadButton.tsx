@@ -56,9 +56,9 @@ export default function EtfPdfDownloadButton({
             onClick={handleDownloadClick}
             className="w-full max-w-md flex items-center justify-center gap-2.5 px-6 py-4.5 bg-[#000000] hover:bg-gray-900 active:scale-95 text-white font-black rounded-none shadow-lg transition-all cursor-pointer text-base group relative overflow-hidden"
           >
-            <Download className="w-5 h-5 text-yellow-accent" />
+            <Download className="w-5 h-5 text-[#EA580C]" />
             <span>보고서 PDF 다운로드</span>
-            <span className="ml-2 px-2 py-0.5 text-[11px] font-extrabold bg-[#EA580C] text-black rounded-none uppercase">
+            <span className="ml-2 px-2 py-0.5 text-[11px] font-extrabold bg-[#EA580C] text-white rounded-none uppercase">
               Premium
             </span>
           </button>
@@ -86,7 +86,7 @@ export default function EtfPdfDownloadButton({
 
               {/* 자물쇠 아이콘 */}
               <div className="flex justify-center mb-5">
-                <div className="w-16 h-16 rounded-full bg-linear-to-tr from-gold/30 to-white/10 border border-gold/40 flex items-center justify-center shadow-lg shadow-gold/20">
+                <div className="w-16 h-16 rounded-full bg-linear-to-tr from-gold/30 to-white/10 border border-[#EA580C]/40 flex items-center justify-center shadow-lg shadow-gold/20">
                   <Lock className="w-7 h-7 text-yellow-accent" />
                 </div>
               </div>
@@ -95,7 +95,7 @@ export default function EtfPdfDownloadButton({
               <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight mb-2">
                 리서치 보고서 PDF 다운로드
               </h3>
-              <p className="text-xs font-bold text-yellow-accent uppercase tracking-widest mb-4">
+              <p className="text-xs font-bold text-[#EA580C] uppercase tracking-widest mb-4">
                 Premium 회원 전용 혜택
               </p>
 
@@ -112,11 +112,11 @@ export default function EtfPdfDownloadButton({
                   <>
                     <Link
                       href={`/login?redirectTo=${encodeURIComponent(`/subscribe?returnUrl=${encodeURIComponent(returnUrl)}`)}`}
-                      className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 bg-[#EA580C] hover:bg-[#c29d2f] active:scale-95 text-black font-black rounded-none text-sm transition-all cursor-pointer"
+                      className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 bg-[#EA580C] hover:bg-[#c2410c] active:scale-95 text-white font-black rounded-none text-sm transition-all cursor-pointer shadow-md"
                     >
-                      <Sparkles className="w-4 h-4 text-black" />
+                      <Sparkles className="w-4 h-4 text-white" />
                       <span>프리미엄 구독하고 PDF 무제한 받기</span>
-                      <ArrowRight className="w-4 h-4 text-black" />
+                      <ArrowRight className="w-4 h-4 text-white" />
                     </Link>
                     <Link
                       href={loginUrl}
@@ -128,11 +128,11 @@ export default function EtfPdfDownloadButton({
                 ) : (
                   <Link
                     href={`/subscribe?returnUrl=${encodeURIComponent(returnUrl)}`}
-                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 bg-linear-to-r from-gold to-yellow-accent hover:from-amber-600 hover:to-amber-500 active:scale-95 text-navy font-black rounded-none text-sm shadow-md transition-all cursor-pointer"
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 bg-[#EA580C] hover:bg-[#c2410c] active:scale-95 text-white font-black rounded-none text-sm shadow-md transition-all cursor-pointer"
                   >
-                    <Sparkles className="w-4 h-4 text-navy" />
+                    <Sparkles className="w-4 h-4 text-white" />
                     <span>프리미엄 구독하고 PDF 무제한 받기</span>
-                    <ArrowRight className="w-4 h-4 text-navy" />
+                    <ArrowRight className="w-4 h-4 text-white" />
                   </Link>
                 )}
               </div>

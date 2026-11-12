@@ -190,11 +190,11 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
     // 캔들스틱 또는 라인 시리즈 추가
     if (chartMode === 'candle') {
       const candleSeries = chart.addSeries(CandlestickSeries, {
-        upColor: '#D4AF37',          // 상승: 시그니처 골드
+        upColor: '#EA580C',          // 상승: 시그니처 골드
         downColor: '#222222',        // 하락: 럭셔리 다크 블랙
         borderUpColor: '#B8860B',    // 골드 테두리
         borderDownColor: '#111111',  // 블랙 테두리
-        wickUpColor: '#D4AF37',      // 골드 꼬리
+        wickUpColor: '#EA580C',      // 골드 꼬리
         wickDownColor: '#222222',    // 블랙 꼬리
         priceFormat: {
           type: 'custom',
@@ -206,7 +206,7 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
       candleSeriesRef.current = candleSeries;
     } else {
       const lineSeries = chart.addSeries(LineSeries, {
-        color: '#D4AF37',
+        color: '#EA580C',
         lineWidth: 2,
         priceFormat: {
           type: 'custom',
@@ -369,7 +369,7 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
       <div className="border-b border-black/10 pb-2.5 mb-2.5 px-0.5 sm:px-0">
         <div className="flex items-center gap-2">
           <h3 className="text-base sm:text-lg font-bold text-[#000000] tracking-tight">주가 추이 (주봉)</h3>
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-[#D4AF37]/15 text-[#AA820A] border border-[#D4AF37]/30">
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-[#EA580C]/15 text-[#AA820A] border border-[#EA580C]/30">
             블랙 & 골드
           </span>
         </div>
@@ -388,7 +388,7 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
               onClick={() => setChartMode('candle')}
               className={`px-2 sm:px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
                 chartMode === 'candle'
-                  ? 'bg-black text-[#D4AF37] shadow-xs'
+                  ? 'bg-black text-[#EA580C] shadow-xs'
                   : 'text-gray-600 hover:text-black'
               }`}
             >
@@ -399,7 +399,7 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
               onClick={() => setChartMode('line')}
               className={`px-2 sm:px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
                 chartMode === 'line'
-                  ? 'bg-black text-[#D4AF37] shadow-xs'
+                  ? 'bg-black text-[#EA580C] shadow-xs'
                   : 'text-gray-600 hover:text-black'
               }`}
             >
@@ -420,7 +420,7 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
           {/* 범례 표시 */}
           <div className="hidden sm:flex items-center gap-2 text-[11px] text-gray-500 font-medium ml-1">
             <span className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 bg-[#D4AF37] inline-block border border-[#B8860B]" />
+              <span className="w-2.5 h-2.5 bg-[#EA580C] inline-block border border-[#B8860B]" />
               상승
             </span>
             <span className="flex items-center gap-1">

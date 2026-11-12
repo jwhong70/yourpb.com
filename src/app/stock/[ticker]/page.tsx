@@ -575,7 +575,7 @@ export default async function StockDetailPage({ params }: PageProps) {
                                   alt={getKoreanName(sig.analyst_name)}
                                   width={44}
                                   height={44}
-                                  className="w-11 h-11 rounded-full object-cover border-2 border-[#D4AF37]/80 shadow-sm bg-gray-900"
+                                  className="w-11 h-11 rounded-full object-cover border-2 border-[#EA580C]/80 shadow-sm bg-gray-900"
                                   loading="lazy"
                                 />
                               </div>

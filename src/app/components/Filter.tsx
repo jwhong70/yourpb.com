@@ -488,8 +488,8 @@ export default function Filter({
           </div>
           <div className="flex items-center gap-3">
             {!isPremium && (
-              <span className="inline-flex items-center gap-1 text-[10px] text-gold font-bold bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-full select-none">
-                <Lock className="w-3 h-3 text-gold" />
+              <span className="inline-flex items-center gap-1 text-[10px] text-[#EA580C] font-bold bg-gold/10 border border-[#EA580C]/20 px-2 py-0.5 rounded-full select-none">
+                <Lock className="w-3 h-3 text-[#EA580C]" />
                 Premium
               </span>
             )}
@@ -573,7 +573,7 @@ export default function Filter({
                              <div className="flex items-center gap-1.5 min-w-0">
                                <span className="font-semibold text-gray-900 text-xs sm:text-sm truncate">{stock.name}</span>
                                {!isPremium && (
-                                 <Lock className="w-3 h-3 text-gold/60 shrink-0" />
+                                 <Lock className="w-3 h-3 text-[#EA580C]/60 shrink-0" />
                                )}
                              </div>
                              <span className="text-[10px] sm:text-[11px] font-mono text-gray-400 font-normal tracking-wide">

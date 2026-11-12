@@ -287,7 +287,7 @@ export function MacroBarChart({
 
       const numVal = Number(rawVal);
       const isCurrent = d.year === currentYear;
-      const color = isCurrent ? '#D4AF37' : (numVal >= 0 ? '#111111' : '#4B5563');
+      const color = isCurrent ? '#EA580C' : (numVal >= 0 ? '#111111' : '#4B5563');
 
       map.set(timeStr, {
         time: timeStr as Time,
@@ -530,7 +530,7 @@ export function MacroBarChart({
           {activeData && (
             <div className="flex items-center gap-2 text-[11px] font-mono">
               <span className="text-gray-500 font-sans text-[10px]">{activeData.time}</span>
-              <span className="font-extrabold text-[#000000] bg-[#D4AF37]/15 px-1.5 py-0.5 rounded border border-[#D4AF37]/30">
+              <span className="font-extrabold text-[#000000] bg-[#EA580C]/15 px-1.5 py-0.5 rounded border border-[#EA580C]/30">
                 {activeData.value > 0 ? `+${formatVal(activeData.value)}` : formatVal(activeData.value)}
               </span>
             </div>
@@ -645,7 +645,7 @@ export function MacroLineChart({
       bottomColor: 'rgba(212, 175, 55, 0.00)',
       crosshairMarkerVisible: true,
       crosshairMarkerRadius: 4,
-      crosshairMarkerBorderColor: '#D4AF37',
+      crosshairMarkerBorderColor: '#EA580C',
       crosshairMarkerBackgroundColor: '#111111',
       priceFormat: {
         type: 'price',
@@ -787,7 +787,7 @@ export function MacroLineChart({
           {activeData && (
             <div className="flex items-center gap-2 text-[11px] font-mono">
               <span className="text-gray-500 font-sans text-[10px]">{activeData.time}</span>
-              <span className="font-extrabold text-[#000000] bg-[#D4AF37]/15 px-1.5 py-0.5 rounded border border-[#D4AF37]/30">
+              <span className="font-extrabold text-[#000000] bg-[#EA580C]/15 px-1.5 py-0.5 rounded border border-[#EA580C]/30">
                 {activeData.value > 0 ? `+${formatVal(activeData.value)}` : formatVal(activeData.value)}
               </span>
             </div>
@@ -926,11 +926,11 @@ export function MacroCandleChart({
     }
 
     const candleSeries = chart.addSeries(CandlestickSeries, {
-      upColor: '#D4AF37',
+      upColor: '#EA580C',
       downColor: '#222222',
       borderUpColor: '#B8860B',
       borderDownColor: '#111111',
-      wickUpColor: '#D4AF37',
+      wickUpColor: '#EA580C',
       wickDownColor: '#222222',
       priceFormat: {
         type: 'price',
@@ -1074,7 +1074,7 @@ export function MacroCandleChart({
           <span className="font-bold text-gray-900 text-xs truncate max-w-50 sm:max-w-xs">{title}</span>
           <div className="flex items-center gap-2 text-[10px] text-gray-500 font-medium shrink-0">
             <span className="flex items-center gap-1">
-              <span className="w-2 h-2 bg-[#D4AF37] inline-block border border-[#B8860B]" /> 상승
+              <span className="w-2 h-2 bg-[#EA580C] inline-block border border-[#B8860B]" /> 상승
             </span>
             <span className="flex items-center gap-1">
               <span className="w-2 h-2 bg-[#222222] inline-block border border-[#111111]" /> 하락
@@ -1108,7 +1108,7 @@ export function MacroCandleChart({
               <span>시: <strong className="text-gray-900">{formatVal(activeData.open)}</strong></span>
               <span>고: <strong className="text-gray-900">{formatVal(activeData.high)}</strong></span>
               <span>저: <strong className="text-gray-900">{formatVal(activeData.low)}</strong></span>
-              <span>종: <strong className="text-[#000000] bg-[#D4AF37]/20 px-1 py-0.5 rounded border border-[#D4AF37]/40 font-bold">{formatVal(activeData.close)}</strong></span>
+              <span>종: <strong className="text-[#000000] bg-[#EA580C]/20 px-1 py-0.5 rounded border border-[#EA580C]/40 font-bold">{formatVal(activeData.close)}</strong></span>
             </div>
           )}
         </div>

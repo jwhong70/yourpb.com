@@ -87,7 +87,7 @@ export default function ModelCarousel({
       case '테마':
         return 'from-yellow-accent/40 to-lime/20 border-yellow-accent/30';
       default:
-        return 'from-gold/40 to-silver/20 border-gold/30';
+        return 'from-gold/40 to-silver/20 border-[#EA580C]/30';
     }
   };
 

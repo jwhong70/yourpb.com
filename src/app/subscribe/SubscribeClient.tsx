@@ -177,9 +177,9 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
   if (user && user.membership_status === 'premium') {
     return (
       <div className="max-w-2xl mx-auto space-y-8 pt-6">
-        <div className="bg-white border-2 border-[#D4AF37] p-8 sm:p-10 shadow-md space-y-6 text-gray-900 text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37] mb-2">
-            <Award className="w-8 h-8 text-[#D4AF37]" />
+        <div className="bg-white border-2 border-[#EA580C] p-8 sm:p-10 shadow-md space-y-6 text-gray-900 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#EA580C]/10 border border-[#EA580C] mb-2">
+            <Award className="w-8 h-8 text-[#EA580C]" />
           </div>
 
           <div className="space-y-2">
@@ -194,7 +194,7 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
           {user.subscription_end_date && (
             <div className="bg-[#FAF9F5] border border-black/10 p-4 inline-block mx-auto">
               <span className="text-xs text-gray-500 block mb-1">구독 만료 예정일</span>
-              <span className="text-lg font-mono font-black text-[#D4AF37]">
+              <span className="text-lg font-mono font-black text-[#EA580C]">
                 {user.subscription_end_date.split('T')[0]}
               </span>
             </div>
@@ -204,7 +204,7 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/"
-                className="w-full sm:w-auto px-6 py-3 bg-[#D4AF37] text-black font-extrabold hover:bg-[#c29d2f] transition-all text-sm"
+                className="w-full sm:w-auto px-6 py-3 bg-[#EA580C] text-black font-extrabold hover:bg-[#c29d2f] transition-all text-sm"
               >
                 홈으로 이동하여 리포트 열람
               </Link>
@@ -261,25 +261,25 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
             <div className="border-t border-black/10 pt-6">
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
+                  <Check className="w-5 h-5 text-[#EA580C] shrink-0 mt-0.5" />
                   <span className="text-sm sm:text-base text-gray-600">
                     <strong className="text-gray-900 font-bold">[주식]</strong> 투자 대가 20인 AI 매매 시그널 & 적정가치 분석
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
+                  <Check className="w-5 h-5 text-[#EA580C] shrink-0 mt-0.5" />
                   <span className="text-sm sm:text-base text-gray-600">
                     <strong className="text-gray-900 font-bold">[주식]</strong> 1,000대 글로벌 주식 정밀 분석 (120주 주봉 캔들)
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
+                  <Check className="w-5 h-5 text-[#EA580C] shrink-0 mt-0.5" />
                   <span className="text-sm sm:text-base text-gray-600">
                     <strong className="text-gray-900 font-bold">[다운로드]</strong> ETF & 주식 2p 정밀 PDF 리포트 무제한 다운로드
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
+                  <Check className="w-5 h-5 text-[#EA580C] shrink-0 mt-0.5" />
                   <span className="text-sm sm:text-base text-gray-600">
                     <strong className="text-gray-900 font-bold">[매크로]</strong> VIP 거시경제 지표 및 자산배분 모델 조회
                   </span>
@@ -294,25 +294,25 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
           onClick={() => setSelectedPlan('6months')}
           className={`flex flex-col bg-white border cursor-pointer rounded-none p-8 lg:p-10 shadow-md justify-between space-y-8 relative transition-all duration-300 ${
             selectedPlan === '6months' 
-              ? 'border-2 border-[#D4AF37] scale-105 z-10 ring-2 ring-[#D4AF37]/20 shadow-lg' 
+              ? 'border-2 border-[#EA580C] scale-105 z-10 ring-2 ring-[#EA580C]/20 shadow-lg' 
               : 'border-black/10 opacity-80 hover:opacity-100'
           }`}
         >
           {/* 추천 태그 뱃지 */}
-          <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#D4AF37] text-black text-xs font-black tracking-widest px-4 py-1.5 uppercase select-none">
+          <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#EA580C] text-black text-xs font-black tracking-widest px-4 py-1.5 uppercase select-none">
             RECOMMENDED
           </div>
 
           <div className="space-y-6">
             <div className="pt-2">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-[#D4AF37] uppercase tracking-wider">6개월 멤버십</h3>
+                <h3 className="text-lg font-bold text-[#EA580C] uppercase tracking-wider">6개월 멤버십</h3>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold text-white bg-red-accent/90 border border-red-500/20 px-2 py-0.5 rounded-none">
                     17% 할인
                   </span>
                   {selectedPlan === '6months' && (
-                    <span className="text-[10px] font-black text-black bg-[#D4AF37] px-2 py-0.5 uppercase tracking-wide">
+                    <span className="text-[10px] font-black text-black bg-[#EA580C] px-2 py-0.5 uppercase tracking-wide">
                       SELECTED
                     </span>
                   )}
@@ -329,19 +329,19 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
             <div className="border-t border-black/10 pt-6">
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
+                  <Check className="w-5 h-5 text-[#EA580C] shrink-0 mt-0.5" />
                   <span className="text-sm sm:text-base text-gray-700 font-semibold">
                     1개월 멤버십의 모든 주식 분석 & PDF 다운로드 혜택 포함
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
+                  <Check className="w-5 h-5 text-[#EA580C] shrink-0 mt-0.5" />
                   <span className="text-sm sm:text-base text-gray-600">
                     <strong className="text-gray-900 font-bold">[1:1 케어]</strong> 이메일 맞춤형 자산배분·포트폴리오 진단 1회 무료
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
+                  <Check className="w-5 h-5 text-[#EA580C] shrink-0 mt-0.5" />
                   <span className="text-sm sm:text-base text-gray-600">
                     <strong className="text-gray-900 font-bold">[VIP 특전]</strong> 월간 시황 브리프 및 모델 포트폴리오 리밸런싱 우선 제공
                   </span>
@@ -381,7 +381,7 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
           onClick={handlePaymentSubmit}
           disabled={isPending !== null || (!!user && isWidgetLoading)}
           type="button"
-          className="w-full max-w-md py-4 px-6 bg-[#D4AF37] hover:bg-[#c29d2f] active:scale-98 text-black font-black rounded-none shadow-xl shadow-[#D4AF37]/10 transition-all text-lg tracking-wide disabled:opacity-50 select-none cursor-pointer text-center"
+          className="w-full max-w-md py-4 px-6 bg-[#EA580C] hover:bg-[#c29d2f] active:scale-98 text-black font-black rounded-none shadow-xl shadow-[#EA580C]/10 transition-all text-lg tracking-wide disabled:opacity-50 select-none cursor-pointer text-center"
         >
           {isPending ? (
             <div className="flex items-center justify-center gap-2.5">

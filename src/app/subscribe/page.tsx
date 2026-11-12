@@ -26,7 +26,7 @@ export default async function SubscribePage() {
             </h1>
             <p className="text-xs sm:text-sm text-gray-400 font-medium leading-relaxed">
               워런 버핏 등 <strong className="text-white font-bold">투자 대가 20인의 AI 주식 시그널</strong>과 <strong className="text-white font-bold">1,000대 글로벌 주식 정밀 분석</strong>,<br className="hidden sm:inline" />
-              그리고 <strong className="text-[#D4AF37] font-bold">ETF 및 주식 정밀 리서치 보고서 원본 PDF 다운로드</strong> 혜택을 무제한으로 누려보세요.
+              그리고 <strong className="text-[#EA580C] font-bold">ETF 및 주식 정밀 리서치 보고서 원본 PDF 다운로드</strong> 혜택을 무제한으로 누려보세요.
             </p>
           </div>
 

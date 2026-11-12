@@ -99,7 +99,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans" suppressHydrationWarning>
         <AppSplashScreen />
         <NextTopLoader
-          color="#D4AF37"
+          color="#EA580C"
           initialPosition={0.08}
           crawlSpeed={200}
           height={3}
@@ -107,7 +107,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           showSpinner={false}
           easing="ease"
           speed={200}
-          shadow="0 0 10px #D4AF37,0 0 5px #D4AF37"
+          shadow="0 0 10px #EA580C,0 0 5px #EA580C"
         />
         <NuqsAdapter>
           {children}

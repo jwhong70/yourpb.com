@@ -41,7 +41,7 @@ export default async function SupportPage() {
               {/* 타이틀 헤더 */}
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
-                  <Headphones className="w-8 h-8 text-[#D4AF37]" />
+                  <Headphones className="w-8 h-8 text-[#EA580C]" />
                   <h1 className="text-2xl sm:text-3xl font-black tracking-tight">고객센터</h1>
                 </div>
                 <p className="text-white/60 text-sm sm:text-base leading-relaxed">
@@ -58,13 +58,13 @@ export default async function SupportPage() {
                   className="group block p-6 bg-white/5 hover:bg-white/10 border border-white/10 transition-all text-left cursor-pointer"
                 >
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 bg-[#D4AF37]/10 group-hover:bg-[#D4AF37]/20 transition-all rounded-full">
-                      <Phone className="w-5 h-5 text-[#D4AF37]" />
+                    <div className="p-2 bg-[#EA580C]/10 group-hover:bg-[#EA580C]/20 transition-all rounded-full">
+                      <Phone className="w-5 h-5 text-[#EA580C]" />
                     </div>
                     <span className="text-sm font-bold text-white/50">전화 상담</span>
                   </div>
                   <div className="space-y-1">
-                    <span className="text-lg font-black text-white block group-hover:text-[#D4AF37] transition-colors">
+                    <span className="text-lg font-black text-white block group-hover:text-[#EA580C] transition-colors">
                       070-4507-4460
                     </span>
                     <span className="text-xs text-white/40 block">클릭 시 즉시 통화 연결</span>
@@ -77,13 +77,13 @@ export default async function SupportPage() {
                   className="group block p-6 bg-white/5 hover:bg-white/10 border border-white/10 transition-all text-left cursor-pointer"
                 >
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 bg-[#D4AF37]/10 group-hover:bg-[#D4AF37]/20 transition-all rounded-full">
-                      <Mail className="w-5 h-5 text-[#D4AF37]" />
+                    <div className="p-2 bg-[#EA580C]/10 group-hover:bg-[#EA580C]/20 transition-all rounded-full">
+                      <Mail className="w-5 h-5 text-[#EA580C]" />
                     </div>
                     <span className="text-sm font-bold text-white/50">이메일 문의</span>
                   </div>
                   <div className="space-y-1">
-                    <span className="text-base font-black text-white block group-hover:text-[#D4AF37] transition-colors break-all">
+                    <span className="text-base font-black text-white block group-hover:text-[#EA580C] transition-colors break-all">
                       jwhong70@gmail.com
                     </span>
                     <span className="text-xs text-white/40 block">제휴 및 일반 서면 피드백</span>
@@ -94,7 +94,7 @@ export default async function SupportPage() {
 
               {/* 3. 업무 시간 정보 */}
               <div className="p-5 bg-white/5 border border-white/5 flex gap-4 items-start text-left">
-                <Clock className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
+                <Clock className="w-5 h-5 text-[#EA580C] shrink-0 mt-0.5" />
                 <div className="space-y-1">
                   <span className="text-sm font-bold text-white">운영 시간 및 안내</span>
                   <p className="text-xs text-white/60 leading-relaxed">

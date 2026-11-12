@@ -110,7 +110,7 @@ export default function EtfPerformanceChart({
                   return (
                     <Cell
                       key={`cell-${index}`}
-                      fill={isPositive ? '#D4AF37' : '#4B5563'}
+                      fill={isPositive ? '#EA580C' : '#4B5563'}
                     />
                   );
                 })}

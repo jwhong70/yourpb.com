@@ -107,7 +107,7 @@ export default async function EtfPage() {
             <details className="group bg-white border border-black/10 shadow-xs transition-all">
               <summary className="p-4 sm:p-5 flex items-center justify-between cursor-pointer select-none list-none hover:bg-black/5 transition-colors">
                 <div className="flex items-center gap-2">
-                  <span className="text-[#8B6508] font-extrabold text-xs sm:text-sm">💡 피비의 안내</span>
+                  <span className="text-[#9A3412] font-extrabold text-xs sm:text-sm">💡 피비의 안내</span>
                   <span className="text-xs text-gray-500 font-medium hidden sm:inline">
                     · 클릭하여 ETF 엑스레이 및 밸류에이션 조회 요령 확인
                   </span>
@@ -146,7 +146,7 @@ export default async function EtfPage() {
                     <Link
                       key={item.ticker}
                       href={`/etf/${item.ticker}`}
-                      className="px-2.5 py-1 bg-white hover:bg-amber-50 border border-black/10 hover:border-[#D4AF37] text-gray-800 hover:text-black transition-colors text-[11px] sm:text-xs whitespace-nowrap shadow-xs"
+                      className="px-2.5 py-1 bg-white hover:bg-amber-50 border border-black/10 hover:border-[#EA580C] text-gray-800 hover:text-black transition-colors text-[11px] sm:text-xs whitespace-nowrap shadow-xs"
                     >
                       <span>{item.label}</span>
                     </Link>

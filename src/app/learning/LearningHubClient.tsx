@@ -190,7 +190,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
             </div>
             <div className="w-full bg-black/5 h-2 rounded-full overflow-hidden">
               <div
-                className="bg-[#D4AF37] h-full transition-all duration-500 rounded-full"
+                className="bg-[#EA580C] h-full transition-all duration-500 rounded-full"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -209,7 +209,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
             {/* 모바일 2단 개행 (챕터 ➔ 버튼) */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 sm:gap-4 mb-3.5">
               <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 bg-amber-50 border border-[#D4AF37]/30 text-amber-900 text-xs font-black rounded-md">
+                <span className="px-2 py-0.5 bg-amber-50 border border-[#EA580C]/30 text-amber-900 text-xs font-black rounded-md">
                   #{selectedEp.episodeNumber.toString().padStart(2, '0')}
                 </span>
                 <span className="text-xs font-bold text-gray-400 break-keep">{selectedEp.chapter}</span>
@@ -221,7 +221,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
                   onClick={() => setViewMode('cards')}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-black transition-all cursor-pointer ${
                     viewMode === 'cards'
-                      ? 'bg-[#1F1F1F] text-[#D4AF37] shadow-xs'
+                      ? 'bg-[#1F1F1F] text-[#EA580C] shadow-xs'
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
@@ -233,7 +233,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
                     onClick={() => setViewMode('video')}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-black transition-all cursor-pointer ${
                       viewMode === 'video'
-                        ? 'bg-[#1F1F1F] text-[#D4AF37] shadow-xs'
+                        ? 'bg-[#1F1F1F] text-[#EA580C] shadow-xs'
                         : 'text-gray-600 hover:text-gray-900'
                     }`}
                   >
@@ -301,7 +301,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
                         onClick={() => setCurrentCardIndex(idx + 1)}
                         className={`h-2 rounded-full transition-all cursor-pointer ${
                           currentCardIndex === idx + 1
-                            ? 'w-6 bg-[#D4AF37]'
+                            ? 'w-6 bg-[#EA580C]'
                             : 'w-2 bg-black/15 hover:bg-black/30'
                         }`}
                         aria-label={`${idx + 1}번째 카드로 이동`}
@@ -411,7 +411,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
             <div className="pt-1 flex flex-col sm:flex-row gap-2.5 sm:gap-3">
               <Link
                 href="/diagnosis"
-                className="flex-1 flex items-center justify-center gap-1.5 bg-[#D4AF37] hover:bg-[#C5A028] text-gray-950 font-extrabold shadow-sm font-bold text-xs sm:text-sm py-2.5 sm:py-3 px-4 rounded-xl transition-all shadow-md hover:shadow-yellow-accent/20 cursor-pointer"
+                className="flex-1 flex items-center justify-center gap-1.5 bg-[#EA580C] hover:bg-[#c2410c] text-gray-950 font-extrabold shadow-sm font-bold text-xs sm:text-sm py-2.5 sm:py-3 px-4 rounded-xl transition-all shadow-md hover:shadow-yellow-accent/20 cursor-pointer"
               >
                 <span>내 포트폴리오 무료 진단하기</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -419,7 +419,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
 
               <button
                 onClick={handlePdfClick}
-                className="flex-1 flex items-center justify-center gap-1.5 bg-[#1F1F1F] hover:bg-[#2B2B2B] text-white border border-black/20 hover:border-[#D4AF37] shadow-xs font-bold text-xs sm:text-sm py-2.5 sm:py-3 px-4 rounded-xl transition-all cursor-pointer group"
+                className="flex-1 flex items-center justify-center gap-1.5 bg-[#1F1F1F] hover:bg-[#2B2B2B] text-white border border-black/20 hover:border-[#EA580C] shadow-xs font-bold text-xs sm:text-sm py-2.5 sm:py-3 px-4 rounded-xl transition-all cursor-pointer group"
               >
                 <Lock className="w-3.5 h-3.5 text-yellow-accent group-hover:scale-110 transition-transform" />
                 <span>멤버십 전용 PDF 소장</span>
@@ -488,7 +488,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
                                 key={ep.id}
                                 className={`p-3.5 flex items-center justify-between gap-3 transition-colors ${
                                   isSelected
-                                    ? 'bg-amber-50/70 border-l-4 border-[#D4AF37]'
+                                    ? 'bg-amber-50/70 border-l-4 border-[#EA580C]'
                                     : 'hover:bg-black/5'
                                 }`}
                               >
@@ -628,7 +628,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
             <div className="flex flex-col gap-3">
               <Link
                 href="/subscribe"
-                className="w-full py-3.5 bg-[#D4AF37] hover:bg-[#C5A028] text-gray-950 font-extrabold shadow-sm font-black text-sm rounded-xl transition-all shadow-lg text-center"
+                className="w-full py-3.5 bg-[#EA580C] hover:bg-[#c2410c] text-gray-950 font-extrabold shadow-sm font-black text-sm rounded-xl transition-all shadow-lg text-center"
               >
                 프리미엄 멤버십 시작하기
               </Link>

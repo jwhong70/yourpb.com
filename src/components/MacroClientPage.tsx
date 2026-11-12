@@ -162,7 +162,7 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background text-foreground font-sans">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-gold border-t-transparent rounded-full animate-spin" />
+          <div className="w-12 h-12 border-4 border-[#EA580C] border-t-transparent rounded-full animate-spin" />
           <span className="text-sm font-semibold text-gray-500">글로벌 거시경제 분석 로딩 중...</span>
         </div>
       </div>

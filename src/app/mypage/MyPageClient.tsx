@@ -111,7 +111,7 @@ export default function MyPageClient({ initialUser }: MyPageClientProps) {
             내 계정 정보
           </h2>
           {isPremium ? (
-            <span className="flex items-center gap-1 text-xs font-black text-black bg-[#D4AF37] px-3 py-1 rounded-full select-none">
+            <span className="flex items-center gap-1 text-xs font-black text-black bg-[#EA580C] px-3 py-1 rounded-full select-none">
               <Award className="w-3.5 h-3.5" />
               Premium 회원
             </span>
@@ -142,7 +142,7 @@ export default function MyPageClient({ initialUser }: MyPageClientProps) {
       <div className="bg-white border border-black shadow-xs p-6 sm:p-8 space-y-6">
         <div className="border-b border-gray-100 pb-4">
           <h2 className="text-base sm:text-lg font-extrabold text-black flex items-center gap-2">
-            <Award className="w-5 h-5 text-[#D4AF37]" />
+            <Award className="w-5 h-5 text-[#EA580C]" />
             멤버십 상태 및 구독 관리
           </h2>
         </div>
@@ -150,10 +150,10 @@ export default function MyPageClient({ initialUser }: MyPageClientProps) {
         {isPremium ? (
           /* A. 프리미엄 이용 중인 경우 (무료 전환 / 해지 옵션 제공) */
           <div className="space-y-6">
-            <div className="bg-black text-white p-6 sm:p-8 border-l-4 border-[#D4AF37] shadow-sm space-y-4">
+            <div className="bg-black text-white p-6 sm:p-8 border-l-4 border-[#EA580C] shadow-sm space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <div className="inline-block bg-[#D4AF37] text-black text-[10px] font-black px-2 py-0.5 tracking-wider uppercase mb-2">
+                  <div className="inline-block bg-[#EA580C] text-black text-[10px] font-black px-2 py-0.5 tracking-wider uppercase mb-2">
                     ACTIVE VIP
                   </div>
                   <h3 className="text-xl font-black text-white">프리미엄 멤버십 이용 중</h3>
@@ -164,7 +164,7 @@ export default function MyPageClient({ initialUser }: MyPageClientProps) {
                 {user.subscription_end_date && (
                   <div className="bg-white/10 p-3 sm:text-right shrink-0">
                     <span className="text-[11px] text-gray-400 block">구독 만료 예정일</span>
-                    <span className="text-base font-mono font-black text-[#D4AF37]">
+                    <span className="text-base font-mono font-black text-[#EA580C]">
                       {user.subscription_end_date.split('T')[0]}
                     </span>
                   </div>
@@ -199,7 +199,7 @@ export default function MyPageClient({ initialUser }: MyPageClientProps) {
                 </div>
                 <Link
                   href="/subscribe"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#D4AF37] hover:bg-[#c29d2f] text-black font-black text-sm transition-all shadow-md shrink-0"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#EA580C] hover:bg-[#c29d2f] text-black font-black text-sm transition-all shadow-md shrink-0"
                 >
                   <span>프리미엄 멤버십 구독하기 (유료 전환)</span>
                   <ArrowRight className="w-4 h-4" />
@@ -209,19 +209,19 @@ export default function MyPageClient({ initialUser }: MyPageClientProps) {
               {/* 프리미엄 혜택 목록 */}
               <div className="border-t border-gray-200 pt-4 mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-gray-700">
                 <div className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-[#D4AF37] shrink-0" />
+                  <Check className="w-4 h-4 text-[#EA580C] shrink-0" />
                   <span>투자 대가 20인 AI 매매 시그널 & 적정가치</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-[#D4AF37] shrink-0" />
+                  <Check className="w-4 h-4 text-[#EA580C] shrink-0" />
                   <span>1,000대 글로벌 주식 120주 주봉 캔들 분석</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-[#D4AF37] shrink-0" />
+                  <Check className="w-4 h-4 text-[#EA580C] shrink-0" />
                   <span>ETF & 주식 2p 정밀 PDF 리포트 무제한 다운로드</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-[#D4AF37] shrink-0" />
+                  <Check className="w-4 h-4 text-[#EA580C] shrink-0" />
                   <span>VIP 거시경제 지표 및 자산배분 모델 열람</span>
                 </div>
               </div>

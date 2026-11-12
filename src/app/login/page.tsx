@@ -71,7 +71,7 @@ function LoginContent() {
   const descColor = 'text-gray-400';
   const tabContainerColor = 'bg-neutral-900 border-neutral-800';
   const tabTextColor = 'text-gray-400 hover:text-white';
-  const buttonBgColor = isLogin ? 'bg-[#D4AF37] hover:bg-[#c29d2f]' : 'bg-[#9E9E9E] hover:bg-[#8f8f8f]';
+  const buttonBgColor = isLogin ? 'bg-[#EA580C] hover:bg-[#c29d2f]' : 'bg-[#9E9E9E] hover:bg-[#8f8f8f]';
   const buttonTextColor = 'text-black';
 
   return (
@@ -107,7 +107,7 @@ function LoginContent() {
                 setSuccessMessage(null);
               }}
               className={`flex-1 py-2.5 rounded-none text-sm font-black transition-all duration-300 cursor-pointer ${activeTab === 'login'
-                  ? 'bg-[#D4AF37] text-black shadow-xs'
+                  ? 'bg-[#EA580C] text-black shadow-xs'
                   : tabTextColor
                 }`}
             >
@@ -120,7 +120,7 @@ function LoginContent() {
                 setSuccessMessage(null);
               }}
               className={`flex-1 py-2.5 rounded-none text-sm font-black transition-all duration-300 cursor-pointer ${activeTab === 'signup'
-                  ? 'bg-[#D4AF37] text-black shadow-xs'
+                  ? 'bg-[#EA580C] text-black shadow-xs'
                   : tabTextColor
                 }`}
             >
@@ -169,7 +169,7 @@ function LoginContent() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     disabled={isLoading}
-                    className="w-full pl-10 pr-4 py-3 bg-[#F9F8F6] border border-black rounded-none text-sm focus:ring-1 focus:ring-[#D4AF37] outline-none transition-all duration-300 text-gray-900 font-semibold"
+                    className="w-full pl-10 pr-4 py-3 bg-[#F9F8F6] border border-black rounded-none text-sm focus:ring-1 focus:ring-[#EA580C] outline-none transition-all duration-300 text-gray-900 font-semibold"
                   />
                 </div>
               </div>
@@ -186,7 +186,7 @@ function LoginContent() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isLoading}
-                  className="w-full pl-10 pr-4 py-3 bg-[#F9F8F6] border border-black rounded-none text-sm focus:ring-1 focus:ring-[#D4AF37] outline-none transition-all duration-300 text-gray-900 font-semibold"
+                  className="w-full pl-10 pr-4 py-3 bg-[#F9F8F6] border border-black rounded-none text-sm focus:ring-1 focus:ring-[#EA580C] outline-none transition-all duration-300 text-gray-900 font-semibold"
                 />
               </div>
             </div>
@@ -202,7 +202,7 @@ function LoginContent() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isLoading}
-                  className="w-full pl-10 pr-4 py-3 bg-[#F9F8F6] border border-black rounded-none text-sm focus:ring-1 focus:ring-[#D4AF37] outline-none transition-all duration-300 text-gray-900 font-semibold"
+                  className="w-full pl-10 pr-4 py-3 bg-[#F9F8F6] border border-black rounded-none text-sm focus:ring-1 focus:ring-[#EA580C] outline-none transition-all duration-300 text-gray-900 font-semibold"
                 />
               </div>
             </div>
@@ -298,7 +298,7 @@ export default function LoginPage() {
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-[#000000] text-white font-sans">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-4 border-[#D4AF37]/30 border-t-[#D4AF37] rounded-full animate-spin" />
+          <div className="w-8 h-8 border-4 border-[#EA580C]/30 border-t-[#EA580C] rounded-full animate-spin" />
           <span className="text-sm font-bold text-gray-400">로그인 화면을 불러오는 중입니다...</span>
         </div>
       </div>

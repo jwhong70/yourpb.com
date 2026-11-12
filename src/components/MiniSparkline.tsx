@@ -33,8 +33,8 @@ const MiniSparkline = React.memo(function MiniSparkline({
   );
 
   const isUp = (data[data.length - 1] ?? 0) >= (data[0] ?? 0);
-  // 상승 흐름: 시그니처 럭셔리 골드 (#D4AF37), 조정 흐름: 슬레이트 차콜 (#64748B)
-  const strokeColor = isUp ? '#D4AF37' : '#64748B';
+  // 상승 흐름: 시그니처 럭셔리 골드 (#EA580C), 조정 흐름: 슬레이트 차콜 (#64748B)
+  const strokeColor = isUp ? '#EA580C' : '#64748B';
   const lastPoint = points[points.length - 1];
 
   return (

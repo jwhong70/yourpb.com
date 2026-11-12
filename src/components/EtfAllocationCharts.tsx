@@ -17,7 +17,7 @@ interface EtfAllocationChartsProps {
 
 // 리포트와 동일한 럭셔리 골드/블랙 테마 팔레트 (1위: 골드, 2위: 블랙, 3위: 차콜그레이, 4위: 슬레이트그레이)
 const COLOR_PALETTE = [
-  '#D4AF37', // 1위 (골드)
+  '#EA580C', // 1위 (골드)
   '#111111', // 2위 (블랙)
   '#374151', // 3위 (차콜)
   '#757D8A', // 4위 / 기타 (슬레이트)
@@ -65,8 +65,7 @@ const renderCustomizedLabel = (props: CustomLabelProps) => {
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-  const isGold = rawFill.toUpperCase() === '#D4AF37';
-  const textColor = isGold ? '#111111' : '#FFFFFF';
+  const textColor = '#FFFFFF';
 
   return (
     <text
@@ -193,7 +192,7 @@ function SolidPieChartWidget({ title, data, source }: SolidPieChartWidgetProps) 
                     formatter={(value: any, name: any) => [`${(Number(value) || 0).toFixed(1)}%`, name]}
                     contentStyle={{
                       backgroundColor: '#111111',
-                      border: '1px solid #D4AF37',
+                      border: '1px solid #EA580C',
                       borderRadius: '0px',
                       color: '#FFFFFF',
                       fontSize: '12px',
@@ -201,7 +200,7 @@ function SolidPieChartWidget({ title, data, source }: SolidPieChartWidgetProps) 
                       padding: '6px 10px',
                       boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
                     }}
-                    itemStyle={{ color: '#D4AF37' }}
+                    itemStyle={{ color: '#EA580C' }}
                   />
                 </PieChart>
               </ResponsiveContainer>

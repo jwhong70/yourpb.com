@@ -44,13 +44,13 @@ export default function PremiumPaywall({ isLoggedIn = false, returnUrl = '/' }: 
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="relative flex items-center justify-center w-20 h-20 rounded-full bg-linear-to-tr from-gold/30 to-white/10 border border-gold/40 shadow-xl shadow-gold/20"
+          className="relative flex items-center justify-center w-20 h-20 rounded-full bg-linear-to-tr from-gold/30 to-white/10 border border-[#EA580C]/40 shadow-xl shadow-gold/20"
         >
           <Lock className="w-8 h-8 text-yellow-accent animate-pulse" />
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 15, ease: 'linear' }}
-            className="absolute inset-0 rounded-full border-2 border-dashed border-gold/30 scale-110 pointer-events-none"
+            className="absolute inset-0 rounded-full border-2 border-dashed border-[#EA580C]/30 scale-110 pointer-events-none"
           />
         </motion.div>
         <div className="absolute top-0 right-1/3 text-sky-primary animate-bounce">
@@ -76,7 +76,7 @@ export default function PremiumPaywall({ isLoggedIn = false, returnUrl = '/' }: 
             transition={{ delay: idx * 0.1, duration: 0.4 }}
             className="flex gap-3.5 p-4 rounded-none bg-white/5 border border-white/5 hover:border-white/10 hover:bg-white/10 transition-all group"
           >
-            <CheckCircle2 className="w-5 h-5 text-gold shrink-0 mt-0.5 group-hover:text-yellow-accent transition-colors" />
+            <CheckCircle2 className="w-5 h-5 text-[#EA580C] shrink-0 mt-0.5 group-hover:text-yellow-accent transition-colors" />
             <div>
               <h4 className="font-bold text-white text-sm sm:text-base mb-0.5 group-hover:text-yellow-accent transition-colors">
                 {b.title}
@@ -95,11 +95,11 @@ export default function PremiumPaywall({ isLoggedIn = false, returnUrl = '/' }: 
           <>
             <Link
               href={`/login?redirectTo=${encodeURIComponent(`/subscribe?returnUrl=${encodeURIComponent(returnUrl)}`)}`}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 bg-[#EA580C] hover:bg-[#c29d2f] active:scale-95 text-black font-black rounded-none shadow-lg shadow-[#EA580C]/10 transition-all cursor-pointer text-base whitespace-nowrap"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 bg-[#EA580C] hover:bg-[#c2410c] active:scale-95 text-white font-black rounded-none shadow-lg shadow-[#EA580C]/20 transition-all cursor-pointer text-base whitespace-nowrap"
             >
-              <Sparkles className="w-4.5 h-4.5 text-black" />
+              <Sparkles className="w-4.5 h-4.5 text-white" />
               <span>프리미엄 구독 시작하기</span>
-              <ArrowRight className="w-4.5 h-4.5 text-black" />
+              <ArrowRight className="w-4.5 h-4.5 text-white" />
             </Link>
             <Link
               href={loginUrl}
@@ -111,11 +111,11 @@ export default function PremiumPaywall({ isLoggedIn = false, returnUrl = '/' }: 
         ) : (
           <Link
             href={`/subscribe?returnUrl=${encodeURIComponent(returnUrl)}`}
-            className="w-full sm:w-auto flex items-center justify-center gap-2.5 px-10 py-4 bg-linear-to-r from-gold to-yellow-accent hover:from-amber-600 hover:to-amber-500 active:scale-95 text-navy font-black rounded-none shadow-xl shadow-gold/20 transition-all cursor-pointer text-lg"
+            className="w-full sm:w-auto flex items-center justify-center gap-2.5 px-10 py-4 bg-[#EA580C] hover:bg-[#c2410c] active:scale-95 text-white font-black rounded-none shadow-xl shadow-[#EA580C]/25 transition-all cursor-pointer text-lg"
           >
-            <Sparkles className="w-5 h-5 text-navy" />
+            <Sparkles className="w-5 h-5 text-white" />
             <span>프리미엄 멤버십 구독하기</span>
-            <ArrowRight className="w-5 h-5 text-navy" />
+            <ArrowRight className="w-5 h-5 text-white" />
           </Link>
         )}
       </div>
