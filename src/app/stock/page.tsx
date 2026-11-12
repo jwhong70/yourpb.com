@@ -6,6 +6,7 @@ import { getStockWishlist } from '@/app/actions/stock_wishlist';
 import Filter from '@/app/components/Filter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import HubFaqAccordion from '@/components/HubFaqAccordion';
 
 export const metadata = {
   title: '주식 정보 조회 - 당신의 피비',
@@ -102,6 +103,9 @@ export default async function StockPage() {
               isLoggedIn={!!user}
               isPremium={isPremium}
             />
+
+            {/* 주식 허브 릴스 연계 FAQ & 가입 유도 앵커 */}
+            <HubFaqAccordion type="stock" isLoggedIn={!!user} />
           </section>
         </div>
       </main>

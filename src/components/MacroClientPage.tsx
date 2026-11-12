@@ -20,7 +20,7 @@ const MacroCandleChart = dynamic(() => import('./MacroCharts').then(mod => mod.M
   ssr: false,
   loading: () => <div className="h-64 md:h-96 bg-black/5 animate-pulse rounded-md" />
 });
-import { ChevronDown, Download } from 'lucide-react';
+import { ChevronDown, Download, Compass, HelpCircle, Info } from 'lucide-react';
 
 interface SignalState {
   prev: number | null;
@@ -44,6 +44,16 @@ interface SubCategoryItem {
 interface ClientPageProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any; // page.tsx에서 내려주는 dashboardData의 타입 구조
+  brief?: {
+    edition: string;
+    headline: string;
+    sections: {
+      macro: string;
+      liquidity: string;
+      momentum: string;
+      strategy: string;
+    };
+  };
 }
 
 // 신호등 컴포넌트 (Premium Pulse Glow 효과 탑재)
@@ -129,7 +139,7 @@ function SignalBadge({ signal, isParentSelected = false }: { signal?: SignalStat
   );
 }
 
-export default function MacroClientPage({ data }: ClientPageProps) {
+export default function MacroClientPage({ data, brief }: ClientPageProps) {
   const mounted = useIsMounted();
 
   // 1. 대분류 상태 관리 (1 ~ 4)
@@ -372,6 +382,84 @@ export default function MacroClientPage({ data }: ClientPageProps) {
 
   return (
     <div className="flex flex-col gap-6">
+
+      {/* 💡 피비의 매크로 나침반 & 신호등 이용 가이드 */}
+      <div className="bg-[#141414] border border-white/10 p-5 sm:p-6 text-white space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-white/10">
+          <div className="flex items-center gap-2.5">
+            <Compass className="w-5 h-5 text-[#D4AF37]" />
+            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+              피비의 매크로 나침반 이용 가이드
+            </h2>
+          </div>
+          <span className="text-xs text-[#D4AF37] font-semibold bg-[#D4AF37]/10 px-2.5 py-0.5 border border-[#D4AF37]/20 w-fit">
+            거시 경제 4대 팩트 탑다운 진단
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm text-gray-300">
+          {/* 1. 4대 팩트 클릭 안내 */}
+          <div className="flex items-start gap-2.5 p-3 bg-black/40 border border-white/5">
+            <span className="w-5 h-5 rounded-full bg-[#D4AF37]/20 text-[#D4AF37] font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+              1
+            </span>
+            <div>
+              <strong className="text-white block mb-0.5">4대 팩트를 확인하세요</strong>
+              <p className="text-xs text-gray-400 leading-relaxed">
+                아래 4개 상자(경제사이클·경기조절자·리스크·마켓사이클)를 클릭하시면 세부 지표가 열립니다.
+              </p>
+            </div>
+          </div>
+
+          {/* 2. 신호등 보는 법 */}
+          <div className="flex items-start gap-2.5 p-3 bg-black/40 border border-white/5">
+            <span className="w-5 h-5 rounded-full bg-[#D4AF37]/20 text-[#D4AF37] font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+              2
+            </span>
+            <div>
+              <strong className="text-white block mb-0.5">2구 신호등 보는 법</strong>
+              <div className="text-xs text-gray-400 space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 rounded-full bg-[#007C1F]" />
+                  <span>초록불: 개선 및 확장 신호</span>
+                  <span className="inline-block w-2 h-2 rounded-full bg-[#D60016] ml-2" />
+                  <span>빨간불: 둔화 및 위축 리스크</span>
+                </div>
+                <p className="text-[11px] text-gray-500">
+                  * 좌측: MOM (전월 대비) | 우측: YOY (전년 동기 대비)
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* 3. 차트 펼쳐보기 안내 */}
+          <div className="flex items-start gap-2.5 p-3 bg-black/40 border border-white/5">
+            <span className="w-5 h-5 rounded-full bg-[#D4AF37]/20 text-[#D4AF37] font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+              3
+            </span>
+            <div>
+              <strong className="text-white block mb-0.5">클릭하면 차트가 펼쳐집니다</strong>
+              <p className="text-xs text-gray-400 leading-relaxed">
+                세부 지표명을 톡 클릭하시면 하단에 10~35년 장기 시계열 인터랙티브 차트가 즉시 펼쳐집니다.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* 월간 브리프 자동 연동 코멘트 (있는 경우 자동 노출) */}
+        {brief && (
+          <div className="pt-3 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-gray-400">
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-[#D4AF37]">[{brief.edition} 피비 총평]</span>
+              <span className="text-gray-200 truncate max-w-xl">{brief.headline}</span>
+            </div>
+            <span className="text-[11px] text-gray-500 shrink-0">
+              * 매월 초 월간 브리프 기준으로 4대 팩트 시황이 갱신됩니다.
+            </span>
+          </div>
+        )}
+      </div>
+
       {/* 1단계: 대분류 상자 (가로 나란히 배치) */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
         {mainCategories.map((cat) => {

@@ -14,6 +14,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import EtfPdfDownloadButton from '@/components/EtfPdfDownloadButton';
 import BackToListButton from '@/components/BackToListButton';
+import TickerFaqAccordion from '@/components/TickerFaqAccordion';
+import type { Metadata } from 'next';
 
 // 차트 컴포넌트 Dynamic Import (모바일 초기 렌더링 최적화)
 const EtfAllocationCharts = dynamic(() => import('@/components/EtfAllocationCharts'), {
@@ -32,6 +34,22 @@ const EtfPerformanceChart = dynamic(() => import('@/components/EtfPerformanceCha
 interface PageProps {
   params: Promise<{ ticker: string }>;
   searchParams: Promise<{ from?: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { ticker } = await params;
+  const cleanTicker = ticker ? ticker.toUpperCase() : '';
+
+  return {
+    title: `${cleanTicker} ETF 정밀 분석 & 보유종목 엑스레이 | 당신의 피비`,
+    description: `당신의 피비 ${cleanTicker} ETF 심층 진단: 상위 10대 편입 종목 엑스레이, P/E, 배당수익률, 주가 추이 및 HRP 분산 관점의 투자 인텔리전스`,
+    openGraph: {
+      title: `${cleanTicker} ETF 정밀 분석 & 보유종목 엑스레이 | 당신의 피비`,
+      description: `당신의 피비 ${cleanTicker} ETF 심층 진단: 상위 10대 편입 종목 엑스레이 및 포트폴리오 가이드`,
+      url: `https://yourpb.vercel.app/etf/${cleanTicker}`,
+      siteName: '당신의 피비',
+    },
+  };
 }
 
 async function fetchEtfDetailFromDb(tickerInput: string) {
@@ -441,6 +459,13 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
                 source="yfinance"
               />
             </div>
+
+            {/* 인스타그램 월·토 릴스 연계 FAQ 아코디언 & FAQPage 스키마 */}
+            <TickerFaqAccordion
+              ticker={actualTicker}
+              name={etfList?.name_en || etfList?.name_ko}
+              isEtf={true}
+            />
 
           </div>
         </div>

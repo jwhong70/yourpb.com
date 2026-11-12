@@ -6,6 +6,7 @@ import { getSessionUser } from '@/app/actions/auth';
 import { getWishlist } from '@/app/actions/wishlist';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import HubFaqAccordion from '@/components/HubFaqAccordion';
 
 const getCachedEtfsData = unstable_cache(
   async () => {
@@ -102,6 +103,9 @@ export default async function EtfPage() {
               initialWishlistTickers={wishlistTickers}
               isLoggedIn={!!user}
             />
+
+            {/* ETF 허브 릴스 연계 FAQ & 가입 유도 앵커 */}
+            <HubFaqAccordion type="etf" isLoggedIn={!!user} />
           </section>
         </div>
       </main>

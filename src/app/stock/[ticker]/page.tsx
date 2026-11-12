@@ -20,6 +20,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PremiumPaywall from '@/components/PremiumPaywall';
 import BackToListButton from '@/components/BackToListButton';
+import TickerFaqAccordion from '@/components/TickerFaqAccordion';
+import type { Metadata } from 'next';
 
 // 차트 컴포넌트 Dynamic Import (초기 렌더링 최적화)
 const StockCandleChart = dynamic(() => import('@/components/StockCandleChart'), {
@@ -140,6 +142,22 @@ const getMasterAvatar = (name: string) => MASTER_AVATAR_MAP[name] || '/avatars/m
 
 interface PageProps {
   params: Promise<{ ticker: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { ticker } = await params;
+  const cleanTicker = ticker ? ticker.toUpperCase() : '';
+
+  return {
+    title: `${cleanTicker} 대형 우량주 진단 & 펀더멘털 분석 | 당신의 피비`,
+    description: `당신의 피비 ${cleanTicker} 개별주 심층 진단: 밸류에이션, 글로벌 ETF 속 편입 비중 엑스레이, 대가들의 투자 관점 및 성과 추이 분석`,
+    openGraph: {
+      title: `${cleanTicker} 대형 우량주 진단 & 펀더멘털 분석 | 당신의 피비`,
+      description: `당신의 피비 ${cleanTicker} 개별주 심층 진단: 밸류에이션 및 ETF 속 편입 비중 엑스레이`,
+      url: `https://yourpb.vercel.app/stock/${cleanTicker}`,
+      siteName: '당신의 피비',
+    },
+  };
 }
 
 async function fetchStockDetailFromDb(tickerInput: string) {
@@ -590,6 +608,13 @@ export default async function StockDetailPage({ params }: PageProps) {
                   </div>
                 </section>
               )}
+
+              {/* 인스타그램 화요일 릴스 연계 FAQ 아코디언 & FAQPage 스키마 */}
+              <TickerFaqAccordion
+                ticker={actualTicker}
+                name={stock?.name_ko || stock?.name_en}
+                isEtf={false}
+              />
             </div>
           </div>
         </div>

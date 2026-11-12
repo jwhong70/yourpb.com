@@ -57,6 +57,30 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://yourpb.vercel.app/#organization",
+      "name": "당신의 피비",
+      "url": "https://yourpb.vercel.app",
+      "logo": "https://yourpb.vercel.app/icon-512x512.png",
+      "description": "30~50대 스마트 투자자를 위한 글로벌 ETF 중심 포트폴리오 자산관리 파트너",
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://yourpb.vercel.app/#website",
+      "url": "https://yourpb.vercel.app",
+      "name": "당신의 피비",
+      "publisher": {
+        "@id": "https://yourpb.vercel.app/#organization",
+      },
+      "inLanguage": "ko-KR",
+    },
+  ],
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
@@ -64,6 +88,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`h-full antialiased ${pretendard.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans" suppressHydrationWarning>
         <NextTopLoader
           color="#D4AF37"

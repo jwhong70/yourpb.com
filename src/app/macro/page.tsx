@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { getSessionUser } from '@/app/actions/auth';
+import { getMonthlyBrief } from '@/lib/monthly-brief';
 
 export const metadata: Metadata = {
   title: '글로벌 거시경제(Macro) 모니터링 - 당신의 피비',
@@ -1192,7 +1193,10 @@ export default async function MacroPage() {
             </h1>
           </div>
 
-          <MacroClientPage data={slimAllChartData(dashboardData)} />
+          <MacroClientPage 
+            data={slimAllChartData(dashboardData)} 
+            brief={getMonthlyBrief()}
+          />
         </div>
       </main>
       <Footer />
