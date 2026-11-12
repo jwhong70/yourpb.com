@@ -123,8 +123,8 @@ export default function PortfolioCalculator({
       {/* 1. 상단 타이틀 & 내년 차세대 확장 탭 */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-black/10 pb-4">
         <div>
-          <h3 className="text-base sm:text-xl font-extrabold text-black tracking-tight flex items-center gap-2 whitespace-nowrap">
-            <Calculator className="w-5 h-5 text-black shrink-0" />
+          <h3 className="text-base sm:text-xl font-extrabold tracking-tight flex items-center gap-2 whitespace-nowrap">
+            <Calculator className="w-5 h-5 text-brand shrink-0" />
             모델 포트폴리오 배분 계산기
           </h3>
           <p className="text-xs text-gray-500 mt-1">

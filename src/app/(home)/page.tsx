@@ -79,7 +79,7 @@ export default async function Home() {
       <section className="space-y-6">
         <div className="space-y-2.5 border-b border-black/10 pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h2 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
+            <h2 className="text-xl font-extrabold tracking-tight sm:text-2xl select-none">
               당신의 피비 월간 자산배분 전략
             </h2>
             <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
@@ -112,10 +112,10 @@ export default async function Home() {
         <details className="group bg-white border border-black/10 shadow-xs transition-all">
           <summary className="p-4 sm:p-5 flex items-center justify-between cursor-pointer select-none list-none hover:bg-black/5 transition-colors">
             <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3">
-              <h3 className="text-base sm:text-lg font-extrabold text-gray-900 tracking-tight break-keep">
+              <h3 className="text-base sm:text-lg font-extrabold tracking-tight break-keep">
                 자산배분 핵심 처방
               </h3>
-              <span className="text-[11px] font-bold text-[#9A3412] bg-[#EA580C]/15 px-2 py-0.5 border border-[#EA580C]/30 w-fit">
+              <span className="text-[11px] font-bold text-brand-dark bg-brand/15 px-2 py-0.5 border border-brand/30 w-fit">
                 Top-Down 포트폴리오
               </span>
             </div>
@@ -146,7 +146,7 @@ export default async function Home() {
       {/* 2. 당신의 피비 포트폴리오 섹션 */}
       <section className="space-y-6">
         <div className="flex items-center">
-          <h2 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
+          <h2 className="text-xl font-extrabold tracking-tight sm:text-2xl select-none">
             당신의 피비 모델 포트폴리오
           </h2>
         </div>
@@ -225,7 +225,7 @@ export default async function Home() {
               <Layers className="w-5 h-5 text-[#9A3412]" />
             </div>
             <div>
-              <h3 className="text-base sm:text-lg font-bold text-gray-900 tracking-tight">
+              <h3 className="text-base sm:text-lg font-bold tracking-tight">
                 포트폴리오 비중을 정하셨나요?
               </h3>
               <p className="text-xs sm:text-sm text-gray-500 mt-0.5">

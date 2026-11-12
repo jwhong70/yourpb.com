@@ -21,7 +21,13 @@
   --color-box-bg: #F4F5F7;
   --color-inner-bg: #CACAD4;
   
-  /* 테마 색상 정의 */
+  /* 테마 색상 정의 (Rule 13: 에르메스 앰버 오렌지 체계) */
+  --color-brand: #EA580C;
+  --color-brand-hover: #C2410C;
+  --color-brand-dark: #9A3412;
+  --color-brand-light: #FED7AA;
+  --color-brand-surface: #FFF7ED;
+
   --color-navy: #203764;
   --color-blue-primary: #003CDC;
   --color-sky-primary: #5BC2E7;
@@ -69,9 +75,21 @@ body {
   font-family: var(--font-sans);
 }
 
+/* 전역 타이포그래피 및 헤딩 컬러 기본 규칙 */
+/* 기본적으로 모든 제목(h1~h6)은 브랜드 시그니처 컬러(#EA580C)를 상속합니다. */
+/* 단, 검은색 배경(다크 모달, 블랙 섹션) 내부의 제목은 높은 시인성을 위해 흰색을 유지합니다. */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sans);
-  color: #EA580C;
+  color: var(--color-brand);
+}
+
+/* 다크 배경 컨테이너 내부의 제목 가독성 보정 가드 */
+.bg-black h1, .bg-black h2, .bg-black h3, .bg-black h4, .bg-black h5, .bg-black h6,
+.bg-\[\#000000\] h1, .bg-\[\#000000\] h2, .bg-\[\#000000\] h3, .bg-\[\#000000\] h4,
+.bg-\[\#1F1F1F\] h1, .bg-\[\#1F1F1F\] h2, .bg-\[\#1F1F1F\] h3, .bg-\[\#1F1F1F\] h4,
+.bg-neutral-900 h1, .bg-neutral-900 h2, .bg-neutral-900 h3, .bg-neutral-900 h4,
+[class*="bg-black"] h1, [class*="bg-black"] h2, [class*="bg-black"] h3, [class*="bg-black"] h4 {
+  color: #FFFFFF;
 }
 
 header, header a, header span, header button,

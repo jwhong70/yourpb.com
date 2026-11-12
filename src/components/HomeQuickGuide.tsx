@@ -48,10 +48,10 @@ export default function HomeQuickGuide() {
       >
         <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <h2 className="text-sm sm:text-base font-extrabold text-gray-900 tracking-tight break-keep">
+            <h2 className="text-sm sm:text-base font-extrabold tracking-tight break-keep">
               이 사이트 대체 어떻게 쓰는 건가요?
             </h2>
-            <span className="text-[11px] font-bold text-[#9A3412] bg-[#EA580C]/15 px-2 py-0.5 border border-[#EA580C]/30 whitespace-nowrap">
+            <span className="text-[11px] font-bold text-brand-dark bg-brand/15 px-2 py-0.5 border border-brand/30 whitespace-nowrap">
               3단계 투자 가이드
             </span>
           </div>

@@ -22,8 +22,8 @@ export default function PortfolioHistoryTimeline() {
     <div className="space-y-4 font-sans">
       <div className="border-b border-black/10 pb-3 space-y-1">
         <div className="flex items-center gap-2">
-          <History className="w-5 h-5 text-gray-900" />
-          <h3 className="text-lg sm:text-xl font-extrabold tracking-tight text-gray-900 select-none">
+          <History className="w-5 h-5 text-brand" />
+          <h3 className="text-lg sm:text-xl font-extrabold tracking-tight select-none">
             포트폴리오 리밸런싱 히스토리
           </h3>
         </div>
@@ -54,7 +54,7 @@ export default function PortfolioHistoryTimeline() {
                     {item.date}
                   </span>
                   <div>
-                    <h4 className="text-base font-extrabold text-gray-900 leading-snug">
+                    <h4 className="text-base font-extrabold leading-snug">
                       {item.title}
                     </h4>
                     <div className="flex items-center gap-2 mt-1 text-xs text-gray-600 font-medium">

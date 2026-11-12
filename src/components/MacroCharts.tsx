@@ -16,6 +16,7 @@ import {
   type Time,
 } from 'lightweight-charts';
 import { toast } from 'sonner';
+import { THEME_COLORS } from '@/config/theme';
 
 // 공통 타입 정의
 export interface ChartDataPoint {
@@ -926,12 +927,12 @@ export function MacroCandleChart({
     }
 
     const candleSeries = chart.addSeries(CandlestickSeries, {
-      upColor: '#EA580C',
-      downColor: '#222222',
-      borderUpColor: '#C2410C',
-      borderDownColor: '#111111',
-      wickUpColor: '#EA580C',
-      wickDownColor: '#222222',
+      upColor: THEME_COLORS.chartUp,
+      downColor: THEME_COLORS.chartDown,
+      borderUpColor: THEME_COLORS.chartUpBorder,
+      borderDownColor: THEME_COLORS.chartDownBorder,
+      wickUpColor: THEME_COLORS.chartUp,
+      wickDownColor: THEME_COLORS.chartDown,
       priceFormat: {
         type: 'price',
         precision: 2,

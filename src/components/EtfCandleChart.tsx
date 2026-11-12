@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { THEME_COLORS } from '@/config/theme';
 import {
   createChart,
   ColorType,
@@ -190,12 +191,12 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
     // 캔들스틱 또는 라인 시리즈 추가
     if (chartMode === 'candle') {
       const candleSeries = chart.addSeries(CandlestickSeries, {
-        upColor: '#EA580C',          // 상승: 에르메스 오렌지
-        downColor: '#222222',        // 하락: 럭셔리 다크 블랙
-        borderUpColor: '#C2410C',    // 오렌지 딥 테두리
-        borderDownColor: '#111111',  // 블랙 테두리
-        wickUpColor: '#EA580C',      // 오렌지 꼬리
-        wickDownColor: '#222222',    // 블랙 꼬리
+        upColor: THEME_COLORS.chartUp,
+        downColor: THEME_COLORS.chartDown,
+        borderUpColor: THEME_COLORS.chartUpBorder,
+        borderDownColor: THEME_COLORS.chartDownBorder,
+        wickUpColor: THEME_COLORS.chartUp,
+        wickDownColor: THEME_COLORS.chartDown,
         priceFormat: {
           type: 'custom',
           minMove: sortedData[0]?.close >= 1000 ? 1 : 0.01,
@@ -206,7 +207,7 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
       candleSeriesRef.current = candleSeries;
     } else {
       const lineSeries = chart.addSeries(LineSeries, {
-        color: '#EA580C',
+        color: THEME_COLORS.chartUp,
         lineWidth: 2,
         priceFormat: {
           type: 'custom',
@@ -368,7 +369,7 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
       {/* 1. 타이틀 영역 */}
       <div className="border-b border-black/10 pb-2.5 mb-2.5 px-0.5 sm:px-0">
         <div className="flex items-center gap-2">
-          <h3 className="text-base sm:text-lg font-bold text-[#000000] tracking-tight">주가 추이 (주봉)</h3>
+          <h3 className="text-base sm:text-lg font-bold tracking-tight">주가 추이 (주봉)</h3>
           <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-[#EA580C]/15 text-[#AA820A] border border-[#EA580C]/30">
             블랙 & 골드
           </span>
