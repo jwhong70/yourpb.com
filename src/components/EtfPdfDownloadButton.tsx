@@ -86,8 +86,8 @@ export default function EtfPdfDownloadButton({
 
               {/* 자물쇠 아이콘 */}
               <div className="flex justify-center mb-5">
-                <div className="w-16 h-16 rounded-full bg-linear-to-tr from-gold/30 to-white/10 border border-[#EA580C]/40 flex items-center justify-center shadow-lg shadow-gold/20">
-                  <Lock className="w-7 h-7 text-yellow-accent" />
+                <div className="w-16 h-16 rounded-full bg-linear-to-tr from-[#EA580C]/30 to-white/10 border border-[#EA580C]/40 flex items-center justify-center shadow-lg shadow-[#EA580C]/20">
+                  <Lock className="w-7 h-7 text-[#EA580C]" />
                 </div>
               </div>
 

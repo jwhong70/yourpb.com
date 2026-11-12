@@ -928,7 +928,7 @@ export function MacroCandleChart({
     const candleSeries = chart.addSeries(CandlestickSeries, {
       upColor: '#EA580C',
       downColor: '#222222',
-      borderUpColor: '#B8860B',
+      borderUpColor: '#C2410C',
       borderDownColor: '#111111',
       wickUpColor: '#EA580C',
       wickDownColor: '#222222',
@@ -1074,7 +1074,7 @@ export function MacroCandleChart({
           <span className="font-bold text-gray-900 text-xs truncate max-w-50 sm:max-w-xs">{title}</span>
           <div className="flex items-center gap-2 text-[10px] text-gray-500 font-medium shrink-0">
             <span className="flex items-center gap-1">
-              <span className="w-2 h-2 bg-[#EA580C] inline-block border border-[#B8860B]" /> 상승
+              <span className="w-2 h-2 bg-[#EA580C] inline-block border border-[#C2410C]" /> 상승
             </span>
             <span className="flex items-center gap-1">
               <span className="w-2 h-2 bg-[#222222] inline-block border border-[#111111]" /> 하락

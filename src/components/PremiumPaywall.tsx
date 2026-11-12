@@ -44,9 +44,9 @@ export default function PremiumPaywall({ isLoggedIn = false, returnUrl = '/' }: 
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="relative flex items-center justify-center w-20 h-20 rounded-full bg-linear-to-tr from-gold/30 to-white/10 border border-[#EA580C]/40 shadow-xl shadow-gold/20"
+          className="relative flex items-center justify-center w-20 h-20 rounded-full bg-linear-to-tr from-[#EA580C]/30 to-white/10 border border-[#EA580C]/40 shadow-xl shadow-[#EA580C]/20"
         >
-          <Lock className="w-8 h-8 text-yellow-accent animate-pulse" />
+          <Lock className="w-8 h-8 text-[#EA580C] animate-pulse" />
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 15, ease: 'linear' }}
@@ -60,7 +60,7 @@ export default function PremiumPaywall({ isLoggedIn = false, returnUrl = '/' }: 
 
       {/* 헤더 메시지 */}
       <h3 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight mb-3 select-none leading-tight">
-        이 정보는 <span className="bg-linear-to-r from-gold via-yellow-accent to-pink-light bg-clip-text text-transparent">Premium 회원</span> 전용입니다.
+        이 정보는 <span className="bg-linear-to-r from-[#EA580C] via-orange-400 to-amber-300 bg-clip-text text-transparent">Premium 회원</span> 전용입니다.
       </h3>
       <p className="text-white/60 text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed">
         전설적인 투자 대가 20인의 AI 매매 시그널과 1,000대 글로벌 주식의 상세 분석, 자체 발행되는 원본 리서치 보고서 PDF를 무제한으로 열람해 보세요.
@@ -76,9 +76,9 @@ export default function PremiumPaywall({ isLoggedIn = false, returnUrl = '/' }: 
             transition={{ delay: idx * 0.1, duration: 0.4 }}
             className="flex gap-3.5 p-4 rounded-none bg-white/5 border border-white/5 hover:border-white/10 hover:bg-white/10 transition-all group"
           >
-            <CheckCircle2 className="w-5 h-5 text-[#EA580C] shrink-0 mt-0.5 group-hover:text-yellow-accent transition-colors" />
+            <CheckCircle2 className="w-5 h-5 text-[#EA580C] shrink-0 mt-0.5 group-hover:text-orange-400 transition-colors" />
             <div>
-              <h4 className="font-bold text-white text-sm sm:text-base mb-0.5 group-hover:text-yellow-accent transition-colors">
+              <h4 className="font-bold text-white text-sm sm:text-base mb-0.5 group-hover:text-orange-400 transition-colors">
                 {b.title}
               </h4>
               <p className="text-white/50 text-xs sm:text-sm leading-relaxed">

@@ -338,7 +338,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                     }}
                     className="px-6 sm:px-8 py-4 bg-[#EA580C] hover:bg-[#c2410c] text-white text-sm sm:text-base font-extrabold flex items-center justify-center gap-2 transition-all shadow-md hover:scale-102 cursor-pointer select-none"
                   >
-                    <Sparkles className="w-5 h-5 text-yellow-accent" />
+                    <Sparkles className="w-5 h-5 text-white" />
                     <span>진단 종합 결과 확인하기</span>
                     <ArrowRight className="w-5 h-5" />
                   </button>
@@ -726,10 +726,10 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                   onClick={handlePrintPdf}
                   className="w-full sm:w-auto px-6 py-3.5 bg-[#EA580C] hover:bg-[#c2410c] text-white font-extrabold text-sm flex items-center justify-center gap-2 transition-all shadow-md hover:scale-102 cursor-pointer"
                 >
-                  <Printer className="w-4 h-4 text-yellow-accent" />
+                  <Printer className="w-4 h-4 text-white" />
                   <span>📄 맞춤형 행동편향 컨설팅 처방전 다운로드 (PDF)</span>
                   {!isPremium && (
-                    <span className="ml-1 px-1.5 py-0.5 bg-[#EA580C] text-black text-[10px] font-extrabold">
+                    <span className="ml-1 px-1.5 py-0.5 bg-black text-white text-[10px] font-extrabold">
                       PREMIUM
                     </span>
                   )}

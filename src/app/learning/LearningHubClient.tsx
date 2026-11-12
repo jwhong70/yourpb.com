@@ -340,7 +340,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
                     </video>
                   ) : (
                     <div className="text-center p-8 text-gray-400">
-                      <Volume2 className="w-12 h-12 mx-auto mb-3 opacity-40 text-yellow-accent" />
+                      <Volume2 className="w-12 h-12 mx-auto mb-3 opacity-40 text-[#EA580C]" />
                       <p className="font-bold">릴스 동영상 인코딩 준비 중입니다.</p>
                       <p className="text-xs mt-1 text-gray-500">매주 금요일 순차 업로드됩니다.</p>
                     </div>
@@ -354,7 +354,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
           <div className="bg-white border border-black/10 rounded-2xl p-6 shadow-xs space-y-4">
             <div className="border-b border-black/10 pb-2.5">
               <h3 className="text-sm sm:text-base font-bold text-gray-900 flex items-center gap-1.5">
-                <span className="text-yellow-accent">💬</span> 3인 패밀리 리얼 머니 토크
+                <span className="text-[#EA580C]">💬</span> 3인 패밀리 리얼 머니 토크
               </h3>
               <p className="text-xs text-gray-400 mt-1">식탁에서 나누는 현실 재테크 고민</p>
             </div>
@@ -411,7 +411,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
             <div className="pt-1 flex flex-col sm:flex-row gap-2.5 sm:gap-3">
               <Link
                 href="/diagnosis"
-                className="flex-1 flex items-center justify-center gap-1.5 bg-[#EA580C] hover:bg-[#c2410c] text-gray-950 font-extrabold shadow-sm font-bold text-xs sm:text-sm py-2.5 sm:py-3 px-4 rounded-xl transition-all shadow-md hover:shadow-yellow-accent/20 cursor-pointer"
+                className="flex-1 flex items-center justify-center gap-1.5 bg-[#EA580C] hover:bg-[#c2410c] text-white font-extrabold shadow-sm text-xs sm:text-sm py-2.5 sm:py-3 px-4 rounded-xl transition-all shadow-md hover:shadow-[#EA580C]/20 cursor-pointer"
               >
                 <span>내 포트폴리오 무료 진단하기</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -421,7 +421,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
                 onClick={handlePdfClick}
                 className="flex-1 flex items-center justify-center gap-1.5 bg-[#1F1F1F] hover:bg-[#2B2B2B] text-white border border-black/20 hover:border-[#EA580C] shadow-xs font-bold text-xs sm:text-sm py-2.5 sm:py-3 px-4 rounded-xl transition-all cursor-pointer group"
               >
-                <Lock className="w-3.5 h-3.5 text-yellow-accent group-hover:scale-110 transition-transform" />
+                <Lock className="w-3.5 h-3.5 text-[#EA580C] group-hover:scale-110 transition-transform" />
                 <span>멤버십 전용 PDF 소장</span>
               </button>
             </div>
@@ -435,8 +435,8 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
           <div className="bg-white border border-black/10 rounded-2xl p-5 sticky top-24 shadow-xs">
             <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
               <div className="flex items-center gap-2">
-                <BookOpen className="w-5 h-5 text-yellow-accent" />
-                <h3 className="text-lg font-black text-white">50강 정주행 로드맵</h3>
+                <BookOpen className="w-5 h-5 text-[#EA580C]" />
+                <h3 className="text-lg font-black text-gray-900">50강 정주행 로드맵</h3>
               </div>
               <span className="text-xs font-bold text-gray-400">1년 50주 완성</span>
             </div>
@@ -461,7 +461,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
                     >
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs font-black text-yellow-accent">
+                          <span className="text-xs font-black text-[#EA580C]">
                             {chapter.range}
                           </span>
                           <span className="text-xs text-gray-500 font-mono">
@@ -598,11 +598,11 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
               <X className="w-5 h-5" />
             </button>
 
-            <div className="w-14 h-14 bg-yellow-accent/10 border border-yellow-accent/30 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Award className="w-7 h-7 text-yellow-accent" />
+            <div className="w-14 h-14 bg-[#EA580C]/10 border border-[#EA580C]/30 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Award className="w-7 h-7 text-[#EA580C]" />
             </div>
 
-            <h3 className="text-xl font-black text-white mb-2">
+            <h3 className="text-xl font-black text-gray-900 mb-2">
               멤버십 전용 PDF 소장 혜택
             </h3>
             <p className="text-sm text-gray-400 leading-relaxed mb-6">
@@ -612,15 +612,15 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
 
             <div className="bg-black/40 border border-white/10 rounded-xl p-4 text-left mb-6 space-y-2">
               <div className="flex items-center gap-2 text-xs text-gray-300">
-                <CheckCircle2 className="w-4 h-4 text-yellow-accent shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#EA580C] shrink-0" />
                 <span>50강 자산관리 선행학습 전편 A4 고화질 PDF 무제한 소장</span>
               </div>
               <div className="flex items-center gap-2 text-xs text-gray-300">
-                <CheckCircle2 className="w-4 h-4 text-yellow-accent shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#EA580C] shrink-0" />
                 <span>1,000개 글로벌 ETF 및 우량주 엑스레이 정밀 리포트 열람</span>
               </div>
               <div className="flex items-center gap-2 text-xs text-gray-300">
-                <CheckCircle2 className="w-4 h-4 text-yellow-accent shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#EA580C] shrink-0" />
                 <span>월 커피 한 잔 구독료로 누리는 VIP 피비센터 자산관리</span>
               </div>
             </div>
@@ -628,7 +628,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
             <div className="flex flex-col gap-3">
               <Link
                 href="/subscribe"
-                className="w-full py-3.5 bg-[#EA580C] hover:bg-[#c2410c] text-gray-950 font-extrabold shadow-sm font-black text-sm rounded-xl transition-all shadow-lg text-center"
+                className="w-full py-3.5 bg-[#EA580C] hover:bg-[#c2410c] text-white font-extrabold shadow-sm font-black text-sm rounded-xl transition-all shadow-lg text-center"
               >
                 프리미엄 멤버십 시작하기
               </Link>

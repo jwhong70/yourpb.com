@@ -188,7 +188,7 @@ export default async function MonthlyBriefPage() {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#000000] pb-4 print:pb-2">
                   <div className="flex items-center gap-2">
                     <span className="inline-flex items-center gap-1.5 text-xs print:text-[11px] font-black uppercase tracking-widest px-3 py-1 print:px-2.5 print:py-1 bg-[#000000] text-white shrink-0">
-                      <Compass className="w-3.5 h-3.5 text-yellow-accent" />
+                      <Compass className="w-3.5 h-3.5 text-[#EA580C]" />
                       월간 자산배분 브리프
                     </span>
                   </div>
@@ -249,10 +249,10 @@ export default async function MonthlyBriefPage() {
                   {/* 2) 금리 & 유동성 리스크 */}
                   <article className="p-5 print:p-3 bg-white border border-[#000000] rounded-none shadow-xs space-y-2 print:space-y-1">
                     <div className="flex items-center gap-2 text-sm print:text-[11.5px] font-extrabold text-gray-900">
-                      <span className="w-2 h-2 rounded-full bg-yellow-accent" />
+                      <span className="w-2 h-2 rounded-full bg-[#EA580C]" />
                       <h3>금리·유동성 및 금융시장 리스크 지형</h3>
                     </div>
-                    <p className="text-sm sm:text-base print:text-[10.5px] text-gray-700 print:text-black leading-relaxed print:leading-[1.6] font-normal whitespace-pre-line pl-4 print:pl-2.5 border-l-2 border-yellow-accent/30">
+                    <p className="text-sm sm:text-base print:text-[10.5px] text-gray-700 print:text-black leading-relaxed print:leading-[1.6] font-normal whitespace-pre-line pl-4 print:pl-2.5 border-l-2 border-[#EA580C]/30">
                       {brief.sections.liquidity}
                     </p>
                   </article>
@@ -549,7 +549,7 @@ export default async function MonthlyBriefPage() {
           {/* ============================================================ */}
           <section className="print:hidden p-6 sm:p-8 bg-[#000000] text-white rounded-none space-y-6 shadow-xl">
             <div className="space-y-2 text-center sm:text-left">
-              <span className="text-xs font-bold text-yellow-accent uppercase tracking-widest flex items-center justify-center sm:justify-start gap-1.5">
+              <span className="text-xs font-bold text-[#EA580C] uppercase tracking-widest flex items-center justify-center sm:justify-start gap-1.5">
                 <Sparkles className="w-3.5 h-3.5" />
                 당신의 피비 VIP 자산관리
               </span>
@@ -564,7 +564,7 @@ export default async function MonthlyBriefPage() {
             <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
               <Link
                 href="/support"
-                className="w-full sm:w-auto px-6 py-3.5 bg-yellow-accent hover:bg-yellow-400 text-black font-extrabold text-sm flex items-center justify-center gap-2 rounded-none transition-all shadow-md cursor-pointer"
+                className="w-full sm:w-auto px-6 py-3.5 bg-[#EA580C] hover:bg-[#c2410c] text-white font-extrabold text-sm flex items-center justify-center gap-2 rounded-none transition-all shadow-md cursor-pointer"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>1:1 상담 및 문의하기</span>

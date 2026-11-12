@@ -357,8 +357,8 @@ export default async function StockDetailPage({ params }: PageProps) {
               <BackToListButton fallbackUrl="/stock" />
 
               {isPremium && (
-                <span className="flex items-center gap-1.5 text-xs font-bold text-black bg-yellow-accent border border-yellow-accent/40 px-3 py-1 rounded-full shadow-lg select-none">
-                  <Award className="w-4 h-4 text-black" />
+                <span className="flex items-center gap-1.5 text-xs font-bold text-white bg-[#EA580C] border border-[#EA580C]/40 px-3 py-1 rounded-full shadow-lg select-none">
+                  <Award className="w-4 h-4 text-white" />
                   Premium Access
                 </span>
               )}

@@ -21,7 +21,7 @@ export default function PrintButton({ className = '' }: PrintButtonProps) {
       className={`print:hidden inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-black hover:bg-gray-800 active:scale-95 text-white text-xs font-bold rounded-none shadow-sm transition-all cursor-pointer select-none ${className}`}
       title="A4 용지 인쇄하기"
     >
-      <Printer className="w-3.5 h-3.5 text-yellow-accent" />
+      <Printer className="w-3.5 h-3.5 text-[#EA580C]" />
       <span>인쇄하기</span>
     </button>
   );

@@ -50,7 +50,7 @@ export default function WishlistGrid({ wishlist, isLoggedIn }: WishlistGridProps
       case '테마':
         return 'from-yellow-accent/40 to-lime/20 border-yellow-accent/30';
       default:
-        return 'from-gold/40 to-silver/20 border-[#EA580C]/30';
+        return 'from-[#EA580C]/40 to-silver/20 border-[#EA580C]/30';
     }
   };
 

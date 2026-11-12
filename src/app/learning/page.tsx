@@ -40,7 +40,7 @@ export default async function LearningPage() {
         <Suspense
           fallback={
             <div className="max-w-7xl mx-auto px-4 py-24 text-center text-gray-400">
-              <div className="animate-spin w-8 h-8 border-2 border-yellow-accent border-t-transparent rounded-full mx-auto mb-4" />
+              <div className="animate-spin w-8 h-8 border-2 border-[#EA580C] border-t-transparent rounded-full mx-auto mb-4" />
               <p className="font-bold">선행학습실 강의 데이터를 불러오는 중입니다...</p>
             </div>
           }

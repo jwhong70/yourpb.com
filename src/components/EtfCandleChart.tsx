@@ -190,11 +190,11 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
     // 캔들스틱 또는 라인 시리즈 추가
     if (chartMode === 'candle') {
       const candleSeries = chart.addSeries(CandlestickSeries, {
-        upColor: '#EA580C',          // 상승: 시그니처 골드
+        upColor: '#EA580C',          // 상승: 에르메스 오렌지
         downColor: '#222222',        // 하락: 럭셔리 다크 블랙
-        borderUpColor: '#B8860B',    // 골드 테두리
+        borderUpColor: '#C2410C',    // 오렌지 딥 테두리
         borderDownColor: '#111111',  // 블랙 테두리
-        wickUpColor: '#EA580C',      // 골드 꼬리
+        wickUpColor: '#EA580C',      // 오렌지 꼬리
         wickDownColor: '#222222',    // 블랙 꼬리
         priceFormat: {
           type: 'custom',
@@ -420,7 +420,7 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
           {/* 범례 표시 */}
           <div className="hidden sm:flex items-center gap-2 text-[11px] text-gray-500 font-medium ml-1">
             <span className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 bg-[#EA580C] inline-block border border-[#B8860B]" />
+              <span className="w-2.5 h-2.5 bg-[#EA580C] inline-block border border-[#C2410C]" />
               상승
             </span>
             <span className="flex items-center gap-1">

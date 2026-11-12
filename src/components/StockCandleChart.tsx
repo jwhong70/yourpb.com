@@ -179,11 +179,11 @@ export default function StockCandleChart({ prices, source }: StockCandleChartPro
     // 캔들스틱 또는 라인 시리즈 추가
     if (chartMode === 'candle') {
       const candleSeries = chart.addSeries(CandlestickSeries, {
-        upColor: '#EA580C',          // 상승: 시그니처 골드
+        upColor: '#EA580C',          // 상승: 에르메스 오렌지
         downColor: '#222222',        // 하락: 럭셔리 다크 블랙
-        borderUpColor: '#B8860B',    // 골드 테두리
+        borderUpColor: '#C2410C',    // 오렌지 딥 테두리
         borderDownColor: '#111111',  // 블랙 테두리
-        wickUpColor: '#EA580C',      // 골드 꼬리
+        wickUpColor: '#EA580C',      // 오렌지 꼬리
         wickDownColor: '#222222',    // 블랙 꼬리
         priceFormat: {
           type: 'custom',
@@ -375,22 +375,20 @@ export default function StockCandleChart({ prices, source }: StockCandleChartPro
             <button
               type="button"
               onClick={() => setChartMode('candle')}
-              className={`px-2 sm:px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
-                chartMode === 'candle'
+              className={`px-2 sm:px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${chartMode === 'candle'
                   ? 'bg-black text-[#EA580C] shadow-xs'
                   : 'text-gray-600 hover:text-black'
-              }`}
+                }`}
             >
               🕯️ 캔들
             </button>
             <button
               type="button"
               onClick={() => setChartMode('line')}
-              className={`px-2 sm:px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
-                chartMode === 'line'
+              className={`px-2 sm:px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${chartMode === 'line'
                   ? 'bg-black text-[#EA580C] shadow-xs'
                   : 'text-gray-600 hover:text-black'
-              }`}
+                }`}
             >
               📈 라인
             </button>
@@ -409,7 +407,7 @@ export default function StockCandleChart({ prices, source }: StockCandleChartPro
           {/* 범례 표시 */}
           <div className="hidden sm:flex items-center gap-2 text-[11px] text-gray-500 font-medium ml-1">
             <span className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 bg-[#EA580C] inline-block border border-[#B8860B]" />
+              <span className="w-2.5 h-2.5 bg-[#EA580C] inline-block border border-[#C2410C]" />
               상승
             </span>
             <span className="flex items-center gap-1">
@@ -450,9 +448,8 @@ export default function StockCandleChart({ prices, source }: StockCandleChartPro
               종 <strong className="text-gray-900">{formatStockPrice(activeData.close)}</strong>
             </span>
             <span
-              className={`font-bold ${
-                activeData.changeRate >= 0 ? 'text-[#AA820A]' : 'text-[#111111]'
-              }`}
+              className={`font-bold ${activeData.changeRate >= 0 ? 'text-[#AA820A]' : 'text-[#111111]'
+                }`}
             >
               {activeData.changeRate >= 0 ? '+' : ''}
               {activeData.changeRate.toFixed(2)}%

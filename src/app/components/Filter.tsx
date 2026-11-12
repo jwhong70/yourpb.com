@@ -488,7 +488,7 @@ export default function Filter({
           </div>
           <div className="flex items-center gap-3">
             {!isPremium && (
-              <span className="inline-flex items-center gap-1 text-[10px] text-[#EA580C] font-bold bg-gold/10 border border-[#EA580C]/20 px-2 py-0.5 rounded-full select-none">
+              <span className="inline-flex items-center gap-1 text-[10px] text-[#EA580C] font-bold bg-[#EA580C]/10 border border-[#EA580C]/20 px-2 py-0.5 rounded-full select-none">
                 <Lock className="w-3 h-3 text-[#EA580C]" />
                 Premium
               </span>

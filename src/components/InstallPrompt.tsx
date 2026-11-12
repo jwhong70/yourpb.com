@@ -160,7 +160,7 @@ export default function InstallPrompt() {
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="text-sm font-bold text-white">당신의 피비</span>
-                <span className="rounded bg-amber-500/20 px-1.5 py-0.5 text-[10px] font-semibold text-amber-400">
+                <span className="rounded bg-[#EA580C]/20 px-1.5 py-0.5 text-[10px] font-semibold text-[#EA580C]">
                   앱으로 추가
                 </span>
               </div>
@@ -179,7 +179,7 @@ export default function InstallPrompt() {
                 e.stopPropagation();
                 handleInstallClick();
               }}
-              className="rounded-xl bg-linear-to-r from-amber-500 to-amber-600 px-3.5 py-2 text-xs font-bold text-neutral-950 shadow-lg transition-transform active:scale-95 hover:brightness-110"
+              className="rounded-xl bg-[#EA580C] hover:bg-[#c2410c] px-3.5 py-2 text-xs font-bold text-white shadow-lg transition-transform active:scale-95"
             >
               {isKakao ? "브라우저로 열기" : "1초 설치"}
             </button>
@@ -203,9 +203,9 @@ export default function InstallPrompt() {
           role="dialog"
           aria-modal="true"
         >
-          <div className="w-full max-w-sm rounded-3xl border border-amber-500/50 bg-neutral-900 p-6 text-white shadow-2xl animate-in zoom-in-95 duration-200">
+          <div className="w-full max-w-sm rounded-3xl border border-[#EA580C]/50 bg-neutral-900 p-6 text-white shadow-2xl animate-in zoom-in-95 duration-200">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-amber-400">
+              <h3 className="text-lg font-bold text-[#EA580C]">
                 {isKakao ? "💬 카카오톡 외부 브라우저 열기" : "📲 스마트폰 홈 화면에 추가하기"}
               </h3>
               <button
