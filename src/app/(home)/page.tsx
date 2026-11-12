@@ -121,7 +121,7 @@ export default async function Home() {
             </div>
             <div className="flex items-center gap-1 text-xs font-bold text-gray-600 shrink-0 ml-3">
               <span className="group-open:hidden">펼쳐보기 ▼</span>
-              <span className="hidden group-open:inline">접기 ▲</span>
+              <span className="group-not-open:hidden">접기 ▲</span>
             </div>
           </summary>
 
