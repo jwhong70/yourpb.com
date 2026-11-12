@@ -15,7 +15,7 @@ export default function HomeQuickGuide() {
       desc: '이달의 거시 경제 국면(금리·유동성)과 피비 모델 포트폴리오를 확인하고, 내 자산의 큰 비중(주식·채권·현금) 틀을 잡습니다.',
       linkText: '이달의 거시 국면 검토하기',
       href: '/macro',
-      accentColor: '#D4AF37',
+      accentColor: '#EA580C',
     },
     {
       step: '2단계',
@@ -51,7 +51,7 @@ export default function HomeQuickGuide() {
             <h2 className="text-sm sm:text-base font-extrabold text-gray-900 tracking-tight break-keep">
               이 사이트 대체 어떻게 쓰는 건가요?
             </h2>
-            <span className="text-[11px] font-bold text-[#8B6508] bg-[#D4AF37]/15 px-2 py-0.5 border border-[#D4AF37]/30 whitespace-nowrap">
+            <span className="text-[11px] font-bold text-[#9A3412] bg-[#EA580C]/15 px-2 py-0.5 border border-[#EA580C]/30 whitespace-nowrap">
               3단계 투자 가이드
             </span>
           </div>
@@ -75,7 +75,7 @@ export default function HomeQuickGuide() {
             {steps.map((item, idx) => (
               <div
                 key={idx}
-                className="bg-white border border-black/10 hover:border-[#D4AF37] hover:shadow-md transition-all duration-200 p-5 flex flex-col justify-between group shadow-xs"
+                className="bg-white border border-black/10 hover:border-[#EA580C] hover:shadow-md transition-all duration-200 p-5 flex flex-col justify-between group shadow-xs"
               >
                 <div>
                   {/* 상단 스텝 라벨 (불릿/아이콘 없이 텍스트 뱃지) */}
@@ -87,7 +87,7 @@ export default function HomeQuickGuide() {
                       className="text-[11px] font-bold px-2 py-0.5 rounded-none"
                       style={{
                         backgroundColor: `${item.accentColor}20`,
-                        color: item.accentColor === '#D4AF37' ? '#8B6508' : item.accentColor,
+                        color: item.accentColor === '#EA580C' ? '#9A3412' : item.accentColor,
                         border: `1px solid ${item.accentColor}40`,
                       }}
                     >
@@ -96,7 +96,7 @@ export default function HomeQuickGuide() {
                   </div>
 
                   {/* 핵심 한줄 코칭 */}
-                  <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-2 leading-snug group-hover:text-[#8B6508] transition-colors break-keep">
+                  <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-2 leading-snug group-hover:text-[#EA580C] transition-colors break-keep">
                     {item.title}
                   </h3>
 
@@ -109,7 +109,7 @@ export default function HomeQuickGuide() {
                 {/* 액션 바로가기 링크 */}
                 <Link
                   href={item.href}
-                  className="inline-flex items-center justify-between w-full pt-3 border-t border-black/10 text-xs font-bold text-gray-800 group-hover:text-[#8B6508] transition-colors"
+                  className="inline-flex items-center justify-between w-full pt-3 border-t border-black/10 text-xs font-bold text-gray-800 group-hover:text-[#EA580C] transition-colors"
                 >
                   <span>{item.linkText}</span>
                   <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
@@ -144,7 +144,7 @@ export default function HomeQuickGuide() {
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#1F1F1F] hover:bg-[#2B2B2B] text-white border border-black/20 font-bold text-xs sm:text-sm transition-all shadow-xs whitespace-nowrap cursor-pointer"
               >
                 <span>인스타그램 60초 릴스 보러가기</span>
-                <ExternalLink className="w-3.5 h-3.5 text-[#D4AF37]" />
+                <ExternalLink className="w-3.5 h-3.5 text-[#EA580C]" />
               </a>
             </div>
           </div>

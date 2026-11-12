@@ -528,7 +528,7 @@ export default function Filter({
               {/* 모바일 위치 인디케이터 (화면 너비 560px 이하) */}
               {filteredEtfs.length > 2 && (
                 <div className="flex min-[561px]:hidden justify-center items-center gap-2 pt-4">
-                  <div className="px-3.5 py-1 bg-black text-[#D4AF37] text-xs font-mono font-bold rounded-full border border-[#D4AF37]/40 shadow-sm select-none">
+                  <div className="px-3.5 py-1 bg-black text-[#EA580C] text-xs font-mono font-bold rounded-full border border-[#EA580C]/40 shadow-sm select-none">
                     {Math.min(Math.floor(activeIndex / 2) + 1, Math.ceil(filteredEtfs.length / 2))} / {Math.ceil(filteredEtfs.length / 2)}
                   </div>
                 </div>

@@ -83,7 +83,7 @@ export default function TickerFaqAccordion({
       />
 
       <div className="flex items-center gap-2 mb-5">
-        <HelpCircle className="w-5 h-5 text-[#8B6508]" />
+        <HelpCircle className="w-5 h-5 text-[#9A3412]" />
         <h2 className="text-base sm:text-lg font-bold text-gray-900 tracking-tight">
           당신의 피비와 고객의 릴스 톡 (FAQ)
         </h2>
@@ -100,23 +100,23 @@ export default function TickerFaqAccordion({
                 className="w-full flex items-center justify-between text-left gap-4 group"
               >
                 <div className="flex items-start gap-2">
-                  <span className="text-xs font-bold text-[#8B6508] bg-[#D4AF37]/15 px-2 py-0.5 border border-[#D4AF37]/30 rounded-none shrink-0 mt-0.5">
+                  <span className="text-xs font-bold text-[#9A3412] bg-[#EA580C]/15 px-2 py-0.5 border border-[#EA580C]/30 rounded-none shrink-0 mt-0.5">
                     고객
                   </span>
-                  <span className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-[#8B6508] transition-colors">
+                  <span className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-[#9A3412] transition-colors">
                     {item.question}
                   </span>
                 </div>
                 <ChevronDown
                   className={`w-4 h-4 text-gray-400 shrink-0 transition-transform duration-200 mt-1 ${
-                    isOpen ? 'rotate-180 text-[#8B6508]' : ''
+                    isOpen ? 'rotate-180 text-[#9A3412]' : ''
                   }`}
                 />
               </button>
 
               {isOpen && (
-                <div className="mt-2.5 text-xs sm:text-sm text-gray-700 leading-relaxed pl-3 border-l-2 border-[#D4AF37] bg-[#F9F8F6] p-3">
-                  <div className="flex items-center gap-1.5 mb-1 text-[11px] font-bold text-[#8B6508]">
+                <div className="mt-2.5 text-xs sm:text-sm text-gray-700 leading-relaxed pl-3 border-l-2 border-[#EA580C] bg-[#F9F8F6] p-3">
+                  <div className="flex items-center gap-1.5 mb-1 text-[11px] font-bold text-[#9A3412]">
                     <Sparkles className="w-3.5 h-3.5" />
                     <span>당신의 피비</span>
                   </div>

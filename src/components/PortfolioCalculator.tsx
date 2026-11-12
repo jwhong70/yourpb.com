@@ -162,7 +162,7 @@ export default function PortfolioCalculator({
               value={inputStr}
               onChange={handleAmountChange}
               placeholder="0"
-              className="w-full pl-4 pr-14 py-3 bg-white border-2 border-black text-xl sm:text-2xl font-black font-mono text-black focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+              className="w-full pl-4 pr-14 py-3 bg-white border-2 border-black text-xl sm:text-2xl font-black font-mono text-black focus:outline-none focus:ring-2 focus:ring-[#EA580C]"
             />
             <span className="absolute right-4 text-sm font-bold text-gray-500">원</span>
           </div>
@@ -232,7 +232,7 @@ export default function PortfolioCalculator({
           return (
             <div
               key={item.type}
-              className="bg-white border border-black p-4 flex flex-col justify-between hover:border-[#D4AF37] transition-all group"
+              className="bg-white border border-black p-4 flex flex-col justify-between hover:border-[#EA580C] transition-all group"
             >
               {/* 상단: 자산군 & 비중 뱃지 */}
               <div>
@@ -254,7 +254,7 @@ export default function PortfolioCalculator({
                   {item.ticker ? (
                     <Link
                       href={`/etf/${item.ticker}`}
-                      className="inline-flex items-center gap-1 font-mono text-xs font-extrabold text-[#D4AF37] hover:underline"
+                      className="inline-flex items-center gap-1 font-mono text-xs font-extrabold text-[#EA580C] hover:underline"
                     >
                       <span>{item.ticker}</span>
                       <ExternalLink className="w-3 h-3" />
@@ -333,7 +333,7 @@ export default function PortfolioCalculator({
       <div className="pt-2 border-t border-black/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         {/* HTS/MTS 팁 안내문 */}
         <div className="flex items-start gap-2 max-w-2xl text-[11px] text-gray-600 leading-relaxed">
-          <Info className="w-4 h-4 text-[#D4AF37] shrink-0 mt-0.5" />
+          <Info className="w-4 h-4 text-[#EA580C] shrink-0 mt-0.5" />
           <div>
             <b>HTS/MTS 실전 주문 가이드</b>:
             <ul className="list-disc pl-3.5 mt-0.5 space-y-0.5 text-gray-500">
@@ -348,7 +348,7 @@ export default function PortfolioCalculator({
         <button
           type="button"
           onClick={handleCopyAll}
-          className="w-full sm:w-auto px-5 py-3 bg-black text-white hover:bg-[#D4AF37] hover:text-black font-extrabold text-xs sm:text-sm tracking-tight flex items-center justify-center gap-2 transition-all shrink-0 border border-black shadow-xs"
+          className="w-full sm:w-auto px-5 py-3 bg-black text-white hover:bg-[#EA580C] hover:text-black font-extrabold text-xs sm:text-sm tracking-tight flex items-center justify-center gap-2 transition-all shrink-0 border border-black shadow-xs"
         >
           {copiedAll ? (
             <>

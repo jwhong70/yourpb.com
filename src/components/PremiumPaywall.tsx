@@ -95,7 +95,7 @@ export default function PremiumPaywall({ isLoggedIn = false, returnUrl = '/' }: 
           <>
             <Link
               href={`/login?redirectTo=${encodeURIComponent(`/subscribe?returnUrl=${encodeURIComponent(returnUrl)}`)}`}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 bg-[#D4AF37] hover:bg-[#c29d2f] active:scale-95 text-black font-black rounded-none shadow-lg shadow-[#D4AF37]/10 transition-all cursor-pointer text-base whitespace-nowrap"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 bg-[#EA580C] hover:bg-[#c29d2f] active:scale-95 text-black font-black rounded-none shadow-lg shadow-[#EA580C]/10 transition-all cursor-pointer text-base whitespace-nowrap"
             >
               <Sparkles className="w-4.5 h-4.5 text-black" />
               <span>프리미엄 구독 시작하기</span>

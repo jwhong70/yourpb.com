@@ -82,7 +82,7 @@ export default function HubFaqAccordion({
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 pb-4 border-b border-black/10">
         <div className="flex items-center gap-2">
-          <HelpCircle className="w-5 h-5 text-[#8B6508]" />
+          <HelpCircle className="w-5 h-5 text-[#9A3412]" />
           <h2 className="text-base sm:text-lg font-bold text-gray-900 tracking-tight">
             당신의 피비와 고객의 릴스 톡 (FAQ)
           </h2>
@@ -103,23 +103,23 @@ export default function HubFaqAccordion({
                 className="w-full flex items-center justify-between text-left gap-4 group"
               >
                 <div className="flex items-start gap-2.5">
-                  <span className="text-xs font-bold text-[#8B6508] bg-[#D4AF37]/15 px-2 py-0.5 border border-[#D4AF37]/30 rounded-none shrink-0 mt-0.5">
+                  <span className="text-xs font-bold text-[#9A3412] bg-[#EA580C]/15 px-2 py-0.5 border border-[#EA580C]/30 rounded-none shrink-0 mt-0.5">
                     고객
                   </span>
-                  <span className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-[#8B6508] transition-colors">
+                  <span className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-[#9A3412] transition-colors">
                     {item.question}
                   </span>
                 </div>
                 <ChevronDown
                   className={`w-4 h-4 text-gray-400 shrink-0 transition-transform duration-200 mt-1 ${
-                    isOpen ? 'rotate-180 text-[#8B6508]' : ''
+                    isOpen ? 'rotate-180 text-[#9A3412]' : ''
                   }`}
                 />
               </button>
 
               {isOpen && (
-                <div className="mt-3 text-xs sm:text-sm text-gray-700 leading-relaxed pl-3.5 border-l-2 border-[#D4AF37] bg-[#F9F8F6] p-3.5">
-                  <div className="flex items-center gap-1.5 mb-1.5 text-[11px] font-bold text-[#8B6508]">
+                <div className="mt-3 text-xs sm:text-sm text-gray-700 leading-relaxed pl-3.5 border-l-2 border-[#EA580C] bg-[#F9F8F6] p-3.5">
+                  <div className="flex items-center gap-1.5 mb-1.5 text-[11px] font-bold text-[#9A3412]">
                     <Sparkles className="w-3.5 h-3.5" />
                     <span>당신의 피비</span>
                   </div>
@@ -134,7 +134,7 @@ export default function HubFaqAccordion({
       {/* 회원가입 및 멤버십 안내 전환 앵커 (정중한 경어체 적용) */}
       <div className="pt-6 border-t border-black/10 flex flex-col sm:flex-row items-center justify-between gap-4 bg-linear-to-r from-amber-50/70 via-white to-amber-50/40 border border-black/10 p-4 shadow-xs">
         <div className="flex items-center gap-3">
-          <ShieldCheck className="w-5 h-5 text-[#8B6508] shrink-0" />
+          <ShieldCheck className="w-5 h-5 text-[#9A3412] shrink-0" />
           <div className="text-xs sm:text-sm text-gray-800">
             {!isLoggedIn ? (
               <span>
@@ -160,7 +160,7 @@ export default function HubFaqAccordion({
               </Link>
               <Link
                 href="/subscribe"
-                className="w-full sm:w-auto px-5 py-2.5 text-xs sm:text-sm font-bold text-black bg-[#D4AF37] hover:bg-[#c29f2f] transition-colors flex items-center justify-center gap-1.5 shadow-xs"
+                className="w-full sm:w-auto px-5 py-2.5 text-xs sm:text-sm font-bold text-black bg-[#EA580C] hover:bg-[#c2410c] transition-colors flex items-center justify-center gap-1.5 shadow-xs"
               >
                 <span>멤버십 혜택보기</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -169,7 +169,7 @@ export default function HubFaqAccordion({
           ) : (
             <Link
               href="/subscribe"
-              className="w-full sm:w-auto px-5 py-2.5 text-xs sm:text-sm font-bold text-black bg-[#D4AF37] hover:bg-[#c29f2f] transition-colors flex items-center justify-center gap-1.5 shadow-xs"
+              className="w-full sm:w-auto px-5 py-2.5 text-xs sm:text-sm font-bold text-black bg-[#EA580C] hover:bg-[#c2410c] transition-colors flex items-center justify-center gap-1.5 shadow-xs"
             >
               <span>멤버십 혜택보기</span>
               <ArrowRight className="w-3.5 h-3.5" />

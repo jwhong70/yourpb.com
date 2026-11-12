@@ -72,7 +72,7 @@ export default function Header({ initialUser }: HeaderProps) {
                   >
                     <span>{link.name}</span>
                     {isActive && (
-                      <span className="absolute bottom-0 left-0 w-full h-1 bg-[#D4AF37]" />
+                      <span className="absolute bottom-0 left-0 w-full h-1 bg-[#EA580C]" />
                     )}
                   </Link>
                 );
@@ -89,11 +89,11 @@ export default function Header({ initialUser }: HeaderProps) {
                   className="flex items-center gap-3 border-r border-black/10 pr-4 hover:opacity-80 transition-opacity cursor-pointer group"
                   title="내 정보 및 멤버십 관리"
                 >
-                  <span className="text-base font-black text-gray-900 group-hover:text-[#D4AF37] transition-colors">
+                  <span className="text-base font-black text-gray-900 group-hover:text-[#EA580C] transition-colors">
                     {user.name}
                   </span>
                   {user.membership_status === 'premium' ? (
-                    <span className="flex items-center gap-1 text-xs font-black text-black bg-[#D4AF37] border border-[#D4AF37]/50 px-3 py-1 rounded-full animate-badge-glow select-none">
+                    <span className="flex items-center gap-1 text-xs font-black text-white bg-[#EA580C] border border-[#EA580C]/50 px-3 py-1 rounded-full animate-badge-glow select-none">
                       <Award className="w-4 h-4 text-black" />
                       Premium
                     </span>
@@ -120,7 +120,7 @@ export default function Header({ initialUser }: HeaderProps) {
             ) : (
               <Link
                 href={`/login?redirectTo=${encodeURIComponent(pathname)}`}
-                className="flex items-center gap-1.5 px-4.5 py-1.5 bg-[#D4AF37] hover:bg-[#c29f2f] active:scale-95 text-black text-sm font-black rounded-xl shadow-xs transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-4.5 py-1.5 bg-[#EA580C] hover:bg-[#c2410c] active:scale-95 text-white text-sm font-black rounded-xl shadow-xs transition-all cursor-pointer"
               >
                 <LogIn className="w-3.5 h-3.5" />
                 <span>로그인</span>
@@ -153,7 +153,7 @@ export default function Header({ initialUser }: HeaderProps) {
                   prefetch={true}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`block px-4 py-3 rounded-none text-base font-black transition-colors duration-200 ${isActive
-                    ? 'text-black bg-[#D4AF37]/15 border-l-4 border-[#D4AF37]'
+                    ? 'text-black bg-[#EA580C]/15 border-l-4 border-[#EA580C]'
                     : 'text-gray-700 hover:bg-black/5 hover:text-black'
                     }`}
                 >
@@ -169,14 +169,14 @@ export default function Header({ initialUser }: HeaderProps) {
                   <Link
                     href="/mypage"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center justify-between p-3 bg-white border border-black/10 hover:border-[#D4AF37] transition-colors"
+                    className="flex items-center justify-between p-3 bg-white border border-black/10 hover:border-[#EA580C] transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-lg font-black text-gray-900">
                         {user.name}
                       </span>
                       {user.membership_status === 'premium' ? (
-                        <span className="flex items-center gap-1 text-xs font-black text-black bg-[#D4AF37] border border-[#D4AF37]/50 px-2.5 py-0.5 rounded-full animate-badge-glow">
+                        <span className="flex items-center gap-1 text-xs font-black text-white bg-[#EA580C] border border-[#EA580C]/50 px-2.5 py-0.5 rounded-full animate-badge-glow">
                           <Award className="w-3 h-3 text-black" />
                           Premium
                         </span>
@@ -186,7 +186,7 @@ export default function Header({ initialUser }: HeaderProps) {
                         </span>
                       )}
                     </div>
-                    <span className="text-xs font-bold text-[#D4AF37]">내 정보 관리 &gt;</span>
+                    <span className="text-xs font-bold text-[#EA580C]">내 정보 관리 &gt;</span>
                   </Link>
                   <button
                     onClick={() => {
@@ -203,7 +203,7 @@ export default function Header({ initialUser }: HeaderProps) {
                 <Link
                   href={`/login?redirectTo=${encodeURIComponent(pathname)}`}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#D4AF37] hover:bg-[#c29f2f] text-black rounded-xl text-sm font-black shadow-md transition-colors cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#EA580C] hover:bg-[#c2410c] text-white rounded-xl text-sm font-black shadow-md transition-colors cursor-pointer"
                 >
                   <LogIn className="w-3.5 h-3.5" />
                   <span>로그인</span>

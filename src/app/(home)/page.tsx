@@ -101,9 +101,9 @@ export default async function Home() {
           </div>
         </div>
 
-        {/* 한줄 시장 테마 헤드라인 (그라데이션 없이 차분하고 품격 있는 웜 크림 & 딥 앰버 골드 톤) */}
-        <div className="p-4 sm:p-5 bg-white border border-black/10 border-l-4 border-l-[#D4AF37] shadow-xs">
-          <p className="text-base sm:text-lg font-bold leading-relaxed tracking-tight text-[#8B6508] break-keep">
+        {/* 한줄 시장 테마 헤드라인 (에르메스 앰버 오렌지 포인트) */}
+        <div className="p-4 sm:p-5 bg-white border border-black/10 border-l-4 border-l-[#EA580C] shadow-xs">
+          <p className="text-base sm:text-lg font-bold leading-relaxed tracking-tight text-[#9A3412] break-keep">
             &ldquo;{brief.headline}&rdquo;
           </p>
         </div>
@@ -115,7 +115,7 @@ export default async function Home() {
               <h3 className="text-base sm:text-lg font-extrabold text-gray-900 tracking-tight break-keep">
                 자산배분 핵심 처방
               </h3>
-              <span className="text-[11px] font-bold text-[#8B6508] bg-[#D4AF37]/15 px-2 py-0.5 border border-[#D4AF37]/30 w-fit">
+              <span className="text-[11px] font-bold text-[#9A3412] bg-[#EA580C]/15 px-2 py-0.5 border border-[#EA580C]/30 w-fit">
                 Top-Down 포트폴리오
               </span>
             </div>
@@ -133,7 +133,7 @@ export default async function Home() {
               <span className="break-keep">* 거시 사이클 및 금리/유동성 팩트 세부 지표는 상단 매크로 메뉴에서 심층 분석하실 수 있습니다.</span>
               <Link
                 href="/macro"
-                className="font-bold text-gray-900 hover:text-[#8B6508] transition-colors inline-flex items-center gap-1 shrink-0"
+                className="font-bold text-gray-900 hover:text-[#EA580C] transition-colors inline-flex items-center gap-1 shrink-0"
               >
                 <span>매크로 4대 팩트 진단하러 가기</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -221,8 +221,8 @@ export default async function Home() {
       <section className="bg-white border border-black/10 p-6 sm:p-8 text-gray-900 space-y-5 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-none bg-[#D4AF37]/15 border border-[#D4AF37]/40 flex items-center justify-center shrink-0">
-              <Layers className="w-5 h-5 text-[#8B6508]" />
+            <div className="w-9 h-9 rounded-none bg-[#EA580C]/15 border border-[#EA580C]/40 flex items-center justify-center shrink-0">
+              <Layers className="w-5 h-5 text-[#9A3412]" />
             </div>
             <div>
               <h3 className="text-base sm:text-lg font-bold text-gray-900 tracking-tight">
@@ -235,7 +235,7 @@ export default async function Home() {
           </div>
           <Link
             href="/etf"
-            className="w-full sm:w-auto px-5 py-3 bg-[#D4AF37] hover:bg-[#c29f2f] text-black font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-2 shrink-0 text-center shadow-xs"
+            className="w-full sm:w-auto px-5 py-3 bg-[#EA580C] hover:bg-[#c2410c] text-white font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-2 shrink-0 text-center shadow-xs"
           >
             <span>글로벌 ETF 목록 전체보기</span>
             <ArrowRight className="w-4 h-4" />
@@ -255,7 +255,7 @@ export default async function Home() {
             <Link
               key={item.ticker}
               href={`/etf/${item.ticker}`}
-              className="px-2.5 py-1 bg-[#F9F8F6] hover:bg-[#D4AF37]/15 border border-black/10 hover:border-[#D4AF37] text-gray-800 hover:text-black transition-colors font-mono"
+              className="px-2.5 py-1 bg-[#F9F8F6] hover:bg-[#EA580C]/15 border border-black/10 hover:border-[#EA580C] text-gray-800 hover:text-[#9A3412] transition-colors font-mono"
             >
               <strong>{item.ticker}</strong> <span className="text-[11px] text-gray-500 font-sans">({item.name})</span>
             </Link>

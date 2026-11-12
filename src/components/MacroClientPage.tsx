@@ -402,7 +402,7 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
               <h2 className="text-sm sm:text-base font-extrabold text-gray-900 tracking-tight break-keep">
                 피비 매크로 모니터링 이용 가이드
               </h2>
-              <span className="text-[11px] font-bold text-[#8B6508] bg-[#D4AF37]/15 px-2 py-0.5 border border-[#D4AF37]/30 whitespace-nowrap">
+              <span className="text-[11px] font-bold text-[#9A3412] bg-[#EA580C]/15 px-2 py-0.5 border border-[#EA580C]/30 whitespace-nowrap">
                 거시 경제 4대 팩트
               </span>
             </div>
@@ -457,11 +457,11 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
 
       {/* 🌲 2. [2026년 11월호 피비 총평] 불릿/좌우배치 제거 & 완전 1열(Full-Width) 수직 스택 아코디언 */}
       {brief && (
-        <div className="bg-white border border-black/10 border-l-4 border-l-[#D4AF37] p-5 sm:p-7 text-gray-900 space-y-4 shadow-xs">
+        <div className="bg-white border border-black/10 border-l-4 border-l-[#EA580C] p-5 sm:p-7 text-gray-900 space-y-4 shadow-xs">
           {/* 1행: 헤더 (좌우 분할 제거, 완전 1열 수직 스택) */}
           <div className="flex flex-col gap-1.5 pb-3 border-b border-black/10">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="px-2.5 py-0.5 bg-amber-50 border border-[#D4AF37]/40 text-[#8B6508] text-xs font-bold font-mono">
+              <span className="px-2.5 py-0.5 bg-orange-50 border border-[#EA580C]/40 text-[#9A3412] text-xs font-bold font-mono">
                 [{brief.edition} 피비 총평]
               </span>
               <span className="text-xs text-gray-600 font-medium">
@@ -475,9 +475,9 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
             )}
           </div>
 
-          {/* 2행: 한줄 시장 핵심 테마 헤드라인 (그라데이션 없이 차분하고 품격 있는 웜 크림 & 딥 앰버 톤) */}
+          {/* 2행: 한줄 시장 핵심 테마 헤드라인 (에르메스 앰버 오렌지 톤 적용) */}
           <div className="p-4 sm:p-5 bg-[#FAF9F5] border border-black/10">
-            <p className="text-base sm:text-lg font-bold leading-relaxed tracking-tight text-[#8B6508] break-keep">
+            <p className="text-base sm:text-lg font-bold leading-relaxed tracking-tight text-[#9A3412] break-keep">
               &ldquo;{brief.headline}&rdquo;
             </p>
           </div>
@@ -495,7 +495,7 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
                 onClick={() => setActiveBriefSection((prev) => (prev === 'macro' ? null : 'macro'))}
                 className={`w-full p-3.5 text-left border transition-all cursor-pointer flex items-center justify-between ${
                   activeBriefSection === 'macro'
-                    ? 'border-[#D4AF37] bg-amber-50/80 shadow-xs'
+                    ? 'border-[#EA580C] bg-orange-50/80 shadow-xs'
                     : 'border-black/10 bg-[#FAF9F5] hover:bg-black/5'
                 }`}
               >
@@ -513,7 +513,7 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
                 onClick={() => setActiveBriefSection((prev) => (prev === 'liquidity' ? null : 'liquidity'))}
                 className={`w-full p-3.5 text-left border transition-all cursor-pointer flex items-center justify-between ${
                   activeBriefSection === 'liquidity'
-                    ? 'border-[#D4AF37] bg-amber-50/80 shadow-xs'
+                    ? 'border-[#EA580C] bg-orange-50/80 shadow-xs'
                     : 'border-black/10 bg-[#FAF9F5] hover:bg-black/5'
                 }`}
               >
@@ -531,7 +531,7 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
                 onClick={() => setActiveBriefSection((prev) => (prev === 'momentum' ? null : 'momentum'))}
                 className={`w-full p-3.5 text-left border transition-all cursor-pointer flex items-center justify-between ${
                   activeBriefSection === 'momentum'
-                    ? 'border-[#D4AF37] bg-amber-50/80 shadow-xs'
+                    ? 'border-[#EA580C] bg-orange-50/80 shadow-xs'
                     : 'border-black/10 bg-[#FAF9F5] hover:bg-black/5'
                 }`}
               >
@@ -549,7 +549,7 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
                 onClick={() => setActiveBriefSection((prev) => (prev === 'strategy' ? null : 'strategy'))}
                 className={`w-full p-3.5 text-left border transition-all cursor-pointer flex items-center justify-between ${
                   activeBriefSection === 'strategy'
-                    ? 'border-[#D4AF37] bg-amber-50/80 shadow-xs'
+                    ? 'border-[#EA580C] bg-orange-50/80 shadow-xs'
                     : 'border-black/10 bg-[#FAF9F5] hover:bg-black/5'
                 }`}
               >
@@ -592,12 +592,12 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
               key={cat.id}
               onClick={() => handleMainClick(cat.id)}
               className={`flex flex-col justify-between p-3 sm:p-4 md:p-5 rounded-none text-left transition-all duration-300 relative overflow-hidden group ${isSelected
-                  ? 'bg-amber-50/90 text-gray-900 border-2 border-[#D4AF37] shadow-md scale-[1.02]'
-                  : 'bg-white text-gray-800 border border-black/10 hover:border-[#D4AF37] hover:shadow-xs hover:scale-[1.01]'
+                  ? 'bg-orange-50/90 text-gray-900 border-2 border-[#EA580C] shadow-md scale-[1.02]'
+                  : 'bg-white text-gray-800 border border-black/10 hover:border-[#EA580C] hover:shadow-xs hover:scale-[1.01]'
                 }`}
             >
               <div className="flex justify-between items-start gap-2 w-full">
-                <span className={`text-[10px] md:text-xs font-bold uppercase tracking-widest font-mono ${isSelected ? 'text-amber-800' : 'text-gray-400'
+                <span className={`text-[10px] md:text-xs font-bold uppercase tracking-widest font-mono ${isSelected ? 'text-[#9A3412]' : 'text-gray-400'
                   }`}>
                   Category 0{cat.id}
                 </span>

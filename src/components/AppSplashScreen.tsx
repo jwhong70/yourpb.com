@@ -56,7 +56,7 @@ export default function AppSplashScreen() {
             className="object-contain"
           />
         </div>
-        <p className="text-xs sm:text-sm font-semibold tracking-widest text-[#8B6508] opacity-80 uppercase">
+        <p className="text-xs sm:text-sm font-bold tracking-widest text-[#9A3412] opacity-90 uppercase">
           Wealth Intelligence Platform
         </p>
       </div>
