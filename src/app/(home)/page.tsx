@@ -108,19 +108,19 @@ export default async function Home() {
           </p>
         </div>
 
-        {/* 당신의 피비의 자산배분 전략 핵심 처방: 불릿/좌우배치 제거 및 1줄 접이식 아코디언 전환 */}
+        {/* 자산배분 핵심 처방: 불릿/좌우배치 제거 및 1줄 접이식 아코디언 전환 */}
         <details className="group bg-white border border-black/10 shadow-xs transition-all">
           <summary className="p-4 sm:p-5 flex items-center justify-between cursor-pointer select-none list-none hover:bg-black/5 transition-colors">
             <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3">
               <h3 className="text-base sm:text-lg font-extrabold text-gray-900 tracking-tight break-keep">
-                당신의 피비의 자산배분 전략 핵심 처방
+                자산배분 핵심 처방
               </h3>
               <span className="text-[11px] font-bold text-[#8B6508] bg-[#D4AF37]/15 px-2 py-0.5 border border-[#D4AF37]/30 w-fit">
                 Top-Down 포트폴리오
               </span>
             </div>
             <div className="flex items-center gap-1 text-xs font-bold text-gray-600 shrink-0 ml-3">
-              <span className="group-open:hidden">전략 펼쳐보기 ▼</span>
+              <span className="group-open:hidden">펼쳐보기 ▼</span>
               <span className="hidden group-open:inline">접기 ▲</span>
             </div>
           </summary>

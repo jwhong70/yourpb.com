@@ -155,8 +155,8 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
   // 4. 이용 가이드 펼침/접힘 상태 (기본 접힘)
   const [isGuideOpen, setIsGuideOpen] = useState(false);
 
-  // 5. 월간 피비 총평 활성 섹션 ('macro' | 'liquidity' | 'momentum' | 'strategy' | null)
-  const [activeBriefSection, setActiveBriefSection] = useState<'macro' | 'liquidity' | 'momentum' | 'strategy' | null>('strategy');
+  // 5. 월간 피비 총평 활성 섹션 ('macro' | 'liquidity' | 'momentum' | 'strategy' | null) - 기본 모두 접힘
+  const [activeBriefSection, setActiveBriefSection] = useState<'macro' | 'liquidity' | 'momentum' | 'strategy' | null>(null);
 
   if (!mounted) {
     return (
