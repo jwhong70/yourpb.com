@@ -149,18 +149,18 @@ export default function HubFaqAccordion({
           </div>
         </div>
 
-        <div className="flex items-center gap-3 w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row items-center gap-2.5 w-full sm:w-auto">
           {!isLoggedIn ? (
             <>
               <Link
                 href="/login"
-                className="w-1/2 sm:w-auto px-4 py-2 text-xs font-bold text-gray-200 hover:text-white bg-white/5 hover:bg-white/10 transition-colors text-center"
+                className="w-full sm:w-auto px-5 py-2.5 text-xs sm:text-sm font-bold text-gray-200 hover:text-white bg-white/5 hover:bg-white/10 transition-colors text-center border border-white/10"
               >
                 무료 회원가입
               </Link>
               <Link
                 href="/subscribe"
-                className="w-1/2 sm:w-auto px-4 py-2 text-xs font-bold text-black bg-[#D4AF37] hover:bg-[#c29f2f] transition-colors flex items-center justify-center gap-1.5"
+                className="w-full sm:w-auto px-5 py-2.5 text-xs sm:text-sm font-bold text-black bg-[#D4AF37] hover:bg-[#c29f2f] transition-colors flex items-center justify-center gap-1.5"
               >
                 <span>멤버십 혜택보기</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -169,7 +169,7 @@ export default function HubFaqAccordion({
           ) : (
             <Link
               href="/subscribe"
-              className="w-full sm:w-auto px-4 py-2 text-xs font-bold text-black bg-[#D4AF37] hover:bg-[#c29f2f] transition-colors flex items-center justify-center gap-1.5"
+              className="w-full sm:w-auto px-5 py-2.5 text-xs sm:text-sm font-bold text-black bg-[#D4AF37] hover:bg-[#c29f2f] transition-colors flex items-center justify-center gap-1.5"
             >
               <span>멤버십 혜택보기</span>
               <ArrowRight className="w-3.5 h-3.5" />

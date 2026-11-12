@@ -118,19 +118,19 @@ export default async function EtfPage() {
               </div>
 
               {/* 원클릭 추천 엑스레이 체험 태그 */}
-              <div className="pt-2.5 border-t border-white/10 flex flex-wrap items-center gap-2 text-xs">
-                <span className="text-gray-400 font-bold shrink-0">원클릭 추천 엑스레이:</span>
+              <div className="pt-2.5 border-t border-white/10 flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs">
+                <span className="text-gray-400 font-bold shrink-0 text-[11px] sm:text-xs">원클릭 추천 엑스레이:</span>
                 {[
-                  { ticker: 'SPY', label: 'SPY 속 10대 종목 엑스레이' },
-                  { ticker: 'QQQ', label: 'QQQ 밸류에이션 & 120주 성과' },
-                  { ticker: 'SOXX', label: 'SOXX 반도체 편입비' },
-                  { ticker: 'TLT', label: 'TLT 미국 장기채 차트' },
-                  { ticker: 'GLD', label: 'GLD 금 대체자산' },
+                  { ticker: 'SPY', label: 'SPY (S&P500 엑스레이)' },
+                  { ticker: 'QQQ', label: 'QQQ (나스닥100)' },
+                  { ticker: 'SOXX', label: 'SOXX (반도체)' },
+                  { ticker: 'TLT', label: 'TLT (미국 장기채)' },
+                  { ticker: 'GLD', label: 'GLD (금 대체자산)' },
                 ].map((item) => (
                   <Link
                     key={item.ticker}
                     href={`/etf/${item.ticker}`}
-                    className="px-2.5 py-1 bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF37] text-gray-300 hover:text-white transition-colors"
+                    className="px-2 sm:px-2.5 py-1 bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF37] text-gray-300 hover:text-white transition-colors text-[11px] sm:text-xs whitespace-nowrap"
                   >
                     <span>{item.label}</span>
                   </Link>

@@ -227,7 +227,7 @@ export default async function Home() {
           </div>
           <Link
             href="/etf"
-            className="px-5 py-2.5 bg-[#D4AF37] hover:bg-[#c29f2f] text-black font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-2 shrink-0"
+            className="w-full sm:w-auto px-5 py-3 bg-[#D4AF37] hover:bg-[#c29f2f] text-black font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-2 shrink-0 text-center"
           >
             <span>글로벌 ETF 목록 전체보기</span>
             <ArrowRight className="w-4 h-4" />

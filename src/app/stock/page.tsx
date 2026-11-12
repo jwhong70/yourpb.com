@@ -116,19 +116,19 @@ export default async function StockPage() {
               </div>
 
               {/* 원클릭 추천 종목 체험 태그 */}
-              <div className="pt-2.5 border-t border-white/10 flex flex-wrap items-center gap-2 text-xs">
-                <span className="text-gray-400 font-bold shrink-0">원클릭 추천 진단:</span>
+              <div className="pt-2.5 border-t border-white/10 flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs">
+                <span className="text-gray-400 font-bold shrink-0 text-[11px] sm:text-xs">원클릭 추천 진단:</span>
                 {[
-                  { ticker: 'AAPL', label: '애플(AAPL) 21인 대가 관점' },
-                  { ticker: 'NVDA', label: '엔비디아(NVDA) 120주 성과 & 밸류에이션' },
-                  { ticker: 'MSFT', label: '마이크로소프트(MSFT) 안전마진' },
-                  { ticker: 'AMZN', label: '아마존(AMZN) 펀더멘털' },
-                  { ticker: 'GOOGL', label: '구글(GOOGL) 밸류에이션' },
+                  { ticker: 'AAPL', label: 'AAPL (애플 21인 대가)' },
+                  { ticker: 'NVDA', label: 'NVDA (엔비디아 성과)' },
+                  { ticker: 'MSFT', label: 'MSFT (MS 안전마진)' },
+                  { ticker: 'AMZN', label: 'AMZN (아마존 펀더멘털)' },
+                  { ticker: 'GOOGL', label: 'GOOGL (구글 밸류에이션)' },
                 ].map((item) => (
                   <Link
                     key={item.ticker}
                     href={`/stock/${item.ticker}`}
-                    className="px-2.5 py-1 bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF37] text-gray-300 hover:text-white transition-colors"
+                    className="px-2 sm:px-2.5 py-1 bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF37] text-gray-300 hover:text-white transition-colors text-[11px] sm:text-xs whitespace-nowrap"
                   >
                     <span>{item.label}</span>
                   </Link>
