@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Compass, PieChart, Layers, ScanText } from 'lucide-react';
+import { ArrowRight, Compass, PieChart, Layers, ScanText, Instagram, ExternalLink } from 'lucide-react';
 
 export default function HomeQuickGuide() {
   const steps = [
@@ -112,6 +112,38 @@ export default function HomeQuickGuide() {
             </div>
           );
         })}
+      </div>
+
+      {/* 하단 인스타그램 옴니채널 연계 배너 (웹 + 인스타 릴스 시너지) */}
+      <div className="mt-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-linear-to-r from-purple-950/25 via-black/40 to-black/20 p-4 sm:p-5 border border-purple-500/30">
+        <div className="flex items-start sm:items-center gap-3.5">
+          <div className="w-10 h-10 rounded-none bg-linear-to-br from-[#E1306C]/20 via-[#C13584]/20 to-[#833AB4]/20 border border-[#E1306C]/40 flex items-center justify-center shrink-0 mt-0.5 sm:mt-0">
+            <Instagram className="w-5 h-5 text-[#E1306C]" />
+          </div>
+          <div>
+            <div className="flex flex-wrap items-center gap-2 mb-1">
+              <span className="text-[11px] font-bold text-[#E1306C] bg-[#E1306C]/10 px-2 py-0.5 border border-[#E1306C]/20 whitespace-nowrap">
+                매일 저녁 7시 실시간 연재
+              </span>
+              <strong className="text-xs sm:text-sm font-bold text-white break-keep">
+                글과 데이터 표가 다소 낯설거나 어려우신가요?
+              </strong>
+            </div>
+            <p className="text-xs text-gray-300 leading-relaxed break-keep">
+              웹 리포트와 함께 인스타그램에서 <span className="text-white font-semibold">매일 저녁 7시(퇴근길) 60초 릴스 처방전</span>을 함께 보시면, 투자 흐름을 훨씬 쉽고 깊이 있게 파악하실 수 있어 더욱 유용합니다.
+            </p>
+          </div>
+        </div>
+
+        <a
+          href="https://www.instagram.com/yourpb_hong/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full sm:w-auto px-4 py-2.5 bg-linear-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] hover:opacity-90 text-white font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 shrink-0 text-center shadow-md whitespace-nowrap"
+        >
+          <span>인스타그램 릴스 보러가기</span>
+          <ExternalLink className="w-3.5 h-3.5" />
+        </a>
       </div>
     </section>
   );
