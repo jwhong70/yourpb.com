@@ -316,7 +316,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
 
                     <button
                       onClick={handleShare}
-                      className="flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-gray-300 hover:text-white bg-black/5 hover:bg-black/10 border border-black/10 rounded-md text-gray-700 hover:text-black transition-colors cursor-pointer"
+                      className="flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-gray-700 hover:text-black bg-black/5 hover:bg-black/10 border border-black/10 rounded-md transition-colors cursor-pointer"
                     >
                       <Share2 className="w-3.5 h-3.5" />
                       <span>{copiedAlert ? '복사 완료!' : '공유'}</span>
@@ -411,7 +411,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
             <div className="pt-1 flex flex-col sm:flex-row gap-2.5 sm:gap-3">
               <Link
                 href="/diagnosis"
-                className="flex-1 flex items-center justify-center gap-1.5 bg-[#EA580C] hover:bg-[#c2410c] text-white font-extrabold shadow-sm text-xs sm:text-sm py-2.5 sm:py-3 px-4 rounded-xl transition-all shadow-md hover:shadow-[#EA580C]/20 cursor-pointer"
+                className="flex-1 flex items-center justify-center gap-1.5 bg-[#EA580C] hover:bg-[#c2410c] text-white font-extrabold text-xs sm:text-sm py-2.5 sm:py-3 px-4 rounded-xl transition-all shadow-md hover:shadow-[#EA580C]/20 cursor-pointer"
               >
                 <span>내 포트폴리오 무료 진단하기</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -628,7 +628,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
             <div className="flex flex-col gap-3">
               <Link
                 href="/subscribe"
-                className="w-full py-3.5 bg-[#EA580C] hover:bg-[#c2410c] text-white font-extrabold shadow-sm font-black text-sm rounded-xl transition-all shadow-lg text-center"
+                className="w-full py-3.5 bg-[#EA580C] hover:bg-[#c2410c] text-white font-extrabold text-sm rounded-xl transition-all shadow-lg text-center"
               >
                 프리미엄 멤버십 시작하기
               </Link>
