@@ -73,26 +73,26 @@ export default function HubFaqAccordion({
   };
 
   return (
-    <section className="mt-14 mb-8 bg-[#141414] border border-white/10 rounded-none p-5 sm:p-8">
+    <section className="mt-14 mb-8 bg-white border border-black/10 rounded-none p-5 sm:p-8 shadow-xs">
       {/* FAQPage JSON-LD 스키마 주입 */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 pb-4 border-b border-white/10">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 pb-4 border-b border-black/10">
         <div className="flex items-center gap-2">
-          <HelpCircle className="w-5 h-5 text-[#D4AF37]" />
-          <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+          <HelpCircle className="w-5 h-5 text-[#8B6508]" />
+          <h2 className="text-base sm:text-lg font-bold text-gray-900 tracking-tight">
             당신의 피비와 고객의 릴스 톡 (FAQ)
           </h2>
         </div>
-        <span className="text-xs text-gray-400">
+        <span className="text-xs text-gray-500">
           3050 스마트 자기주도 투자자를 위한 핵심 가이드
         </span>
       </div>
 
-      <div className="divide-y divide-white/5 mb-8">
+      <div className="divide-y divide-black/5 mb-8">
         {faqList.map((item, idx) => {
           const isOpen = openIndex === idx;
           return (
@@ -103,23 +103,23 @@ export default function HubFaqAccordion({
                 className="w-full flex items-center justify-between text-left gap-4 group"
               >
                 <div className="flex items-start gap-2.5">
-                  <span className="text-xs font-bold text-[#D4AF37] bg-[#D4AF37]/10 px-2 py-0.5 rounded-none shrink-0 mt-0.5">
+                  <span className="text-xs font-bold text-[#8B6508] bg-[#D4AF37]/15 px-2 py-0.5 border border-[#D4AF37]/30 rounded-none shrink-0 mt-0.5">
                     고객
                   </span>
-                  <span className="text-sm sm:text-base font-semibold text-gray-200 group-hover:text-[#D4AF37] transition-colors">
+                  <span className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-[#8B6508] transition-colors">
                     {item.question}
                   </span>
                 </div>
                 <ChevronDown
                   className={`w-4 h-4 text-gray-400 shrink-0 transition-transform duration-200 mt-1 ${
-                    isOpen ? 'rotate-180 text-[#D4AF37]' : ''
+                    isOpen ? 'rotate-180 text-[#8B6508]' : ''
                   }`}
                 />
               </button>
 
               {isOpen && (
-                <div className="mt-3 text-xs sm:text-sm text-gray-300 leading-relaxed pl-3.5 border-l-2 border-[#D4AF37]/60 bg-black/25 p-3">
-                  <div className="flex items-center gap-1.5 mb-1.5 text-[11px] font-bold text-[#D4AF37]">
+                <div className="mt-3 text-xs sm:text-sm text-gray-700 leading-relaxed pl-3.5 border-l-2 border-[#D4AF37] bg-[#F9F8F6] p-3.5">
+                  <div className="flex items-center gap-1.5 mb-1.5 text-[11px] font-bold text-[#8B6508]">
                     <Sparkles className="w-3.5 h-3.5" />
                     <span>당신의 피비</span>
                   </div>
@@ -132,18 +132,18 @@ export default function HubFaqAccordion({
       </div>
 
       {/* 회원가입 및 멤버십 안내 전환 앵커 (정중한 경어체 적용) */}
-      <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 bg-linear-to-r from-black/40 via-[#1A1A1A] to-black/40 p-4">
+      <div className="pt-6 border-t border-black/10 flex flex-col sm:flex-row items-center justify-between gap-4 bg-linear-to-r from-amber-50/70 via-white to-amber-50/40 border border-black/10 p-4 shadow-xs">
         <div className="flex items-center gap-3">
-          <ShieldCheck className="w-5 h-5 text-[#D4AF37] shrink-0" />
-          <div className="text-xs sm:text-sm text-gray-300">
+          <ShieldCheck className="w-5 h-5 text-[#8B6508] shrink-0" />
+          <div className="text-xs sm:text-sm text-gray-800">
             {!isLoggedIn ? (
               <span>
-                무료 회원가입으로 <strong>관심 종목 찜하기</strong>를 시작하시고,{' '}
-                <strong>프리미엄 멤버십</strong>으로 정밀 리서치 원본 PDF를 유료 소장해 보세요.
+                무료 회원가입으로 <strong className="text-gray-900">관심 종목 찜하기</strong>를 시작하시고,{' '}
+                <strong className="text-gray-900">프리미엄 멤버십</strong>으로 정밀 리서치 원본 PDF를 유료 소장해 보세요.
               </span>
             ) : (
               <span>
-                매월 업데이트되는 <strong>정밀 리서치 원본 PDF 유료 소장</strong>은 프리미엄 멤버십 회원 전용 혜택입니다.
+                매월 업데이트되는 <strong className="text-gray-900">정밀 리서치 원본 PDF 유료 소장</strong>은 프리미엄 멤버십 회원 전용 혜택입니다.
               </span>
             )}
           </div>
@@ -154,13 +154,13 @@ export default function HubFaqAccordion({
             <>
               <Link
                 href="/login"
-                className="w-full sm:w-auto px-5 py-2.5 text-xs sm:text-sm font-bold text-gray-200 hover:text-white bg-white/5 hover:bg-white/10 transition-colors text-center border border-white/10"
+                className="w-full sm:w-auto px-5 py-2.5 text-xs sm:text-sm font-bold text-gray-800 hover:text-black bg-[#F9F8F6] hover:bg-gray-100 transition-colors text-center border border-black/15 shadow-xs"
               >
                 무료 회원가입
               </Link>
               <Link
                 href="/subscribe"
-                className="w-full sm:w-auto px-5 py-2.5 text-xs sm:text-sm font-bold text-black bg-[#D4AF37] hover:bg-[#c29f2f] transition-colors flex items-center justify-center gap-1.5"
+                className="w-full sm:w-auto px-5 py-2.5 text-xs sm:text-sm font-bold text-black bg-[#D4AF37] hover:bg-[#c29f2f] transition-colors flex items-center justify-center gap-1.5 shadow-xs"
               >
                 <span>멤버십 혜택보기</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -169,7 +169,7 @@ export default function HubFaqAccordion({
           ) : (
             <Link
               href="/subscribe"
-              className="w-full sm:w-auto px-5 py-2.5 text-xs sm:text-sm font-bold text-black bg-[#D4AF37] hover:bg-[#c29f2f] transition-colors flex items-center justify-center gap-1.5"
+              className="w-full sm:w-auto px-5 py-2.5 text-xs sm:text-sm font-bold text-black bg-[#D4AF37] hover:bg-[#c29f2f] transition-colors flex items-center justify-center gap-1.5 shadow-xs"
             >
               <span>멤버십 혜택보기</span>
               <ArrowRight className="w-3.5 h-3.5" />

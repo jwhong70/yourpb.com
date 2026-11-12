@@ -103,21 +103,21 @@ export default async function StockPage() {
             </div>
 
             {/* 💡 피비의 정직한 팩트 코칭 바 & 원클릭 추천 종목 태그 */}
-            <div className="bg-[#141414] border border-white/10 p-4 sm:p-5 text-white space-y-3">
-              <div className="flex items-start gap-2.5 text-xs sm:text-sm text-gray-200">
-                <span className="text-[#D4AF37] font-bold shrink-0 mt-0.5">💡 피비의 안내:</span>
+            <div className="bg-white border border-black/10 p-4 sm:p-5 text-gray-900 space-y-3 shadow-xs">
+              <div className="flex items-start gap-2.5 text-xs sm:text-sm text-gray-700">
+                <span className="text-[#8B6508] font-bold shrink-0 mt-0.5">💡 피비의 안내:</span>
                 <p className="leading-relaxed">
                   관심 있는 종목을 클릭하시면{' '}
-                  <strong className="text-white">① 밸류에이션(P/E, P/B)</strong>,{' '}
-                  <strong className="text-white">② 21인 대가들의 AI 투자 관점 & 신뢰도</strong>,{' '}
-                  <strong className="text-white">③ 주가 캔들 차트</strong>,{' '}
-                  <strong className="text-white">④ 1주~120주 기간수익률 성과</strong>를 한눈에 확인하실 수 있습니다.
+                  <strong className="text-gray-900">① 밸류에이션(P/E, P/B)</strong>,{' '}
+                  <strong className="text-gray-900">② 21인 대가들의 AI 투자 관점 & 신뢰도</strong>,{' '}
+                  <strong className="text-gray-900">③ 주가 캔들 차트</strong>,{' '}
+                  <strong className="text-gray-900">④ 1주~120주 기간수익률 성과</strong>를 한눈에 확인하실 수 있습니다.
                 </p>
               </div>
 
               {/* 원클릭 추천 종목 체험 태그 */}
-              <div className="pt-2.5 border-t border-white/10 flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs">
-                <span className="text-gray-400 font-bold shrink-0 text-[11px] sm:text-xs">원클릭 추천 진단:</span>
+              <div className="pt-2.5 border-t border-black/10 flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs">
+                <span className="text-gray-500 font-bold shrink-0 text-[11px] sm:text-xs">원클릭 추천 진단:</span>
                 {[
                   { ticker: 'AAPL', label: 'AAPL (애플 21인 대가)' },
                   { ticker: 'NVDA', label: 'NVDA (엔비디아 성과)' },
@@ -128,7 +128,7 @@ export default async function StockPage() {
                   <Link
                     key={item.ticker}
                     href={`/stock/${item.ticker}`}
-                    className="px-2 sm:px-2.5 py-1 bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#D4AF37] text-gray-300 hover:text-white transition-colors text-[11px] sm:text-xs whitespace-nowrap"
+                    className="px-2 sm:px-2.5 py-1 bg-[#F9F8F6] hover:bg-[#D4AF37]/15 border border-black/10 hover:border-[#D4AF37] text-gray-800 hover:text-black transition-colors text-[11px] sm:text-xs whitespace-nowrap"
                   >
                     <span>{item.label}</span>
                   </Link>

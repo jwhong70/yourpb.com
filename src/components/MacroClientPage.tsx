@@ -384,41 +384,41 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
     <div className="flex flex-col gap-6">
 
       {/* 💡 피비의 매크로 나침반 & 신호등 이용 가이드 */}
-      <div className="bg-[#141414] border border-white/10 p-5 sm:p-6 text-white space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-white/10">
+      <div className="bg-white border border-black/10 p-5 sm:p-6 text-gray-900 space-y-4 shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-black/10">
           <div className="flex items-center gap-2.5">
-            <Compass className="w-5 h-5 text-[#D4AF37]" />
-            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+            <Compass className="w-5 h-5 text-[#8B6508]" />
+            <h2 className="text-base sm:text-lg font-bold text-gray-900 tracking-tight">
               피비의 매크로 나침반 이용 가이드
             </h2>
           </div>
-          <span className="text-xs text-[#D4AF37] font-semibold bg-[#D4AF37]/10 px-2.5 py-0.5 border border-[#D4AF37]/20 w-fit">
+          <span className="text-xs text-[#8B6508] font-semibold bg-[#D4AF37]/15 px-2.5 py-0.5 border border-[#D4AF37]/30 w-fit">
             거시 경제 4대 팩트 탑다운 진단
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm text-gray-300">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm text-gray-700">
           {/* 1. 4대 팩트 클릭 안내 */}
-          <div className="flex items-start gap-2.5 p-3 bg-black/40 border border-white/5">
-            <span className="w-5 h-5 rounded-full bg-[#D4AF37]/20 text-[#D4AF37] font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+          <div className="flex items-start gap-2.5 p-3 bg-[#F9F8F6] border border-black/10">
+            <span className="w-5 h-5 rounded-full bg-[#D4AF37]/20 text-[#8B6508] font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
               1
             </span>
             <div>
-              <strong className="text-white block mb-0.5">4대 팩트를 확인하세요</strong>
-              <p className="text-xs text-gray-400 leading-relaxed">
+              <strong className="text-gray-900 block mb-0.5">4대 팩트를 확인하세요</strong>
+              <p className="text-xs text-gray-600 leading-relaxed">
                 아래 4개 상자(경제사이클·경기조절자·리스크·마켓사이클)를 클릭하시면 세부 지표가 열립니다.
               </p>
             </div>
           </div>
 
           {/* 2. 신호등 보는 법 */}
-          <div className="flex items-start gap-2.5 p-3 bg-black/40 border border-white/5">
-            <span className="w-5 h-5 rounded-full bg-[#D4AF37]/20 text-[#D4AF37] font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+          <div className="flex items-start gap-2.5 p-3 bg-[#F9F8F6] border border-black/10">
+            <span className="w-5 h-5 rounded-full bg-[#D4AF37]/20 text-[#8B6508] font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
               2
             </span>
             <div>
-              <strong className="text-white block mb-0.5">2구 신호등 보는 법</strong>
-              <div className="text-xs text-gray-400 space-y-1">
+              <strong className="text-gray-900 block mb-0.5">2구 신호등 보는 법</strong>
+              <div className="text-xs text-gray-600 space-y-1">
                 <div className="flex items-center gap-2">
                   <span className="inline-block w-2 h-2 rounded-full bg-[#007C1F]" />
                   <span>초록불: 개선 및 확장 신호</span>
@@ -433,13 +433,13 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
           </div>
 
           {/* 3. 차트 펼쳐보기 안내 */}
-          <div className="flex items-start gap-2.5 p-3 bg-black/40 border border-white/5">
-            <span className="w-5 h-5 rounded-full bg-[#D4AF37]/20 text-[#D4AF37] font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+          <div className="flex items-start gap-2.5 p-3 bg-[#F9F8F6] border border-black/10">
+            <span className="w-5 h-5 rounded-full bg-[#D4AF37]/20 text-[#8B6508] font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
               3
             </span>
             <div>
-              <strong className="text-white block mb-0.5">클릭하면 차트가 펼쳐집니다</strong>
-              <p className="text-xs text-gray-400 leading-relaxed">
+              <strong className="text-gray-900 block mb-0.5">클릭하면 차트가 펼쳐집니다</strong>
+              <p className="text-xs text-gray-600 leading-relaxed">
                 세부 지표명을 톡 클릭하시면 하단에 10~35년 장기 시계열 인터랙티브 차트가 즉시 펼쳐집니다.
               </p>
             </div>
@@ -448,10 +448,10 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
 
         {/* 월간 브리프 자동 연동 코멘트 (있는 경우 자동 노출) */}
         {brief && (
-          <div className="pt-3 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-gray-400">
+          <div className="pt-3 border-t border-black/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-gray-600">
             <div className="flex items-center gap-2">
-              <span className="font-bold text-[#D4AF37]">[{brief.edition} 피비 총평]</span>
-              <span className="text-gray-200 truncate max-w-xl">{brief.headline}</span>
+              <span className="font-bold text-[#8B6508]">[{brief.edition} 피비 총평]</span>
+              <span className="text-gray-900 font-medium truncate max-w-xl">{brief.headline}</span>
             </div>
             <span className="text-[11px] text-gray-500 shrink-0">
               * 매월 초 월간 브리프 기준으로 4대 팩트 시황이 갱신됩니다.

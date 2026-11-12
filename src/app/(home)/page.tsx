@@ -102,7 +102,7 @@ export default async function Home() {
         </div>
 
         {/* 한줄 시장 테마 헤드라인 */}
-        <div className="p-5 sm:p-6 bg-linear-to-r from-amber-50/80 via-white to-amber-50/50 text-gray-900 border-l-4 border-[#D4AF37] border-y border-r border-black/10 shadow-xs">
+        <div className="p-5 sm:p-6 bg-linear-to-r from-amber-50/80 via-white to-amber-50/50 text-gray-900 border border-black/10 border-l-4 border-l-[#D4AF37] shadow-xs">
           <p className="text-base sm:text-lg lg:text-xl font-bold leading-relaxed tracking-tight text-gray-900">
             {brief.headline}
           </p>
