@@ -132,7 +132,7 @@ export default function HubFaqAccordion({
       </div>
 
       {/* 회원가입 및 멤버십 안내 전환 앵커 (정중한 경어체 적용) */}
-      <div className="pt-6 border-t border-black/10 flex flex-col sm:flex-row items-center justify-between gap-4 bg-linear-to-r from-amber-50/70 via-white to-amber-50/40 border border-black/10 p-4 shadow-xs">
+      <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 bg-linear-to-r from-amber-50/70 via-white to-amber-50/40 border border-black/10 p-4 shadow-xs">
         <div className="flex items-center gap-3">
           <ShieldCheck className="w-5 h-5 text-[#9A3412] shrink-0" />
           <div className="text-xs sm:text-sm text-gray-800">
