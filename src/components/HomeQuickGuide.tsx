@@ -141,7 +141,7 @@ export default function HomeQuickGuide() {
                 href="https://www.instagram.com/yourpb_hong/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#1F1F1F] hover:bg-[#2B2B2B] text-white border border-black/20 font-bold text-xs sm:text-sm transition-all shadow-xs whitespace-nowrap cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 bg-dark-surface hover:bg-dark-surface-hover text-white border border-black/20 font-bold text-xs sm:text-sm transition-all shadow-xs whitespace-nowrap cursor-pointer"
               >
                 <span>인스타그램 60초 릴스 보러가기</span>
                 <ExternalLink className="w-3.5 h-3.5 text-[#EA580C]" />

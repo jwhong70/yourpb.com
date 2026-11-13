@@ -367,7 +367,7 @@ export default async function StockDetailPage({ params }: PageProps) {
             {/* 종목명과 티커 박스 */}
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-3">
-                <span className="px-2.5 py-1 text-xs font-extrabold bg-[#000000] text-white rounded-none uppercase tracking-wider">
+                <span className="px-2.5 py-1 text-xs font-extrabold bg-dark-surface text-white rounded-none uppercase tracking-wider">
                   {stock.listed === 'us' ? 'US Stock' : 'KR Stock'}
                 </span>
                 <span className="px-2.5 py-1 text-xs font-bold bg-box-bg text-gray-700 border border-black rounded-none">
@@ -476,7 +476,7 @@ export default async function StockDetailPage({ params }: PageProps) {
                     href={reportUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full max-w-md flex items-center justify-center gap-2.5 px-6 py-4.5 bg-[#000000] hover:bg-gray-900 active:scale-95 text-white font-black rounded-none shadow-lg transition-all cursor-pointer text-base"
+                    className="w-full max-w-md flex items-center justify-center gap-2.5 px-6 py-4.5 bg-dark-surface hover:bg-dark-surface-hover active:scale-95 text-white font-black rounded-none shadow-lg transition-all cursor-pointer text-base"
                   >
                     <Download className="w-5 h-5" />
                     <span>보고서 PDF 다운로드</span>

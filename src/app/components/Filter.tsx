@@ -382,7 +382,7 @@ export default function Filter({
             }}
             className={`w-28 py-2 text-xs font-bold rounded-none transition-all cursor-pointer ${
               interestFilter === 'all'
-                ? 'bg-[#000000] text-white shadow-xs'
+                ? 'bg-dark-surface text-white shadow-xs'
                 : 'text-gray-500 hover:text-gray-950'
             }`}
           >
@@ -397,7 +397,7 @@ export default function Filter({
             }}
             className={`w-28 py-2 text-xs font-bold rounded-none transition-all cursor-pointer ${
               interestFilter === 'y'
-                ? 'bg-[#000000] text-white shadow-xs'
+                ? 'bg-dark-surface text-white shadow-xs'
                 : 'text-gray-500 hover:text-gray-950'
             }`}
           >
@@ -420,7 +420,7 @@ export default function Filter({
                   id="sector-select"
                   value={selectedSector}
                   onChange={handleSectorChange}
-                  className="w-full appearance-none bg-white text-gray-800 border border-[#000000] rounded-none py-3.5 px-4 pr-10 text-sm font-semibold focus:outline-hidden focus:ring-1 focus:ring-black cursor-pointer transition-all shadow-xs"
+                  className="w-full appearance-none bg-white text-gray-800 border border-dark-surface rounded-none py-3.5 px-4 pr-10 text-sm font-semibold focus:outline-hidden focus:ring-1 focus:ring-black cursor-pointer transition-all shadow-xs"
                 >
                   <option value="all">전체 대분류</option>
                   {sectors.map((sector) => (
@@ -443,7 +443,7 @@ export default function Filter({
                   id="industry-select"
                   value={selectedIndustry}
                   onChange={(e) => setSelectedIndustry(e.target.value)}
-                  className="w-full appearance-none bg-white text-gray-800 border border-[#000000] rounded-none py-3.5 px-4 pr-10 text-sm font-semibold focus:outline-hidden focus:ring-1 focus:ring-black cursor-pointer transition-all shadow-xs"
+                  className="w-full appearance-none bg-white text-gray-800 border border-dark-surface rounded-none py-3.5 px-4 pr-10 text-sm font-semibold focus:outline-hidden focus:ring-1 focus:ring-black cursor-pointer transition-all shadow-xs"
                 >
                   <option value="all">전체 중분류</option>
                   {industries.map((industry) => (
@@ -468,7 +468,7 @@ export default function Filter({
               placeholder="종목명 또는 티커(AAPL, MSFT 등)를 입력하세요..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-white text-gray-800 border border-[#000000] rounded-none py-3.5 px-4 text-sm font-semibold focus:outline-hidden focus:ring-1 focus:ring-black transition-all shadow-xs"
+              className="w-full bg-white text-gray-800 border border-dark-surface rounded-none py-3.5 px-4 text-sm font-semibold focus:outline-hidden focus:ring-1 focus:ring-black transition-all shadow-xs"
             />
           </div>
         </div>
@@ -501,7 +501,7 @@ export default function Filter({
                 <select
                   value={selectedPeriod}
                   onChange={(e) => handlePeriodChange(e.target.value as '1w' | '5w' | '20w' | '60w' | '120w')}
-                  className="appearance-none bg-white text-gray-800 border border-[#000000] rounded-none py-1.5 px-3 pr-8 text-xs font-bold focus:outline-hidden focus:ring-1 focus:ring-black cursor-pointer shadow-xs select-none"
+                  className="appearance-none bg-white text-gray-800 border border-dark-surface rounded-none py-1.5 px-3 pr-8 text-xs font-bold focus:outline-hidden focus:ring-1 focus:ring-black cursor-pointer shadow-xs select-none"
                 >
                   <option value="1w">1주</option>
                   <option value="5w">5주</option>
@@ -519,10 +519,10 @@ export default function Filter({
           <div className="overflow-x-auto rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white bg-box-bg shadow-lg">
             <table className="w-full text-left border-collapse text-xs font-sans table-fixed">
               <thead>
-                <tr className="bg-[#000000] text-white font-bold text-xs uppercase tracking-wider select-none divide-x divide-white">
+                <tr className="bg-dark-surface text-white font-bold text-xs uppercase tracking-wider select-none divide-x divide-white">
                   <th
                     onClick={() => handleSort('name')}
-                    className="py-2.5 px-3 sm:px-6 cursor-pointer hover:bg-gray-900 transition-colors"
+                    className="py-2.5 px-3 sm:px-6 cursor-pointer hover:bg-dark-surface-hover transition-colors"
                   >
                     <div className="flex flex-col items-start leading-tight">
                       <span>종목명</span>
@@ -531,7 +531,7 @@ export default function Filter({
                   </th>
                   <th
                     onClick={() => handleSort(`yield_${selectedPeriod}` as keyof StockWithPrice)}
-                    className="py-2.5 px-1 sm:px-6 text-right cursor-pointer hover:bg-gray-900 transition-colors w-13.5 sm:w-28"
+                    className="py-2.5 px-1 sm:px-6 text-right cursor-pointer hover:bg-dark-surface-hover transition-colors w-13.5 sm:w-28"
                   >
                     <div className="flex flex-col items-end leading-tight">
                       <span className="whitespace-nowrap">수익률</span>

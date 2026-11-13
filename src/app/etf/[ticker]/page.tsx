@@ -255,7 +255,7 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
             {/* 펀드명과 티커 박스 외부 배치 */}
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-3">
-                <span className="px-2.5 py-1 text-xs font-extrabold bg-[#000000] text-white rounded-none uppercase tracking-wider">
+                <span className="px-2.5 py-1 text-xs font-extrabold bg-dark-surface text-white rounded-none uppercase tracking-wider">
                   {etfList.category || 'ETF'}
                 </span>
                 <span className="px-2.5 py-1 text-xs font-bold bg-box-bg text-gray-700 border border-black rounded-none">
@@ -342,19 +342,19 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
                   <h3 className="text-base sm:text-lg font-bold text-gray-900 select-none">가치 평가 & 분배 지표</h3>
 
                   <div className="space-y-2 pt-1">
-                    <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
+                    <div className="flex items-center justify-between border-b border-dark-surface pb-1.5">
                       <span className="text-xs sm:text-sm font-medium text-gray-500">PER (주가수익비율)</span>
                       <span className="text-xs sm:text-sm font-bold text-gray-900">
                         {formatNum(etfInfo?.pe_ratio)}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
+                    <div className="flex items-center justify-between border-b border-dark-surface pb-1.5">
                       <span className="text-xs sm:text-sm font-medium text-gray-500">PBR (주가순자산비율)</span>
                       <span className="text-xs sm:text-sm font-bold text-gray-900">
                         {formatNum(etfInfo?.pb_ratio)}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between border-b border-[#000000] pb-1.5">
+                    <div className="flex items-center justify-between border-b border-dark-surface pb-1.5">
                       <span className="text-xs sm:text-sm font-medium text-gray-500">분배율 (Distribution Yield)</span>
                       <span className="text-xs sm:text-sm font-bold text-gray-900">
                         {formatPercent(etfInfo?.distribution_yield)}
@@ -410,7 +410,7 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
                   <div className="rounded-none bg-[#F9F8F6] overflow-hidden">
                     <table className="w-full table-fixed text-left border-collapse">
                       <thead>
-                        <tr className="bg-[#000000] text-white select-none">
+                        <tr className="bg-dark-surface text-white select-none">
                           <th className="py-2 px-2.5 text-xs sm:text-sm font-bold text-white">종목명</th>
                           <th className="py-2 px-2.5 text-right text-xs sm:text-sm font-bold text-white w-20 sm:w-24">비중</th>
                         </tr>

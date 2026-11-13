@@ -510,7 +510,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                                 ? isOptBiased
                                   ? 'bg-rose-600 text-white border-rose-600'
                                   : 'bg-emerald-600 text-white border-emerald-600'
-                                : 'bg-[#1F1F1F] text-white border-black/20'
+                                : 'bg-dark-surface text-white border-black/20'
                               : 'bg-gray-100 text-gray-700 border-gray-300'
                           }`}
                         >
@@ -534,7 +534,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                       className={`w-full py-4 font-black text-sm sm:text-base flex items-center justify-center gap-2 transition-all shadow-md ${
                         currentSelectedIdx === undefined
                           ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                          : 'bg-[#1F1F1F] hover:bg-[#2B2B2B] text-white cursor-pointer shadow-xs'
+                          : 'bg-dark-surface hover:bg-dark-surface-hover text-white cursor-pointer shadow-xs'
                       }`}
                     >
                       <Brain className="w-4 h-4" />
@@ -646,7 +646,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                       <button
                         type="button"
                         onClick={handleNext}
-                        className="px-6 py-3 bg-[#1F1F1F] hover:bg-[#2B2B2B] text-white text-xs font-bold flex items-center gap-2 shadow-xs cursor-pointer border border-black/20 hover:border-[#EA580C]"
+                        className="px-6 py-3 bg-dark-surface hover:bg-dark-surface-hover text-white text-xs font-bold flex items-center gap-2 shadow-xs cursor-pointer border border-black/20 hover:border-[#EA580C]"
                       >
                         <span>
                           {currentStep < BIAS_QUESTIONS.length - 1
@@ -854,7 +854,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* 1. 정기 재진단 */}
                 <div className="p-5 bg-box-bg border border-gray-300 space-y-2.5">
-                  <div className="w-8 h-8 rounded-full bg-[#1F1F1F] text-[#EA580C] border border-[#EA580C]/30 flex items-center justify-center font-black text-xs shadow-xs">
+                  <div className="w-8 h-8 rounded-full bg-dark-surface text-[#EA580C] border border-[#EA580C]/30 flex items-center justify-center font-black text-xs shadow-xs">
                     01
                   </div>
                   <h4 className="text-sm font-black text-gray-900 flex items-center gap-1.5">
@@ -868,7 +868,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
 
                 {/* 2. 감정 배제 무감정 퀀트 자산배분 */}
                 <div className="p-5 bg-box-bg border border-gray-300 space-y-2.5">
-                  <div className="w-8 h-8 rounded-full bg-[#1F1F1F] text-[#EA580C] border border-[#EA580C]/30 flex items-center justify-center font-black text-xs shadow-xs">
+                  <div className="w-8 h-8 rounded-full bg-dark-surface text-[#EA580C] border border-[#EA580C]/30 flex items-center justify-center font-black text-xs shadow-xs">
                     02
                   </div>
                   <h4 className="text-sm font-black text-gray-900 flex items-center gap-1.5">
@@ -891,7 +891,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
 
                 {/* 3. 맞춤 처방전 소장 & PB 상담 */}
                 <div className="p-5 bg-box-bg border border-gray-300 space-y-2.5">
-                  <div className="w-8 h-8 rounded-full bg-[#1F1F1F] text-[#EA580C] border border-[#EA580C]/30 flex items-center justify-center font-black text-xs shadow-xs">
+                  <div className="w-8 h-8 rounded-full bg-dark-surface text-[#EA580C] border border-[#EA580C]/30 flex items-center justify-center font-black text-xs shadow-xs">
                     03
                   </div>
                   <h4 className="text-sm font-black text-gray-900 flex items-center gap-1.5">

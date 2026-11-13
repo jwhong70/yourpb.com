@@ -175,10 +175,10 @@ function EtfTableContent({
         <div className="overflow-x-auto rounded-none border border-t-[#000000] border-b-[#000000] border-l-white border-r-white bg-box-bg shadow-xl">
           <table className="w-full text-left border-collapse text-xs font-sans table-fixed">
             <thead>
-              <tr className="bg-[#000000] text-white font-bold text-xs uppercase tracking-wider select-none divide-x divide-white">
+              <tr className="bg-dark-surface text-white font-bold text-xs uppercase tracking-wider select-none divide-x divide-white">
                 <th
                   onClick={() => handleSort('name')}
-                  className="py-2.5 px-3 sm:px-6 cursor-pointer hover:bg-gray-900 transition-colors"
+                  className="py-2.5 px-3 sm:px-6 cursor-pointer hover:bg-dark-surface-hover transition-colors"
                 >
                   <div className="flex flex-col items-start leading-tight">
                     <span>종목명</span>
@@ -187,7 +187,7 @@ function EtfTableContent({
                 </th>
                 <th
                   onClick={() => handleSort(`yield_${selectedPeriod}` as keyof EtfWithPrice)}
-                  className="py-2.5 px-1 sm:px-6 text-right cursor-pointer hover:bg-gray-900 transition-colors w-13.5 sm:w-28"
+                  className="py-2.5 px-1 sm:px-6 text-right cursor-pointer hover:bg-dark-surface-hover transition-colors w-13.5 sm:w-28"
                 >
                   <div className="flex flex-col items-end leading-tight">
                     <span className="whitespace-nowrap">수익률</span>

@@ -280,7 +280,7 @@ export default function Filter({
               }}
               className={`w-28 py-1.5 text-xs font-bold rounded-none transition-all cursor-pointer ${
                 interestFilter === 'all'
-                  ? 'bg-[#000000] text-white shadow-xs'
+                  ? 'bg-dark-surface text-white shadow-xs'
                   : 'text-gray-500 hover:text-gray-950'
               }`}
             >
@@ -296,7 +296,7 @@ export default function Filter({
               }}
               className={`w-28 py-1.5 text-xs font-bold rounded-none transition-all cursor-pointer ${
                 interestFilter === 'y'
-                  ? 'bg-[#000000] text-white shadow-xs'
+                  ? 'bg-dark-surface text-white shadow-xs'
                   : 'text-gray-500 hover:text-gray-950'
               }`}
             >
@@ -306,14 +306,14 @@ export default function Filter({
         </div>
 
         {/* 1단계: 레버리지 토글 */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 border-t border-[#000000] pt-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 border-t border-dark-surface pt-4">
           <span className="text-xs text-[#000000] font-bold uppercase tracking-wider w-20">레버리지</span>
           <div className="flex gap-2 w-full sm:w-auto">
             <button
               onClick={() => { setLeverageFilter('exclude'); setSelectedCategory('all'); setSelectedReport('all'); setSearchTerm(''); }}
               className={`flex-1 sm:flex-initial sm:w-36 py-1.5 rounded-none text-xs font-bold transition-all cursor-pointer border text-center ${
                 leverageFilter === 'exclude'
-                  ? 'bg-[#000000] text-white border-[#000000] shadow-md'
+                  ? 'bg-dark-surface text-white border-dark-surface shadow-md'
                   : 'bg-white text-gray-800 border-black/20 hover:bg-black/5 shadow-sm'
               }`}
             >
@@ -323,7 +323,7 @@ export default function Filter({
               onClick={() => { setLeverageFilter('include'); setSelectedCategory('all'); setSelectedReport('all'); setSearchTerm(''); }}
               className={`flex-1 sm:flex-initial sm:w-36 py-1.5 rounded-none text-xs font-bold transition-all cursor-pointer border text-center ${
                 leverageFilter === 'include'
-                  ? 'bg-[#000000] text-white border-[#000000] shadow-md'
+                  ? 'bg-dark-surface text-white border-dark-surface shadow-md'
                   : 'bg-white text-gray-800 border-black/20 hover:bg-black/5 shadow-sm'
               }`}
             >
@@ -333,14 +333,14 @@ export default function Filter({
         </div>
 
         {/* 2단계: 대분류 */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 border-t border-[#000000] pt-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 border-t border-dark-surface pt-4">
           <span className="text-xs text-[#000000] font-bold uppercase tracking-wider w-20">대분류</span>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => handleCategoryClick('all')}
               className={`px-4 py-1.5 rounded-none text-xs font-bold transition-all cursor-pointer border ${
                 selectedCategory === 'all'
-                  ? 'bg-[#000000] text-white border-[#000000] shadow-md'
+                  ? 'bg-dark-surface text-white border-dark-surface shadow-md'
                   : 'bg-white text-gray-800 border-black/20 hover:bg-black/5 shadow-sm'
               }`}
             >
@@ -352,7 +352,7 @@ export default function Filter({
                 onClick={() => handleCategoryClick(category)}
                 className={`px-4 py-1.5 rounded-none text-xs font-bold transition-all cursor-pointer border ${
                   selectedCategory === category
-                    ? 'bg-[#000000] text-white border-[#000000] shadow-md'
+                    ? 'bg-dark-surface text-white border-dark-surface shadow-md'
                     : 'bg-white text-gray-800 border-black/20 hover:bg-black/5 shadow-sm'
                 }`}
               >
@@ -363,7 +363,7 @@ export default function Filter({
         </div>
 
         {/* 3단계: 중분류 */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 border-t border-[#000000] pt-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 border-t border-dark-surface pt-4">
           <span className="text-xs text-[#000000] font-bold uppercase tracking-wider w-20">중분류</span>
           <div className="relative w-full sm:max-w-xs">
             <select
@@ -388,7 +388,7 @@ export default function Filter({
         </div>
 
         {/* 4단계: 종목명 또는 티커 검색 */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 border-t border-[#000000] pt-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 border-t border-dark-surface pt-4">
           <span className="text-xs text-[#000000] font-bold uppercase tracking-wider shrink-0">종목명 또는 티커 검색</span>
           <div className="relative w-full sm:max-w-md">
             <input
@@ -509,7 +509,7 @@ export default function Filter({
                           </h3>
                         </Link>
 
-                        <div className="flex items-center justify-between border-t border-[#000000] pt-2 mt-auto">
+                        <div className="flex items-center justify-between border-t border-dark-surface pt-2 mt-auto">
                           <span className="text-sm text-gray-700 font-medium">
                             {etf.category}
                           </span>

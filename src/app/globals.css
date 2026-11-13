@@ -29,6 +29,8 @@
   --color-brand-surface: #FFF7ED;
   --color-canvas: #F9F8F6;
   --color-body-dark: #1F1F1F;
+  --color-dark-surface: #2D2B28;
+  --color-dark-surface-hover: #3F3C37;
 
   --color-navy: #203764;
   --color-blue-primary: #003CDC;
@@ -87,6 +89,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* 다크 배경 컨테이너 내부의 제목 가독성 보정 가드 */
 .bg-black h1, .bg-black h2, .bg-black h3, .bg-black h4, .bg-black h5, .bg-black h6,
+.bg-dark-surface h1, .bg-dark-surface h2, .bg-dark-surface h3, .bg-dark-surface h4,
 .bg-\[\#000000\] h1, .bg-\[\#000000\] h2, .bg-\[\#000000\] h3, .bg-\[\#000000\] h4,
 .bg-\[\#1F1F1F\] h1, .bg-\[\#1F1F1F\] h2, .bg-\[\#1F1F1F\] h3, .bg-\[\#1F1F1F\] h4,
 .bg-neutral-900 h1, .bg-neutral-900 h2, .bg-neutral-900 h3, .bg-neutral-900 h4,
@@ -149,9 +152,9 @@ header, header a, header span, header button,
     }
   }
   .ui-btn-dark {
-    @apply inline-flex items-center justify-center gap-1.5 border border-black/15 bg-[#1F1F1F] px-4 py-2.5 text-xs sm:text-sm font-semibold text-white transition-colors cursor-pointer shadow-xs;
+    @apply inline-flex items-center justify-center gap-1.5 border border-black/15 bg-dark-surface px-4 py-2.5 text-xs sm:text-sm font-semibold text-white transition-colors cursor-pointer shadow-xs;
     &:hover {
-      background-color: #2B2B2B;
+      background-color: var(--color-dark-surface-hover);
       border-color: var(--color-brand);
     }
   }

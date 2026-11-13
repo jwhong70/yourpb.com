@@ -66,7 +66,7 @@ export default function WishlistGrid({ wishlist, isLoggedIn }: WishlistGridProps
         </div>
         <Link
           href="/login"
-          className="flex items-center gap-2 px-6 py-2.5 bg-[#000000] hover:bg-gray-900 active:scale-95 text-white text-base font-black rounded-none shadow-md transition-all"
+          className="flex items-center gap-2 px-6 py-2.5 bg-dark-surface hover:bg-dark-surface-hover active:scale-95 text-white text-base font-black rounded-none shadow-md transition-all"
         >
           <span>로그인하러 가기</span>
         </Link>
@@ -171,7 +171,7 @@ export default function WishlistGrid({ wishlist, isLoggedIn }: WishlistGridProps
                   </h3>
                 </Link>
 
-                <div className="flex items-center justify-between border-t border-[#000000] pt-2 mt-auto">
+                <div className="flex items-center justify-between border-t border-dark-surface pt-2 mt-auto">
                   <span className="text-sm text-gray-700 font-medium">
                     {etf.category}
                   </span>
@@ -193,7 +193,7 @@ export default function WishlistGrid({ wishlist, isLoggedIn }: WishlistGridProps
           <span
             key={idx}
             className={`w-1.5 h-1.5 rounded-full transition-all duration-200 ${
-              activeIndex === idx ? 'bg-[#000000] w-3' : 'bg-[#000000]/20'
+              activeIndex === idx ? 'bg-dark-surface w-3' : 'bg-dark-surface/20'
             }`}
           />
         ))}

@@ -221,7 +221,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
                   onClick={() => setViewMode('cards')}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-black transition-all cursor-pointer ${
                     viewMode === 'cards'
-                      ? 'bg-[#1F1F1F] text-[#EA580C] shadow-xs'
+                      ? 'bg-dark-surface text-[#EA580C] shadow-xs'
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
@@ -233,7 +233,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
                     onClick={() => setViewMode('video')}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-black transition-all cursor-pointer ${
                       viewMode === 'video'
-                        ? 'bg-[#1F1F1F] text-[#EA580C] shadow-xs'
+                        ? 'bg-dark-surface text-[#EA580C] shadow-xs'
                         : 'text-gray-600 hover:text-gray-900'
                     }`}
                   >
@@ -419,7 +419,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
 
               <button
                 onClick={handlePdfClick}
-                className="flex-1 flex items-center justify-center gap-1.5 bg-[#1F1F1F] hover:bg-[#2B2B2B] text-white border border-black/20 hover:border-[#EA580C] shadow-xs font-bold text-xs sm:text-sm py-2.5 sm:py-3 px-4 rounded-xl transition-all cursor-pointer group"
+                className="flex-1 flex items-center justify-center gap-1.5 bg-dark-surface hover:bg-dark-surface-hover text-white border border-black/20 hover:border-[#EA580C] shadow-xs font-bold text-xs sm:text-sm py-2.5 sm:py-3 px-4 rounded-xl transition-all cursor-pointer group"
               >
                 <Lock className="w-3.5 h-3.5 text-[#EA580C] group-hover:scale-110 transition-transform" />
                 <span>멤버십 전용 PDF 소장</span>

@@ -245,7 +245,7 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-bold text-gray-700 uppercase tracking-wider">1개월 멤버십</h3>
                 {selectedPlan === '1month' && (
-                  <span className="text-[10px] font-black text-white bg-[#1F1F1F] px-2 py-0.5 uppercase tracking-wide">
+                  <span className="text-[10px] font-black text-white bg-dark-surface px-2 py-0.5 uppercase tracking-wide">
                     SELECTED
                   </span>
                 )}

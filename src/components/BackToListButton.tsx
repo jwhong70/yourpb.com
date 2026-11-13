@@ -13,7 +13,7 @@ interface BackToListButtonProps {
 export default function BackToListButton({
   fallbackUrl,
   label = '목록으로 복귀',
-  className = 'inline-flex items-center gap-2 px-5 py-2.5 bg-[#000000] hover:bg-gray-900 active:scale-95 text-white font-bold rounded-none shadow-md transition-all cursor-pointer group text-base',
+  className = 'inline-flex items-center gap-2 px-5 py-2.5 bg-dark-surface hover:bg-dark-surface-hover active:scale-95 text-white font-bold rounded-none shadow-md transition-all cursor-pointer group text-base',
 }: BackToListButtonProps) {
   const router = useRouter();
 
