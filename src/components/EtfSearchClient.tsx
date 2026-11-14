@@ -136,9 +136,11 @@ function EtfTableContent({
           <span className="text-xs text-[#000000]/60 font-semibold select-none">
             검색 결과: <strong className="text-[#000000] text-sm font-extrabold">{sortedList.length}</strong>개 종목
           </span>
-          <span className="text-[11px] text-gray-400 font-medium select-none flex items-center gap-1">
-            <Heart className="w-3.5 h-3.5 fill-[#dc2626] text-[#dc2626]" />
-            종목명 왼쪽 하트를 클릭해 나만의 찜한 ETF를 관리해 보세요.
+          <span className="text-[11px] text-gray-400 font-medium select-none flex items-start gap-1 break-keep leading-relaxed">
+            <Heart className="w-3.5 h-3.5 fill-[#dc2626] text-[#dc2626] shrink-0 mt-0.5" />
+            <span>
+              종목명 왼쪽 하트를 클릭해 나만의 관심 ETF를 관리해 보세요. 상단의 &apos;관심만&apos; 버튼을 클릭하면 나만의 관심 ETF만 나타납니다.
+            </span>
           </span>
         </div>
         <div className="flex items-center gap-2">
