@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { HeartOff, LogIn } from 'lucide-react';
-import WishlistButton from '@/app/components/WishlistButton';
+import WishlistButton from '@/components/WishlistButton';
 
 interface ETF {
   ticker: string;

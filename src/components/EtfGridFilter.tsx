@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useQueryState, parseAsString, parseAsStringLiteral } from 'nuqs';
-import WishlistButton from '@/app/components/WishlistButton';
+import WishlistButton from '@/components/WishlistButton';
 import Fuse from 'fuse.js';
 
 interface ETF {

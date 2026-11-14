@@ -5,13 +5,15 @@ import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, ReferenceLine, LabelL
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
 import { useIsMounted } from '@/hooks/useIsMounted';
 
-interface StockPerformanceChartProps {
+interface PerformanceChartProps {
   yield_1w: number | null;
   yield_5w: number | null;
   yield_20w: number | null;
   yield_60w: number | null;
   yield_120w: number | null;
   source?: string;
+  assetType?: 'etf' | 'stock';
+  subtitle?: string;
 }
 
 const chartConfig = {
@@ -20,15 +22,23 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function StockPerformanceChart({
+export default function PerformanceChart({
   yield_1w,
   yield_5w,
   yield_20w,
   yield_60w,
   yield_120w,
   source,
-}: StockPerformanceChartProps) {
+  assetType = 'stock',
+  subtitle,
+}: PerformanceChartProps) {
   const mounted = useIsMounted();
+
+  const resolvedSubtitle =
+    subtitle ??
+    (assetType === 'etf'
+      ? '최근 데이터 기준 주요 기간별 운용 수익률 현황입니다.'
+      : '최근 데이터 기준 주요 기간별 주가 수익률 현황입니다.');
 
   // 1. 유효한 데이터만 맵핑
   const chartData = useMemo(() => {
@@ -72,7 +82,7 @@ export default function StockPerformanceChart({
       <div className="flex items-center justify-between border-b border-black/10 pb-3 mb-4 px-0.5 sm:px-0">
         <div>
           <h4 className="text-base sm:text-lg font-bold tracking-tight">수익률 성과 지표</h4>
-          <p className="text-[11px] sm:text-xs text-[#000000]/60 mt-0.5">최근 데이터 기준 주요 기간별 주가 수익률 현황입니다.</p>
+          <p className="text-[11px] sm:text-xs text-[#000000]/60 mt-0.5">{resolvedSubtitle}</p>
         </div>
       </div>
 
@@ -103,7 +113,7 @@ export default function StockPerformanceChart({
               />
               {/* 0% 중심 기준선 */}
               <ReferenceLine y={0} stroke="#000000" strokeWidth={1.5} />
-              
+
               <Bar dataKey="value" barSize={36} isAnimationActive={false}>
                 {chartData.map((entry, index) => {
                   const isPositive = entry.value >= 0;

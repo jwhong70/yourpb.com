@@ -4,7 +4,7 @@ import { unstable_cache } from 'next/cache';
 import { supabase as publicSupabase } from '@/lib/supabase';
 import { getSessionUser } from '@/app/actions/auth';
 import { getStockWishlist } from '@/app/actions/stock_wishlist';
-import Filter from '@/app/components/Filter';
+import Filter from '@/components/StockTableFilter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import HubFaqAccordion from '@/components/HubFaqAccordion';

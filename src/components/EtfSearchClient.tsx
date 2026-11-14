@@ -4,7 +4,7 @@ import React, { useState, useEffect, useTransition, useMemo, useRef, useCallback
 import { useRouter } from 'next/navigation';
 import { Heart } from 'lucide-react';
 import { useQueryState, parseAsString, parseAsStringLiteral } from 'nuqs';
-import Filter from './Filter';
+import Filter from './EtfGridFilter';
 import { toggleWishlist } from '@/app/actions/wishlist';
 import { toast } from 'sonner';
 import MiniSparkline from './MiniSparkline';

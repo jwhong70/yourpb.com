@@ -1,6 +1,5 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
 import {
   ArrowLeft,
   Award,
@@ -24,11 +23,11 @@ import TickerFaqAccordion from '@/components/TickerFaqAccordion';
 import type { Metadata } from 'next';
 
 // 차트 컴포넌트 Dynamic Import (초기 렌더링 최적화)
-const StockCandleChart = dynamic(() => import('@/components/StockCandleChart'), {
+const AssetCandleChart = dynamic(() => import('@/components/AssetCandleChart'), {
   ssr: true,
   loading: () => <div className="h-64 bg-box-bg border border-black animate-pulse" />
 });
-const StockPerformanceChart = dynamic(() => import('@/components/StockPerformanceChart'), {
+const PerformanceChart = dynamic(() => import('@/components/PerformanceChart'), {
   ssr: true,
   loading: () => <div className="h-64 bg-box-bg border border-black animate-pulse" />
 });
@@ -458,14 +457,15 @@ export default async function StockDetailPage({ params }: PageProps) {
 
               {/* 차트 영역 (반응형 2단 - 웹: 가로, 앱: 세로) */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <StockCandleChart prices={prices} source="yfinance" />
-                <StockPerformanceChart
+                <AssetCandleChart prices={prices} source="yfinance" />
+                <PerformanceChart
                   yield_1w={yield_1w}
                   yield_5w={yield_5w}
                   yield_20w={yield_20w}
                   yield_60w={yield_60w}
                   yield_120w={yield_120w}
                   source="yfinance"
+                  assetType="stock"
                 />
               </div>
 

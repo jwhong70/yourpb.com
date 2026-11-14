@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
+import { ArrowRight, ExternalLink } from 'lucide-react';
 
 export default function HomeQuickGuide() {
   const [isOpen, setIsOpen] = useState(false);

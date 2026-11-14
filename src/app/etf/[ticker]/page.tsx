@@ -1,6 +1,5 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
 import {
   ArrowLeft,
   Award,
@@ -22,11 +21,11 @@ const EtfAllocationCharts = dynamic(() => import('@/components/EtfAllocationChar
   ssr: true,
   loading: () => <div className="h-64 bg-box-bg border border-black animate-pulse" />
 });
-const EtfCandleChart = dynamic(() => import('@/components/EtfCandleChart'), {
+const AssetCandleChart = dynamic(() => import('@/components/AssetCandleChart'), {
   ssr: true,
   loading: () => <div className="h-64 bg-box-bg border border-black animate-pulse" />
 });
-const EtfPerformanceChart = dynamic(() => import('@/components/EtfPerformanceChart'), {
+const PerformanceChart = dynamic(() => import('@/components/PerformanceChart'), {
   ssr: true,
   loading: () => <div className="h-64 bg-box-bg border border-black animate-pulse" />
 });
@@ -446,17 +445,18 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
 
             {/* 주가 추이 및 수익률 성과 지표 반응형 그리드 배치 (웹: 가로, 앱: 세로) */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <EtfCandleChart
+              <AssetCandleChart
                 prices={prices}
                 source="yfinance"
               />
-              <EtfPerformanceChart
+              <PerformanceChart
                 yield_1w={yield_1w}
                 yield_5w={yield_5w}
                 yield_20w={yield_20w}
                 yield_60w={yield_60w}
                 yield_120w={yield_120w}
                 source="yfinance"
+                assetType="etf"
               />
             </div>
 

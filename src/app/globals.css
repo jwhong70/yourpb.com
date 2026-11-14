@@ -47,19 +47,7 @@
   --color-yellow-accent: #FFD735;
 
   /* 애니메이션 정의 */
-  --animate-logo-glow: logo-glow 3s infinite ease-in-out;
   --animate-badge-glow: badge-glow 2s infinite ease-in-out;
-
-  @keyframes logo-glow {
-    0%, 100% {
-      text-shadow: 0 0 4px rgba(142, 140, 138, 0.3), 0 0 10px rgba(142, 140, 138, 0.1);
-      filter: drop-shadow(0 0 2px rgba(142, 140, 138, 0.2));
-    }
-    50% {
-      text-shadow: 0 0 14px rgba(142, 140, 138, 0.8), 0 0 24px rgba(142, 140, 138, 0.5), 0 0 30px rgba(142, 140, 138, 0.3);
-      filter: drop-shadow(0 0 8px rgba(142, 140, 138, 0.7));
-    }
-  }
 
   @keyframes badge-glow {
     0%, 100% {
@@ -99,32 +87,6 @@ h1, h2, h3, h4, h5, h6 {
 header, header a, header span, header button,
 .font-serif {
   font-family: var(--font-sans);
-}
-
-.text-3d-premium {
-  color: #dc2626;
-  font-weight: 800;
-  text-shadow: none;
-}
-
-@keyframes logo-glow {
-  0%, 100% {
-    text-shadow: 
-      0 0 4px rgba(220, 38, 38, 0.4),
-      0 0 12px rgba(220, 38, 38, 0.2);
-    filter: brightness(1);
-  }
-  50% {
-    text-shadow: 
-      0 0 8px rgba(255, 255, 255, 0.65),
-      0 0 16px rgba(220, 38, 38, 0.8),
-      0 0 28px rgba(220, 38, 38, 0.5);
-    filter: brightness(1.3);
-  }
-}
-
-.animate-logo-glow {
-  animation: logo-glow 2.5s ease-in-out infinite;
 }
 
 /* 스크롤바 감추기 유틸리티 */

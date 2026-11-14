@@ -4,7 +4,6 @@ import { unstable_cache } from 'next/cache';
 import dynamic from 'next/dynamic';
 import { ArrowRight, Layers } from 'lucide-react';
 import { supabase as publicSupabase } from '@/lib/supabase';
-import { getSessionUser } from '@/app/actions/auth';
 import PortfolioPieChart from '@/components/PortfolioPieChart';
 import HomeQuickGuide from '@/components/HomeQuickGuide';
 import { PB_MODEL_PORTFOLIO } from '@/config/portfolio';

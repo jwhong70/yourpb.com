@@ -20,7 +20,7 @@ const MacroCandleChart = dynamic(() => import('./MacroCharts').then(mod => mod.M
   ssr: false,
   loading: () => <div className="h-64 md:h-96 bg-black/5 animate-pulse rounded-md" />
 });
-import { ChevronDown, ChevronUp, Download, Compass, HelpCircle, Info, Sparkles, BookOpen, Layers, ShieldCheck, TrendingUp } from 'lucide-react';
+import { ChevronDown, Download } from 'lucide-react';
 
 interface SignalState {
   prev: number | null;

@@ -23,12 +23,12 @@ export interface PriceItem {
   close: number;
 }
 
-interface EtfCandleChartProps {
+interface AssetCandleChartProps {
   prices: PriceItem[];
   source?: string;
 }
 
-export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) {
+export default function AssetCandleChart({ prices, source }: AssetCandleChartProps) {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartInstanceRef = useRef<IChartApi | null>(null);
   const candleSeriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null);
@@ -109,7 +109,7 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
     };
   }, [sortedData.length]);
 
-  // 가격 포맷 함수: 소수점 2자리 (ETF의 달러/원화 공통 최적화)
+  // 가격 포맷 함수: 1000 이상이면 정수 세자리 콤마, 미만이면 소수점 2자리
   const formatPrice = (val: number) => {
     if (val >= 1000) {
       return Math.round(val).toLocaleString();
@@ -231,6 +231,7 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
     }
 
     // 초기 뷰포트: 최근 120주 포커스
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     chart.timeScale().setVisibleLogicalRange(initialRange as any);
     setIsFullView(false);
 
@@ -280,7 +281,9 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
       if (needsUpdate) {
         isAdjusting = true;
         chart.timeScale().setVisibleLogicalRange({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           from: targetFrom as any,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           to: targetTo as any,
         });
         setTimeout(() => { isAdjusting = false; }, 0);
@@ -345,6 +348,7 @@ export default function EtfCandleChart({ prices, source }: EtfCandleChartProps) 
       const isCurrentlyFull = currentSpan >= (sortedData.length * 0.75);
 
       if (isCurrentlyFull) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         chartInstanceRef.current.timeScale().setVisibleLogicalRange(initialRange as any);
         setIsFullView(false);
       } else {

@@ -11,7 +11,7 @@ import { createAdminClient } from '@/lib/supabase-admin';
  * @param paymentKey 토스페이먼츠 결제 고유 식별 키 (취소/환불용)
  * @returns 성공 여부 및 결과 객체
  */
-export async function upgradeToPremium(plan: '1month' | '6months', paymentKey?: string) {
+async function upgradeToPremium(plan: '1month' | '6months', paymentKey?: string) {
   try {
     const supabase = await createClient();
 
@@ -211,75 +211,6 @@ export async function cancelSubscription(cancelReason: string = '사용자 요�
   } catch (err: unknown) {
     console.error('cancelSubscription execution failure:', err);
     const message = err instanceof Error ? err.message : '구독 해지 및 결제 취소 처리 중 오류가 발생했습니다.';
-    return { success: false, error: message };
-  }
-}
-
-/**
- * 관리자용: 고객의 이메일로 즉시 멤버십을 Free로 리셋하고 카드 취소를 실행하는 서버 액션
- */
-export async function adminResetUserMembership(email: string, cancelReason: string = '관리자 직권 환불') {
-  try {
-    const adminSupabase = createAdminClient();
-
-    // 1. 유저 조회
-    const { data: users, error: findError } = await adminSupabase
-      .from('users')
-      .select('id')
-      .eq('email', email)
-      .limit(1);
-
-    if (findError || !users || users.length === 0) {
-      return { success: false, error: '해당 이메일의 사용자를 찾을 수 없습니다.' };
-    }
-
-    const userId = users[0].id;
-    const { data: authUserData } = await adminSupabase.auth.admin.getUserById(userId);
-    const paymentKey = authUserData?.user?.user_metadata?.last_payment_key;
-
-    // 2. 토스 결제 취소 API 호출
-    const secretKey = process.env.TOSS_SECRET_KEY;
-    if (paymentKey && secretKey) {
-      const basicToken = Buffer.from(`${secretKey}:`).toString('base64');
-      await fetch(`https://api.tosspayments.com/v1/payments/${paymentKey}/cancel`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Basic ${basicToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ cancelReason }),
-      });
-    }
-
-    // 3. DB 초기화
-    const { data, error } = await adminSupabase
-      .from('users')
-      .update({
-        membership_status: 'free',
-        subscription_end_date: null,
-      })
-      .eq('id', userId)
-      .select();
-
-    if (error) {
-      return { success: false, error: error.message };
-    }
-
-    // 4. 메타데이터 초기화
-    await adminSupabase.auth.admin.updateUserById(userId, {
-      user_metadata: {
-        ...authUserData?.user?.user_metadata,
-        last_payment_key: null,
-      }
-    });
-
-    revalidatePath('/');
-    revalidatePath('/subscribe');
-    revalidatePath('/mypage');
-
-    return { success: true, user: data?.[0] };
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : '서버 오류가 발생했습니다.';
     return { success: false, error: message };
   }
 }
