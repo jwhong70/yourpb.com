@@ -476,17 +476,14 @@ export default function Filter({
 
       {/* 2. 검색 결과 요약 및 표 영역 */}
       <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-0 sm:px-2">
           <div className="flex flex-col space-y-1">
             <span className="text-xs text-gray-500 font-semibold select-none">
               검색 결과: <strong className="text-gray-900 text-sm font-extrabold">{sortedStocks.length}</strong>개 종목
             </span>
-            <span className="text-[11px] text-gray-400 font-medium select-none flex items-start gap-1 break-keep leading-relaxed">
-              <Heart className="w-3.5 h-3.5 fill-[#dc2626] text-[#dc2626] shrink-0 mt-0.5" />
-              <span>
-                종목명 왼쪽 하트를 클릭해 나만의 관심 주식을 관리해 보세요. 상단의 &apos;관심만&apos; 버튼을 클릭하면 나만의 관심 주식만 나타납니다.
-              </span>
-            </span>
+            <p className="text-[11px] text-gray-400 font-medium select-none break-keep leading-relaxed">
+              종목명 왼쪽 하트<Heart className="inline-block w-3 h-3 fill-[#dc2626] text-[#dc2626] align-text-bottom mx-0.5" />를 클릭해 나만의 관심 주식을 관리해 보세요. 상단 &apos;관심만&apos; 버튼을 클릭하면 관심 주식만 나타납니다.
+            </p>
           </div>
           <div className="flex items-center gap-3">
             {!isPremium && (
