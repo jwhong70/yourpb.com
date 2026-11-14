@@ -205,7 +205,7 @@ export default function InstallPrompt() {
         >
           <div className="w-full max-w-sm rounded-3xl border border-[#EA580C]/50 bg-neutral-900 p-6 text-white shadow-2xl animate-in zoom-in-95 duration-200">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-[#EA580C]">
+              <h3 className="text-lg font-bold">
                 {isKakao ? "💬 카카오톡 외부 브라우저 열기" : "📲 스마트폰 홈 화면에 추가하기"}
               </h3>
               <button

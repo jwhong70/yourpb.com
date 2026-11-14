@@ -95,7 +95,7 @@ export default async function AboutPage() {
               {/* 이력서 요약 문구 및 메인 설명 */}
               <div className="flex-1 space-y-3.5 text-center md:text-left">
                 <div className="space-y-1.5">
-                  <h1 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
+                  <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl select-none">
                     홍선생
                   </h1>
                 </div>
@@ -119,7 +119,7 @@ export default async function AboutPage() {
                 <Compass className="w-3.5 h-3.5 text-[#EA580C]" />
                 <span>Service Philosophy & Charter</span>
               </div>
-              <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-gray-900 select-none">
+              <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight select-none">
                 우리가 지향하는 금융과 서비스 헌장
               </h2>
               <p className="text-sm text-gray-600 max-w-3xl leading-relaxed">
@@ -132,7 +132,7 @@ export default async function AboutPage() {
               <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-4.5 sm:p-5 space-y-3 hover:border-[#EA580C] transition-all shadow-xs">
                 <div className="space-y-1">
                   <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider">01. Service Essence</span>
-                  <h3 className="text-base sm:text-lg font-extrabold text-gray-900">ETF 중심의 포트폴리오</h3>
+                  <h3 className="text-base sm:text-lg font-extrabold">ETF 중심의 포트폴리오</h3>
                 </div>
                 <div className="space-y-2.5 text-sm text-gray-600 leading-relaxed">
                   <p>
@@ -148,7 +148,7 @@ export default async function AboutPage() {
               <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-4.5 sm:p-5 space-y-3 hover:border-[#EA580C] transition-all shadow-xs">
                 <div className="space-y-1">
                   <span className="text-xs font-bold text-[#b58b1a] uppercase tracking-wider">02. Core Persona</span>
-                  <h3 className="text-base sm:text-lg font-extrabold text-gray-900">30~50대 스마트 투자자</h3>
+                  <h3 className="text-base sm:text-lg font-extrabold">30~50대 스마트 투자자</h3>
                 </div>
                 <div className="space-y-2.5 text-sm text-gray-600 leading-relaxed">
                   <p>
@@ -164,7 +164,7 @@ export default async function AboutPage() {
               <div className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-4.5 sm:p-5 space-y-3 hover:border-[#EA580C] transition-all shadow-xs">
                 <div className="space-y-1">
                   <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">03. Principle & Integrity</span>
-                  <h3 className="text-base sm:text-lg font-extrabold text-gray-900">원칙 중심의 정석 투자</h3>
+                  <h3 className="text-base sm:text-lg font-extrabold">원칙 중심의 정석 투자</h3>
                 </div>
                 <div className="space-y-2.5 text-sm text-gray-600 leading-relaxed">
                   <p>
@@ -181,7 +181,7 @@ export default async function AboutPage() {
           {/* 3. 경력 사항 (불릿/수직선 제거 및 모바일 가로폭 최대 확보 모던 리스트) */}
           <section className="space-y-4">
             <div className="flex items-center pb-1">
-              <h2 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
+              <h2 className="text-xl font-extrabold tracking-tight sm:text-2xl select-none">
                 전문 경력 (Career History)
               </h2>
             </div>
@@ -193,7 +193,7 @@ export default async function AboutPage() {
                   className="bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white p-4 sm:p-5 hover:border-[#EA580C] transition-all space-y-2 shadow-2xs"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                    <h3 className="text-base sm:text-lg font-bold text-gray-900">
+                    <h3 className="text-base sm:text-lg font-bold">
                       {item.title}
                     </h3>
                     <span className="text-xs font-mono font-semibold text-gray-700 bg-black/5 px-2 py-0.5 self-start sm:self-center">
@@ -211,7 +211,7 @@ export default async function AboutPage() {
           {/* 4. CONTACT US (세번째 블록 - 이메일, 인스타 링크 연동) */}
           <section className="bg-box-bg rounded-none p-6 sm:p-8 space-y-6">
             <div className="text-center space-y-1.5">
-              <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight select-none">
+              <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight select-none">
                 CONTACT US
               </h2>
               <p className="text-sm text-gray-500">

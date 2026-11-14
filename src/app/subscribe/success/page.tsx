@@ -35,7 +35,7 @@ export default async function SubscribeSuccessPage({ searchParams }: SuccessPage
               <div className="flex justify-center">
                 <AlertTriangle className="w-16 h-16 text-red-500 animate-bounce" />
               </div>
-              <h1 className="text-2xl font-black text-gray-900 tracking-tight">유효하지 않은 결제 정보</h1>
+              <h1 className="text-2xl font-black tracking-tight">유효하지 않은 결제 정보</h1>
               <p className="text-sm text-gray-500 leading-relaxed">
                 결제 승인에 필요한 매개변수가 누락되었거나 유효하지 않습니다. 고객센터로 문의해 주세요.
               </p>

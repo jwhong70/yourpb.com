@@ -95,7 +95,7 @@ export default function MyPageClient({ initialUser }: MyPageClientProps) {
     <div className="space-y-10">
       {/* 1. 상단 타이틀 */}
       <div className="border-b border-black/10 pb-4">
-        <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-gray-900">
+        <h1 className="text-2xl sm:text-3xl font-black tracking-tight">
           회원정보 및 멤버십 관리
         </h1>
         <p className="mt-1 text-sm text-gray-500">
@@ -106,7 +106,7 @@ export default function MyPageClient({ initialUser }: MyPageClientProps) {
       {/* 2. 기본 계정 정보 카드 */}
       <div className="bg-white border border-black shadow-xs p-6 sm:p-8 space-y-6">
         <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-          <h2 className="text-base sm:text-lg font-extrabold text-black flex items-center gap-2">
+          <h2 className="text-base sm:text-lg font-extrabold flex items-center gap-2">
             <UserIcon className="w-5 h-5 text-black" />
             내 계정 정보
           </h2>
@@ -141,7 +141,7 @@ export default function MyPageClient({ initialUser }: MyPageClientProps) {
       {/* 3. 멤버십 상태 및 관리 카드 */}
       <div className="bg-white border border-black shadow-xs p-6 sm:p-8 space-y-6">
         <div className="border-b border-gray-100 pb-4">
-          <h2 className="text-base sm:text-lg font-extrabold text-black flex items-center gap-2">
+          <h2 className="text-base sm:text-lg font-extrabold flex items-center gap-2">
             <Award className="w-5 h-5 text-[#EA580C]" />
             멤버십 상태 및 구독 관리
           </h2>
@@ -192,7 +192,7 @@ export default function MyPageClient({ initialUser }: MyPageClientProps) {
             <div className="bg-gray-50 border border-gray-200 p-6 sm:p-8 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h3 className="text-lg font-black text-black">현재 무료(Free) 회원입니다.</h3>
+                  <h3 className="text-lg font-black">현재 무료(Free) 회원입니다.</h3>
                   <p className="text-xs sm:text-sm text-gray-600 mt-1">
                     프리미엄 멤버십으로 전환하고 당신의 피비의 모든 VIP 분석 도구를 무제한으로 이용해 보세요.
                   </p>
@@ -241,7 +241,7 @@ export default function MyPageClient({ initialUser }: MyPageClientProps) {
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h3 className="text-sm font-bold text-gray-900">회원 탈퇴</h3>
+            <h3 className="text-sm font-bold">회원 탈퇴</h3>
             <p className="text-xs text-gray-500 mt-0.5">
               탈퇴 시 계정 정보, 찜 목록, 구독 정보가 즉시 영구 삭제되며 복구할 수 없습니다.
             </p>

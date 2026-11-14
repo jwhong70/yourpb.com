@@ -13,7 +13,7 @@ export default async function RefundPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-box-bg border border-[#000000] p-6 sm:p-10 shadow-lg space-y-8 rounded-none">
             <div className="border-b border-[#000000] pb-6">
-              <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight">
                 취소 및 환불 정책
               </h1>
               <p className="text-xs text-gray-500 mt-2">
@@ -22,7 +22,7 @@ export default async function RefundPage() {
             </div>
 
             <section className="space-y-3">
-              <h2 className="text-base sm:text-lg font-extrabold text-gray-900 border-l-4 border-black pl-3 leading-none">
+              <h2 className="text-base sm:text-lg font-extrabold border-l-4 border-black pl-3 leading-none">
                 1. 청약철회 및 환불 기준
               </h2>
               <div className="text-sm leading-relaxed text-gray-700 space-y-2 pl-4">
@@ -40,7 +40,7 @@ export default async function RefundPage() {
             </section>
 
             <section className="space-y-3">
-              <h2 className="text-base sm:text-lg font-extrabold text-gray-900 border-l-4 border-black pl-3 leading-none">
+              <h2 className="text-base sm:text-lg font-extrabold border-l-4 border-black pl-3 leading-none">
                 2. 환불 제한 사항
               </h2>
               <div className="text-sm leading-relaxed text-gray-700 space-y-2 pl-4">
@@ -54,7 +54,7 @@ export default async function RefundPage() {
             </section>
 
             <section className="space-y-3">
-              <h2 className="text-base sm:text-lg font-extrabold text-gray-900 border-l-4 border-black pl-3 leading-none">
+              <h2 className="text-base sm:text-lg font-extrabold border-l-4 border-black pl-3 leading-none">
                 3. 환불 절차 및 방법
               </h2>
               <div className="text-sm leading-relaxed text-gray-700 space-y-2 pl-4">

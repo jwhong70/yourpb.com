@@ -399,7 +399,7 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
         >
           <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-sm sm:text-base font-extrabold text-gray-900 tracking-tight break-keep">
+              <h2 className="text-sm sm:text-base font-extrabold tracking-tight break-keep">
                 피비 매크로 모니터링 이용 가이드
               </h2>
               <span className="text-[11px] font-bold text-[#9A3412] bg-[#EA580C]/15 px-2 py-0.5 border border-[#EA580C]/30 whitespace-nowrap">
@@ -565,7 +565,7 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
             {/* 선택된 소제목의 세부 총평 내용 (한줄한줄 시원하게 1열 레이아웃) */}
             {activeBriefSection && (
               <div className="mt-3 p-4 sm:p-5 bg-white border border-black/15 shadow-sm space-y-2 animate-in fade-in duration-200">
-                <h4 className="text-xs sm:text-sm font-black text-gray-900 pb-2 border-b border-black/10">
+                <h4 className="text-xs sm:text-sm font-black pb-2 border-b border-black/10">
                   {activeBriefSection === 'macro' && '1. 글로벌 경제사이클 세부 진단'}
                   {activeBriefSection === 'liquidity' && '2. 경기조절자(금리·유동성·물가) 세부 분석'}
                   {activeBriefSection === 'momentum' && '3. 리스크 태도 및 시장 모멘텀 분석'}
@@ -606,7 +606,7 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
               </div>
 
               <div className="mt-6 md:mt-8 flex items-center justify-between gap-1 w-full">
-                <h3 className={`text-xs min-[380px]:text-sm sm:text-base md:text-lg font-bold tracking-tight whitespace-nowrap ${isSelected ? 'text-gray-900 font-extrabold' : 'text-gray-800'
+                <h3 className={`text-xs min-[380px]:text-sm sm:text-base md:text-lg font-bold tracking-tight whitespace-nowrap ${isSelected ? 'font-extrabold' : ''
                   }`}>
                   {cat.title}
                 </h3>
@@ -643,7 +643,7 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
                         }`}
                     >
                       <h4
-                        className="text-xs min-[380px]:text-sm sm:text-base md:text-lg font-bold tracking-tight flex items-center gap-2 select-none text-gray-900"
+                        className="text-xs min-[380px]:text-sm sm:text-base md:text-lg font-bold tracking-tight flex items-center gap-2 select-none"
                       >
                         {sub.title}
                       </h4>

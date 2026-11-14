@@ -96,7 +96,7 @@ export default function ModelCarousel({
       {/* 타이틀 영역 */}
       <div className="flex items-center justify-between pb-3">
         <div className="flex items-center gap-2">
-          <h2 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
+          <h2 className="text-xl font-extrabold tracking-tight sm:text-2xl select-none">
             구성 ETF
           </h2>
         </div>
@@ -177,7 +177,7 @@ export default function ModelCarousel({
                     <span className="text-sm font-bold text-[#000000] tracking-wide block mb-0.5">
                       {etf.ticker}
                     </span>
-                    <h3 className="text-base font-semibold text-[#000000] line-clamp-2 leading-snug">
+                    <h3 className="text-base font-semibold line-clamp-2 leading-snug">
                       {etf.name}
                     </h3>
                   </Link>

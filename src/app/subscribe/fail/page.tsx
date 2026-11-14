@@ -30,7 +30,7 @@ export default async function SubscribeFailPage({ searchParams }: FailPageProps)
               <div className="flex justify-center">
                 <XCircle className="w-16 h-16 text-[#D60016]" />
               </div>
-              <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight">
                 결제에 실패하였습니다
               </h1>
               <p className="text-sm text-gray-500 leading-relaxed">

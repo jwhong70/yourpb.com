@@ -183,7 +183,7 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
           </div>
 
           <div className="space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-gray-900">
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
               프리미엄 멤버십 이용 중
             </h2>
             <p className="text-sm text-gray-600">
@@ -243,7 +243,7 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
           <div className="space-y-6">
             <div>
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-gray-700 uppercase tracking-wider">1개월 멤버십</h3>
+                <h3 className="text-lg font-bold uppercase tracking-wider">1개월 멤버십</h3>
                 {selectedPlan === '1month' && (
                   <span className="text-[10px] font-black text-white bg-dark-surface px-2 py-0.5 uppercase tracking-wide">
                     SELECTED
@@ -306,7 +306,7 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
           <div className="space-y-6">
             <div className="pt-2">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-[#EA580C] uppercase tracking-wider">6개월 멤버십</h3>
+                <h3 className="text-lg font-bold uppercase tracking-wider">6개월 멤버십</h3>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold text-white bg-red-accent/90 border border-red-500/20 px-2 py-0.5 rounded-none">
                     17% 할인
@@ -355,7 +355,7 @@ export default function SubscribeClient({ initialUser }: SubscribeClientProps) {
       {/* 3. 토스페이먼츠 결제위젯 통합 결제 영역 */}
       {user && (
         <div className="bg-white p-6 sm:p-8 border border-black shadow-lg space-y-6">
-          <h4 className="text-base font-extrabold text-black border-l-4 border-black pl-3 select-none leading-none">
+          <h4 className="text-base font-extrabold border-l-4 border-black pl-3 select-none leading-none">
             결제 수단 선택 및 동의
           </h4>
           

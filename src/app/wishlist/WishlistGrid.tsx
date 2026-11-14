@@ -61,7 +61,7 @@ export default function WishlistGrid({ wishlist, isLoggedIn }: WishlistGridProps
           <LogIn className="w-8 h-8" />
         </div>
         <div className="space-y-2">
-          <h3 className="text-2xl font-extrabold text-gray-900 select-none">로그인이 필요한 service입니다</h3>
+          <h3 className="text-2xl font-extrabold select-none">로그인이 필요한 service입니다</h3>
           <p className="text-base text-gray-500">찜 목록을 확인하고 관리하려면 로그인해 주세요.</p>
         </div>
         <Link
@@ -81,7 +81,7 @@ export default function WishlistGrid({ wishlist, isLoggedIn }: WishlistGridProps
           <HeartOff className="w-7 h-7" />
         </div>
         <div className="space-y-1">
-          <h3 className="text-2xl font-extrabold text-gray-900 select-none">찜한 ETF가 없습니다</h3>
+          <h3 className="text-2xl font-extrabold select-none">찜한 ETF가 없습니다</h3>
           <p className="text-base text-gray-500">관심 있는 ETF를 찾아 하트를 눌러보세요!</p>
         </div>
         <Link
@@ -166,7 +166,7 @@ export default function WishlistGrid({ wishlist, isLoggedIn }: WishlistGridProps
                   <span className="text-sm font-bold text-[#000000] tracking-wide block mb-0.5">
                     {etf.ticker}
                   </span>
-                  <h3 className="text-base font-semibold text-gray-900 line-clamp-2 leading-snug">
+                  <h3 className="text-base font-semibold line-clamp-2 leading-snug">
                     {etf.name}
                   </h3>
                 </Link>

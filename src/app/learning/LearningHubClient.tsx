@@ -174,7 +174,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
               <Sparkles className="w-3.5 h-3.5" />
               <span>3인 패밀리 50부작 선행학습</span>
             </div>
-            <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-gray-900 select-none">
+            <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight select-none">
               자산관리 선행학습
             </h1>
             <p className="mt-1.5 text-xs sm:text-sm text-gray-600">
@@ -244,7 +244,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
               </div>
             </div>
 
-            <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-1 leading-snug break-keep">
+            <h2 className="text-base sm:text-lg font-bold mb-1 leading-snug break-keep">
               {selectedEp.title}
             </h2>
             <p className="text-xs sm:text-sm text-gray-600 mb-3.5 break-keep">{selectedEp.subtitle}</p>
@@ -353,7 +353,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
           {/* D. 3인 패밀리 대화 요약 (티키타카 & 캐릭터 스토리) */}
           <div className="bg-white border border-black/10 rounded-2xl p-6 shadow-xs space-y-4">
             <div className="border-b border-black/10 pb-2.5">
-              <h3 className="text-sm sm:text-base font-bold text-gray-900 flex items-center gap-1.5">
+              <h3 className="text-sm sm:text-base font-bold flex items-center gap-1.5">
                 <span className="text-[#EA580C]">💬</span> 3인 패밀리 리얼 머니 토크
               </h3>
               <p className="text-xs text-gray-400 mt-1">식탁에서 나누는 현실 재테크 고민</p>
@@ -436,7 +436,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
             <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
               <div className="flex items-center gap-2">
                 <BookOpen className="w-5 h-5 text-[#EA580C]" />
-                <h3 className="text-lg font-black text-gray-900">50강 정주행 로드맵</h3>
+                <h3 className="text-lg font-black">50강 정주행 로드맵</h3>
               </div>
               <span className="text-xs font-bold text-gray-400">1년 50주 완성</span>
             </div>
@@ -468,7 +468,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
                             ({chapterCompletedCount}/{chapter.episodes.length} 완료)
                           </span>
                         </div>
-                        <h4 className="text-sm font-black text-gray-900">{chapter.title}</h4>
+                        <h4 className="text-sm font-black">{chapter.title}</h4>
                       </div>
                       <span className="text-gray-400 font-black text-lg transition-transform duration-200">
                         {isOpen ? '−' : '+'}
@@ -602,7 +602,7 @@ export default function LearningHubClient({ initialUser }: LearningHubClientProp
               <Award className="w-7 h-7 text-[#EA580C]" />
             </div>
 
-            <h3 className="text-xl font-black text-gray-900 mb-2">
+            <h3 className="text-xl font-black mb-2">
               멤버십 전용 PDF 소장 혜택
             </h3>
             <p className="text-sm text-gray-400 leading-relaxed mb-6">

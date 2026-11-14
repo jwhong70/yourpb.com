@@ -504,7 +504,7 @@ export default function Filter({
                           <span className="text-sm font-bold text-[#000000] tracking-wide block mb-0.5">
                             {etf.ticker}
                           </span>
-                          <h3 className="text-base font-semibold text-[#000000] line-clamp-2 leading-snug">
+                          <h3 className="text-base font-semibold line-clamp-2 leading-snug">
                             {etf.name}
                           </h3>
                         </Link>

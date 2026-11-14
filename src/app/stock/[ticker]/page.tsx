@@ -374,7 +374,7 @@ export default async function StockDetailPage({ params }: PageProps) {
                   현재가: {closePrice !== null ? formatPrice(closePrice) : '-'}
                 </span>
               </div>
-              <h1 className="text-lg sm:text-2xl font-black text-gray-900 tracking-tight break-keep">
+              <h1 className="text-lg sm:text-2xl font-black tracking-tight break-keep">
                 {stock.name}{' '}
                 <span className="text-base sm:text-xl font-bold uppercase text-gray-600 whitespace-nowrap">
                   ({ticker})
@@ -446,7 +446,7 @@ export default async function StockDetailPage({ params }: PageProps) {
                     <div className="text-[#000000]/60 text-xs uppercase tracking-wider mb-2">
                       <span>기업 개요 (Overview)</span>
                     </div>
-                    <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 select-none">기업 소개 및 투자 가이드</h3>
+                    <h3 className="text-base sm:text-lg font-bold mb-2 select-none">기업 소개 및 투자 가이드</h3>
                     <p className="text-gray-800 text-sm font-normal leading-relaxed whitespace-pre-line font-sans">
                       {isPremium
                         ? (stock.description || '이 종목에 대한 상세 리서치 요약 정보가 아직 등록되지 않았습니다.')
@@ -496,7 +496,7 @@ export default async function StockDetailPage({ params }: PageProps) {
               {isPremium && signals.length > 0 && (
                 <section className="space-y-6 pt-4">
                   <div className="border-b-2 border-black pb-2">
-                    <h2 className="text-xl sm:text-2xl font-black text-gray-900 flex items-center gap-2">
+                    <h2 className="text-xl sm:text-2xl font-black flex items-center gap-2">
                       <Brain className="w-6 h-6 text-black animate-pulse" />
                       <span>21대 투자 대가 및 AI 종합 분석</span>
                     </h2>
@@ -508,7 +508,7 @@ export default async function StockDetailPage({ params }: PageProps) {
 
                   {/* 상단: 종합 의견 게이지 바 */}
                   <div className="p-5 bg-box-bg border border-black rounded-none shadow-md space-y-4">
-                    <h3 className="text-base font-extrabold text-gray-900">종합 투자 매력도 의견 분포</h3>
+                    <h3 className="text-base font-extrabold">종합 투자 매력도 의견 분포</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                       {/* Bullish */}
                       <div className="p-3 bg-green-50 border border-green-200 flex items-center justify-between rounded-none">

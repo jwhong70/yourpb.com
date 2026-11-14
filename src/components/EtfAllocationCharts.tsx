@@ -150,7 +150,7 @@ function SolidPieChartWidget({ title, data, source }: SolidPieChartWidgetProps) 
   return (
     <div className="flex flex-col items-center p-4 sm:p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md transition-all justify-between w-full">
       <div className="w-full flex flex-col items-center">
-        <h3 className="text-base sm:text-lg font-bold text-[#000000] mb-2 select-none tracking-tight">
+        <h3 className="text-base sm:text-lg font-bold mb-2 select-none tracking-tight">
           {title}
         </h3>
 

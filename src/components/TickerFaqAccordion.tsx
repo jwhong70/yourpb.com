@@ -84,7 +84,7 @@ export default function TickerFaqAccordion({
 
       <div className="flex items-center gap-2 mb-5">
         <HelpCircle className="w-5 h-5 text-[#9A3412]" />
-        <h2 className="text-base sm:text-lg font-bold text-gray-900 tracking-tight">
+        <h2 className="text-base sm:text-lg font-bold tracking-tight">
           당신의 피비와 고객의 릴스 톡 (FAQ)
         </h2>
       </div>

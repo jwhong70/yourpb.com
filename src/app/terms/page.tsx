@@ -13,7 +13,7 @@ export default async function TermsPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-box-bg border border-[#000000] p-6 sm:p-10 shadow-lg space-y-8 rounded-none">
             <div className="border-b border-[#000000] pb-6">
-              <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight">
                 서비스 이용약관
               </h1>
               <p className="text-xs text-gray-500 mt-2">
@@ -22,7 +22,7 @@ export default async function TermsPage() {
             </div>
 
             <section className="space-y-3">
-              <h2 className="text-base sm:text-lg font-extrabold text-gray-900 border-l-4 border-black pl-3 leading-none">
+              <h2 className="text-base sm:text-lg font-extrabold border-l-4 border-black pl-3 leading-none">
                 제 1 조 (목적)
               </h2>
               <p className="text-sm leading-relaxed text-gray-700 pl-4">
@@ -31,7 +31,7 @@ export default async function TermsPage() {
             </section>
 
             <section className="space-y-3">
-              <h2 className="text-base sm:text-lg font-extrabold text-gray-900 border-l-4 border-black pl-3 leading-none">
+              <h2 className="text-base sm:text-lg font-extrabold border-l-4 border-black pl-3 leading-none">
                 제 2 조 (정의)
               </h2>
               <ul className="text-sm leading-relaxed text-gray-700 pl-8 list-disc space-y-1">
@@ -41,7 +41,7 @@ export default async function TermsPage() {
             </section>
 
             <section className="space-y-3">
-              <h2 className="text-base sm:text-lg font-extrabold text-gray-900 border-l-4 border-black pl-3 leading-none">
+              <h2 className="text-base sm:text-lg font-extrabold border-l-4 border-black pl-3 leading-none">
                 제 3 조 (서비스의 제공 및 제한)
               </h2>
               <div className="text-sm leading-relaxed text-gray-700 space-y-2 pl-4">
@@ -55,7 +55,7 @@ export default async function TermsPage() {
             </section>
 
             <section className="space-y-3">
-              <h2 className="text-base sm:text-lg font-extrabold text-gray-900 border-l-4 border-black pl-3 leading-none">
+              <h2 className="text-base sm:text-lg font-extrabold border-l-4 border-black pl-3 leading-none">
                 제 4 조 (이용료 및 결제)
               </h2>
               <p className="text-sm leading-relaxed text-gray-700 pl-4">
@@ -64,7 +64,7 @@ export default async function TermsPage() {
             </section>
 
             <section className="space-y-3">
-              <h2 className="text-base sm:text-lg font-extrabold text-gray-900 border-l-4 border-black pl-3 leading-none">
+              <h2 className="text-base sm:text-lg font-extrabold border-l-4 border-black pl-3 leading-none">
                 제 5 조 (지식재산권의 보호)
               </h2>
               <p className="text-sm leading-relaxed text-gray-700 pl-4">

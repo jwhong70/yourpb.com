@@ -262,7 +262,7 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
                   레버리지: {etfList.leverage || '1X'}
                 </span>
               </div>
-              <h1 className="text-lg sm:text-2xl font-black text-gray-900 tracking-tight break-keep">
+              <h1 className="text-lg sm:text-2xl font-black tracking-tight break-keep">
                 {etfList.name}{' '}
                 <span className="text-base sm:text-xl font-bold uppercase text-gray-600 whitespace-nowrap">
                   ({ticker})
@@ -326,7 +326,7 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
                   <div className="text-[#000000]/60 text-xs uppercase tracking-wider mb-2">
                     <span>ETF 개요 및 투자 포인트</span>
                   </div>
-                  <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 select-none">펀드 분석 요약</h3>
+                  <h3 className="text-base sm:text-lg font-bold mb-2 select-none">펀드 분석 요약</h3>
                   <p className="text-gray-800 text-sm font-normal leading-relaxed whitespace-pre-line font-sans">
                     {etfList.description || '이 펀드에 대한 상세 리서치 요약 정보가 아직 등록되지 않았습니다.'}
                   </p>
@@ -339,7 +339,7 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
                   <div className="text-[#000000]/60 text-xs uppercase tracking-wider mb-1.5">
                     <span>펀드 핵심 평가지표</span>
                   </div>
-                  <h3 className="text-base sm:text-lg font-bold text-gray-900 select-none">가치 평가 & 분배 지표</h3>
+                  <h3 className="text-base sm:text-lg font-bold select-none">가치 평가 & 분배 지표</h3>
 
                   <div className="space-y-2 pt-1">
                     <div className="flex items-center justify-between border-b border-dark-surface pb-1.5">
@@ -394,7 +394,7 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
             <section className="pt-2">
               <div className="p-3.5 sm:p-5 rounded-none bg-box-bg border border-t-[#000000] border-b-[#000000] border-l-white border-r-white shadow-md space-y-3 w-full">
                 <div className="flex items-center justify-between pb-2 border-b border-black/10">
-                  <h3 className="text-base sm:text-lg font-bold text-gray-900 tracking-tight select-none">
+                  <h3 className="text-base sm:text-lg font-bold tracking-tight select-none">
                     보유 비중 상위 10종목
                   </h3>
                   <span className="text-xs text-gray-500 select-none">

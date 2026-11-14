@@ -204,7 +204,7 @@ export default async function MonthlyBriefPage() {
                 </div>
 
                 <div className="space-y-2 print:space-y-1">
-                  <h1 className="text-xl sm:text-2xl lg:text-3xl print:text-2xl font-extrabold text-gray-900 tracking-tight leading-tight">
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl print:text-2xl font-extrabold tracking-tight leading-tight">
                     {brief.title}
                   </h1>
                   <p className="text-sm sm:text-base print:text-xs font-bold text-gray-500 print:text-gray-700">
@@ -229,7 +229,7 @@ export default async function MonthlyBriefPage() {
                   <span className="w-6 h-6 print:w-5 print:h-5 rounded-full bg-black text-white text-xs print:text-[10px] font-bold flex items-center justify-center">
                     1
                   </span>
-                  <h2 className="text-lg sm:text-xl print:text-base font-extrabold text-gray-900 tracking-tight">
+                  <h2 className="text-lg sm:text-xl print:text-base font-extrabold tracking-tight">
                     월간 금융시장 시황 총평
                   </h2>
                 </div>
@@ -310,7 +310,7 @@ export default async function MonthlyBriefPage() {
                 <span className="w-6 h-6 print:w-5 print:h-5 rounded-full bg-black text-white text-xs print:text-[10px] font-bold flex items-center justify-center">
                   2
                 </span>
-                <h2 className="text-lg sm:text-xl print:text-base font-extrabold text-gray-900 tracking-tight">
+                <h2 className="text-lg sm:text-xl print:text-base font-extrabold tracking-tight">
                   당신의 피비 추천 포트폴리오 비중
                 </h2>
               </div>
@@ -453,7 +453,7 @@ export default async function MonthlyBriefPage() {
                 <span className="w-6 h-6 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center">
                   3
                 </span>
-                <h2 className="text-lg sm:text-xl font-extrabold text-gray-900 tracking-tight">
+                <h2 className="text-lg sm:text-xl font-extrabold tracking-tight">
                   이달의 핵심 편입 ETF
                 </h2>
               </div>
@@ -500,7 +500,7 @@ export default async function MonthlyBriefPage() {
                             )}
                           </div>
                           <Link href={`/etf/${item.ticker}?from=monthly`}>
-                            <h3 className="text-base font-extrabold text-black group-hover:text-blue-primary transition-colors line-clamp-1">
+                            <h3 className="text-base font-extrabold group-hover:text-blue-primary transition-colors line-clamp-1">
                               {item.name} ({item.ticker})
                             </h3>
                           </Link>

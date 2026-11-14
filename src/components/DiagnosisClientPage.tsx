@@ -288,7 +288,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
               <span>행동재무학 기반 실전 진단 솔루션</span>
             </div>
             
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-gray-900 tracking-tight select-none">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight select-none">
               투자 행동 편향 정밀 진단
             </h1>
             
@@ -460,7 +460,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                     <div className="text-xs font-bold text-gray-500">
                       편향 #{currentQ.id} · {currentQ.englishName}
                     </div>
-                    <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
+                    <h2 className="text-xl sm:text-2xl font-black tracking-tight">
                       {currentQ.name}
                     </h2>
                     <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
@@ -593,7 +593,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                       {expandedSolutions[currentQ.id] && (
                         <div className="p-4 sm:p-5 space-y-4 text-xs sm:text-sm border-t border-gray-300 text-gray-800 leading-relaxed bg-white">
                           <div className="space-y-1.5">
-                            <h4 className="font-bold text-gray-900 text-xs uppercase tracking-wider">
+                            <h4 className="font-bold text-xs uppercase tracking-wider">
                               1. 편향의 본질 및 영향
                             </h4>
                             <p className="text-gray-700">{currentQ.concept.definition}</p>
@@ -601,7 +601,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                           </div>
 
                           <div className="space-y-1.5">
-                            <h4 className="font-bold text-gray-900 text-xs uppercase tracking-wider">
+                            <h4 className="font-bold text-xs uppercase tracking-wider">
                               2. 주요 발현 특징
                             </h4>
                             <ul className="space-y-1 text-gray-600 text-xs list-disc list-inside">
@@ -675,7 +675,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                   <Sparkles className="w-3.5 h-3.5" />
                   진단 완료 리포트
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+                <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
                   {initialUser?.name || '고객'}님의 투자 행동 편향 진단 종합 결과
                 </h2>
                 <p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-normal">
@@ -740,7 +740,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
             {/* 취약 편향 집중 분석 카드 리스트 */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg sm:text-xl font-black text-gray-900 flex items-center gap-2">
+                <h3 className="text-lg sm:text-xl font-black flex items-center gap-2">
                   <AlertTriangle className="w-5 h-5 text-rose-600" />
                   <span>집중 관리 대상 편향 ({totalBiasedCount}건)</span>
                 </h3>
@@ -768,7 +768,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                         <div className="space-y-0.5">
                           <div className="flex items-center gap-2">
                             <span className="text-xs font-black text-rose-600">#{q.id}</span>
-                            <h4 className="text-base sm:text-lg font-black text-gray-900">{q.name}</h4>
+                            <h4 className="text-base sm:text-lg font-black">{q.name}</h4>
                             <span className="text-xs text-gray-500">({q.englishName})</span>
                           </div>
                           <p className="text-xs text-gray-600">{q.shortDesc}</p>
@@ -807,7 +807,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
 
             {/* 전체 19개 편향 점검 매트릭스 표 */}
             <div className="bg-white border border-black p-5 sm:p-6 space-y-4 shadow-md">
-              <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
+              <h3 className="text-base font-bold flex items-center gap-2">
                 <Brain className="w-4 h-4 text-[#EA580C]" />
                 <span>19개 행동 편향 종합 진단 현황표</span>
               </h3>
@@ -843,7 +843,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                   <Compass className="w-4 h-4 text-[#EA580C]" />
                   당신의 피비 Action Roadmap
                 </span>
-                <h3 className="text-xl sm:text-2xl font-black text-gray-900">
+                <h3 className="text-xl sm:text-2xl font-black">
                   진단 완료 후, 어떻게 나의 투자 수익률을 지킬 수 있을까요?
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-600 font-normal">
@@ -857,7 +857,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                   <div className="w-8 h-8 rounded-full bg-dark-surface text-[#EA580C] border border-[#EA580C]/30 flex items-center justify-center font-black text-xs shadow-xs">
                     01
                   </div>
-                  <h4 className="text-sm font-black text-gray-900 flex items-center gap-1.5">
+                  <h4 className="text-sm font-black flex items-center gap-1.5">
                     <Calendar className="w-4 h-4 text-[#EA580C]" />
                     <span>분기별 심리 정기 리체크</span>
                   </h4>
@@ -871,7 +871,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                   <div className="w-8 h-8 rounded-full bg-dark-surface text-[#EA580C] border border-[#EA580C]/30 flex items-center justify-center font-black text-xs shadow-xs">
                     02
                   </div>
-                  <h4 className="text-sm font-black text-gray-900 flex items-center gap-1.5">
+                  <h4 className="text-sm font-black flex items-center gap-1.5">
                     <TrendingUp className="w-4 h-4 text-emerald-700" />
                     <span>무감정 HRP 분산투자</span>
                   </h4>
@@ -894,7 +894,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                   <div className="w-8 h-8 rounded-full bg-dark-surface text-[#EA580C] border border-[#EA580C]/30 flex items-center justify-center font-black text-xs shadow-xs">
                     03
                   </div>
-                  <h4 className="text-sm font-black text-gray-900 flex items-center gap-1.5">
+                  <h4 className="text-sm font-black flex items-center gap-1.5">
                     <FileText className="w-4 h-4 text-blue-700" />
                     <span>처방전 출력 및 상담 연계</span>
                   </h4>
@@ -927,7 +927,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
                 <Sparkles className="w-3.5 h-3.5" />
                 당신의 피비 VIP 자산관리
               </span>
-              <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight">
                 나의 투자 편향을 보완하는 맞춤형 포트폴리오가 필요하신가요?
               </h2>
               <p className="text-xs sm:text-sm text-gray-600 leading-relaxed max-w-2xl font-normal">
@@ -976,7 +976,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
               <span className="text-xs font-bold text-[#EA580C] uppercase tracking-widest">
                 프리미엄 멤버십 전용 혜택
               </span>
-              <h3 className="text-xl font-black text-gray-900">
+              <h3 className="text-xl font-black">
                 정밀 컨설팅 처방전 PDF 출력
               </h3>
               <p className="text-xs text-gray-600 leading-relaxed font-normal">
@@ -1028,7 +1028,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
               <div className="text-[10px] font-bold tracking-widest text-gray-600 uppercase">
                 YOURPB BEHAVIORAL FINANCE CONSULTING REPORT
               </div>
-              <h1 className="text-xl font-black text-black pt-0.5">
+              <h1 className="text-xl font-black pt-0.5">
                 투자 행동 편향 정밀 진단 및 행동 교정 처방전
               </h1>
             </div>
@@ -1087,7 +1087,7 @@ export default function DiagnosisClientPage({ initialUser }: DiagnosisClientPage
         {/* 인쇄 2페이지: 취약 편향별 맞춤 실천 솔루션 */}
         <div className="space-y-3 pt-6 break-before-page">
           <div className="border-b-2 border-black pb-2">
-            <h2 className="text-lg font-black text-black">
+            <h2 className="text-lg font-black">
               취약 행동 편향 집중 처방 강령 (Action Plans)
             </h2>
             <p className="text-[10px] text-gray-600 pt-0.5">

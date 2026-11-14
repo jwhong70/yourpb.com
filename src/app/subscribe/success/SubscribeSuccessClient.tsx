@@ -50,7 +50,7 @@ export default function SubscribeSuccessClient({
       <div className="max-w-md mx-auto px-4 text-center">
         <div className="bg-box-bg border border-black p-8 sm:p-10 shadow-xl space-y-6 flex flex-col items-center">
           <div className="w-12 h-12 border-4 border-black/20 border-t-black rounded-full animate-spin" />
-          <h1 className="text-xl font-black text-gray-900 tracking-tight">결제 승인 요청 중</h1>
+          <h1 className="text-xl font-black tracking-tight">결제 승인 요청 중</h1>
           <p className="text-xs text-gray-500 leading-relaxed">
             토스페이먼츠와 거래 안전 승인 검증 절차를 진행하고 있습니다.
             <br />
@@ -69,7 +69,7 @@ export default function SubscribeSuccessClient({
           <div className="flex justify-center">
             <AlertTriangle className="w-16 h-16 text-red-500" />
           </div>
-          <h1 className="text-2xl font-black text-gray-900 tracking-tight">결제 승인 실패</h1>
+          <h1 className="text-2xl font-black tracking-tight">결제 승인 실패</h1>
           <p className="text-sm text-gray-600 leading-relaxed">
             토스 결제 승인 처리 중 에러가 발생했습니다:
             <br />
@@ -98,7 +98,7 @@ export default function SubscribeSuccessClient({
           <div className="flex justify-center">
             <CheckCircle2 className="w-16 h-16 text-[#007C1F]" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight">
             멤버십 결제가 완료되었습니다!
           </h1>
           <p className="text-sm text-gray-600 leading-relaxed">
@@ -110,7 +110,7 @@ export default function SubscribeSuccessClient({
 
         {/* 결제 요약 명세서 */}
         <div className="border border-black/10 bg-white/50 p-5 space-y-3 text-left font-sans text-xs">
-          <h4 className="font-extrabold text-[#000000] border-b border-black/10 pb-2 flex items-center gap-1.5 select-none">
+          <h4 className="font-extrabold border-b border-black/10 pb-2 flex items-center gap-1.5 select-none">
             <CreditCard className="w-4 h-4" />
             결제 승인 내역 (Receipt)
           </h4>

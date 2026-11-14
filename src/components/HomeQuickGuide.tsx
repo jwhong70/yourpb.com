@@ -96,7 +96,7 @@ export default function HomeQuickGuide() {
                   </div>
 
                   {/* 핵심 한줄 코칭 */}
-                  <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-2 leading-snug group-hover:text-[#EA580C] transition-colors break-keep">
+                  <h3 className="text-sm sm:text-base font-bold mb-2 leading-snug group-hover:text-[#EA580C] transition-colors break-keep">
                     {item.title}
                   </h3>
 

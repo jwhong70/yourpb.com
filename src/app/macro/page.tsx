@@ -1188,7 +1188,7 @@ export default async function MacroPage() {
       <main className="grow pt-34 pb-20">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="mb-10 text-center sm:text-left">
-            <h1 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl select-none">
+            <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl select-none">
               Global Macro 모니터링
             </h1>
           </div>

@@ -13,7 +13,7 @@ export default async function PrivacyPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-box-bg border border-[#000000] p-6 sm:p-10 shadow-lg space-y-8 rounded-none">
             <div className="border-b border-[#000000] pb-6">
-              <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight">
                 개인정보처리방침
               </h1>
               <p className="text-xs text-gray-500 mt-2">
@@ -22,7 +22,7 @@ export default async function PrivacyPage() {
             </div>
 
             <section className="space-y-3">
-              <h2 className="text-base sm:text-lg font-extrabold text-gray-900 border-l-4 border-black pl-3 leading-none">
+              <h2 className="text-base sm:text-lg font-extrabold border-l-4 border-black pl-3 leading-none">
                 1. 개인정보의 수집 및 이용 목적
               </h2>
               <div className="text-sm leading-relaxed text-gray-700 space-y-2 pl-4">
@@ -38,7 +38,7 @@ export default async function PrivacyPage() {
             </section>
 
             <section className="space-y-3">
-              <h2 className="text-base sm:text-lg font-extrabold text-gray-900 border-l-4 border-black pl-3 leading-none">
+              <h2 className="text-base sm:text-lg font-extrabold border-l-4 border-black pl-3 leading-none">
                 2. 수집하는 개인정보의 항목
               </h2>
               <div className="text-sm leading-relaxed text-gray-700 space-y-2 pl-4">
@@ -51,7 +51,7 @@ export default async function PrivacyPage() {
             </section>
 
             <section className="space-y-3">
-              <h2 className="text-base sm:text-lg font-extrabold text-gray-900 border-l-4 border-black pl-3 leading-none">
+              <h2 className="text-base sm:text-lg font-extrabold border-l-4 border-black pl-3 leading-none">
                 3. 개인정보의 보유 및 이용 기간
               </h2>
               <p className="text-sm leading-relaxed text-gray-700 pl-4">
@@ -60,7 +60,7 @@ export default async function PrivacyPage() {
             </section>
 
             <section className="space-y-3">
-              <h2 className="text-base sm:text-lg font-extrabold text-gray-900 border-l-4 border-black pl-3 leading-none">
+              <h2 className="text-base sm:text-lg font-extrabold border-l-4 border-black pl-3 leading-none">
                 4. 개인정보보호책임자
               </h2>
               <div className="text-sm leading-relaxed text-gray-700 pl-4 space-y-1">
