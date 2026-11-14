@@ -63,7 +63,7 @@ function TrafficLight({ value, label, isParentSelected = false }: { value: numbe
     return (
       <div className="flex flex-col items-center gap-0.5">
         <div className="w-2.5 h-2.5 rounded-full bg-black/10 border border-black/15" />
-        <span className={`text-[7px] font-bold tracking-tighter ${isParentSelected ? 'text-[#000000]/30' : 'text-white/30'}`}>{label}</span>
+        <span className="text-[7px] font-bold tracking-tighter text-gray-400">{label}</span>
       </div>
     );
   }
@@ -106,7 +106,7 @@ function SignalBadge({ signal, isParentSelected = false }: { signal?: SignalStat
       .join(' ');
 
     const ratingLower = rating.toLowerCase();
-    let textColor = isParentSelected ? 'text-[#000000]/80' : 'text-white/80';
+    let textColor = 'text-[#1F1F1F]/80';
     let bgColor = 'bg-transparent';
 
     if (ratingLower.includes('greed')) {
@@ -116,7 +116,7 @@ function SignalBadge({ signal, isParentSelected = false }: { signal?: SignalStat
       textColor = 'text-[#D60016]';
       bgColor = 'bg-transparent';
     } else if (ratingLower.includes('neutral')) {
-      textColor = 'text-yellow-accent';
+      textColor = 'text-[#9A3412]';
       bgColor = 'bg-transparent';
     }
 
@@ -125,7 +125,7 @@ function SignalBadge({ signal, isParentSelected = false }: { signal?: SignalStat
         <span className={`text-[8px] md:text-[10px] font-bold tracking-tight ${textColor}`}>
           {formattedRating}
         </span>
-        <span className={`text-[8px] md:text-[10px] font-bold font-mono ${isParentSelected ? 'text-[#000000]/50' : 'text-white/50'}`}>
+        <span className="text-[8px] md:text-[10px] font-bold font-mono text-gray-500">
           ({score})
         </span>
       </div>
