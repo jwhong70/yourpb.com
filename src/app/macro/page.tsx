@@ -70,7 +70,7 @@ const getCachedMacroRawData = unstable_cache(
       ]).gte('date', startDateQ)),
 
       fetchAll(publicSupabase.from('macro_fred_w').select('*').in('ticker', [
-        'ic4wsa', 't10y2y', 't10y3m', 'dfedtaru', 'treast', 'wcurcir',
+        'ic4wsa', 't10y2y', 't10y3m', 'dfedtaru', 'treast', 'wcurcir', 'wrbwfrbl',
         'rrpontsyd', 'wtregen', 'baa10y', 'bamlh0a0hym2ey', 'compout', 'wshomcb'
       ]).gte('date', startDateW)),
 
@@ -487,7 +487,17 @@ export default async function MacroPage() {
     }
     : { prev: null, yoy: null };
 
-  // 2.2.4. 역레포 거래총액
+  // 2.2.4. 연준 예치 지급준비금 잔액
+  const wrbwfrbl = sortData(fredWGroups['wrbwfrbl'] || []);
+  const wrbwfrbl_val = getLastValid(wrbwfrbl, ['yield_4w', 'yield_52w']);
+  const wrbwfrbl_sig = wrbwfrbl_val
+    ? {
+      prev: wrbwfrbl_val.yield_4w >= 0 ? 1 : -1,
+      yoy: wrbwfrbl_val.yield_52w >= 0 ? 1 : -1,
+    }
+    : { prev: null, yoy: null };
+
+  // 2.2.5. 역레포 거래총액
   const rrpontsyd = sortData(fredWGroups['rrpontsyd'] || []);
   const rrpontsyd_val = getLastValid(rrpontsyd, ['yield_4w', 'yield_52w']);
   const rrpontsyd_sig = rrpontsyd_val
@@ -497,7 +507,7 @@ export default async function MacroPage() {
     }
     : { prev: null, yoy: null };
 
-  // 2.2.5. 재무부 일반계정잔액(TGA)
+  // 2.2.6. 재무부 일반계정잔액(TGA)
   const wtregen = sortData(fredWGroups['wtregen'] || []);
   const wtregen_val = getLastValid(wtregen, ['yield_4w', 'yield_52w']);
   const wtregen_sig = wtregen_val
@@ -950,6 +960,7 @@ export default async function MacroPage() {
     treast_sig,
     wshomcb_sig,
     wcurcir_sig,
+    wrbwfrbl_sig,
     rrpontsyd_sig,
     wtregen_sig,
   ]);
@@ -1107,6 +1118,7 @@ export default async function MacroPage() {
         treast: { data: treast, signal: treast_sig },
         wshomcb: { data: wshomcb, signal: wshomcb_sig },
         wcurcir: { data: wcurcir, signal: wcurcir_sig },
+        wrbwfrbl: { data: wrbwfrbl, signal: wrbwfrbl_sig },
         rrpontsyd: { data: rrpontsyd, signal: rrpontsyd_sig },
         wtregen: { data: wtregen, signal: wtregen_sig },
       },
