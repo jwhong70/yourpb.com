@@ -19,6 +19,32 @@ export interface RebalancingHistoryItem {
 
 export const PB_PORTFOLIO_HISTORY: RebalancingHistoryItem[] = [
   {
+    id: 'rebalance-20261118',
+    date: '2026.11.18',
+    title: '에너지 차익실현 및 주도 성장 테마 편입 대비 현금 확충 리밸런싱',
+    summary: '에너지 차익실현을 통한 현금 추가 확보로 향후 한국 및 반도체, AI 전력 인프라, 수소에너지 신규 편입을 통한 주도 성장 모멘텀 강화를 위한 자금을 준비했습니다.',
+    trades: [
+      {
+        action: '비중축소',
+        ticker: 'XLE',
+        name: 'Energy Select Sector SPDR Fund',
+        prevPct: 50,
+        newPct: 30,
+        country: '미국 상장 ETF',
+      },
+      {
+        action: '비중확대',
+        ticker: '',
+        name: '현금 자산 (KRW/USD)',
+        prevPct: 30,
+        newPct: 50,
+        country: '현금',
+      },
+    ],
+    previousPortfolio: '[ 섹터(XLE):50, 대체(UVXY):20, 현금:30 ]',
+    newPortfolio: '[ 섹터(XLE):30, 대체(UVXY):20, 현금:50 ]',
+  },
+  {
     id: 'rebalance-20261015',
     date: '2026.10.15',
     title: '중동발 지정학적 리스크 대응 포트폴리오 리밸런싱',
