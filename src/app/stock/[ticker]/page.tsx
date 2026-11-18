@@ -18,6 +18,7 @@ import { getSessionUser } from '@/app/actions/auth';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PremiumPaywall from '@/components/PremiumPaywall';
+import MemberPaywall from '@/components/MemberPaywall';
 import BackToListButton from '@/components/BackToListButton';
 import TickerFaqAccordion from '@/components/TickerFaqAccordion';
 import type { Metadata } from 'next';
@@ -267,8 +268,12 @@ export default async function StockDetailPage({ params }: PageProps) {
   const isLoggedIn = !!user;
   const isPremium = user?.membership_status === 'premium';
 
-  let prices = isPremium ? rawPrices : [];
-  let signals = isPremium ? rawSignals : [];
+  let prices = isLoggedIn ? rawPrices : [];
+  let signals: typeof rawSignals = [];
+  let bullishCount = 0;
+  let neutralCount = 0;
+  let bearishCount = 0;
+  let totalSignalCount = 0;
   let latestPrice = prices.length > 0 ? prices[0] : null;
   let closePrice: number | null = null;
   let yield_1w: number | null = null;
@@ -277,11 +282,11 @@ export default async function StockDetailPage({ params }: PageProps) {
   let yield_60w: number | null = null;
   let yield_120w: number | null = null;
 
-  if (isPremium) {
-    // 4. 프리미엄 회원의 경우 실제 캐시된 주가 데이터 및 시그널 제공
+  if (isLoggedIn) {
+    // 4. 회원의 경우 실제 캐시된 주가 데이터 제공
     prices = rawPrices;
     // 'Christopher Browne / Peter Cundill' (또는 '브라운/컨딜 (안전마진)')을 크리스토퍼 브라운과 피터 컨딜 2개의 독립 카드로 자동 분리 (총 21인, 3열 그리드 완성)
-    signals = (rawSignals || []).flatMap((sig) => {
+    const expandedSignals = (rawSignals || []).flatMap((sig) => {
       const name = (sig.analyst_name || '').trim();
       if (name === 'Christopher Browne / Peter Cundill' || name === '브라운/컨딜 (안전마진)') {
         return [
@@ -291,6 +296,15 @@ export default async function StockDetailPage({ params }: PageProps) {
       }
       return [sig];
     });
+
+    totalSignalCount = expandedSignals.length;
+    bullishCount = expandedSignals.filter(s => s.signal === 'Bullish').length;
+    neutralCount = expandedSignals.filter(s => s.signal === 'Neutral').length;
+    bearishCount = expandedSignals.filter(s => s.signal === 'Bearish').length;
+
+    // B안: 유료 회원은 전체(21명), 무료 회원은 상위 3명 맛보기만 서버에서 전달
+    signals = isPremium ? expandedSignals : expandedSignals.slice(0, 3);
+
     latestPrice = prices.length > 0 ? prices[0] : null;
     closePrice = latestPrice ? Number(latestPrice.close) : null;
     yield_1w = latestPrice ? Number(latestPrice.yield_1w) : null;
@@ -299,7 +313,7 @@ export default async function StockDetailPage({ params }: PageProps) {
     yield_60w = latestPrice ? Number(latestPrice.yield_60w) : null;
     yield_120w = latestPrice ? Number(latestPrice.yield_120w) : null;
   } else {
-    // 4. 일반 회원의 경우 120주 가상 Mock 주가 데이터 생성 및 Mock 수익률 지정 (서버 단에서 실제 중요 정보 가림)
+    // 4. 비회원의 경우 120주 가상 Mock 주가 데이터 생성 및 Mock 수익률 지정 (서버 단에서 실제 중요 정보 가림)
     prices = Array.from({ length: 120 }).map((_, idx) => {
       const d = new Date();
       d.setDate(d.getDate() - idx * 7);
@@ -355,10 +369,18 @@ export default async function StockDetailPage({ params }: PageProps) {
             <div className="flex items-center justify-between">
               <BackToListButton fallbackUrl="/stock" />
 
-              {isPremium && (
+              {isPremium ? (
                 <span className="flex items-center gap-1.5 text-xs font-bold text-white bg-[#EA580C] border border-[#EA580C]/40 px-3 py-1 rounded-full shadow-lg select-none">
                   <Award className="w-4 h-4 text-white" />
                   Premium Access
+                </span>
+              ) : isLoggedIn ? (
+                <span className="flex items-center gap-1.5 text-xs font-bold text-[#9A3412] bg-[#EA580C]/12 border border-[#EA580C]/30 px-3 py-1 rounded-full select-none">
+                  Member Access
+                </span>
+              ) : (
+                <span className="flex items-center gap-1.5 text-xs font-bold text-gray-500 bg-gray-100 border border-gray-300 px-3 py-1 rounded-full select-none">
+                  Guest Preview
                 </span>
               )}
             </div>
@@ -382,23 +404,24 @@ export default async function StockDetailPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* 3. PREMIUM CONTENT AREA */}
+          {/* 3. MEMBER CONTENT AREA */}
           <div className="relative">
 
-            {/* 일반 회원의 경우 블러 효과 및 상단 즉각 노출 자물쇠 가림막 적용 */}
-            {!isPremium && (
+            {/* 비회원의 경우 블러 효과 및 상단 즉각 노출 회원 전용 게이트 적용 */}
+            {!isLoggedIn && (
               <div className="absolute inset-0 z-20 flex items-start justify-center p-4 pt-6 sm:pt-10 bg-background/20 backdrop-blur-md overflow-hidden">
                 <div className="w-full max-w-4xl mx-auto shadow-2xl">
-                  <PremiumPaywall
-                    isLoggedIn={isLoggedIn}
+                  <MemberPaywall
                     returnUrl={`/stock/${ticker}`}
+                    title="개별주 심층 분석은 회원 전용입니다."
+                    description="무료 회원가입 및 로그인 후 1,000여 개 글로벌 우량주의 산업 분류, 기업 개요, 120주 주봉 캔들 차트, 기간별 수익률 및 투자 대가 종합 의견을 확인해 보세요."
                   />
                 </div>
               </div>
             )}
 
-            {/* 프리미엄 전용 대시보드 뷰포트 (비구독자에게는 백그라운드 블러 및 고정 Mock 수치 노출) */}
-            <div className={`space-y-8 select-none transition-all duration-500 ${!isPremium ? 'blur-md pointer-events-none opacity-40 select-none' : ''}`}>
+            {/* 회원 전용 대시보드 뷰포트 (비회원에게는 백그라운드 블러 및 고정 Mock 수치 노출) */}
+            <div className={`space-y-8 transition-all duration-500 ${!isLoggedIn ? 'blur-md pointer-events-none opacity-40 select-none' : ''}`}>
 
               {/* 분류체계 박스, 개요를 반응형 2단 그리드로 가로/세로 배치 (480px 분기) */}
               <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-6 sm:gap-8">
@@ -420,19 +443,19 @@ export default async function StockDetailPage({ params }: PageProps) {
                       <div className="p-2 rounded-none bg-[#F9F8F6]">
                         <span className="text-xs font-medium text-gray-500 block mb-0.5">대분류 (Sector)</span>
                         <span className="text-sm font-bold text-gray-900 truncate block">
-                          {isPremium ? (stock.sector2 || '-') : '••••'}
+                          {isLoggedIn ? (stock.sector2 || '-') : '••••'}
                         </span>
                       </div>
                       <div className="p-2 rounded-none bg-[#F9F8F6]">
                         <span className="text-xs font-medium text-gray-500 block mb-0.5">중분류 (Industry)</span>
                         <span className="text-sm font-bold text-gray-900 truncate block">
-                          {isPremium ? (stock.industry2 || '-') : '••••'}
+                          {isLoggedIn ? (stock.industry2 || '-') : '••••'}
                         </span>
                       </div>
                       <div className="p-2 rounded-none bg-[#F9F8F6]">
                         <span className="text-xs font-medium text-gray-500 block mb-0.5">부문 (Divisions)</span>
                         <span className="text-sm font-bold text-gray-900 truncate block whitespace-pre-line">
-                          {isPremium ? (stock.divisions || '정보 없음') : '••••'}
+                          {isLoggedIn ? (stock.divisions || '정보 없음') : '••••'}
                         </span>
                       </div>
                     </div>
@@ -447,9 +470,9 @@ export default async function StockDetailPage({ params }: PageProps) {
                     </div>
                     <h3 className="text-base sm:text-lg font-bold mb-2 select-none">기업 소개 및 투자 가이드</h3>
                     <p className="text-gray-800 text-sm font-normal leading-relaxed whitespace-pre-line font-sans">
-                      {isPremium
+                      {isLoggedIn
                         ? (stock.description || '이 종목에 대한 상세 리서치 요약 정보가 아직 등록되지 않았습니다.')
-                        : '구독 회원에게만 공개되는 기업 개요 정보입니다. 프리미엄 멤버십을 통해 전체 기업 정보와 리포트 분석 자료를 확인해보세요.'}
+                        : '회원에게만 공개되는 기업 개요 정보입니다. 무료 회원가입 및 로그인을 통해 전체 기업 정보와 리서치 분석 자료를 확인해 보세요.'}
                     </p>
                   </div>
                 </div>
@@ -492,8 +515,8 @@ export default async function StockDetailPage({ params }: PageProps) {
                 )}
               </div>
 
-              {/* 대가별 AI 투자 시그널 섹션 */}
-              {isPremium && signals.length > 0 && (
+              {/* 대가별 AI 투자 시그널 섹션 (B안: 무료 회원에게 종합 게이지 + 상위 3명 맛보기 공개, 나머지 유료 잠금) */}
+              {isLoggedIn && totalSignalCount > 0 && (
                 <section className="space-y-6 pt-4">
                   <div className="border-b-2 border-black pb-2">
                     <h2 className="text-xl sm:text-2xl font-black flex items-center gap-2">
@@ -514,7 +537,7 @@ export default async function StockDetailPage({ params }: PageProps) {
                       <div className="p-3 bg-green-50 border border-green-200 flex items-center justify-between rounded-none">
                         <div>
                           <span className="text-sm font-bold text-green-800 block">매수 우세 (Bullish)</span>
-                          <span className="text-2xl font-black text-green-900">{signals.filter(s => s.signal === 'Bullish').length}명</span>
+                          <span className="text-2xl font-black text-green-900">{bullishCount}명</span>
                         </div>
                         <TrendingUp className="w-8 h-8 text-green-600 opacity-80" />
                       </div>
@@ -522,7 +545,7 @@ export default async function StockDetailPage({ params }: PageProps) {
                       <div className="p-3 bg-amber-50 border border-amber-200 flex items-center justify-between rounded-none">
                         <div>
                           <span className="text-sm font-bold text-amber-800 block">중립 관망 (Neutral)</span>
-                          <span className="text-2xl font-black text-amber-900">{signals.filter(s => s.signal === 'Neutral').length}명</span>
+                          <span className="text-2xl font-black text-amber-900">{neutralCount}명</span>
                         </div>
                         <Minus className="w-8 h-8 text-amber-600 opacity-80" />
                       </div>
@@ -530,14 +553,14 @@ export default async function StockDetailPage({ params }: PageProps) {
                       <div className="p-3 bg-red-50 border border-red-200 flex items-center justify-between rounded-none">
                         <div>
                           <span className="text-sm font-bold text-red-800 block">매도 경계 (Bearish)</span>
-                          <span className="text-2xl font-black text-red-900">{signals.filter(s => s.signal === 'Bearish').length}명</span>
+                          <span className="text-2xl font-black text-red-900">{bearishCount}명</span>
                         </div>
                         <TrendingDown className="w-8 h-8 text-red-600 opacity-80" />
                       </div>
                     </div>
                   </div>
 
-                  {/* 하단: 카드 그리드 */}
+                  {/* 하단: 카드 그리드 (유료 회원은 전체, 무료 회원은 상위 3명 맛보기) */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {signals.map((sig, idx) => {
                       // 시그널별 뱃지 스타일 정의
@@ -606,6 +629,39 @@ export default async function StockDetailPage({ params }: PageProps) {
                       );
                     })}
                   </div>
+
+                  {/* 무료 회원에게만 노출: 나머지 투자 대가 및 AI 세부 판단 유료 잠금 (B안) */}
+                  {!isPremium && totalSignalCount > signals.length && (
+                    <div className="relative mt-6 min-h-[460px]">
+                      <div className="absolute inset-0 z-20 flex items-center justify-center p-4 bg-background/20 backdrop-blur-md">
+                        <div className="w-full max-w-4xl mx-auto shadow-2xl">
+                          <PremiumPaywall
+                            isLoggedIn={isLoggedIn}
+                            returnUrl={`/stock/${ticker}`}
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 blur-md pointer-events-none opacity-40 select-none">
+                        {[1, 2, 3].map((item) => (
+                          <div key={item} className="p-5 bg-box-bg border border-black rounded-none shadow-md space-y-4">
+                            <div className="flex items-center justify-between">
+                              <div className="space-y-2">
+                                <div className="h-4 w-28 bg-gray-300" />
+                                <div className="h-5 w-14 bg-gray-200" />
+                              </div>
+                              <div className="w-11 h-11 rounded-full bg-gray-300" />
+                            </div>
+                            <div className="h-2 w-full bg-gray-200" />
+                            <div className="space-y-2">
+                              <div className="h-3 w-full bg-gray-200" />
+                              <div className="h-3 w-5/6 bg-gray-200" />
+                              <div className="h-3 w-4/6 bg-gray-200" />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </section>
               )}
 

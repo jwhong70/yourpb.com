@@ -12,6 +12,7 @@ import { getSessionUser } from '@/app/actions/auth';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import EtfPdfDownloadButton from '@/components/EtfPdfDownloadButton';
+import MemberPaywall from '@/components/MemberPaywall';
 import BackToListButton from '@/components/BackToListButton';
 import TickerFaqAccordion from '@/components/TickerFaqAccordion';
 import type { Metadata } from 'next';
@@ -171,7 +172,7 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
   const tickerInput = decodeURIComponent(rawTicker || '').trim();
 
   // 2. 캐시된 ETF 상세 데이터 조회
-  const { etfList, etfInfo, allocations, holdings, prices, isNotFound, actualTicker } = await getCachedEtfDetail(tickerInput);
+  const { etfList, etfInfo: rawEtfInfo, allocations: rawAllocations, holdings: rawHoldings, prices: rawPrices, isNotFound, actualTicker } = await getCachedEtfDetail(tickerInput);
 
   // etf_list 정보가 없다면 유효하지 않은 티커이므로 404 처리
   if (isNotFound || !etfList) {
@@ -185,6 +186,12 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
   const isLoggedIn = !!user;
   const isPremium = user?.membership_status === 'premium';
 
+  // 비회원에게는 상세 데이터를 서버에서 비워 HTML 소스/네트워크 우회 차단
+  const etfInfo = isLoggedIn ? rawEtfInfo : null;
+  const allocations = isLoggedIn ? rawAllocations : [];
+  const holdings = isLoggedIn ? rawHoldings : [];
+  const prices = isLoggedIn ? rawPrices : [];
+
   // 4. 성과 최근 지표 가공 (etf_prices의 최신 행)
   const latestPrice = prices.length > 0 ? prices[0] : null;
   const yield_1w = latestPrice ? Number(latestPrice.yield_1w) : null;
@@ -195,7 +202,9 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
 
   // 5. Storage Public URL 획득 (캐시 버스팅 적용으로 브라우저 이전 캐시 방지)
   const cacheKey = new Date(etfList.updated_at || '1970-01-01').getTime();
-  const reportUrl = `${publicSupabase.storage.from('upload').getPublicUrl(`report-etf/${ticker}.pdf`).data.publicUrl}?t=${cacheKey}`;
+  const reportUrl = isLoggedIn
+    ? `${publicSupabase.storage.from('upload').getPublicUrl(`report-etf/${ticker}.pdf`).data.publicUrl}?t=${cacheKey}`
+    : '';
 
   // 포맷 헬퍼 함수
   const formatNum = (val: number | string | null | undefined, suffix = '') => {
@@ -244,9 +253,13 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
                   <Award className="w-4 h-4 text-white" />
                   Premium Access
                 </span>
+              ) : isLoggedIn ? (
+                <span className="flex items-center gap-1.5 text-xs font-bold text-[#9A3412] bg-[#EA580C]/12 border border-[#EA580C]/30 px-3 py-1 rounded-full select-none">
+                  Member Access
+                </span>
               ) : (
                 <span className="flex items-center gap-1.5 text-xs font-bold text-gray-500 bg-gray-100 border border-gray-300 px-3 py-1 rounded-full select-none">
-                  Free Access
+                  Guest Preview
                 </span>
               )}
             </div>
@@ -270,8 +283,21 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
             </div>
           </div>
 
-          {/* 3. ETF 대시보드 메인 영역 (비회원/회원 모두에게 오픈) */}
-          <div className="space-y-8">
+          {/* 3. ETF 대시보드 메인 영역 (회원 전용 조회, PDF 다운로드는 유료 전용) */}
+          <div className="relative">
+            {!isLoggedIn && (
+              <div className="absolute inset-0 z-20 flex items-start justify-center p-4 pt-6 sm:pt-10 bg-background/20 backdrop-blur-md overflow-hidden">
+                <div className="w-full max-w-4xl mx-auto shadow-2xl">
+                  <MemberPaywall
+                    returnUrl={`/etf/${ticker}${isFromMonthly ? '?from=monthly' : ''}`}
+                    title="ETF 정밀 분석 & X-Ray는 회원 전용입니다."
+                    description="무료 회원가입 및 로그인 후 글로벌 ETF 분류체계, 국가/섹터 비중, 상위 10대 편입 종목 X-Ray, 120주 주가·수익률 차트를 모두 확인해 보세요."
+                  />
+                </div>
+              </div>
+            )}
+
+            <div className={`space-y-8 transition-all duration-500 ${!isLoggedIn ? 'blur-md pointer-events-none opacity-40 select-none' : ''}`}>
 
             {/* 분류체계 박스, 개요, 가치평가지표를 반응형 그리드로 배치 (지표 생략 시 개요 박스가 2단으로 와이드 확장) */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -287,25 +313,25 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
                     <div className="p-2 rounded-none bg-[#F9F8F6]">
                       <span className="text-xs font-medium text-gray-500 block mb-0.5">대분류</span>
                       <span className="text-sm font-bold text-gray-900 truncate block">
-                        {etfList.category || '-'}
+                        {isLoggedIn ? (etfList.category || '-') : '••••'}
                       </span>
                     </div>
                     <div className="p-2 rounded-none bg-[#F9F8F6]">
                       <span className="text-xs font-medium text-gray-500 block mb-0.5">중분류</span>
                       <span className="text-sm font-bold text-gray-900 truncate block">
-                        {etfList.report || '-'}
+                        {isLoggedIn ? (etfList.report || '-') : '••••'}
                       </span>
                     </div>
                     <div className="p-2 rounded-none bg-[#F9F8F6]">
                       <span className="text-xs font-medium text-gray-500 block mb-0.5">세분류</span>
                       <span className="text-sm font-bold text-gray-900 truncate block">
-                        {etfList.focus2 || '-'}
+                        {isLoggedIn ? (etfList.focus2 || '-') : '••••'}
                       </span>
                     </div>
                     <div className="p-2 rounded-none bg-[#F9F8F6]">
                       <span className="text-xs font-medium text-gray-500 block mb-0.5">세세분류</span>
                       <span className="text-sm font-bold text-gray-900 truncate block">
-                        {etfList.focus3 || '-'}
+                        {isLoggedIn ? (etfList.focus3 || '-') : '••••'}
                       </span>
                     </div>
                   </div>
@@ -314,7 +340,7 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
                 <div className="mt-2.5 p-2 rounded-none bg-[#F9F8F6] flex flex-col justify-between gap-0.5">
                   <span className="text-xs font-medium text-gray-500">벤치마크 지수 (Index Tracked)</span>
                   <span className="text-sm font-bold text-gray-900 truncate">
-                    {etfList.index_tracked || '해당사항 없음'}
+                    {isLoggedIn ? (etfList.index_tracked || '해당사항 없음') : '••••'}
                   </span>
                 </div>
               </section>
@@ -327,7 +353,9 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
                   </div>
                   <h3 className="text-base sm:text-lg font-bold mb-2 select-none">펀드 분석 요약</h3>
                   <p className="text-gray-800 text-sm font-normal leading-relaxed whitespace-pre-line font-sans">
-                    {etfList.description || '이 펀드에 대한 상세 리서치 요약 정보가 아직 등록되지 않았습니다.'}
+                    {isLoggedIn
+                      ? (etfList.description || '이 펀드에 대한 상세 리서치 요약 정보가 아직 등록되지 않았습니다.')
+                      : '무료 회원가입 및 로그인 후 이 ETF의 투자 전략, 편입 기준 및 핵심 투자 포인트를 확인하실 수 있습니다.'}
                   </p>
                 </div>
               </div>
@@ -467,6 +495,7 @@ export default async function EtfDetailPage({ params, searchParams }: PageProps)
               isEtf={true}
             />
 
+            </div>
           </div>
         </div>
       </main>

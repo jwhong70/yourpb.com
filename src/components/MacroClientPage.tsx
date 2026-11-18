@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
 import { downloadSvgAsPng } from './MacroCharts';
 import { useIsMounted } from '@/hooks/useIsMounted';
+import MemberPaywall from './MemberPaywall';
 
 const MacroBarChart = dynamic(() => import('./MacroCharts').then(mod => mod.MacroBarChart), {
   ssr: false,
@@ -55,6 +56,7 @@ interface ClientPageProps {
       strategy: string;
     };
   };
+  isLoggedIn?: boolean;
 }
 
 // 신호등 컴포넌트 (Premium Pulse Glow 효과 탑재)
@@ -140,7 +142,7 @@ function SignalBadge({ signal, isParentSelected = false }: { signal?: SignalStat
   );
 }
 
-export default function MacroClientPage({ data, brief }: ClientPageProps) {
+export default function MacroClientPage({ data, brief, isLoggedIn = false }: ClientPageProps) {
   const mounted = useIsMounted();
 
   // 1. 대분류 상태 관리 (1 ~ 4)
@@ -712,7 +714,7 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
                                       <span className="text-xs font-extrabold text-white tracking-tight truncate">
                                         {cleanTitle}
                                       </span>
-                                      {isChartOpen && (
+                                      {isChartOpen && isLoggedIn && (
                                         <button
                                           onClick={(e) => {
                                             e.stopPropagation();
@@ -747,7 +749,14 @@ export default function MacroClientPage({ data, brief }: ClientPageProps) {
                                         className="overflow-hidden bg-[#F9F8F6] border-t border-[#000000]"
                                       >
                                         <div className="p-1 sm:p-4">
-                                          {!hasData ? (
+                                          {!isLoggedIn ? (
+                                            <MemberPaywall
+                                              compact
+                                              returnUrl="/macro"
+                                              title="장기 시계열 차트는 회원 전용입니다."
+                                              description="무료 회원가입 및 로그인 후 10~35년 글로벌 거시경제 시계열 인터랙티브 차트를 제한 없이 탐색해 보세요."
+                                            />
+                                          ) : !hasData ? (
                                             <div className="flex items-center justify-center h-48 rounded-none bg-black/5 border border-black/10 text-gray-400 text-sm italic">
                                               데이터 수집 중입니다. (Null)
                                             </div>

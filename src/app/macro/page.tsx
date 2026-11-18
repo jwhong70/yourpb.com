@@ -1208,6 +1208,7 @@ export default async function MacroPage() {
           <MacroClientPage 
             data={slimAllChartData(dashboardData)} 
             brief={getMonthlyBrief()}
+            isLoggedIn={!!user}
           />
         </div>
       </main>
