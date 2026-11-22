@@ -100,12 +100,12 @@ export default async function AboutPage() {
                   </h1>
                 </div>
 
-                <p className="text-sm sm:text-base font-bold text-gray-800 leading-relaxed max-w-2xl">
-                  &ldquo;20년 이상의 현업 금융 지식과 포트폴리오 관리 성과를 바탕으로, 당신을 위한 맞춤형 포트폴리오를 제공합니다.&rdquo;
+                <p className="text-sm sm:text-base font-bold text-gray-800 leading-relaxed max-w-2xl break-keep">
+                  &ldquo;시장이 흔들려도, 원칙을 지키는 포트폴리오는 실패의 확률을 줄입니다.&rdquo;
                 </p>
 
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  은행 및 증권사 피비, 대형 자산운용사 펀드 매니저 출신으로, 펀드, ISA, 퇴직연금 분야에서 탁월한 수익률(일임형 ISA, IRP 전업권 1위)을 달성한 금융 전문가입니다.
+                <p className="text-sm text-gray-600 leading-relaxed break-keep">
+                  은행 및 증권사 피비, 대형 자산운용사 펀드 매니저 출신(일임형 ISA·IRP 전업권 1위)으로, 20년 이상의 현업 금융 지식과 운용 성과를 바탕으로 당신을 위한 맞춤형 포트폴리오를 제공합니다.
                 </p>
               </div>
 
